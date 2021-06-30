@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using TempoIDE.Classes;
 
@@ -48,6 +49,8 @@ namespace TempoIDE.UserControls
         
         public void OpenFile(FileInfo file)
         {
+            TextWriter();
+            
             openFileInfo = file;
 
             if (openFileInfo != null)
@@ -87,9 +90,6 @@ namespace TempoIDE.UserControls
 
         private void FileButton_OnClick(object sender, FileTabEventArgs e)
         {
-            CsIntellisense.Highlight(ref TextEditor);
-            
-            TextWriter();
             OpenFile((FileInfo)e.TabButton.Resources["FileInfo"]);
         }
 
@@ -111,7 +111,6 @@ namespace TempoIDE.UserControls
             {
                 OpenFile((FileInfo)openFiles[lastIndex].Value.Resources["FileInfo"]);
             }
-            // TODO: This
         }
         
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
@@ -160,7 +159,9 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                using var writer = new StreamWriter(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite));
+                using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
+                using var writer = new StreamWriter(stream);
+                stream.SetLength(0);
                 writer.Write(TextEditor.GetPlainText());
             }
 

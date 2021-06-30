@@ -1,6 +1,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
@@ -56,7 +57,9 @@ namespace TempoIDE.Classes
 
         public static void Highlight(ref RichTextBox textBox)
         {
-            if (debounceTimer.Elapsed < TimeSpan.FromSeconds(5))
+            return; // TODO: This.
+            
+            if (debounceTimer.Elapsed < TimeSpan.FromSeconds(5) && debounceTimer.IsRunning)
             {
                 debounceTimer.Start();
                 return;
@@ -64,34 +67,18 @@ namespace TempoIDE.Classes
 
             debounceTimer.Restart();
             
-            var paragraph = new Paragraph();
-
             var richText = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd).Text;
-            
-            foreach (string comment in Comments)
-            {
-                foreach (Match match in Regex.Matches(richText, comment))
-                {
-                    paragraph.Inlines.Add(new Run(match.Value)
-                    {
-                        Foreground = new SolidColorBrush(ColorScheme.Comment)
-                    });
-                }
-            }
-
-            foreach (string keyword in Keywords)
-            {
-                foreach (Match match in Regex.Matches(richText, keyword))
-                {
-                    paragraph.Inlines.Add(new Run(match.Value)
-                    {
-                        Foreground = new SolidColorBrush(ColorScheme.Keyword)
-                    });
-                }
-            }
-            
             textBox.Document.Blocks.Clear();
-            textBox.Document.Blocks.Add(paragraph);
+
+            foreach (string word in richText.Split(' '))
+            {
+                Console.WriteLine(word);
+                Console.WriteLine(Keywords.Contains(word));
+                if (Keywords.Contains(word))
+                    textBox.AppendColoredText(word + " ", "CornflowerBlue");
+                else
+                    textBox.AppendText(word + " ");
+            }
         }
     }
 }
