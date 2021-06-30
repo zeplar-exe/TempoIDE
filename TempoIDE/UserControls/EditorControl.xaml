@@ -1,0 +1,79 @@
+<Grid x:Class="TempoIDE.UserControls.EditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userControls="clr-namespace:TempoIDE.UserControls"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid.RowDefinitions>
+        <RowDefinition Height="0.1*"/>
+        <RowDefinition Height="*"/>
+        <RowDefinition Height="0.05*"/>
+    </Grid.RowDefinitions>
+    
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+            
+    <ScrollViewer
+        Grid.Column="0"
+        Grid.Row="0"
+        Name="FileSelect"
+        VerticalScrollBarVisibility="Hidden"
+        HorizontalScrollBarVisibility="Auto">
+                
+        <StackPanel 
+            Name="FileSelectPanel"
+            Orientation="Horizontal">
+                    
+        </StackPanel>
+    </ScrollViewer>
+            
+    <ScrollViewer
+        Grid.Column="0"
+        Grid.Row="1" 
+        VerticalScrollBarVisibility="Hidden">
+                
+        <RichTextBox
+            Name="TextEditor"
+            IsReadOnly="True"
+            Background="#313131"
+            BorderBrush="{StaticResource BaseBorderColor}"
+            BorderThickness="0, 1, 0, 1"
+            AcceptsReturn="True"
+            AcceptsTab="True"
+            FontSize="17"
+            Foreground="White"
+            FontWeight="DemiBold"
+            
+            Loaded="TextEditor_OnLoaded"
+            TextChanged="TextEditor_OnTextChanged"
+            SelectionChanged="TextEditor_OnSelectionChanged">
+            
+            <RichTextBox.ContextMenu>
+                <userControls:EditorContextMenu/>
+            </RichTextBox.ContextMenu>
+            
+            <RichTextBox.Resources>
+                <Style TargetType="{x:Type Paragraph}">
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </RichTextBox.Resources>
+        </RichTextBox>
+    </ScrollViewer>
+            
+    <Grid 
+        Grid.Row="2" 
+        Grid.Column="0">
+        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>    
+        
+        <TextBlock Name="CurrentFileNameDisplay" Grid.Column="0"/>
+        <TextBlock Name="LineIndexDisplay" Grid.Column="2"/>
+    </Grid>
+</Grid>
