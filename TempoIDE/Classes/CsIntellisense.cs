@@ -57,9 +57,9 @@ namespace TempoIDE.Classes
 
         public static void Highlight(ref RichTextBox textBox)
         {
-            return; // TODO: This.
+            return; // TODO: This
             
-            if (debounceTimer.Elapsed < TimeSpan.FromSeconds(5) && debounceTimer.IsRunning)
+            if (debounceTimer.Elapsed < TimeSpan.FromSeconds(1) && debounceTimer.IsRunning)
             {
                 debounceTimer.Start();
                 return;
@@ -68,17 +68,23 @@ namespace TempoIDE.Classes
             debounceTimer.Restart();
             
             var richText = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd).Text;
+            var lines = richText.Split("\n");
+            var oldCaretPosition = textBox.Selection.End;
+            
             textBox.Document.Blocks.Clear();
 
-            foreach (string word in richText.Split(' '))
+            foreach (string line in lines)
             {
-                Console.WriteLine(word);
-                Console.WriteLine(Keywords.Contains(word));
-                if (Keywords.Contains(word))
-                    textBox.AppendColoredText(word + " ", "CornflowerBlue");
-                else
-                    textBox.AppendText(word + " ");
+                foreach (string word in line.Split(' '))
+                {
+                    if (Keywords.Contains(word))
+                        textBox.AppendColoredText(word + " ", "CornflowerBlue");
+                    else
+                        textBox.AppendText(word + " ");
+                }
             }
+
+            textBox.CaretPosition = oldCaretPosition;
         }
     }
 }

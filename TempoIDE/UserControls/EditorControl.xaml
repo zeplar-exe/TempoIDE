@@ -53,8 +53,7 @@
             FontWeight="DemiBold"
             
             Loaded="TextEditor_OnLoaded"
-            TextChanged="TextEditor_OnTextChanged"
-            SelectionChanged="TextEditor_OnSelectionChanged">
+            TextChanged="TextEditor_OnTextChanged">
             
             <RichTextBox.ContextMenu>
                 <userControls:EditorContextMenu/>
@@ -79,6 +78,5 @@
         </Grid.ColumnDefinitions>    
         
         <TextBlock Name="CurrentFileNameDisplay" Grid.Column="0"/>
-        <TextBlock Name="LineIndexDisplay" Grid.Column="2"/>
     </Grid>
 </Grid>

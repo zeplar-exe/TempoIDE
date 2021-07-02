@@ -21,6 +21,7 @@ namespace TempoIDE.UserControls
         private readonly OrderedDictionary<FileInfo, EditorTabButton> openFiles = new OrderedDictionary<FileInfo, EditorTabButton>();
 
         private bool textChangedBeforeUpdate;
+        private bool skipTextChanged;
         
         public EditorControl()
         {
@@ -118,25 +119,23 @@ namespace TempoIDE.UserControls
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         }
-        
-        private void TextEditor_OnSelectionChanged(object sender, RoutedEventArgs e)
-        {
-            int line = 0; //TextEditor.GetLineIndexFromCharacterIndex(TextEditor.SelectionStart);
-            int column = 0; //TextEditor.SelectionStart - TextEditor.GetCharacterIndexFromLineIndex(line);
-
-            LineIndexDisplay.Text = $"Caret Position: Line {line + 1} at Position {column + 1}";
-        }
 
         private void TextEditor_OnTextChanged(object sender, TextChangedEventArgs e)
         {
+            if (skipTextChanged)
+                return;
+            
             textChangedBeforeUpdate = true;
+
+            skipTextChanged = true;
             CsIntellisense.Highlight(ref TextEditor);
+            skipTextChanged = false;
         }
         
         private const int WriterCooldown = 5;
         private void TextWriterThread()
         {
-            while (true)
+            while (true) // TODO: Figure out how to use IsLoaded here
             {
                 Thread.Sleep(WriterCooldown * 1000);
                 Dispatcher.Invoke(TextWriter);

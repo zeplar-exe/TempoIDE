@@ -91,7 +91,7 @@ namespace TempoIDE.Windows
 
         #endregion
 
-        private void MainWindow_OnClosed(object? sender, EventArgs e)
+        private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             Editor.TextWriter();
         }

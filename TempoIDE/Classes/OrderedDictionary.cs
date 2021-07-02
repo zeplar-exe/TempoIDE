@@ -48,7 +48,7 @@ namespace TempoIDE.Classes
             {
                 var _ = this[key];
             }
-            catch (KeyNotFoundException e)
+            catch (KeyNotFoundException)
             {
                 return false;
             }
