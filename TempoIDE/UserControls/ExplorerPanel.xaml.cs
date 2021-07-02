@@ -12,6 +12,8 @@ namespace TempoIDE.UserControls
 {
     public partial class ExplorerPanel : Panel
     {
+        // TODO: Make selected file persistent with refreshes
+        // TODO: Handle deleted files accordingly
         private readonly SolidColorBrush unselectedFileBrush = Brushes.Transparent;
         private readonly SolidColorBrush selectedFileBrush = Brushes.Gray;
         private readonly SolidColorBrush openedFileBrush = Brushes.CornflowerBlue;
@@ -83,8 +85,7 @@ namespace TempoIDE.UserControls
                 catch (TaskCanceledException e)
                 {
                     // This is intended on application close
-                    Console.WriteLine(@"There was a TaskCanceledException, may be important:");
-                    Console.WriteLine(e.ToString());
+                    Console.WriteLine(@"There was a TaskCanceledException, may be important.");
                 }
             }
         }

@@ -104,34 +104,13 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                
+
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
-                <ScrollViewer 
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    VerticalScrollBarVisibility="Hidden"
-                    HorizontalScrollBarVisibility="Hidden">
-                    
-                    <userControls:ExplorerPanel
-                        MinWidth="120"
-                        HorizontalAlignment="Stretch"
-                        OpenFileEvent="ExplorerPanel_OnOpenFile">
-                        
-                    </userControls:ExplorerPanel>
-                </ScrollViewer>
-                
-                <GridSplitter 
-                    Background="{StaticResource BaseBorderColor}"
-                    Grid.Row="0"
-                    Grid.Column="1" 
-                    VerticalAlignment="Stretch"
-                    Width="1"/>
-                
+
                 <userControls:EditorControl x:Name="Editor" Grid.Row="0" Grid.Column="2"/>
             </Grid>
         </Grid>

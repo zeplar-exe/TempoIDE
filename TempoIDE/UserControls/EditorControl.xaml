@@ -6,77 +6,94 @@
              xmlns:userControls="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid.RowDefinitions>
-        <RowDefinition Height="0.055*"/>
-        <RowDefinition Height="*"/>
-        <RowDefinition Height="0.05*"/>
-    </Grid.RowDefinitions>
-    
     <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
-            
-    <ScrollViewer
-        Grid.Column="0"
+
+    <userControls:ExplorerPanel Grid.Column="0" MinWidth="120" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+
+    <GridSplitter 
+        Background="{StaticResource BaseBorderColor}"
         Grid.Row="0"
-        Name="FileSelect"
-        VerticalScrollBarVisibility="Hidden"
-        HorizontalScrollBarVisibility="Auto">
-                
-        <StackPanel 
-            Name="FileSelectPanel"
-            Orientation="Horizontal">
-            
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type userControls:EditorTabButton}">
-                    <Setter Property="Width" Value="120"/>
-                </Style>
-            </StackPanel.Resources>
-        </StackPanel>
-    </ScrollViewer>
-            
-    <ScrollViewer
-        Grid.Column="0"
-        Grid.Row="1" 
-        VerticalScrollBarVisibility="Hidden">
-                
-        <RichTextBox
-            Name="TextEditor"
-            IsReadOnly="True"
-            Background="#313131"
-            BorderBrush="{StaticResource BaseBorderColor}"
-            BorderThickness="0, 1, 0, 1"
-            AcceptsReturn="True"
-            AcceptsTab="True"
-            FontSize="17"
-            Foreground="White"
-            FontWeight="DemiBold"
-            
-            Loaded="TextEditor_OnLoaded"
-            TextChanged="TextEditor_OnTextChanged">
-            
-            <RichTextBox.ContextMenu>
-                <userControls:EditorContextMenu/>
-            </RichTextBox.ContextMenu>
-            
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="0"/>
-                </Style>
-            </RichTextBox.Resources>
-        </RichTextBox>
-    </ScrollViewer>
-            
-    <Grid 
-        Grid.Row="2" 
-        Grid.Column="0">
-        
+        Grid.Column="1" 
+        VerticalAlignment="Stretch"
+        Width="1"/>
+
+    <Grid Grid.Column="2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.055*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.05*"/>
+        </Grid.RowDefinitions>
+    
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>    
-        
-        <TextBlock Name="CurrentFileNameDisplay" Grid.Column="0"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+            
+        <ScrollViewer
+            Grid.Column="0"
+            Grid.Row="0"
+            Name="FileSelect"
+            VerticalScrollBarVisibility="Hidden"
+            HorizontalScrollBarVisibility="Auto">
+                
+            <StackPanel 
+                Name="FileSelectPanel"
+                Orientation="Horizontal">
+            
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type userControls:EditorTabButton}">
+                        <Setter Property="Width" Value="120"/>
+                    </Style>
+                </StackPanel.Resources>
+            </StackPanel>
+        </ScrollViewer>
+            
+        <ScrollViewer
+            Grid.Column="0"
+            Grid.Row="1" 
+            VerticalScrollBarVisibility="Hidden">
+                
+            <RichTextBox
+                Name="TextEditor"
+                IsReadOnly="True"
+                Background="#313131"
+                BorderBrush="{StaticResource BaseBorderColor}"
+                BorderThickness="0, 1, 0, 1"
+                AcceptsReturn="True"
+                AcceptsTab="True"
+                FontSize="17"
+                Foreground="White"
+                FontWeight="DemiBold"
+            
+                Loaded="TextEditor_OnLoaded"
+                TextChanged="TextEditor_OnTextChanged">
+            
+                <RichTextBox.ContextMenu>
+                    <userControls:EditorContextMenu/>
+                </RichTextBox.ContextMenu>
+            
+                <RichTextBox.Resources>
+                    <Style TargetType="{x:Type Paragraph}">
+                        <Setter Property="Margin" Value="0"/>
+                    </Style>
+                </RichTextBox.Resources>
+            </RichTextBox>
+        </ScrollViewer>
+
+        <Grid 
+            Grid.Row="2" 
+            Grid.Column="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Name="CurrentFileNameDisplay" Grid.Column="0"/>
+        </Grid>
     </Grid>
 </Grid>

@@ -85,6 +85,7 @@ namespace TempoIDE.UserControls
 
         public void CloseFile(FileInfo file)
         {
+            TextWriter();
             openFiles.Remove(file);
             ReloadOpenFiles();
         }
@@ -118,6 +119,14 @@ namespace TempoIDE.UserControls
         {
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
+        }
+        
+        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                OpenFile(e.NewFile);
+            });
         }
 
         private void TextEditor_OnTextChanged(object sender, TextChangedEventArgs e)
@@ -165,18 +174,6 @@ namespace TempoIDE.UserControls
             }
 
             textChangedBeforeUpdate = false;
-        }
-    }
-
-    public delegate void FileTabEventHandler(object sender, FileTabEventArgs e);
-
-    public class FileTabEventArgs : RoutedEventArgs
-    {
-        public EditorTabButton TabButton;
-
-        public FileTabEventArgs(EditorTabButton tabButton)
-        {
-            TabButton = tabButton;
         }
     }
 }

@@ -13,14 +13,6 @@ namespace TempoIDE.Windows
             InitializeComponent();
         }
 
-        private void ExplorerPanel_OnOpenFile(object sender, OpenFileEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                Editor.OpenFile(e.NewFile);
-            });
-        }
-
         #region ResizeWindows
 
         private bool resizeInProcess;
