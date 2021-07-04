@@ -26,7 +26,6 @@ namespace TempoIDE.UserControls
 
         private string selectedAutoComplete;
         private string typingWord;
-        private AutoCompleteBox currentAutoComplete;
 
         public EditorControl()
         {
@@ -146,40 +145,44 @@ namespace TempoIDE.UserControls
                 CsIntellisense.Highlight(ref TextEditor);
             });
             
-            var completeWords = CsIntellisense.Suggest(ref TextEditor);
+            var suggestion = CsIntellisense.Suggest(ref TextEditor);
+
+            if (suggestion is null)
+                return;
+            
+            typingWord = suggestion.Item1;
+            var completeWords = suggestion.Item2;
 
             if (completeWords == null || completeWords.Count == 0)
             {
-                TextEditorGrid.Children.Remove(currentAutoComplete);
-                currentAutoComplete = null;
+                selectedAutoComplete = null;
+                AutoComplete.Visibility = Visibility.Collapsed;
                 return;
             }
+            
+            AutoComplete.Visibility = Visibility.Visible;
 
-            if (currentAutoComplete == null)
-            {
-                currentAutoComplete ??= new AutoCompleteBox();
-                
-                TextEditorGrid.Children.Add(currentAutoComplete);
-                
-                selectedAutoComplete = completeWords[0];
-                
-                // TODO: Reposition the auto complete box under the caret
-            }
+            var caretPosition = TextEditor.CaretPosition.GetCharacterRect(LogicalDirection.Forward);
 
-            currentAutoComplete.Words.Children.Clear();
+            AutoComplete.Translate.X = caretPosition.Right;
+            AutoComplete.Translate.Y = caretPosition.Bottom;
+
+            selectedAutoComplete = completeWords[0];
+
+            AutoComplete.Words.Children.Clear();
 
             foreach (string word in completeWords)
             {
-                currentAutoComplete.Words.Children.Add(new TextBlock { Text = word });
+                AutoComplete.Words.Children.Add(new TextBlock { Text = word });
             }
         }
-        
+
         private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Tab)
+            if (e.Key == Key.Q && Keyboard.IsKeyDown(Key.LeftCtrl))
             {
-                if (currentAutoComplete != null)
-                    TextEditor.AppendText(selectedAutoComplete);
+                TextEditor.AppendText(selectedAutoComplete.Replace(typingWord ??= "", ""));
+                AutoComplete.Visibility = Visibility.Collapsed;
             }
         }
 

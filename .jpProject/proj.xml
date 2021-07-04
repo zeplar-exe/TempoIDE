@@ -2,7 +2,7 @@
 <root>
   <name>tempo-ide</name>
   <openList>1</openList>
-  <openPin>3</openPin>
+  <openPin>6</openPin>
   <pinlists>
     <pinlist>
       <name>ideas</name>
@@ -34,35 +34,49 @@ Cut off words will be trimmed and the selected part of the document will be read
       <id>1</id>
       <pins>
         <pin>
-          <name>AutoComplete-Position</name>
-          <description></description>
-          <textcontent>Add a mechanism to reposition the AutoCompleteBox under the user's caret (or above, depending on the caret positon)</textcontent>
-          <id>0</id>
-        </pin>
-        <pin>
           <name>IsLoaded-Check</name>
           <description></description>
           <textcontent>Add a way to access the IsLoaded property to the TextWriterThread for optimization</textcontent>
-          <id>1</id>
+          <id>0</id>
         </pin>
         <pin>
           <name>ExplorerPanel-SelectedFile</name>
           <description></description>
           <textcontent>Find a way to keep the selected file in an ExplorerPanel highlighted
 </textcontent>
-          <id>2</id>
+          <id>1</id>
         </pin>
         <pin>
           <name>FileDialog</name>
           <description></description>
           <textcontent>Add a file dialog to open directories/solutions for the ExplorerPanel</textcontent>
-          <id>3</id>
+          <id>2</id>
         </pin>
         <pin>
           <name>ExplorerPanel-FileOpened</name>
           <description></description>
           <textcontent>Make it so that files are highlighted in the ExplorerPanel when opened outside of it</textcontent>
+          <id>3</id>
+        </pin>
+        <pin>
+          <name>AutoComplete-CursorPosition</name>
+          <description></description>
+          <textcontent>After autocompleting, the cursor/caret position should be moved according to the appending text</textcontent>
           <id>4</id>
+        </pin>
+        <pin>
+          <name>AutoComplete-TabOverride</name>
+          <description></description>
+          <textcontent>Figure out how to override the tab key when autocompleting
+</textcontent>
+          <id>5</id>
+        </pin>
+        <pin>
+          <name>AutoComplete-Selection</name>
+          <description></description>
+          <textcontent>Add arrow key overrides for autocomplete selection
+Add programmatic selection of words</textcontent>
+          <id>6</id>
         </pin>
       </pins>
     </pinlist>

@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
-             Height="400" Width="250">
+             Height="200" Width="150"
+             Background="Gray">
     <Canvas.RenderTransform>
         <TransformGroup>
             <ScaleTransform x:Name="ScaleTransform" />
@@ -13,9 +14,15 @@
         </TransformGroup>
     </Canvas.RenderTransform>
     
-    <ScrollViewer>
-        <StackPanel Name="Words">
-            
-        </StackPanel>
-    </ScrollViewer>
+    <DockPanel VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <StackPanel Name="Words">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontSize" Value="16"/>
+                    </Style>
+                </StackPanel.Resources>
+            </StackPanel>
+        </ScrollViewer>
+    </DockPanel>
 </Canvas>

@@ -55,34 +55,40 @@
             Grid.Column="0"
             Grid.Row="1" 
             VerticalScrollBarVisibility="Hidden">
-                
-            <Grid Name="TextEditorGrid">
-                <RichTextBox
-                    Name="TextEditor"
-                    IsReadOnly="True"
-                    Background="#313131"
-                    BorderBrush="{StaticResource BaseBorderColor}"
-                    BorderThickness="0, 1, 0, 1"
-                    AcceptsReturn="True"
-                    AcceptsTab="True"
-                    FontSize="17"
-                    Foreground="White"
-                    FontWeight="DemiBold"
-                
-                    Loaded="TextEditor_OnLoaded"
-                    TextChanged="TextEditor_OnTextChanged"
-                    PreviewKeyDown="TextEditor_OnKeyDown">
             
-                <RichTextBox.ContextMenu>
-                    <userControls:EditorContextMenu/>
-                </RichTextBox.ContextMenu>
-            
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>
+                <Grid Name="TextEditorGrid">
+                    <RichTextBox
+                        Name="TextEditor"
+                        IsReadOnly="True"
+                        Background="#313131"
+                        BorderBrush="{StaticResource BaseBorderColor}"
+                        BorderThickness="0, 1, 0, 1"
+                        AcceptsReturn="True"
+                        AcceptsTab="True"
+                        FontSize="17"
+                        Foreground="White"
+                        FontWeight="DemiBold"
+                    
+                        Loaded="TextEditor_OnLoaded"
+                        TextChanged="TextEditor_OnTextChanged"
+                        PreviewKeyDown="TextEditor_OnKeyDown">
+                
+                    <RichTextBox.ContextMenu>
+                        <userControls:EditorContextMenu/>
+                    </RichTextBox.ContextMenu>
+                
+                    <RichTextBox.Resources>
+                        <Style TargetType="{x:Type Paragraph}">
+                            <Setter Property="Margin" Value="0"/>
+                        </Style>
+                    </RichTextBox.Resources>
+                </RichTextBox>
+                    
+                <userControls:AutoCompleteBox
+                    x:Name="AutoComplete"
+                    Visibility="Collapsed" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"/>
             </Grid>
         </ScrollViewer>
 

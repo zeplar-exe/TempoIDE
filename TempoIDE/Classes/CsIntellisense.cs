@@ -56,7 +56,7 @@ namespace TempoIDE.Classes
             
         }
 
-        public static List<string> Suggest(ref RichTextBox textBox)
+        public static Tuple<string, List<string>> Suggest(ref RichTextBox textBox)
         {
             var range = new TextRange(textBox.Document.ContentStart, textBox.CaretPosition);
             var caretIndex = range.Text.Length - 1;
@@ -79,8 +79,8 @@ namespace TempoIDE.Classes
 
             if (string.IsNullOrEmpty(word))
                 return null;
-            
-            return identifiers.Where(id => id.StartsWith(word) && id != word).ToList();
+
+            return (word, identifiers.Where(id => id.StartsWith(word) && id != word).ToList()).ToTuple();
         }
     }
 }
