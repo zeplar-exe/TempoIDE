@@ -56,7 +56,8 @@
             Grid.Row="1" 
             VerticalScrollBarVisibility="Hidden">
                 
-            <RichTextBox
+            <Grid Name="TextEditorGrid">
+                <RichTextBox
                 Name="TextEditor"
                 IsReadOnly="True"
                 Background="#313131"
@@ -69,7 +70,8 @@
                 FontWeight="DemiBold"
             
                 Loaded="TextEditor_OnLoaded"
-                TextChanged="TextEditor_OnTextChanged">
+                TextChanged="TextEditor_OnTextChanged"
+                KeyDown="TextEditor_OnKeyDown">
             
                 <RichTextBox.ContextMenu>
                     <userControls:EditorContextMenu/>
@@ -81,6 +83,7 @@
                     </Style>
                 </RichTextBox.Resources>
             </RichTextBox>
+            </Grid>
         </ScrollViewer>
 
         <Grid 

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -22,7 +23,10 @@ namespace TempoIDE.UserControls
 
         private bool textChangedBeforeUpdate;
         private bool skipTextChanged;
-        
+
+        private string selectedAutoComplete;
+        private AutoCompleteBox currentAutoComplete;
+
         public EditorControl()
         {
             InitializeComponent();
@@ -136,8 +140,40 @@ namespace TempoIDE.UserControls
             
             textChangedBeforeUpdate = true;
 
+            SkipTextChange(delegate
+            {
+                CsIntellisense.Highlight(ref TextEditor);
+            });
+            
+            var completeWords = CsIntellisense.Suggest(ref TextEditor);
+            
+            if (completeWords == null || completeWords.Count == 0)
+                return;
+
+            currentAutoComplete ??= new AutoCompleteBox();
+
+            if (!TextEditorGrid.Children.Contains(currentAutoComplete))
+                TextEditorGrid.Children.Add(currentAutoComplete);
+            
+            currentAutoComplete.Words.Children.Clear();
+
+            foreach (string word in completeWords)
+            {
+                currentAutoComplete.Words.Children.Add(new TextBlock { Text = word });
+            }
+            
+            // TODO: Prototype with tab button press
+        }
+        
+        private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            
+        }
+
+        private void SkipTextChange(Action method)
+        {
             skipTextChanged = true;
-            CsIntellisense.Highlight(ref TextEditor);
+            method.Invoke();
             skipTextChanged = false;
         }
         
@@ -160,10 +196,19 @@ namespace TempoIDE.UserControls
 
             if (!textChangedBeforeUpdate)
             {
-                TextEditor.Document.Blocks.Clear();
+                var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                var text = reader.ReadToEnd();
 
-                using var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                TextEditor.AppendText(reader.ReadToEnd());
+                if (text == TextEditor.GetPlainText())
+                    return;
+                    
+                SkipTextChange(delegate
+                {
+                    TextEditor.Document.Blocks.Clear();
+                    TextEditor.AppendText(reader.ReadToEnd()); 
+                });
+                
+                reader.Close();
             }
             else
             {

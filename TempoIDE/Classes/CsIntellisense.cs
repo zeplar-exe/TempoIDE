@@ -1,5 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -16,9 +17,7 @@ namespace TempoIDE.Classes
 {
     public static class CsIntellisense
     {
-        private static readonly string[] Comments = {"//.*\n", @"/\**.\*/"};
-
-        private static readonly string[] Keywords =
+        private static string[] identifiers =
         {
             "abstract", "as", "base", "bool", "break", "by",
             "byte", "case", "catch", "char", "checked", "class", "const",
@@ -46,9 +45,6 @@ namespace TempoIDE.Classes
         };
         
         private static readonly string[] Separator = {";", "{", "}", "\r", "\n", "\r\n"};
-
-        private static Stopwatch debounceTimer = new Stopwatch();
-
         private static class ColorScheme
         {
             public static readonly Color Comment = Color.FromRgb(73, 138, 72);
@@ -57,34 +53,27 @@ namespace TempoIDE.Classes
 
         public static void Highlight(ref RichTextBox textBox)
         {
-            return; // TODO: This
             
-            if (debounceTimer.Elapsed < TimeSpan.FromSeconds(1) && debounceTimer.IsRunning)
+        }
+
+        public static List<string> Suggest(ref RichTextBox textBox)
+        {
+            var range = new TextRange(textBox.Document.ContentStart, textBox.CaretPosition);
+            var caretIndex = range.Text.Length - 1;
+            // I don't really know why subtracting 1 works, but it does ok
+            var richText = textBox.GetPlainText();
+
+            if (richText.Length == 0)
+                return null;
+            
+            var word = "";
+
+            while (caretIndex >= 0 && (char.IsLetter(richText[caretIndex]) || char.IsNumber(richText[caretIndex])))
             {
-                debounceTimer.Start();
-                return;
+                word += richText[caretIndex--];
             }
 
-            debounceTimer.Restart();
-            
-            var richText = new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd).Text;
-            var lines = richText.Split("\n");
-            var oldCaretPosition = textBox.Selection.End;
-            
-            textBox.Document.Blocks.Clear();
-
-            foreach (string line in lines)
-            {
-                foreach (string word in line.Split(' '))
-                {
-                    if (Keywords.Contains(word))
-                        textBox.AppendColoredText(word + " ", "CornflowerBlue");
-                    else
-                        textBox.AppendText(word + " ");
-                }
-            }
-
-            textBox.CaretPosition = oldCaretPosition;
+            return identifiers.Where(id => id.Contains(word)).ToList();
         }
     }
 }
