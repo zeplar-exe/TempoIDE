@@ -9,8 +9,8 @@
              Background="Gray">
     <Canvas.RenderTransform>
         <TransformGroup>
-            <ScaleTransform x:Name="ScaleTransform" />
-            <TranslateTransform x:Name="Translate" />
+            <ScaleTransform x:Name="ScaleTransform"/>
+            <TranslateTransform x:Name="Translate"/>
         </TransformGroup>
     </Canvas.RenderTransform>
     

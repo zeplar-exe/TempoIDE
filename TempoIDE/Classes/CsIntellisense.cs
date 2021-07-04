@@ -1,17 +1,12 @@
 using System;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CSharp;
 
 namespace TempoIDE.Classes
 {
@@ -32,7 +27,7 @@ namespace TempoIDE.Classes
             "stackalloc", "static", "string", "select", "this",
             "throw", "true", "try", "typeof", "uint", "ulong", "unchecked",
             "unsafe", "ushort", "using", "var", "virtual", "volatile",
-            "void", "while", "where", "yield"
+            "void", "while", "where", "yield", "or", "and"
         };
 
         private static readonly string[] Operators =
@@ -44,26 +39,78 @@ namespace TempoIDE.Classes
             "^=", "<<=", ">>=", ".", "[]", "()", "?:", "=>", "??"
         };
         
-        private static readonly string[] Separator = {";", "{", "}", "\r", "\n", "\r\n"};
+        private static readonly string[] Separator =
+        {
+            ";", "{", "}", "\r", "\n", "\r\n", " ",
+            "+", "-", "*", "/", "%", "&", "(", ")", "[", "]",
+            "|", "^", "!", "~", "&&", "||", ",",
+            "++", "--", "<<", ">>", "==", "!=", "<", ">", "<=",
+            ">=", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=",
+            "^=", "<<=", ">>=", ".", "[]", "()", "?:", "=>", "??"
+        };
+        
         private static class ColorScheme
         {
-            public static readonly Color Comment = Color.FromRgb(73, 138, 72);
-            public static readonly Color Keyword = Color.FromRgb(96, 146, 189);
+            public static readonly Brush Default = Brushes.White;
+            public static readonly Brush Number = Brushes.LightCoral;
+            public static readonly Brush Comment = Brushes.ForestGreen;
+            public static readonly Brush Identifier = Brushes.CornflowerBlue;
+            public static readonly Brush Type = Brushes.MediumPurple;
+            public static readonly Brush Method = Brushes.LightGreen;
+            public static readonly Brush Member = Brushes.CadetBlue;
         }
 
         public static void Highlight(ref RichTextBox textBox)
         {
+            var richText = textBox.GetPlainText();
+            var readingWord = "";
             
+            var startPoint = textBox.Document.ContentStart;
+            var caretOffset = startPoint.GetOffsetToPosition(textBox.CaretPosition);
+
+            textBox.Document.Blocks.Clear();
+            
+            foreach (var character in richText)
+            {
+                Console.WriteLine("--" + character + "--");
+                if (char.IsLetter(character))
+                {
+                    readingWord += character;
+                }
+                else
+                {
+                    if (identifiers.Contains(readingWord))
+                    {
+                        var newRange = new TextRange(textBox.Document.ContentEnd, textBox.Document.ContentEnd);
+                        newRange.Text = readingWord;
+                        newRange.ApplyPropertyValue(TextElement.ForegroundProperty, ColorScheme.Identifier);
+                    }
+                    else if (char.IsNumber(character))
+                    {
+                        var newRange = new TextRange(textBox.Document.ContentEnd, textBox.Document.ContentEnd);
+                        newRange.Text = character.ToString();
+                        newRange.ApplyPropertyValue(TextElement.ForegroundProperty, ColorScheme.Number);
+                    }
+                    else
+                    {
+                        textBox.AppendText(readingWord);
+                    }
+
+                    readingWord = "";
+                }
+            }
+            
+            textBox.CaretPosition = startPoint.GetPositionAtOffset(caretOffset) ?? textBox.Document.ContentStart;
         }
 
-        public static Tuple<string, List<string>> Suggest(ref RichTextBox textBox)
+        public static Tuple<string, List<string>> AutoCompleteSuggest(ref RichTextBox textBox)
         {
             var range = new TextRange(textBox.Document.ContentStart, textBox.CaretPosition);
             var caretIndex = range.Text.Length - 1;
             // I don't really know why subtracting 1 works, but it does ok
             var richText = textBox.GetPlainText();
 
-            if (richText.Length == 0)
+            if (string.IsNullOrWhiteSpace(richText))
                 return null;
             
             var word = "";
@@ -76,8 +123,8 @@ namespace TempoIDE.Classes
             var charArray = word.ToCharArray();
             Array.Reverse(charArray);
             word = new string(charArray);
-
-            if (string.IsNullOrEmpty(word))
+            
+            if (string.IsNullOrWhiteSpace(word))
                 return null;
 
             return (word, identifiers.Where(id => id.StartsWith(word) && id != word).ToList()).ToTuple();

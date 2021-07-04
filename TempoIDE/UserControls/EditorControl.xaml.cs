@@ -52,7 +52,7 @@ namespace TempoIDE.UserControls
                 CsIntellisense.Highlight(ref TextEditor);
             });
             
-            var suggestion = CsIntellisense.Suggest(ref TextEditor);
+            var suggestion = CsIntellisense.AutoCompleteSuggest(ref TextEditor);
 
             if (suggestion is null)
                 return;
@@ -88,10 +88,10 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Tab)
+            if (e.Key == Key.Tab && selectedAutoComplete != null)
             {
-                string newText = selectedAutoComplete.Replace(typingWord ??= "", "");
-                
+                string newText = selectedAutoComplete.Remove(0, typingWord.Length);
+
                 TextEditor.AppendText(newText);
                 AutoComplete.Visibility = Visibility.Collapsed;
 
@@ -109,50 +109,6 @@ namespace TempoIDE.UserControls
             skipTextChanged = true;
             method.Invoke();
             skipTextChanged = false;
-        }
-        
-        private const int WriterCooldown = 5;
-        private void TextWriterThread()
-        {
-            while (true) // TODO: Figure out how to use IsLoaded here
-            {
-                Thread.Sleep(WriterCooldown * 1000);
-                Dispatcher.Invoke(TextWriter);
-            }
-        }
-
-        internal void TextWriter()
-        {
-            if (openFileInfo == null) 
-                return;
-                    
-            openFileInfo.Refresh();
-
-            if (!textChangedBeforeUpdate)
-            {
-                var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                var text = reader.ReadToEnd();
-
-                if (text == TextEditor.GetPlainText())
-                    return;
-                    
-                SkipTextChange(delegate
-                {
-                    TextEditor.Document.Blocks.Clear();
-                    TextEditor.AppendText(reader.ReadToEnd()); 
-                });
-                
-                reader.Close();
-            }
-            else
-            {
-                using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
-                using var writer = new StreamWriter(stream);
-                stream.SetLength(0);
-                writer.Write(TextEditor.GetPlainText());
-            }
-
-            textChangedBeforeUpdate = false;
         }
     }
 }

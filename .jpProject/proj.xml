@@ -27,6 +27,12 @@ Cut off words will be trimmed and the selected part of the document will be read
           <textcontent>Gives the user access to commands specific to the open file. i.e, copy/paste/cut, save settings (autosave settings and such), etc</textcontent>
           <id>2</id>
         </pin>
+        <pin>
+          <name>AutoComplete-CursorPosition</name>
+          <description></description>
+          <textcontent>After autocompleting, the cursor/caret position should be moved according to the appending text</textcontent>
+          <id>3</id>
+        </pin>
       </pins>
     </pinlist>
     <pinlist>
@@ -59,23 +65,23 @@ Cut off words will be trimmed and the selected part of the document will be read
           <id>3</id>
         </pin>
         <pin>
-          <name>AutoComplete-CursorPosition</name>
-          <description></description>
-          <textcontent>After autocompleting, the cursor/caret position should be moved according to the appending text</textcontent>
-          <id>4</id>
-        </pin>
-        <pin>
           <name>AutoComplete-TabOverride</name>
           <description></description>
           <textcontent>Figure out how to override the tab key when autocompleting
 </textcontent>
-          <id>5</id>
+          <id>4</id>
         </pin>
         <pin>
           <name>AutoComplete-Selection</name>
           <description></description>
           <textcontent>Add arrow key overrides for autocomplete selection
 Add programmatic selection of words</textcontent>
+          <id>5</id>
+        </pin>
+        <pin>
+          <name>SyntaxHighlighter-Lexer</name>
+          <description></description>
+          <textcontent>Add a lexer with a word cache for performance when highlighting and checking context stuffs</textcontent>
           <id>6</id>
         </pin>
       </pins>
@@ -83,7 +89,20 @@ Add programmatic selection of words</textcontent>
     <pinlist>
       <name>bugs</name>
       <id>2</id>
-      <pins />
+      <pins>
+        <pin>
+          <name>AutoComplet-BoxDisappear</name>
+          <description></description>
+          <textcontent>The auto complete box does not disappear when you backspace to the start of a file</textcontent>
+          <id>0</id>
+        </pin>
+        <pin>
+          <name>SyntaxHighlighter-NonLetterNumberCharacters</name>
+          <description></description>
+          <textcontent>For some fucking reason, the highlighter cant handle characters that aren't letters or numbers and just makes 15 newlines</textcontent>
+          <id>1</id>
+        </pin>
+      </pins>
     </pinlist>
   </pinlists>
 </root>
