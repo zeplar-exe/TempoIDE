@@ -10,4 +10,10 @@
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0-1.final" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="UserControls\FileHandling.EditorControl.cs">
+        <DependentUpon>ExplorerPanel.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

@@ -32,106 +32,13 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        public void ReloadOpenFiles()
-        {
-            FileSelectPanel.Children.Clear();
-            
-            foreach (var pair in openFiles)
-            {
-                FileSelectPanel.Children.Add(pair.Value);
-            }
-
-            if (openFiles.Count == 0)
-            {
-                TextEditor.Document.Blocks.Clear();
-                TextEditor.IsReadOnly = true;
-            }
-            else
-            {
-                TextEditor.IsReadOnly = false;
-            }
-        }
-        
-        public void OpenFile(FileInfo file)
-        {
-            TextWriter();
-            
-            openFileInfo = file;
-
-            if (openFileInfo != null)
-            {
-                openFileInfo.Refresh();
-                
-                bool containsFile = openFiles.Any(pair => pair.Key.FullName == openFileInfo.FullName);
-
-                if (!containsFile)
-                {
-                    var fileButton = new EditorTabButton();
-                    
-                    fileButton.TabButton.Content = file.Name;
-                    fileButton.Resources["FileInfo"] = openFileInfo;
-                    fileButton.OnButtonClicked += FileButton_OnClick;
-                    fileButton.OnCloseClicked += FileClose_OnClick;
-                    
-                    openFiles.Add(openFileInfo, fileButton);
-                    ReloadOpenFiles();
-                }
-            }
-
-            TextEditor.Document.Blocks.Clear();
-            
-            string text = file != null ?
-                new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd() : string.Empty;
-            TextEditor.AppendText(text);
-            TextEditor.IsReadOnly = file == null;
-            CurrentFileNameDisplay.Text = file?.FullName;
-        }
-
-        public void CloseFile(FileInfo file)
-        {
-            TextWriter();
-            openFiles.Remove(file);
-            ReloadOpenFiles();
-        }
-
-        private void FileButton_OnClick(object sender, FileTabEventArgs e)
-        {
-            OpenFile((FileInfo)e.TabButton.Resources["FileInfo"]);
-        }
-
-        private void FileClose_OnClick(object sender, FileTabEventArgs e)
-        {
-            int index = openFiles.IndexOf((FileInfo)e.TabButton.Resources["FileInfo"]);
-            int nextIndex = index;
-            int lastIndex = index - 1;
-
-            TextWriter();
-            CloseFile((FileInfo)e.TabButton.Resources["FileInfo"]);
-            
-            if (index == 0)
-            {
-                if (nextIndex < openFiles.Count)
-                    OpenFile((FileInfo)openFiles[nextIndex].Value.Resources["FileInfo"]);
-            }
-            else
-            {
-                OpenFile((FileInfo)openFiles[lastIndex].Value.Resources["FileInfo"]);
-            }
-        }
-        
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
+            TextEditor.AcceptsTab = true;
+            
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
-        }
-        
-        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
-        {
-            Dispatcher.Invoke(() =>
-            {
-                OpenFile(e.NewFile);
-            });
-        }
+        } 
 
         private void TextEditor_OnTextChanged(object sender, TextChangedEventArgs e)
         {
@@ -149,6 +56,8 @@ namespace TempoIDE.UserControls
 
             if (suggestion is null)
                 return;
+
+            TextEditor.AcceptsTab = false;
             
             typingWord = suggestion.Item1;
             var completeWords = suggestion.Item2;
@@ -179,10 +88,19 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Q && Keyboard.IsKeyDown(Key.LeftCtrl))
+            if (e.Key == Key.Tab)
             {
-                TextEditor.AppendText(selectedAutoComplete.Replace(typingWord ??= "", ""));
+                string newText = selectedAutoComplete.Replace(typingWord ??= "", "");
+                
+                TextEditor.AppendText(newText);
                 AutoComplete.Visibility = Visibility.Collapsed;
+
+                var startPoint = TextEditor.Document.ContentStart;
+                var caretOffset = startPoint.GetOffsetToPosition(TextEditor.CaretPosition);
+                TextEditor.CaretPosition = startPoint.GetPositionAtOffset(caretOffset + newText.Length);
+
+                TextEditor.AcceptsTab = true;
+                TextEditor.Focus();
             }
         }
 
