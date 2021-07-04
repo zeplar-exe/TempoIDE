@@ -73,7 +73,14 @@ namespace TempoIDE.Classes
                 word += richText[caretIndex--];
             }
 
-            return identifiers.Where(id => id.Contains(word)).ToList();
+            var charArray = word.ToCharArray();
+            Array.Reverse(charArray);
+            word = new string(charArray);
+
+            if (string.IsNullOrEmpty(word))
+                return null;
+            
+            return identifiers.Where(id => id.StartsWith(word) && id != word).ToList();
         }
     }
 }

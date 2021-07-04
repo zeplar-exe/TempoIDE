@@ -25,6 +25,7 @@ namespace TempoIDE.UserControls
         private bool skipTextChanged;
 
         private string selectedAutoComplete;
+        private string typingWord;
         private AutoCompleteBox currentAutoComplete;
 
         public EditorControl()
@@ -146,28 +147,40 @@ namespace TempoIDE.UserControls
             });
             
             var completeWords = CsIntellisense.Suggest(ref TextEditor);
-            
+
             if (completeWords == null || completeWords.Count == 0)
+            {
+                TextEditorGrid.Children.Remove(currentAutoComplete);
+                currentAutoComplete = null;
                 return;
+            }
 
-            currentAutoComplete ??= new AutoCompleteBox();
-
-            if (!TextEditorGrid.Children.Contains(currentAutoComplete))
+            if (currentAutoComplete == null)
+            {
+                currentAutoComplete ??= new AutoCompleteBox();
+                
                 TextEditorGrid.Children.Add(currentAutoComplete);
-            
+                
+                selectedAutoComplete = completeWords[0];
+                
+                // TODO: Reposition the auto complete box under the caret
+            }
+
             currentAutoComplete.Words.Children.Clear();
 
             foreach (string word in completeWords)
             {
                 currentAutoComplete.Words.Children.Add(new TextBlock { Text = word });
             }
-            
-            // TODO: Prototype with tab button press
         }
         
         private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
         {
-            
+            if (e.Key == Key.Tab)
+            {
+                if (currentAutoComplete != null)
+                    TextEditor.AppendText(selectedAutoComplete);
+            }
         }
 
         private void SkipTextChange(Action method)
