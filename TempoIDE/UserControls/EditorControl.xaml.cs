@@ -98,7 +98,7 @@ namespace TempoIDE.UserControls
                 var startPoint = TextEditor.Document.ContentStart;
                 var caretOffset = startPoint.GetOffsetToPosition(TextEditor.CaretPosition);
                 TextEditor.CaretPosition = startPoint.GetPositionAtOffset(caretOffset + newText.Length);
-
+                
                 TextEditor.AcceptsTab = true;
                 TextEditor.Focus();
             }

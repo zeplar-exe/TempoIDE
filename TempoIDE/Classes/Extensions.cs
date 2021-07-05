@@ -12,21 +12,14 @@ namespace TempoIDE.Classes
             return new TextRange(textBox.Document.ContentStart, textBox.Document.ContentEnd).Text;
         }
         
-        public static void AppendColoredText(this RichTextBox box, string text, string color)
+        public static void AppendColoredText(this RichTextBox box, string text, Brush color)
         {
-            var bc = new BrushConverter();
             var tr = new TextRange(box.Document.ContentEnd, box.Document.ContentEnd)
             {
                 Text = text
             };
-
-            try 
-            { 
-                tr.ApplyPropertyValue(TextElement.ForegroundProperty, 
-                    bc.ConvertFromString(color)); 
-            }
-            catch (FormatException) { }
-            catch (ArgumentNullException) { }
+            
+            tr.ApplyPropertyValue(TextElement.ForegroundProperty, color);
         }
     }
 }

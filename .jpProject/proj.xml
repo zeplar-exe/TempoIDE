@@ -2,7 +2,7 @@
 <root>
   <name>tempo-ide</name>
   <openList>1</openList>
-  <openPin>6</openPin>
+  <openPin>-1</openPin>
   <pinlists>
     <pinlist>
       <name>ideas</name>
@@ -63,13 +63,6 @@ Cut off words will be trimmed and the selected part of the document will be read
           <description></description>
           <textcontent>Make it so that files are highlighted in the ExplorerPanel when opened outside of it</textcontent>
           <id>3</id>
-        </pin>
-        <pin>
-          <name>AutoComplete-TabOverride</name>
-          <description></description>
-          <textcontent>Figure out how to override the tab key when autocompleting
-</textcontent>
-          <id>4</id>
         </pin>
         <pin>
           <name>AutoComplete-Selection</name>

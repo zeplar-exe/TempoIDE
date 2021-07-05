@@ -27,7 +27,7 @@ namespace TempoIDE.Classes
             "stackalloc", "static", "string", "select", "this",
             "throw", "true", "try", "typeof", "uint", "ulong", "unchecked",
             "unsafe", "ushort", "using", "var", "virtual", "volatile",
-            "void", "while", "where", "yield", "or", "and"
+            "void", "while", "where", "yield", "or", "and", "dynamic"
         };
 
         private static readonly string[] Operators =
@@ -69,11 +69,10 @@ namespace TempoIDE.Classes
             var caretOffset = startPoint.GetOffsetToPosition(textBox.CaretPosition);
 
             textBox.Document.Blocks.Clear();
-            
+
             foreach (var character in richText)
             {
-                Console.WriteLine("--" + character + "--");
-                if (char.IsLetter(character))
+                if (char.IsLetter(character)|| char.IsNumber(character))
                 {
                     readingWord += character;
                 }
@@ -81,25 +80,26 @@ namespace TempoIDE.Classes
                 {
                     if (identifiers.Contains(readingWord))
                     {
-                        var newRange = new TextRange(textBox.Document.ContentEnd, textBox.Document.ContentEnd);
-                        newRange.Text = readingWord;
-                        newRange.ApplyPropertyValue(TextElement.ForegroundProperty, ColorScheme.Identifier);
+                        textBox.AppendColoredText(readingWord, ColorScheme.Identifier);
                     }
-                    else if (char.IsNumber(character))
+                    else if (int.TryParse(readingWord, out _) || float.TryParse(readingWord, out _))
                     {
-                        var newRange = new TextRange(textBox.Document.ContentEnd, textBox.Document.ContentEnd);
-                        newRange.Text = character.ToString();
-                        newRange.ApplyPropertyValue(TextElement.ForegroundProperty, ColorScheme.Number);
+                        textBox.AppendColoredText(readingWord, ColorScheme.Number);
                     }
                     else
                     {
-                        textBox.AppendText(readingWord);
+                        textBox.AppendColoredText(readingWord, ColorScheme.Default);
+                    }
+
+                    if (character == ' ' || character == '\t')
+                    {
+                        textBox.AppendText(character.ToString());
                     }
 
                     readingWord = "";
                 }
             }
-            
+
             textBox.CaretPosition = startPoint.GetPositionAtOffset(caretOffset) ?? textBox.Document.ContentStart;
         }
 
