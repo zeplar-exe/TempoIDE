@@ -57,8 +57,8 @@
             VerticalScrollBarVisibility="Hidden">
             
             <Grid>
-                <RichTextBox
-                    Name="TextEditor"
+                <userControls:SyntaxTextBox
+                    x:Name="TextEditor"
                     IsReadOnly="True"
                     Background="#313131"
                     BorderBrush="{StaticResource BaseBorderColor}"
@@ -82,7 +82,7 @@
                         <Setter Property="Margin" Value="0"/>
                     </Style>
                 </RichTextBox.Resources>
-            </RichTextBox>
+            </userControls:SyntaxTextBox>
                 
             <userControls:AutoCompleteBox
                 x:Name="AutoComplete"

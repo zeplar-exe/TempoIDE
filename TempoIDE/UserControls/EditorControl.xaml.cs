@@ -35,7 +35,7 @@ namespace TempoIDE.UserControls
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
             TextEditor.AcceptsTab = true;
-            
+
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         } 
@@ -49,7 +49,7 @@ namespace TempoIDE.UserControls
 
             SkipTextChange(delegate
             {
-                CsIntellisense.Highlight(ref TextEditor);
+                TextEditor.Highlight();
             });
             
             var suggestion = CsIntellisense.AutoCompleteSuggest(ref TextEditor);

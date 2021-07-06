@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using TempoIDE.Classes;
+using TempoIDE.Classes.ColorSchemes;
 
 namespace TempoIDE.UserControls
 {
@@ -51,13 +52,15 @@ namespace TempoIDE.UserControls
                     openFiles.Add(openFileInfo, fileButton);
                     ReloadOpenFiles();
                 }
+                
+                TextEditor.Scheme = ColorScheme.GetColorSchemeByExtension(openFileInfo.Extension);
             }
-
+            
             TextEditor.Document.Blocks.Clear();
 
-            string text = file != null
-                ? new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd()
-                : string.Empty;
+            string text = file == null
+                ? string.Empty
+                : new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
             TextEditor.AppendText(text);
             TextEditor.IsReadOnly = file == null;
             CurrentFileNameDisplay.Text = file?.FullName;

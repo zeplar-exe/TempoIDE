@@ -21,12 +21,12 @@ namespace TempoIDE.UserControls
         private const string SolutionExtension = ".sln";
         private readonly string[] explorerExtensions = new[]
         {
-            ".txt"
+            ".txt", ".cs"
         };
         
         private const int IndentationSpace = 30;
 
-        private DirectoryInfo currentDirectory = new DirectoryInfo(@"C:\Users\zande\Code\C#\TempoIDE\TempoIDE\ExplorerTest");
+        private DirectoryInfo currentDirectory = new DirectoryInfo(@"C:\Users\zande\Code\C#\TempoIDE\TempoIDE-SH\TempoIDE\ExplorerTest");
         
         private FileInfo openFile;
         private FileInfo OpenFile

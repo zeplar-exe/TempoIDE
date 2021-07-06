@@ -7,12 +7,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes
 {
     public static class CsIntellisense
     {
-        private static string[] identifiers =
+        public static readonly string[] Keywords =
         {
             "abstract", "as", "base", "bool", "break", "by",
             "byte", "case", "catch", "char", "checked", "class", "const",
@@ -30,81 +31,10 @@ namespace TempoIDE.Classes
             "void", "while", "where", "yield", "or", "and", "dynamic"
         };
 
-        private static readonly string[] Operators =
+        public static Tuple<string, List<string>> AutoCompleteSuggest(ref SyntaxTextBox textBox)
         {
-            "+", "-", "*", "/", "%", "&", "(", ")", "[", "]",
-            "|", "^", "!", "~", "&&", "||", ",",
-            "++", "--", "<<", ">>", "==", "!=", "<", ">", "<=",
-            ">=", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=",
-            "^=", "<<=", ">>=", ".", "[]", "()", "?:", "=>", "??"
-        };
-        
-        private static readonly string[] Separator =
-        {
-            ";", "{", "}", "\r", "\n", "\r\n", " ",
-            "+", "-", "*", "/", "%", "&", "(", ")", "[", "]",
-            "|", "^", "!", "~", "&&", "||", ",",
-            "++", "--", "<<", ">>", "==", "!=", "<", ">", "<=",
-            ">=", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=",
-            "^=", "<<=", ">>=", ".", "[]", "()", "?:", "=>", "??"
-        };
-        
-        private static class ColorScheme
-        {
-            public static readonly Brush Default = Brushes.White;
-            public static readonly Brush Number = Brushes.LightCoral;
-            public static readonly Brush Comment = Brushes.ForestGreen;
-            public static readonly Brush Identifier = Brushes.CornflowerBlue;
-            public static readonly Brush Type = Brushes.MediumPurple;
-            public static readonly Brush Method = Brushes.LightGreen;
-            public static readonly Brush Member = Brushes.CadetBlue;
-        }
-
-        public static void Highlight(ref RichTextBox textBox)
-        {
-            var richText = textBox.GetPlainText();
-            var readingWord = "";
+            return null; // Disabled for now
             
-            var startPoint = textBox.Document.ContentStart;
-            var caretOffset = startPoint.GetOffsetToPosition(textBox.CaretPosition);
-
-            textBox.Document.Blocks.Clear();
-
-            foreach (var character in richText)
-            {
-                if (char.IsLetter(character)|| char.IsNumber(character))
-                {
-                    readingWord += character;
-                }
-                else
-                {
-                    if (identifiers.Contains(readingWord))
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Identifier);
-                    }
-                    else if (int.TryParse(readingWord, out _) || float.TryParse(readingWord, out _))
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Number);
-                    }
-                    else
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Default);
-                    }
-
-                    if (character == ' ' || character == '\t')
-                    {
-                        textBox.AppendText(character.ToString());
-                    }
-
-                    readingWord = "";
-                }
-            }
-
-            textBox.CaretPosition = startPoint.GetPositionAtOffset(caretOffset) ?? textBox.Document.ContentStart;
-        }
-
-        public static Tuple<string, List<string>> AutoCompleteSuggest(ref RichTextBox textBox)
-        {
             var range = new TextRange(textBox.Document.ContentStart, textBox.CaretPosition);
             var caretIndex = range.Text.Length - 1;
             // I don't really know why subtracting 1 works, but it does ok
@@ -127,7 +57,7 @@ namespace TempoIDE.Classes
             if (string.IsNullOrWhiteSpace(word))
                 return null;
 
-            return (word, identifiers.Where(id => id.StartsWith(word) && id != word).ToList()).ToTuple();
+            return (word, Keywords.Where(id => id.StartsWith(word) && id != word).ToList()).ToTuple();
         }
     }
 }
