@@ -1,8 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
-using TempoIDE.Classes;
-using TempoIDE.Classes.ColorSchemes;
 
 namespace TempoIDE.UserControls
 {
@@ -19,7 +17,7 @@ namespace TempoIDE.UserControls
 
             if (openFiles.Count == 0)
             {
-                TextEditor.Document.Blocks.Clear();
+                TextEditor.Clear();
                 TextEditor.IsReadOnly = true;
             }
             else
@@ -53,10 +51,10 @@ namespace TempoIDE.UserControls
                     ReloadOpenFiles();
                 }
                 
-                TextEditor.Scheme = ColorScheme.GetColorSchemeByExtension(openFileInfo.Extension);
+                TextEditor.SetScheme(openFileInfo.Extension);
             }
-            
-            TextEditor.Document.Blocks.Clear();
+
+            TextEditor.Clear();
 
             string text = file == null
                 ? string.Empty
@@ -126,12 +124,11 @@ namespace TempoIDE.UserControls
                 var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                 var text = reader.ReadToEnd();
 
-                if (text == TextEditor.GetPlainText())
+                if (text == TextEditor.Text)
                     return;
                     
                 SkipTextChange(delegate
                 {
-                    TextEditor.Document.Blocks.Clear();
                     TextEditor.AppendText(reader.ReadToEnd()); 
                 });
                 
@@ -142,7 +139,7 @@ namespace TempoIDE.UserControls
                 using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
                 using var writer = new StreamWriter(stream);
                 stream.SetLength(0);
-                writer.Write(TextEditor.GetPlainText());
+                writer.Write(TextEditor.Text);
             }
 
             textChangedBeforeUpdate = false;

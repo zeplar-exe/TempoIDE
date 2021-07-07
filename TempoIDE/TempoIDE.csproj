@@ -10,6 +10,13 @@
       <Compile Update="UserControls\FileHandling.EditorControl.cs">
         <DependentUpon>EditorControl.xaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\SyntaxTextBox.ControlLogic.cs">
+        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0-1.final" />
     </ItemGroup>
 
 </Project>

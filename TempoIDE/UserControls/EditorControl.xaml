@@ -59,29 +59,18 @@
             <Grid>
                 <userControls:SyntaxTextBox
                     x:Name="TextEditor"
-                    IsReadOnly="True"
-                    Background="#313131"
                     BorderBrush="{StaticResource BaseBorderColor}"
                     BorderThickness="0, 1, 0, 1"
-                    AcceptsReturn="True"
-                    AcceptsTab="True"
                     FontSize="17"
                     Foreground="White"
                     FontWeight="DemiBold"
                 
                     Loaded="TextEditor_OnLoaded"
-                    TextChanged="TextEditor_OnTextChanged"
-                    PreviewKeyDown="TextEditor_OnKeyDown">
-            
-                <RichTextBox.ContextMenu>
+                    PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
+
+                    <userControls:SyntaxTextBox.ContextMenu>
                     <userControls:EditorContextMenu/>
-                </RichTextBox.ContextMenu>
-            
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </RichTextBox.Resources>
+                </userControls:SyntaxTextBox.ContextMenu>
             </userControls:SyntaxTextBox>
                 
             <userControls:AutoCompleteBox

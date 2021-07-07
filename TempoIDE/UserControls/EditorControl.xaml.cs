@@ -1,15 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -34,8 +28,6 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextEditor.AcceptsTab = true;
-
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         } 
@@ -57,8 +49,6 @@ namespace TempoIDE.UserControls
             if (suggestion is null)
                 return;
 
-            TextEditor.AcceptsTab = false;
-            
             typingWord = suggestion.Item1;
             var completeWords = suggestion.Item2;
 
@@ -71,7 +61,7 @@ namespace TempoIDE.UserControls
             
             AutoComplete.Visibility = Visibility.Visible;
 
-            var caretPosition = TextEditor.CaretPosition.GetCharacterRect(LogicalDirection.Forward);
+            var caretPosition = TextEditor.CaretPosition;
 
             AutoComplete.Translate.X = caretPosition.Right;
             AutoComplete.Translate.Y = caretPosition.Bottom;
@@ -94,12 +84,7 @@ namespace TempoIDE.UserControls
 
                 TextEditor.AppendText(newText);
                 AutoComplete.Visibility = Visibility.Collapsed;
-
-                var startPoint = TextEditor.Document.ContentStart;
-                var caretOffset = startPoint.GetOffsetToPosition(TextEditor.CaretPosition);
-                TextEditor.CaretPosition = startPoint.GetPositionAtOffset(caretOffset + newText.Length);
                 
-                TextEditor.AcceptsTab = true;
                 TextEditor.Focus();
             }
         }
