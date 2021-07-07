@@ -12,7 +12,7 @@ namespace TempoIDE.UserControls
         {
             foreach (var character in text)
             {
-                characters.Add((SyntaxChar)character);
+                characters.Insert(CaretIndex, (SyntaxChar)character);
 
                 CaretOffset = character is NewLine ?
                     new IntVector(0, CaretOffset.Y + 1) : 
@@ -29,7 +29,7 @@ namespace TempoIDE.UserControls
 
         public void AppendText(SyntaxChar character)
         {
-            characters.Add(character);
+            characters.Insert(CaretIndex, character);
 
             CaretOffset = character.Value is NewLine ? 
                 new IntVector(0, CaretOffset.Y + 1) : 

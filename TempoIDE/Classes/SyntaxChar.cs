@@ -5,22 +5,23 @@ using System.Windows.Media;
 
 namespace TempoIDE.Classes
 {
-    public struct SyntaxChar
+    // TODO: Set this back to a struct if performance dwindles
+    public class SyntaxChar
     {
         public char Value;
         public Brush ForegroundBrush;
         public Brush BackgroundBrush;
-        public double Width;
+        public Size Size;
 
         public SyntaxChar(char value, Brush foreground, Brush background)
         {
             Value = value;
             ForegroundBrush = foreground;
             BackgroundBrush = background;
-            Width = 0;
+            Size = new Size();
         }
 
-        public double Draw(DrawingContext context, CharDrawInfo info)
+        public Size Draw(DrawingContext context, CharDrawInfo info)
         {
             var text = new FormattedText(
                 Value.ToString(),
@@ -37,8 +38,9 @@ namespace TempoIDE.Classes
                 info.Point
             );
             
-            Width = text.WidthIncludingTrailingWhitespace;
-            return Width;
+            Size.Width = text.WidthIncludingTrailingWhitespace;
+            Size.Height = text.Height;
+            return Size;
         }
 
         public static explicit operator SyntaxChar(char character) => new SyntaxChar(

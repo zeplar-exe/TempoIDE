@@ -34,7 +34,7 @@ namespace TempoIDE.UserControls
                 }
             }
 
-        public Rect CaretPosition { get; private set; } // TODO: Update this whenever needed
+        public Rect CaretPosition { get; private set; }
         
         private IntVector caretOffset;
         public IntVector CaretOffset
@@ -47,11 +47,14 @@ namespace TempoIDE.UserControls
                 caretOffset = value;
                 CaretIndex = GetCaretIndexAtOffset(value);
                 
-                CaretPosition = new Rect();
+                CaretPosition = new Rect(0, 0, CaretPosition.Width, CaretPosition.Height);
 
                 for (int columnNo = 0; columnNo < value.X; columnNo++)
                 {
-                    CaretPosition = Rect.Offset(CaretPosition, characters[columnNo].Width, 0);
+                    if (characters[columnNo].Value is NewLine)
+                        continue;
+
+                    CaretPosition = Rect.Offset(CaretPosition, characters[columnNo].Size.Width, 0);
                 }
                 
                 for (int lineNo = 0; lineNo < value.Y; lineNo++)
@@ -64,8 +67,7 @@ namespace TempoIDE.UserControls
         public int CaretIndex { get; private set; }
 
         public bool IsReadOnly;
-
-        public int CharacterLeftRightMargin = 2;
+        
         public int LineHeight = 15;
         public new int FontSize = 14;
 
@@ -90,7 +92,7 @@ namespace TempoIDE.UserControls
             Focusable = true;
             IsTabStop = true;
 
-            CaretPosition = new Rect(0, 0, 0.2, LineHeight);
+            CaretPosition = new Rect(0, 0, 10, LineHeight);
 
             TextChanged += SyntaxTextBox_OnTextChanged;
         }

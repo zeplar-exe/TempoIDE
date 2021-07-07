@@ -1,9 +1,11 @@
 using System;
+using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -12,7 +14,8 @@ namespace TempoIDE.UserControls
     {
         private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Focus();
+            void FocusAction() => Focus();
+            Dispatcher.BeginInvoke((Action)FocusAction, DispatcherPriority.ApplicationIdle);
         }
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -124,18 +127,21 @@ namespace TempoIDE.UserControls
 
             foreach (var character in characters)
             {
-                lineWidth += CharacterLeftRightMargin + character.Draw(drawingContext, new CharDrawInfo(
+                if (character.Value is NewLine)
+                {
+                    line++;
+                    lineWidth = 0d;
+                    continue;
+                }
+
+                var charSize = character.Draw(drawingContext, new CharDrawInfo(
                     new Point(lineWidth, line * LineHeight),
                     FontSize,
                     new Typeface("Verdana"),
                     dpi
                 ));
-                
-                if (character.Value is NewLine)
-                {
-                    line++;
-                    lineWidth = 0d;
-                }
+
+                lineWidth += charSize.Width;
             }
 
             if (caretVisible)

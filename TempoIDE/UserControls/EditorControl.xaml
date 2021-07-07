@@ -57,27 +57,29 @@
             VerticalScrollBarVisibility="Hidden">
             
             <Grid>
-                <userControls:SyntaxTextBox
-                    x:Name="TextEditor"
-                    BorderBrush="{StaticResource BaseBorderColor}"
-                    BorderThickness="0, 1, 0, 1"
-                    FontSize="17"
-                    Foreground="White"
-                    FontWeight="DemiBold"
-                
-                    Loaded="TextEditor_OnLoaded"
-                    PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
+                <ScrollViewer>
+                    <userControls:SyntaxTextBox
+                        x:Name="TextEditor"
+                        BorderBrush="{StaticResource BaseBorderColor}"
+                        BorderThickness="0, 1, 0, 1"
+                        FontSize="17"
+                        Foreground="White"
+                        FontWeight="DemiBold"
+                    
+                        Loaded="TextEditor_OnLoaded"
+                        PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
 
-                    <userControls:SyntaxTextBox.ContextMenu>
-                    <userControls:EditorContextMenu/>
-                </userControls:SyntaxTextBox.ContextMenu>
-            </userControls:SyntaxTextBox>
+                        <userControls:SyntaxTextBox.ContextMenu>
+                            <userControls:EditorContextMenu/>
+                        </userControls:SyntaxTextBox.ContextMenu>
+                    </userControls:SyntaxTextBox>
+                </ScrollViewer>
                 
-            <userControls:AutoCompleteBox
-                x:Name="AutoComplete"
-                Visibility="Collapsed" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top"/>
+                <userControls:AutoCompleteBox
+                    x:Name="AutoComplete"
+                    Visibility="Collapsed" 
+                    HorizontalAlignment="Left" 
+                    VerticalAlignment="Top"/>
             </Grid>
         </ScrollViewer>
 
