@@ -13,5 +13,10 @@ namespace TempoIDE.Classes
 
         public static IntVector operator +(IntVector a, IntVector b) => new IntVector(a.X + b.X, a.Y + b.Y);
         public static IntVector operator -(IntVector a, IntVector b) => new IntVector(a.X - b.X, a.Y - b.Y);
+
+        public override string ToString()
+        {
+            return $"{X}, {Y}";
+        }
     }
 }

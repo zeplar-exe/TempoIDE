@@ -58,7 +58,7 @@ namespace TempoIDE.UserControls
             {
                 case Key.Enter:
                 {
-                    AppendText('\n');
+                    AppendText(NewLine);
 
                     break;
                 }
@@ -124,18 +124,18 @@ namespace TempoIDE.UserControls
 
             foreach (var character in characters)
             {
-                if (character.Value is '\n')
-                {
-                    line++;
-                    lineWidth = 0d;
-                }
-
                 lineWidth += CharacterLeftRightMargin + character.Draw(drawingContext, new CharDrawInfo(
                     new Point(lineWidth, line * LineHeight),
                     FontSize,
                     new Typeface("Verdana"),
                     dpi
                 ));
+                
+                if (character.Value is NewLine)
+                {
+                    line++;
+                    lineWidth = 0d;
+                }
             }
 
             if (caretVisible)

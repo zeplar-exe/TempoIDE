@@ -3,7 +3,7 @@ using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.ColorSchemes
 {
-    public class CsColorScheme : IColorScheme
+    public class CsColorScheme : IProgrammingLanguageColorScheme
     {
         public Brush Default => Brushes.White;
         public Brush Number => Brushes.LightCoral;

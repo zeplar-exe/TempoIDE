@@ -20,13 +20,17 @@ namespace TempoIDE.Classes.ColorSchemes
     public interface IColorScheme
     {
         public Brush Default { get; }
+
+        public void Highlight(ref SyntaxTextBox textBox);
+    }
+
+    public interface IProgrammingLanguageColorScheme : IColorScheme
+    {
         public Brush Number { get; }
         public Brush Comment { get; }
         public Brush Identifier { get; }
         public Brush Type { get; }
         public Brush Method { get; }
         public Brush Member { get; }
-
-        public void Highlight(ref SyntaxTextBox textBox);
     }
 }

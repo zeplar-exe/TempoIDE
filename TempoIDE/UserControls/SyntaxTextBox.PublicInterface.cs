@@ -12,17 +12,11 @@ namespace TempoIDE.UserControls
         {
             foreach (var character in text)
             {
-                characters.Add((SyntaxChar) character);
-                //CaretIndex++;
+                characters.Add((SyntaxChar)character);
 
-                if (character is NewLine)
-                {
-                    CaretOffset = new IntVector(0, CaretOffset.Y + 1);
-                }
-                else
-                {
-                    CaretOffset = new IntVector(CaretOffset.X + 1, CaretOffset.Y);
-                }
+                CaretOffset = character is NewLine ?
+                    new IntVector(0, CaretOffset.Y + 1) : 
+                    new IntVector(CaretOffset.X + 1, CaretOffset.Y);
             }
 
             TextChanged?.Invoke(this, default);
@@ -35,11 +29,16 @@ namespace TempoIDE.UserControls
 
         public void AppendText(SyntaxChar character)
         {
-            AppendText(character.ToString());
+            characters.Add(character);
+
+            CaretOffset = character.Value is NewLine ? 
+                new IntVector(0, CaretOffset.Y + 1) : 
+                new IntVector(CaretOffset.X + 1, CaretOffset.Y);
+            
+            TextChanged?.Invoke(this, default);
         }
 
-        [Obsolete(
-            "This method overload has a O(n^2) time complexity, it is recommended that you pass a string instead.")]
+        [Obsolete("This overload has a O(n^2) time complexity, it is recommended that you pass a string instead.")]
         public void AppendText(IEnumerable<char> syntaxChars)
         {
             foreach (var character in syntaxChars)
@@ -49,7 +48,7 @@ namespace TempoIDE.UserControls
         public void AppendText(IEnumerable<SyntaxChar> syntaxChars)
         {
             foreach (var character in syntaxChars)
-                AppendText(character.ToString());
+                AppendText(character);
         }
 
         public void Backspace(int count)
@@ -59,14 +58,14 @@ namespace TempoIDE.UserControls
 
             for (; count > 0; count--)
             {
-                SyntaxChar character = characters[^1];
-
+                SyntaxChar character = characters[CaretIndex - 1];
+                
                 characters.RemoveAt(CaretIndex - 1);
 
                 if (character.ToChar() is NewLine)
                 {
                     var lines = GetLines();
-                    CaretOffset = new IntVector(lines[CaretOffset.Y + 1].Length, CaretOffset.Y + 1);
+                    CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Length, CaretOffset.Y - 1);
                 }
                 else
                 {

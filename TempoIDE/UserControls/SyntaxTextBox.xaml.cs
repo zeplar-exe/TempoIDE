@@ -42,14 +42,11 @@ namespace TempoIDE.UserControls
             get => caretOffset;
             private set
             {
-                if (!VerifyCaretOffset(value))
-                    throw new Exception("Offset must be valid.");
+                VerifyCaretOffset(value, true);
 
                 caretOffset = value;
                 CaretIndex = GetCaretIndexAtOffset(value);
-
-                var lines = GetLines();
-
+                
                 CaretPosition = new Rect();
 
                 for (int columnNo = 0; columnNo < value.X; columnNo++)
@@ -102,7 +99,7 @@ namespace TempoIDE.UserControls
 
         private int GetCaretIndexAtOffset(IntVector offset)
         {
-            if (!VerifyCaretOffset(offset))
+            if (!VerifyCaretOffset(offset, true))
                 throw new Exception("Offset must be valid.");
 
             var totalIndex = 0;
@@ -110,23 +107,30 @@ namespace TempoIDE.UserControls
 
             for (int lineNo = 0; lineNo < offset.Y; lineNo++)
             {
-                totalIndex += lines[lineNo].Length - 1;
+                totalIndex += lines[lineNo].Length;
             }
 
-            totalIndex += offset.X;
+            // GetLineCount accounts for newline characters
+            totalIndex += offset.X + GetLineCount();
 
             return totalIndex;
         }
 
-        private bool VerifyCaretOffset(IntVector offset)
+        private bool VerifyCaretOffset(IntVector offset, bool throwError = false)
         {
             var lines = GetLines();
 
+            // ReSharper disable once ReplaceWithSingleAssignment.True
+            bool result = true;
+
             if (lines.Length <= offset.Y || offset.Y < 0)
-                return false;
+                result = false;
 
             if (lines[offset.Y].Length < offset.X)
-                return false;
+                result = false;
+
+            if (!result && throwError)
+                throw new Exception("Offset must be valid.");
 
             return true;
         }
