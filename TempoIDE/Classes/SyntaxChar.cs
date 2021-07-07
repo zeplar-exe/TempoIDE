@@ -60,7 +60,7 @@ namespace TempoIDE.Classes
         }
     }
 
-    public class CharDrawInfo
+    public readonly struct CharDrawInfo
     {
         public readonly Point Point;
         public readonly int FontSize;
