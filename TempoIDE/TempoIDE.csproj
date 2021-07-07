@@ -13,6 +13,9 @@
       <Compile Update="UserControls\SyntaxTextBox.ControlLogic.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\SyntaxTextBox.PublicInterface.cs">
+        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

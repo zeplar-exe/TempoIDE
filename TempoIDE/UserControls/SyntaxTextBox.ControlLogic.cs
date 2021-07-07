@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,6 +17,9 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
+            if (IsReadOnly)
+                return;
+            
             caretThread = new Thread(CaretBlinkerThread);
             caretThread.Start();
         }
@@ -35,6 +39,9 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
         {
+            if (IsReadOnly)
+                return;
+            
             // Backspace is a special case (no pun intended), so It'll be skipped here
             if (e.Text == "\b")
                 return;
@@ -44,6 +51,9 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
+            if (IsReadOnly)
+                return;
+            
             switch (e.Key)
             {
                 case Key.Enter:
@@ -55,6 +65,46 @@ namespace TempoIDE.UserControls
                 case Key.Back:
                 {
                     Backspace(1);
+
+                    break;
+                }
+                case Key.Left:
+                {
+                    e.Handled = true;
+                    var newPosition = CaretOffset + new IntVector(-1, 0);
+                    
+                    if (VerifyCaretOffset(newPosition))
+                        CaretOffset = newPosition;
+
+                    break;
+                }
+                case Key.Right:
+                {
+                    e.Handled = true;
+                    var newPosition = CaretOffset + new IntVector(1, 0);
+
+                    if (VerifyCaretOffset(newPosition))
+                        CaretOffset = newPosition;
+
+                    break;
+                }
+                case Key.Up:
+                {
+                    e.Handled = true;
+                    var newPosition = CaretOffset + new IntVector(0, -1);
+
+                    if (VerifyCaretOffset(newPosition))
+                        CaretOffset = newPosition;
+
+                    break;
+                }
+                case Key.Down:
+                {
+                    e.Handled = true;
+                    var newPosition = CaretOffset + new IntVector(0, 1);
+
+                    if (VerifyCaretOffset(newPosition))
+                        CaretOffset = newPosition;
 
                     break;
                 }
