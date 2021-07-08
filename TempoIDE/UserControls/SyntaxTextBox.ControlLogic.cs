@@ -13,8 +13,7 @@ namespace TempoIDE.UserControls
     {
         private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Console.WriteLine("Click");
-            Keyboard.Focus(sender as SyntaxTextBox);
+            Focus();
         }
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)

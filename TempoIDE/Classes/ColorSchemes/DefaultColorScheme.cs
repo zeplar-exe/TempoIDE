@@ -9,6 +9,7 @@ namespace TempoIDE.Classes.ColorSchemes
 
         public void Highlight(ref SyntaxTextBox textBox)
         {
+            
         }
     }
 }

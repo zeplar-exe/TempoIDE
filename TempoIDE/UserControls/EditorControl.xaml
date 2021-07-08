@@ -27,13 +27,8 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
-    
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
             
         <ScrollViewer
-            Grid.Column="0"
             Grid.Row="0"
             Name="FileSelect"
             VerticalScrollBarVisibility="Hidden"
@@ -50,39 +45,29 @@
                 </StackPanel.Resources>
             </StackPanel>
         </ScrollViewer>
+        
+        <Grid Grid.Row="1" >
+            <userControls:SyntaxTextBox
+                x:Name="TextEditor"
+                BorderBrush="{StaticResource BaseBorderColor}"
+                BorderThickness="0, 1, 0, 1"
+                FontSize="17"
             
-        <ScrollViewer
-            Grid.Column="0"
-            Grid.Row="1" 
-            VerticalScrollBarVisibility="Hidden">
+                Loaded="TextEditor_OnLoaded"><!--Background="#313131"-->
+                
+                <userControls:SyntaxTextBox.ContextMenu>
+                    <userControls:EditorContextMenu/>
+                </userControls:SyntaxTextBox.ContextMenu>
+            </userControls:SyntaxTextBox>
             
-            <Grid>
-                <userControls:SyntaxTextBox
-                    x:Name="TextEditor"
-                    BorderBrush="{StaticResource BaseBorderColor}"
-                    BorderThickness="0, 1, 0, 1"
-                    FontSize="17"
-                    Foreground="White"
-                    FontWeight="DemiBold"
-                
-                    Loaded="TextEditor_OnLoaded"><!--Background="#313131"-->
-                    
-                    <userControls:SyntaxTextBox.ContextMenu>
-                        <userControls:EditorContextMenu/>
-                    </userControls:SyntaxTextBox.ContextMenu>
-                </userControls:SyntaxTextBox>
-                
-                <userControls:AutoCompleteBox
-                    x:Name="AutoComplete"
-                    Visibility="Collapsed" 
-                    HorizontalAlignment="Left" 
-                    VerticalAlignment="Top"/>
-            </Grid>
-        </ScrollViewer>
+            <userControls:AutoCompleteBox
+                x:Name="AutoComplete"
+                Visibility="Collapsed" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top"/>
+        </Grid>
 
-        <Grid 
-            Grid.Row="2" 
-            Grid.Column="0">
+        <Grid Grid.Row="2">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>

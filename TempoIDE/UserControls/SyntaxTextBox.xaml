@@ -10,4 +10,7 @@
              LostFocus="SyntaxTextBox_OnLostFocus"
              TextInput="SyntaxTextBox_OnTextInput"
              KeyDown="SyntaxTextBox_OnKeyDown">
+    
+    <TextBlock Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+    <!--This TextBlock is required in order to catch PreviewMouseLEftButtonDown events-->
 </UserControl>

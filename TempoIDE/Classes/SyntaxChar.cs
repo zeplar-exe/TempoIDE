@@ -6,13 +6,13 @@ using System.Windows.Media;
 namespace TempoIDE.Classes
 {
     // TODO: Set this back to a struct if performance dwindles
-    public class SyntaxChar
+    public readonly struct SyntaxChar
     {
-        public char Value;
-        public FormattedText FormattedText;
+        public readonly char Value;
+        public readonly FormattedText FormattedText;
 
-        public Brush ForegroundBrush;
-        public Size Size;
+        public readonly Brush ForegroundBrush;
+        public readonly Size Size;
 
         public SyntaxChar(char value, CharDrawInfo info)
         {
@@ -47,22 +47,6 @@ namespace TempoIDE.Classes
         public override string ToString()
         {
             return Value.ToString();
-        }
-    }
-
-    public readonly struct CharDrawInfo
-    {
-        public readonly Brush Foreground;
-        public readonly int FontSize;
-        public readonly Typeface Typeface;
-        public readonly double Dpi;
-
-        public CharDrawInfo(int fontSize, Typeface typeface, double dpi, Brush foreground)
-        {
-            FontSize = fontSize;
-            Typeface = typeface;
-            Dpi = dpi;
-            Foreground = foreground;
         }
     }
 }
