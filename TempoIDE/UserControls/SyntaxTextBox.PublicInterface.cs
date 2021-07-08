@@ -12,30 +12,18 @@ namespace TempoIDE.UserControls
         {
             foreach (var character in text)
             {
-                characters.Insert(CaretIndex, (SyntaxChar)character);
-
-                CaretOffset = character is NewLine ?
-                    new IntVector(0, CaretOffset.Y + 1) : 
-                    new IntVector(CaretOffset.X + 1, CaretOffset.Y);
+                AppendCharacter((SyntaxChar)character);
             }
-
-            TextChanged?.Invoke(this, default);
         }
 
         public void AppendText(char character)
         {
-            AppendText(character.ToString());
+            AppendCharacter((SyntaxChar)character);
         }
 
         public void AppendText(SyntaxChar character)
         {
-            characters.Insert(CaretIndex, character);
-
-            CaretOffset = character.Value is NewLine ? 
-                new IntVector(0, CaretOffset.Y + 1) : 
-                new IntVector(CaretOffset.X + 1, CaretOffset.Y);
-            
-            TextChanged?.Invoke(this, default);
+            AppendCharacter(character);
         }
 
         [Obsolete("This overload has a O(n^2) time complexity, it is recommended that you pass a string instead.")]
@@ -51,6 +39,20 @@ namespace TempoIDE.UserControls
                 AppendText(character);
         }
 
+        private void AppendCharacter(SyntaxChar character)
+        {
+            if (CaretIndex >= characters.Count)
+                characters.Add(character);
+            else
+                characters.Insert(CaretIndex, character);
+
+            CaretOffset = character.Value == NewLine ?
+                new IntVector(0, CaretOffset.Y + 1) : 
+                new IntVector(CaretOffset.X + 1, CaretOffset.Y);
+            
+            TextChanged?.Invoke(this, default);
+        }
+
         public void Backspace(int count)
         {
             if (characters.Count == 0 || CaretIndex == 0)
@@ -61,8 +63,8 @@ namespace TempoIDE.UserControls
                 SyntaxChar character = characters[CaretIndex - 1];
                 
                 characters.RemoveAt(CaretIndex - 1);
-
-                if (character.ToChar() is NewLine)
+                
+                if (character.Value == NewLine)
                 {
                     var lines = GetLines();
                     CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Length, CaretOffset.Y - 1);
@@ -79,8 +81,6 @@ namespace TempoIDE.UserControls
         public void Clear()
         {
             characters.Clear();
-
-            //CaretIndex = 0;
             CaretOffset = new IntVector();
 
             TextChanged?.Invoke(this, default);
@@ -89,11 +89,6 @@ namespace TempoIDE.UserControls
         public void SetScheme(string schemeExtension)
         {
             scheme = ColorScheme.GetColorSchemeByExtension(schemeExtension);
-        }
-
-        public int GetLineCount()
-        {
-            return characters.Where(c => c.Value == NewLine).ToArray().Length;
         }
 
         public IEnumerator<SyntaxChar> EnumerateCharacters()

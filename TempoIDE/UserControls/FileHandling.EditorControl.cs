@@ -83,6 +83,10 @@ namespace TempoIDE.UserControls
             int lastIndex = index - 1;
 
             TextWriter();
+            
+            if (writerThread.IsAlive)
+                writerThread.Interrupt();
+            
             CloseFile((FileInfo) e.TabButton.Resources["FileInfo"]);
 
             if (index == 0)
@@ -105,7 +109,7 @@ namespace TempoIDE.UserControls
 
         private void TextWriterThread()
         {
-            while (true) // TODO: Figure out how to use IsLoaded here
+            while (true)
             {
                 Thread.Sleep(WriterCooldown * 1000);
                 Dispatcher.Invoke(TextWriter);

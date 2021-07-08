@@ -55,11 +55,6 @@ namespace TempoIDE.Classes
         {
             return Value.ToString();
         }
-
-        public char ToChar()
-        {
-            return Value;
-        }
     }
 
     public readonly struct CharDrawInfo

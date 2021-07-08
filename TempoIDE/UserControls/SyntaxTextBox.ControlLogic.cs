@@ -59,18 +59,34 @@ namespace TempoIDE.UserControls
             
             switch (e.Key)
             {
+                #region Special
+                
                 case Key.Enter:
                 {
+                    e.Handled = true;
                     AppendText(NewLine);
 
                     break;
                 }
                 case Key.Back:
                 {
+                    e.Handled = true;
                     Backspace(1);
 
                     break;
                 }
+                case Key.Tab:
+                {
+                    e.Handled = true;
+                    AppendText('\t');
+
+                    break;
+                }
+                
+                #endregion
+
+                #region Arrow Keys
+                
                 case Key.Left:
                 {
                     e.Handled = true;
@@ -111,6 +127,15 @@ namespace TempoIDE.UserControls
 
                     break;
                 }
+                
+                #endregion
+
+                default:
+                {
+                    // Handle command classes
+                    
+                    break;
+                }
             }
         }
 
@@ -123,11 +148,11 @@ namespace TempoIDE.UserControls
 
             var lineWidth = 0d;
 
-            CaretPosition = new Rect(CaretPosition.X, CaretPosition.Y, 5, LineHeight);
+            CaretPosition = new Rect(CaretPosition.X, CaretPosition.Y, CaretPosition.Width, LineHeight);
 
             foreach (var character in characters)
             {
-                if (character.Value is NewLine)
+                if (character.Value == NewLine)
                 {
                     line++;
                     lineWidth = 0d;

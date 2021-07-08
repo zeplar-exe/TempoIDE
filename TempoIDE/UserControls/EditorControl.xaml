@@ -57,23 +57,21 @@
             VerticalScrollBarVisibility="Hidden">
             
             <Grid>
-                <ScrollViewer>
-                    <userControls:SyntaxTextBox
-                        x:Name="TextEditor"
-                        BorderBrush="{StaticResource BaseBorderColor}"
-                        BorderThickness="0, 1, 0, 1"
-                        FontSize="17"
-                        Foreground="White"
-                        FontWeight="DemiBold"
-                    
-                        Loaded="TextEditor_OnLoaded"
-                        PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
+                <userControls:SyntaxTextBox
+                    x:Name="TextEditor"
+                    BorderBrush="{StaticResource BaseBorderColor}"
+                    BorderThickness="0, 1, 0, 1"
+                    FontSize="17"
+                    Foreground="White"
+                    FontWeight="DemiBold"
+                
+                    Loaded="TextEditor_OnLoaded"
+                    PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
 
-                        <userControls:SyntaxTextBox.ContextMenu>
-                            <userControls:EditorContextMenu/>
-                        </userControls:SyntaxTextBox.ContextMenu>
-                    </userControls:SyntaxTextBox>
-                </ScrollViewer>
+                    <userControls:SyntaxTextBox.ContextMenu>
+                        <userControls:EditorContextMenu/>
+                    </userControls:SyntaxTextBox.ContextMenu>
+                </userControls:SyntaxTextBox>
                 
                 <userControls:AutoCompleteBox
                     x:Name="AutoComplete"
