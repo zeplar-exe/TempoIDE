@@ -52,9 +52,6 @@ namespace TempoIDE.UserControls
                 
                 for (int columnNo = 0; columnNo < value.X; columnNo++)
                 {
-                    if (characters[columnNo].Value == NewLine)
-                        continue;
-
                     CaretPosition = Rect.Offset(CaretPosition, characters[columnNo].Size.Width, 0);
                 }
 
@@ -82,6 +79,7 @@ namespace TempoIDE.UserControls
 
         private IColorScheme scheme;
         private readonly List<SyntaxChar> characters = new List<SyntaxChar>();
+        private int[] selectionRange = {0, 0};
 
         public SyntaxTextBox()
         {
@@ -112,9 +110,8 @@ namespace TempoIDE.UserControls
             {
                 totalIndex += lines[lineNo].Length;
             }
-
-            // GetLineCount accounts for newline characters
-            totalIndex += offset.X;// + GetLineCount();
+            
+            totalIndex += offset.X;
 
             return totalIndex;
         }

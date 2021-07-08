@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.ColorSchemes;
 
@@ -12,13 +13,13 @@ namespace TempoIDE.UserControls
         {
             foreach (var character in text)
             {
-                AppendCharacter((SyntaxChar)character);
+                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
             }
         }
 
         public void AppendText(char character)
         {
-            AppendCharacter((SyntaxChar)character);
+            AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
         }
 
         public void AppendText(SyntaxChar character)
@@ -37,6 +38,16 @@ namespace TempoIDE.UserControls
         {
             foreach (var character in syntaxChars)
                 AppendText(character);
+        }
+
+        private CharDrawInfo GetDefaultDrawInfo()
+        {
+            return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
+        }
+
+        private double GetDpi()
+        {
+            return VisualTreeHelper.GetDpi(this).PixelsPerDip;
         }
 
         private void AppendCharacter(SyntaxChar character)

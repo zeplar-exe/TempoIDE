@@ -9,46 +9,39 @@ namespace TempoIDE.Classes
     public class SyntaxChar
     {
         public char Value;
+        public FormattedText FormattedText;
+
         public Brush ForegroundBrush;
-        public Brush BackgroundBrush;
         public Size Size;
 
-        public SyntaxChar(char value, Brush foreground, Brush background)
+        public SyntaxChar(char value, CharDrawInfo info)
         {
             Value = value;
-            ForegroundBrush = foreground;
-            BackgroundBrush = background;
-            Size = new Size();
-        }
+            ForegroundBrush = info.Foreground;
 
-        public Size Draw(DrawingContext context, CharDrawInfo info)
-        {
-            var text = new FormattedText(
+            FormattedText = new FormattedText(
                 Value.ToString(),
                 CultureInfo.CurrentCulture,
                 FlowDirection.LeftToRight,
                 info.Typeface,
                 info.FontSize,
-                ForegroundBrush,
+                info.Foreground,
                 info.Dpi
             );
-
-            context.DrawText(
-                text,
-                info.Point
-            );
             
-            Size.Width = text.WidthIncludingTrailingWhitespace;
-            Size.Height = text.Height;
-            return Size;
+            Size = new Size(FormattedText.WidthIncludingTrailingWhitespace, FormattedText.Height);
         }
 
-        public static explicit operator SyntaxChar(char character) => new SyntaxChar(
-            character, 
-            Brushes.White,
-            Brushes.Transparent
-        );
+        public Size Draw(DrawingContext context, Point point)
+        {
+            context.DrawText(
+                FormattedText,
+                point
+            );
 
+            return Size;
+        }
+        
         public static explicit operator char(SyntaxChar syntaxChar) => syntaxChar.Value;
 
         public override string ToString()
@@ -59,17 +52,17 @@ namespace TempoIDE.Classes
 
     public readonly struct CharDrawInfo
     {
-        public readonly Point Point;
+        public readonly Brush Foreground;
         public readonly int FontSize;
         public readonly Typeface Typeface;
         public readonly double Dpi;
 
-        public CharDrawInfo(Point point, int fontSize, Typeface typeface, double dpi)
+        public CharDrawInfo(int fontSize, Typeface typeface, double dpi, Brush foreground)
         {
-            Point = point;
             FontSize = fontSize;
             Typeface = typeface;
             Dpi = dpi;
+            Foreground = foreground;
         }
     }
 }

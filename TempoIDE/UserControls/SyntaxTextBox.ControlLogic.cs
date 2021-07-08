@@ -132,7 +132,7 @@ namespace TempoIDE.UserControls
 
                 default:
                 {
-                    // Handle command classes
+                    // Handle command cases
                     
                     break;
                 }
@@ -159,12 +159,7 @@ namespace TempoIDE.UserControls
                     continue;
                 }
 
-                var charSize = character.Draw(drawingContext, new CharDrawInfo(
-                    new Point(lineWidth, line * LineHeight),
-                    FontSize,
-                    new Typeface("Verdana"),
-                    dpi
-                ));
+                var charSize = character.Draw(drawingContext, new Point(lineWidth, line * LineHeight));
 
                 lineWidth += charSize.Width;
             }

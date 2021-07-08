@@ -65,9 +65,8 @@
                     Foreground="White"
                     FontWeight="DemiBold"
                 
-                    Loaded="TextEditor_OnLoaded"
-                    PreviewKeyDown="TextEditor_OnKeyDown"><!--Background="#313131"-->
-
+                    Loaded="TextEditor_OnLoaded"><!--Background="#313131"-->
+                    
                     <userControls:SyntaxTextBox.ContextMenu>
                         <userControls:EditorContextMenu/>
                     </userControls:SyntaxTextBox.ContextMenu>
