@@ -12,7 +12,7 @@ using TempoIDE.Classes.ColorSchemes;
 
 namespace TempoIDE.UserControls
 {
-    public partial class SyntaxTextBox : UserControl
+    public partial class SyntaxTextBox : UserControl, IInputElement
     {
         public string Text
         {
@@ -34,7 +34,7 @@ namespace TempoIDE.UserControls
                 }
             }
 
-        public Rect CaretPosition { get; private set; }
+        public Rect CaretRect { get; private set; }
         
         private IntVector caretOffset;
         public IntVector CaretOffset
@@ -48,17 +48,16 @@ namespace TempoIDE.UserControls
                 caretOffset = value;
                 CaretIndex = GetCaretIndexAtOffset(value);
                 
-                CaretPosition = new Rect(0, 0, CaretPosition.Width, CaretPosition.Height);
+                CaretRect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
+
+                var line = GetLines()[value.Y];
                 
                 for (int columnNo = 0; columnNo < value.X; columnNo++)
                 {
-                    CaretPosition = Rect.Offset(CaretPosition, characters[columnNo].Size.Width, 0);
+                    CaretRect = Rect.Offset(CaretRect, line[columnNo].Size.Width, 0);
                 }
-
-                for (int lineNo = 0; lineNo < value.Y; lineNo++)
-                {
-                    CaretPosition = Rect.Offset(CaretPosition, 0, LineHeight);
-                }
+                
+                CaretRect = Rect.Offset(CaretRect, 0, LineHeight * value.Y);
             }
         }
 
@@ -91,7 +90,7 @@ namespace TempoIDE.UserControls
             Focusable = true;
             IsTabStop = true;
 
-            CaretPosition = new Rect(0, 0, 1, LineHeight);
+            CaretRect = new Rect(0, 0, 1, LineHeight);
 
             TextChanged += SyntaxTextBox_OnTextChanged;
         }
@@ -100,15 +99,14 @@ namespace TempoIDE.UserControls
 
         private int GetCaretIndexAtOffset(IntVector offset)
         {
-            if (!VerifyCaretOffset(offset))
-                throw new Exception("Offset must be valid.");
+            VerifyCaretOffset(offset, true);
 
             var totalIndex = 0;
             var lines = GetLines();
 
             for (int lineNo = 0; lineNo < offset.Y; lineNo++)
             {
-                totalIndex += lines[lineNo].Length;
+                totalIndex += lines[lineNo].Count;
             }
             
             totalIndex += offset.X;
@@ -126,7 +124,7 @@ namespace TempoIDE.UserControls
             if (lines.Length <= offset.Y || offset.Y < 0)
                 result = false;
 
-            if (result && lines[offset.Y].Length < offset.X)
+            if (result && lines[offset.Y].Count < offset.X)
                 result = false;
 
             if (!result && throwError)
@@ -140,9 +138,9 @@ namespace TempoIDE.UserControls
             return GetLines().Length;
         }
 
-        private string[] GetLines(bool omitNewLines = false)
+        private List<SyntaxChar>[] GetLines(bool omitNewLines = false)
         {
-            List<string> lines = new List<string> { "" };
+            List<List<SyntaxChar>> lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
             int currentIndex = 0;
 
             foreach (var character in characters)
@@ -150,21 +148,19 @@ namespace TempoIDE.UserControls
                 if (character.Value == NewLine)
                 {
                     if (!omitNewLines)
-                        lines[currentIndex] += character.Value;
+                        lines[currentIndex].Add(character);
                     
                     currentIndex++;
 
-                    lines.Add(string.Empty);
+                    lines.Add(new List<SyntaxChar>());
                 }
                 else
                 {
-                    lines[currentIndex] += character.Value;
+                    lines[currentIndex].Add(character);
                 }
             }
             
             return lines.ToArray();
-
-            //return Text.Split(NewLine);
         }
 
         private void CaretBlinkerThread()

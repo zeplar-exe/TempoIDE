@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
 {

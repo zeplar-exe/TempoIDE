@@ -61,7 +61,7 @@ namespace TempoIDE.UserControls
             
             AutoComplete.Visibility = Visibility.Visible;
 
-            var caretPosition = TextEditor.CaretPosition;
+            var caretPosition = TextEditor.CaretRect;
 
             AutoComplete.Translate.X = caretPosition.Right;
             AutoComplete.Translate.Y = caretPosition.Bottom;

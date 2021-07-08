@@ -1,5 +1,4 @@
 using System;
-using System.Globalization;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,8 +13,8 @@ namespace TempoIDE.UserControls
     {
         private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            void FocusAction() => Focus();
-            Dispatcher.BeginInvoke((Action)FocusAction, DispatcherPriority.ApplicationIdle);
+            Console.WriteLine("Click");
+            Keyboard.Focus(sender as SyntaxTextBox);
         }
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -43,10 +42,6 @@ namespace TempoIDE.UserControls
         private void SyntaxTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
         {
             if (IsReadOnly)
-                return;
-            
-            // Backspace is a special case (no pun intended), so It'll be skipped here
-            if (e.Text == "\b")
                 return;
 
             AppendText(e.Text);
@@ -148,8 +143,6 @@ namespace TempoIDE.UserControls
 
             var lineWidth = 0d;
 
-            CaretPosition = new Rect(CaretPosition.X, CaretPosition.Y, CaretPosition.Width, LineHeight);
-
             foreach (var character in characters)
             {
                 if (character.Value == NewLine)
@@ -166,7 +159,7 @@ namespace TempoIDE.UserControls
 
             if (caretVisible)
             {
-                drawingContext.DrawRectangle(Brushes.White, null, CaretPosition);
+                drawingContext.DrawRectangle(Brushes.White, null, CaretRect);
             }
         }
     }

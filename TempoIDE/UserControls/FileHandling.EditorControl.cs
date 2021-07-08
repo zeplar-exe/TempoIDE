@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
 {
@@ -111,7 +112,15 @@ namespace TempoIDE.UserControls
         {
             while (true)
             {
-                Thread.Sleep(WriterCooldown * 1000);
+                try
+                {
+                    Thread.Sleep(WriterCooldown * 1000);
+                }
+                catch (ThreadInterruptedException)
+                {
+                    
+                }
+                
                 Dispatcher.Invoke(TextWriter);
             }
         }

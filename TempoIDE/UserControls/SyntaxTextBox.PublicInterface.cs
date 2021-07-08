@@ -78,7 +78,7 @@ namespace TempoIDE.UserControls
                 if (character.Value == NewLine)
                 {
                     var lines = GetLines();
-                    CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Length, CaretOffset.Y - 1);
+                    CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1);
                 }
                 else
                 {
@@ -92,7 +92,7 @@ namespace TempoIDE.UserControls
         public void Clear()
         {
             characters.Clear();
-            CaretOffset = new IntVector();
+            CaretOffset = new IntVector(0, 0);
 
             TextChanged?.Invoke(this, default);
         }
