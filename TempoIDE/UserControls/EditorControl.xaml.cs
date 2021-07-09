@@ -38,50 +38,6 @@ namespace TempoIDE.UserControls
                 return;
             
             textChangedBeforeUpdate = true;
-
-            return;
-            
-            var suggestion = CsIntellisense.AutoCompleteSuggest(ref TextEditor);
-
-            if (suggestion is null)
-                return;
-
-            typingWord = suggestion.Item1;
-            var completeWords = suggestion.Item2;
-
-            if (completeWords == null || completeWords.Count == 0)
-            {
-                selectedAutoComplete = null;
-                AutoComplete.Visibility = Visibility.Collapsed;
-                return;
-            }
-            
-            AutoComplete.Visibility = Visibility.Visible;
-
-            var caretPosition = TextEditor.CaretRect;
-
-            AutoComplete.Translate.X = caretPosition.Right;
-            AutoComplete.Translate.Y = caretPosition.Bottom;
-
-            selectedAutoComplete = completeWords[0];
-
-            AutoComplete.Words.Children.Clear();
-
-            foreach (string word in completeWords)
-            {
-                AutoComplete.Words.Children.Add(new TextBlock { Text = word });
-            }
-        }
-
-        private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Tab && selectedAutoComplete != null)
-            {
-                string newText = selectedAutoComplete.Remove(0, typingWord.Length);
-
-                TextEditor.AppendTextAtCaret(newText);
-                AutoComplete.Visibility = Visibility.Collapsed;
-            }
         }
 
         private void SkipTextChange(Action method)

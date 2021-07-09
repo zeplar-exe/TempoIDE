@@ -32,14 +32,12 @@ namespace TempoIDE.Classes
             Size = new Size(FormattedText.WidthIncludingTrailingWhitespace, FormattedText.Height);
         }
 
-        public Size Draw(DrawingContext context, Point point)
+        public void Draw(DrawingContext context, Point point)
         {
             context.DrawText(
                 FormattedText,
                 point
             );
-
-            return Size;
         }
         
         public static explicit operator char(SyntaxChar syntaxChar) => syntaxChar.Value;

@@ -17,6 +17,52 @@ namespace TempoIDE.UserControls
                 return;
             
             Focus();
+            CaretOffset = GetCaretOffsetByClick(e);
+
+            isSelecting = true;
+            selectionRange = new IntRange(CaretIndex, CaretIndex);
+        }
+
+        private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
+        {
+            var clickPos = mouse.GetPosition(this);
+            var lines = GetLines();
+
+            var line = Math.Clamp(
+                (int) Math.Floor(clickPos.Y / LineHeight),
+                0,
+                GetLineCount() - 1
+            );
+
+            var column = 0;
+            var totalWidth = 0d;
+            
+            foreach (var character in lines[line])
+            {
+                if (totalWidth > clickPos.X)
+                {
+                    break;
+                }
+
+                totalWidth += character.Size.Width;
+                column++;
+            }
+
+            return new IntVector(column, line);
+        }
+
+        private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            isSelecting = false;
+        }
+
+        private void SyntaxTextBox_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (isSelecting)
+            {
+                CaretOffset = GetCaretOffsetByClick(e);
+                selectionRange = new IntRange(selectionRange.Start, CaretIndex);
+            }
         }
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -179,6 +225,7 @@ namespace TempoIDE.UserControls
             var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
             var lineWidth = 0d;
+            var index = 0;
 
             foreach (var character in characters)
             {
@@ -189,9 +236,19 @@ namespace TempoIDE.UserControls
                     continue;
                 }
 
-                var charSize = character.Draw(drawingContext, new Point(lineWidth, line * LineHeight));
+                var charPos = new Point(lineWidth, line * LineHeight);
+                var charSize = character.Size;
+
+                if (selectionRange.Size > 0 && selectionRange.Contains(index))
+                {
+                    drawingContext.DrawRectangle(Brushes.DarkCyan, null, new Rect(charPos, charSize));
+                }
+                
+                character.Draw(drawingContext, charPos);
 
                 lineWidth += charSize.Width;
+
+                index++;
             }
 
             if (caretVisible)

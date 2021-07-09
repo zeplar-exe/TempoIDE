@@ -27,7 +27,7 @@ namespace TempoIDE.UserControls
         
         private const int IndentationSpace = 30;
 
-        private DirectoryInfo currentDirectory = new DirectoryInfo(@"C:\Users\zande\Code\C#\TempoIDE\TempoIDE-SH\TempoIDE\ExplorerTest");
+        private DirectoryInfo currentDirectory = new DirectoryInfo(@"C:\Users\zande\Code\C#\TempoIDE\TempoIDE\TempoIDE\ExplorerTest");
         
         private FileInfo openFile;
         private FileInfo OpenFile

@@ -30,7 +30,6 @@ namespace TempoIDE.UserControls
             set
                 {
                     Clear();
-                    Console.WriteLine("--" + value + "--");
                     AppendTextAtCaret(value);
                 }
             }
@@ -79,7 +78,8 @@ namespace TempoIDE.UserControls
 
         private ISyntaxScheme scheme;
         private readonly List<SyntaxChar> characters = new List<SyntaxChar>();
-        private int[] selectionRange = {0, 0};
+        private bool isSelecting;
+        private IntRange selectionRange = new IntRange(0, 0);
 
         private string selectedAutoComplete;
 
