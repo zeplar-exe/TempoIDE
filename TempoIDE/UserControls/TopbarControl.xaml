@@ -16,30 +16,49 @@
         
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="25"/>
-                <ColumnDefinition Width="25"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="40"/>
+                <ColumnDefinition Width="30"/>
             </Grid.ColumnDefinitions>
             
+            <Grid.Resources>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                </Style>
+            </Grid.Resources>
+            
+            <Button
+                Grid.Column="0" 
+                Content="File"/>
+            
+            <Button
+                Grid.Column="1"
+                Content="Edit"/> 
+            
+            <Button
+                Grid.Column="2"
+                Content="View"/>
+            
             <Button 
-                Grid.Column="1" 
+                Grid.Column="4" 
                 Content="Min" 
-                Background="Transparent"
-                Foreground="White"
                 BorderThickness="0"
                 Click="MinimizeButton_OnClick"/>
             
             <Button 
-                Grid.Column="2" 
+                Grid.Column="5" 
                 Content="Max" 
-                Background="Transparent"
-                Foreground="White"
                 BorderThickness="0"
                 Click="MaximizeButton_OnClick"/>
             
             <Button 
-                Grid.Column="3" 
+                Grid.Column="6" 
                 Content="X" 
                 Background="Transparent"
                 Foreground="White"

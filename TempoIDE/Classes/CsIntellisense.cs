@@ -7,10 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using ICSharpCode.AvalonEdit;
 
 namespace TempoIDE.Classes
 {
-    public static class CsIntellisense
+    public static partial class CsIntellisense
     {
         private static string[] identifiers =
         {
@@ -48,86 +49,10 @@ namespace TempoIDE.Classes
             ">=", "=", "+=", "-=", "*=", "/=", "%=", "&=", "|=",
             "^=", "<<=", ">>=", ".", "[]", "()", "?:", "=>", "??"
         };
-        
-        private static class ColorScheme
+
+        public static List<string> AutoCompleteSuggest(ref TextEditor textBox)
         {
-            public static readonly Brush Default = Brushes.White;
-            public static readonly Brush Number = Brushes.LightCoral;
-            public static readonly Brush Comment = Brushes.ForestGreen;
-            public static readonly Brush Identifier = Brushes.CornflowerBlue;
-            public static readonly Brush Type = Brushes.MediumPurple;
-            public static readonly Brush Method = Brushes.LightGreen;
-            public static readonly Brush Member = Brushes.CadetBlue;
-        }
-
-        public static void Highlight(ref RichTextBox textBox)
-        {
-            var richText = textBox.GetPlainText();
-            var readingWord = "";
-            
-            var startPoint = textBox.Document.ContentStart;
-            var caretOffset = startPoint.GetOffsetToPosition(textBox.CaretPosition);
-
-            textBox.Document.Blocks.Clear();
-
-            foreach (var character in richText)
-            {
-                if (char.IsLetter(character)|| char.IsNumber(character))
-                {
-                    readingWord += character;
-                }
-                else
-                {
-                    if (identifiers.Contains(readingWord))
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Identifier);
-                    }
-                    else if (int.TryParse(readingWord, out _) || float.TryParse(readingWord, out _))
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Number);
-                    }
-                    else
-                    {
-                        textBox.AppendColoredText(readingWord, ColorScheme.Default);
-                    }
-
-                    if (character == ' ' || character == '\t')
-                    {
-                        textBox.AppendText(character.ToString());
-                    }
-
-                    readingWord = "";
-                }
-            }
-
-            textBox.CaretPosition = startPoint.GetPositionAtOffset(caretOffset) ?? textBox.Document.ContentStart;
-        }
-
-        public static Tuple<string, List<string>> AutoCompleteSuggest(ref RichTextBox textBox)
-        {
-            var range = new TextRange(textBox.Document.ContentStart, textBox.CaretPosition);
-            var caretIndex = range.Text.Length - 1;
-            // I don't really know why subtracting 1 works, but it does ok
-            var richText = textBox.GetPlainText();
-
-            if (string.IsNullOrWhiteSpace(richText))
-                return null;
-            
-            var word = "";
-
-            while (caretIndex >= 0 && (char.IsLetter(richText[caretIndex]) || char.IsNumber(richText[caretIndex])))
-            {
-                word += richText[caretIndex--];
-            }
-
-            var charArray = word.ToCharArray();
-            Array.Reverse(charArray);
-            word = new string(charArray);
-            
-            if (string.IsNullOrWhiteSpace(word))
-                return null;
-
-            return (word, identifiers.Where(id => id.StartsWith(word) && id != word).ToList()).ToTuple();
+            return identifiers.ToList();
         }
     }
 }

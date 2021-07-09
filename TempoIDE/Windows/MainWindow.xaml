@@ -90,29 +90,28 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
+            <userControls:TopbarControl x:Name="Topbar" Grid.Row="0"/>
             
-            <userControls:TopbarControl Grid.Row="0"/>
-            
-            <Grid
-                Grid.Row="1">
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-
+            <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-
-                <userControls:EditorControl x:Name="Editor" Grid.Row="0" Grid.Column="2"/>
+                
+                <userControls:EditorControl Grid.Column="0" x:Name="Editor"/>
+                <TabControl 
+                    Grid.Column="1" 
+                    Name="LeftTabs"
+                    Visibility="Collapsed"/>
             </Grid>
+            
+            <TabControl 
+                Grid.Row="2" 
+                Name="BottomTabs" 
+                Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Window>

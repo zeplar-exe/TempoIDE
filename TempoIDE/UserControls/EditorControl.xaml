@@ -7,12 +7,12 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid.ColumnDefinitions>
-        <ColumnDefinition Width="Auto"/>
+        <ColumnDefinition MinWidth="160" Width="Auto"/>
         <ColumnDefinition Width="5"/>
         <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <userControls:ExplorerPanel Grid.Column="0" MinWidth="120" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+    <userControls:ExplorerPanel Grid.Column="0" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
 
     <GridSplitter 
         Background="{StaticResource BaseBorderColor}"
@@ -35,7 +35,6 @@
         <ScrollViewer
             Grid.Column="0"
             Grid.Row="0"
-            Name="FileSelect"
             VerticalScrollBarVisibility="Hidden"
             HorizontalScrollBarVisibility="Auto">
                 
@@ -57,38 +56,16 @@
             VerticalScrollBarVisibility="Hidden">
             
             <Grid>
-                <RichTextBox
+                <avalonEdit:TextEditor
+                    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
                     Name="TextEditor"
-                    IsReadOnly="True"
-                    Background="#313131"
-                    BorderBrush="{StaticResource BaseBorderColor}"
-                    BorderThickness="0, 1, 0, 1"
-                    AcceptsReturn="True"
-                    AcceptsTab="True"
-                    FontSize="17"
+                    FontFamily="Consolas"
                     Foreground="White"
-                    FontWeight="DemiBold"
-                
+                    Background="{StaticResource BaseBackgroundColor}"
+                    FontSize="10pt"
+                    IsReadOnly="True"
                     Loaded="TextEditor_OnLoaded"
-                    TextChanged="TextEditor_OnTextChanged"
-                    PreviewKeyDown="TextEditor_OnKeyDown">
-            
-                <RichTextBox.ContextMenu>
-                    <userControls:EditorContextMenu/>
-                </RichTextBox.ContextMenu>
-            
-                <RichTextBox.Resources>
-                    <Style TargetType="{x:Type Paragraph}">
-                        <Setter Property="Margin" Value="0"/>
-                    </Style>
-                </RichTextBox.Resources>
-            </RichTextBox>
-                
-            <userControls:AutoCompleteBox
-                x:Name="AutoComplete"
-                Visibility="Collapsed" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top"/>
+                    TextChanged="TextEditor_OnTextChanged"/>
             </Grid>
         </ScrollViewer>
 

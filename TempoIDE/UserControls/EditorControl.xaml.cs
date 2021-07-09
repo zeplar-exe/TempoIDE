@@ -10,6 +10,10 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
+using ICSharpCode.AvalonEdit.CodeCompletion;
+using ICSharpCode.AvalonEdit.Document;
+using ICSharpCode.AvalonEdit.Editing;
+using ICSharpCode.AvalonEdit.Highlighting;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -24,6 +28,7 @@ namespace TempoIDE.UserControls
         private bool textChangedBeforeUpdate;
         private bool skipTextChanged;
 
+        private CompletionWindow autoComplete;
         private string selectedAutoComplete;
         private string typingWord;
 
@@ -34,73 +39,51 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextEditor.AcceptsTab = true;
+            TextEditor.TextArea.TextEntering += TextArea_OnTextEntering;
             
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
-        } 
+        }
 
-        private void TextEditor_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void TextArea_OnTextEntering(object sender, TextCompositionEventArgs e)
+        {
+            if (e.Text.Length > 0 && autoComplete != null) {
+                if (!char.IsLetterOrDigit(e.Text[0])) {
+                    // Whenever a non-letter is typed while the completion window is open,
+                    // insert the currently selected element.
+                    autoComplete.CompletionList.RequestInsertion(e);
+                }
+            }
+        }
+
+        private void TextEditor_OnTextChanged(object sender, EventArgs e)
         {
             if (skipTextChanged)
                 return;
             
             textChangedBeforeUpdate = true;
 
-            SkipTextChange(delegate
-            {
-                CsIntellisense.Highlight(ref TextEditor);
-            });
-            
             var suggestion = CsIntellisense.AutoCompleteSuggest(ref TextEditor);
-
-            if (suggestion is null)
-                return;
-
-            TextEditor.AcceptsTab = false;
             
-            typingWord = suggestion.Item1;
-            var completeWords = suggestion.Item2;
-
-            if (completeWords == null || completeWords.Count == 0)
+            if (suggestion == null || suggestion.Count == 0)
             {
-                selectedAutoComplete = null;
-                AutoComplete.Visibility = Visibility.Collapsed;
+                autoComplete?.Close();
                 return;
             }
-            
-            AutoComplete.Visibility = Visibility.Visible;
 
-            var caretPosition = TextEditor.CaretPosition.GetCharacterRect(LogicalDirection.Forward);
-
-            AutoComplete.Translate.X = caretPosition.Right;
-            AutoComplete.Translate.Y = caretPosition.Bottom;
-
-            selectedAutoComplete = completeWords[0];
-
-            AutoComplete.Words.Children.Clear();
-
-            foreach (string word in completeWords)
+            if (autoComplete is null)
             {
-                AutoComplete.Words.Children.Add(new TextBlock { Text = word });
-            }
-        }
-
-        private void TextEditor_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Tab && selectedAutoComplete != null)
-            {
-                string newText = selectedAutoComplete.Remove(0, typingWord.Length);
-
-                TextEditor.AppendText(newText);
-                AutoComplete.Visibility = Visibility.Collapsed;
-
-                var startPoint = TextEditor.Document.ContentStart;
-                var caretOffset = startPoint.GetOffsetToPosition(TextEditor.CaretPosition);
-                TextEditor.CaretPosition = startPoint.GetPositionAtOffset(caretOffset + newText.Length);
+                autoComplete = new CompletionWindow(TextEditor.TextArea);
+                autoComplete.Closed += (o, args) => autoComplete = null;
                 
-                TextEditor.AcceptsTab = true;
-                TextEditor.Focus();
+                var data = autoComplete.CompletionList.CompletionData;
+
+                foreach (string word in suggestion)
+                {
+                    data.Add(new CompletionData(word + " "));
+                }
+                
+                autoComplete.Show();
             }
         }
 
@@ -109,6 +92,30 @@ namespace TempoIDE.UserControls
             skipTextChanged = true;
             method.Invoke();
             skipTextChanged = false;
+        }
+    }
+    
+    public class CompletionData : ICompletionData
+    {
+        public CompletionData(string text)
+        {
+            this.Text = text;
+        }
+    
+        public System.Windows.Media.ImageSource Image => null;
+
+        public string Text { get; private set; }
+    
+        // Use this property if you want to show a fancy UIElement in the list.
+        public object Content => Text;
+
+        public object Description => "Description for " + Text;
+
+        public double Priority => 1;
+
+        public void Complete(TextArea textArea, ISegment completionSegment, EventArgs insertionRequestEventArgs)
+        {
+            textArea.Document.Replace(completionSegment, Text);
         }
     }
 }

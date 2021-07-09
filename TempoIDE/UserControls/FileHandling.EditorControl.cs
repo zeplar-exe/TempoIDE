@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
+using ICSharpCode.AvalonEdit.Highlighting;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -18,7 +19,6 @@ namespace TempoIDE.UserControls
 
             if (openFiles.Count == 0)
             {
-                TextEditor.Document.Blocks.Clear();
                 TextEditor.IsReadOnly = true;
             }
             else
@@ -51,14 +51,14 @@ namespace TempoIDE.UserControls
                     openFiles.Add(openFileInfo, fileButton);
                     ReloadOpenFiles();
                 }
-            }
 
-            TextEditor.Document.Blocks.Clear();
+                TextEditor.SyntaxHighlighting = HighlightingManager.Instance.GetDefinitionByExtension(openFileInfo.Extension);
+            }
 
             string text = file != null
                 ? new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd()
                 : string.Empty;
-            TextEditor.AppendText(text);
+            TextEditor.Text = text;
             TextEditor.IsReadOnly = file == null;
             CurrentFileNameDisplay.Text = file?.FullName;
         }
@@ -123,13 +123,12 @@ namespace TempoIDE.UserControls
                 var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
                 var text = reader.ReadToEnd();
 
-                if (text == TextEditor.GetPlainText())
+                if (text == TextEditor.Text)
                     return;
                     
                 SkipTextChange(delegate
                 {
-                    TextEditor.Document.Blocks.Clear();
-                    TextEditor.AppendText(reader.ReadToEnd()); 
+                    TextEditor.Text = text; 
                 });
                 
                 reader.Close();
@@ -139,7 +138,7 @@ namespace TempoIDE.UserControls
                 using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
                 using var writer = new StreamWriter(stream);
                 stream.SetLength(0);
-                writer.Write(TextEditor.GetPlainText());
+                writer.Write(TextEditor.Text);
             }
 
             textChangedBeforeUpdate = false;
