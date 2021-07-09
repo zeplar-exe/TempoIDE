@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.ColorSchemes;
+using TempoIDE.Classes.EditorCommands;
 
 namespace TempoIDE.UserControls
 {
@@ -63,10 +64,17 @@ namespace TempoIDE.UserControls
 
         public int CaretIndex { get; private set; }
 
+        public IntRange SelectionRange { get; private set; } = new IntRange(0, 0);
         public bool IsReadOnly = true;
         
         public int LineHeight = 15;
         public new int FontSize = 14;
+
+        public readonly List<IEditorCommand> Commands = new List<IEditorCommand>()
+        {
+            new Copy(),
+            new Paste()
+        };
 
         public event RoutedEventHandler TextChanged;
 
@@ -79,7 +87,6 @@ namespace TempoIDE.UserControls
         private ISyntaxScheme scheme;
         private readonly List<SyntaxChar> characters = new List<SyntaxChar>();
         private bool isSelecting;
-        private IntRange selectionRange = new IntRange(0, 0);
 
         private string selectedAutoComplete;
 

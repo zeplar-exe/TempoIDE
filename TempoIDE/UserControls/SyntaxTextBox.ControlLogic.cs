@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,7 @@ namespace TempoIDE.UserControls
             CaretOffset = GetCaretOffsetByClick(e);
 
             isSelecting = true;
-            selectionRange = new IntRange(CaretIndex, CaretIndex);
+            SelectionRange = new IntRange(CaretIndex, CaretIndex);
         }
 
         private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
@@ -61,7 +62,7 @@ namespace TempoIDE.UserControls
             if (isSelecting)
             {
                 CaretOffset = GetCaretOffsetByClick(e);
-                selectionRange = new IntRange(selectionRange.Start, CaretIndex);
+                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex).Arrange();
             }
         }
 
@@ -125,6 +126,12 @@ namespace TempoIDE.UserControls
         {
             if (IsReadOnly)
                 return;
+            
+            foreach (var command in Commands)
+            {
+                if (command.Keybinds.All(Keyboard.IsKeyDown))
+                    command.Execute(this);
+            }
             
             switch (e.Key)
             {
@@ -207,13 +214,6 @@ namespace TempoIDE.UserControls
                 }
                 
                 #endregion
-
-                default:
-                {
-                    // Handle command cases
-                    
-                    break;
-                }
             }
         }
 
@@ -222,7 +222,6 @@ namespace TempoIDE.UserControls
             base.OnRender(drawingContext);
 
             var line = 0;
-            var dpi = VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
             var lineWidth = 0d;
             var index = 0;
@@ -239,7 +238,7 @@ namespace TempoIDE.UserControls
                 var charPos = new Point(lineWidth, line * LineHeight);
                 var charSize = character.Size;
 
-                if (selectionRange.Size > 0 && selectionRange.Contains(index))
+                if (SelectionRange.Size > 0 && SelectionRange.Contains(index))
                 {
                     drawingContext.DrawRectangle(Brushes.DarkCyan, null, new Rect(charPos, charSize));
                 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
@@ -10,6 +11,19 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl
     {
+        public string GetSelectedText()
+        {
+            if (SelectionRange.Size == 0)
+                return string.Empty;
+
+            StringBuilder builder = new StringBuilder();
+
+            foreach (int index in SelectionRange)
+                builder.Append(characters[index].Value);
+
+            return builder.ToString();
+        }
+        
         public void AppendTextAtCaret(string text)
         {
             foreach (var character in text)
@@ -143,6 +157,11 @@ namespace TempoIDE.UserControls
         {
             characters[index] = new SyntaxChar(characters[index].Value,
                 new CharDrawInfo(FontSize, typeface, GetDpi(), color));
+        }
+
+        public void RemoveIndex(int index)
+        {
+            characters.RemoveAt(index);
         }
 
         public SyntaxChar GetCharacterAtIndex(int index)
