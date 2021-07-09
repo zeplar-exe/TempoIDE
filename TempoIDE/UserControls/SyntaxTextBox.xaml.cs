@@ -63,7 +63,7 @@ namespace TempoIDE.UserControls
 
         public int CaretIndex { get; private set; }
 
-        public bool IsReadOnly;
+        public bool IsReadOnly = true;
         
         public int LineHeight = 15;
         public new int FontSize = 14;

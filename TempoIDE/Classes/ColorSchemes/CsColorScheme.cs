@@ -1,4 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Windows.Media;
+using System.Xml;
+using TempoIDE.ProgramData;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.ColorSchemes
@@ -15,7 +19,52 @@ namespace TempoIDE.Classes.ColorSchemes
 
         public void Highlight(ref SyntaxTextBox textBox)
         {
+            int? wordStartIndex = null;
+            string word = "";
             
+            var xmlData = IColorScheme.GetXmlDocumentFromString(ProgramFiles.intellisense_cs);
+            var keywords = new List<string>();
+
+            if (xmlData.DocumentElement is null)
+                throw new Exception("CS intellisense xml document is invalid.");
+            
+            foreach (XmlNode keyword in xmlData.DocumentElement.GetElementsByTagName("keywords")[0])
+            {
+                keywords.Add(keyword.Value);
+            }
+
+            foreach (var charPair in textBox.EnumerateCharacters())
+            {
+                var rawChar = charPair.character.Value;
+                
+                if (char.IsNumber(rawChar))
+                {
+                    textBox.UpdateIndex(charPair.index, new SyntaxChar(
+                        rawChar,
+                        new CharDrawInfo(textBox.FontSize, new Typeface("Verdana"), textBox.GetDpi(), Number)
+                    ));
+                }
+                else if (char.IsLetter(rawChar))
+                {
+                    wordStartIndex ??= charPair.index;
+                    
+                    word += rawChar;
+                }
+                else
+                {
+                    if (wordStartIndex == null) // always true?
+                        continue;
+                    
+                    if (keywords.Contains(word))
+                        for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
+                        {
+                            textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
+                        }
+
+                    word = "";
+                    wordStartIndex = null;
+                }
+            }
         }
     }
 }

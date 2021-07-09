@@ -70,6 +70,7 @@ namespace TempoIDE.UserControls
             TextWriter();
             openFiles.Remove(file);
             ReloadOpenFiles();
+            TextEditor.SetScheme(null);
         }
 
         private void FileButton_OnClick(object sender, FileTabEventArgs e)

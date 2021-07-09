@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.ColorSchemes;
 
 namespace TempoIDE.UserControls
 {
-    public partial class SyntaxTextBox
+    public partial class SyntaxTextBox : UserControl
     {
         public void AppendText(string text)
         {
@@ -39,15 +40,15 @@ namespace TempoIDE.UserControls
             foreach (var character in syntaxChars)
                 AppendText(character);
         }
+        
+        public double GetDpi()
+        {
+            return VisualTreeHelper.GetDpi(this).PixelsPerDip;
+        }
 
         private CharDrawInfo GetDefaultDrawInfo()
         {
             return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
-        }
-
-        private double GetDpi()
-        {
-            return VisualTreeHelper.GetDpi(this).PixelsPerDip;
         }
 
         private void AppendCharacter(SyntaxChar character)
@@ -99,13 +100,31 @@ namespace TempoIDE.UserControls
 
         public void SetScheme(string schemeExtension)
         {
-            scheme = ColorScheme.GetColorSchemeByExtension(schemeExtension);
+            scheme = schemeExtension == null ? null : ColorScheme.GetColorSchemeByExtension(schemeExtension);
         }
 
-        public IEnumerator<SyntaxChar> EnumerateCharacters()
+        public void UpdateIndex(int index, SyntaxChar newCharacter)
         {
-            foreach (var character in characters)
-                yield return character;
+            characters[index] = newCharacter;
+        }
+        
+        public void UpdateIndex(int index, Brush color, Typeface typeface)
+        {
+            characters[index] = new SyntaxChar(characters[index].Value,
+                new CharDrawInfo(FontSize, typeface, GetDpi(), color));
+        }
+
+        public SyntaxChar GetCharacterAtIndex(int index)
+        {
+            return characters[index];
+        }
+
+        public IEnumerable<(int index, SyntaxChar character)> EnumerateCharacters()
+        {
+            for (var index = 0; index < characters.Count; index++)
+            {
+                yield return (index, characters[index]);
+            }
         }
         
         public void Highlight()

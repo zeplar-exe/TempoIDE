@@ -13,6 +13,9 @@ namespace TempoIDE.UserControls
     {
         private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (IsReadOnly)
+                return;
+            
             Focus();
         }
 
@@ -20,14 +23,14 @@ namespace TempoIDE.UserControls
         {
             if (IsReadOnly)
                 return;
-            
+
             caretThread = new Thread(CaretBlinkerThread);
             caretThread.Start();
         }
 
         private void SyntaxTextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
-            caretThread.Interrupt();
+            caretThread?.Interrupt();
             caretVisible = false;
             
             InvalidateVisual();
@@ -35,6 +38,7 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
+            Highlight();
             InvalidateVisual();
         }
 
