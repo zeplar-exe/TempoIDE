@@ -47,7 +47,7 @@ namespace TempoIDE.UserControls
             if (IsReadOnly)
                 return;
 
-            AppendText(e.Text);
+            AppendTextAtCaret(e.Text);
         }
 
         private void SyntaxTextBox_OnKeyDown(object sender, KeyEventArgs e)
@@ -62,7 +62,7 @@ namespace TempoIDE.UserControls
                 case Key.Enter:
                 {
                     e.Handled = true;
-                    AppendText(NewLine);
+                    AppendTextAtCaret(NewLine);
 
                     break;
                 }
@@ -76,7 +76,7 @@ namespace TempoIDE.UserControls
                 case Key.Tab:
                 {
                     e.Handled = true;
-                    AppendText('\t');
+                    AppendTextAtCaret('\t');
 
                     break;
                 }

@@ -30,19 +30,16 @@ namespace TempoIDE.UserControls
         {
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
-        } 
+        }
 
-        private void TextEditor_OnTextChanged(object sender, TextChangedEventArgs e)
+        private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             if (skipTextChanged)
                 return;
             
             textChangedBeforeUpdate = true;
 
-            SkipTextChange(delegate
-            {
-                TextEditor.Highlight();
-            });
+            return;
             
             var suggestion = CsIntellisense.AutoCompleteSuggest(ref TextEditor);
 
@@ -82,10 +79,8 @@ namespace TempoIDE.UserControls
             {
                 string newText = selectedAutoComplete.Remove(0, typingWord.Length);
 
-                TextEditor.AppendText(newText);
+                TextEditor.AppendTextAtCaret(newText);
                 AutoComplete.Visibility = Visibility.Collapsed;
-                
-                TextEditor.Focus();
             }
         }
 

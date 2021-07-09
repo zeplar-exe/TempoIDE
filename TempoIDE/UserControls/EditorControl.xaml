@@ -53,7 +53,8 @@
                 BorderThickness="0, 1, 0, 1"
                 FontSize="17"
             
-                Loaded="TextEditor_OnLoaded"><!--Background="#313131"-->
+                Loaded="TextEditor_OnLoaded"
+                TextChanged="TextEditor_OnTextChanged"><!--Background="#313131"-->
                 
                 <userControls:SyntaxTextBox.ContextMenu>
                     <userControls:EditorContextMenu/>

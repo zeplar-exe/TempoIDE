@@ -10,35 +10,43 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl
     {
-        public void AppendText(string text)
+        public void AppendTextAtCaret(string text)
         {
             foreach (var character in text)
-            {
                 AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
-            }
+
+            TextChanged?.Invoke(this, default);
         }
 
-        public void AppendText(char character)
+        public void AppendTextAtCaret(char character)
         {
             AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
+            
+            TextChanged?.Invoke(this, default);
         }
 
-        public void AppendText(SyntaxChar character)
+        public void AppendTextAtCaret(SyntaxChar character)
         {
             AppendCharacter(character);
+            
+            TextChanged?.Invoke(this, default);
         }
 
         [Obsolete("This overload has a O(n^2) time complexity, it is recommended that you pass a string instead.")]
-        public void AppendText(IEnumerable<char> syntaxChars)
+        public void AppendTextAtCaret(IEnumerable<char> syntaxChars)
         {
             foreach (var character in syntaxChars)
-                AppendText(character.ToString());
+                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
+            
+            TextChanged?.Invoke(this, default);
         }
 
-        public void AppendText(IEnumerable<SyntaxChar> syntaxChars)
+        public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
         {
             foreach (var character in syntaxChars)
-                AppendText(character);
+                AppendCharacter(character);
+            
+            TextChanged?.Invoke(this, default);
         }
         
         public double GetDpi()
@@ -61,8 +69,6 @@ namespace TempoIDE.UserControls
             CaretOffset = character.Value == NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
                 new IntVector(CaretOffset.X + 1, CaretOffset.Y);
-            
-            TextChanged?.Invoke(this, default);
         }
 
         public void Backspace(int count)

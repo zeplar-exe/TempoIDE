@@ -7,7 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Update="UserControls\FileHandling.EditorControl.cs">
+      <Compile Update="UserControls\EditorControl.FileHandling.cs">
         <DependentUpon>EditorControl.xaml</DependentUpon>
       </Compile>
       <Compile Update="UserControls\SyntaxTextBox.ControlLogic.cs">

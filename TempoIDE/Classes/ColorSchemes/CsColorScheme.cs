@@ -22,19 +22,21 @@ namespace TempoIDE.Classes.ColorSchemes
             int? wordStartIndex = null;
             string word = "";
             
-            var xmlData = IColorScheme.GetXmlDocumentFromString(ProgramFiles.intellisense_cs);
+            var xmlData = IColorScheme.GetXDocumentFromString(ProgramFiles.intellisense_cs);
             var keywords = new List<string>();
 
-            if (xmlData.DocumentElement is null)
+            if (xmlData.Root is null)
                 throw new Exception("CS intellisense xml document is invalid.");
-            
-            foreach (XmlNode keyword in xmlData.DocumentElement.GetElementsByTagName("keywords")[0])
+
+            foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
             {
                 keywords.Add(keyword.Value);
             }
 
             foreach (var charPair in textBox.EnumerateCharacters())
             {
+                textBox.UpdateIndex(charPair.index, Default, new Typeface("Verdana"));
+                
                 var rawChar = charPair.character.Value;
                 
                 if (char.IsNumber(rawChar))
@@ -47,7 +49,7 @@ namespace TempoIDE.Classes.ColorSchemes
                 else if (char.IsLetter(rawChar))
                 {
                     wordStartIndex ??= charPair.index;
-                    
+
                     word += rawChar;
                 }
                 else
@@ -65,6 +67,15 @@ namespace TempoIDE.Classes.ColorSchemes
                     wordStartIndex = null;
                 }
             }
+            
+            if (wordStartIndex == null) // always true?
+                return;
+            
+            if (keywords.Contains(word))
+                for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
+                {
+                    textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
+                }
         }
     }
 }

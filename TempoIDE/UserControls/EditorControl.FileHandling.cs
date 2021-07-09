@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -29,7 +30,7 @@ namespace TempoIDE.UserControls
 
         public void OpenFile(FileInfo file)
         {
-            TextWriter();
+            UpdateText();
 
             openFileInfo = file;
 
@@ -60,14 +61,14 @@ namespace TempoIDE.UserControls
             string text = file == null
                 ? string.Empty
                 : new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
-            TextEditor.AppendText(text);
+            TextEditor.AppendTextAtCaret(text);
             TextEditor.IsReadOnly = file == null;
             CurrentFileNameDisplay.Text = file?.FullName;
         }
 
         public void CloseFile(FileInfo file)
         {
-            TextWriter();
+            UpdateText();
             openFiles.Remove(file);
             ReloadOpenFiles();
             TextEditor.SetScheme(null);
@@ -83,8 +84,6 @@ namespace TempoIDE.UserControls
             int index = openFiles.IndexOf((FileInfo) e.TabButton.Resources["FileInfo"]);
             int nextIndex = index;
             int lastIndex = index - 1;
-
-            TextWriter();
             
             if (writerThread.IsAlive)
                 writerThread.Interrupt();
@@ -107,7 +106,7 @@ namespace TempoIDE.UserControls
             Dispatcher.Invoke(() => { OpenFile(e.NewFile); });
         }
         
-        private const int WriterCooldown = 5;
+        private const int WriterCooldown = 2;
 
         private void TextWriterThread()
         {
@@ -119,7 +118,7 @@ namespace TempoIDE.UserControls
                 }
                 catch (ThreadInterruptedException)
                 {
-                    
+                    return;
                 }
                 
                 Dispatcher.Invoke(TextWriter);
@@ -128,35 +127,50 @@ namespace TempoIDE.UserControls
 
         internal void TextWriter()
         {
+            if (!textChangedBeforeUpdate)
+            {
+                UpdateText();
+            }
+            else
+            {
+                UpdateFile();
+            }
+
+            textChangedBeforeUpdate = false;
+        }
+
+        private void UpdateText()
+        {
             if (openFileInfo == null) 
                 return;
                     
             openFileInfo.Refresh();
+            
+            var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+            var text = reader.ReadToEnd();
 
-            if (!textChangedBeforeUpdate)
-            {
-                var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-                var text = reader.ReadToEnd();
-
-                if (text == TextEditor.Text)
-                    return;
+            if (text == TextEditor.Text)
+                return;
                     
-                SkipTextChange(delegate
-                {
-                    TextEditor.AppendText(reader.ReadToEnd()); 
-                });
-                
-                reader.Close();
-            }
-            else
+            SkipTextChange(delegate
             {
-                using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
-                using var writer = new StreamWriter(stream);
-                stream.SetLength(0);
-                writer.Write(TextEditor.Text);
-            }
+                TextEditor.Text = text;
+            });
+                
+            reader.Close();
+        }
 
-            textChangedBeforeUpdate = false;
+        private void UpdateFile()
+        {
+            if (openFileInfo == null) 
+                return;
+                    
+            openFileInfo.Refresh();
+            
+            using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
+            using var writer = new StreamWriter(stream);
+            stream.SetLength(0);
+            writer.Write(TextEditor.Text);
         }
     }
 }

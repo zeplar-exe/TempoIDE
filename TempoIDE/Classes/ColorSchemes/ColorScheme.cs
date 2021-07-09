@@ -1,5 +1,6 @@
 using System.Windows.Media;
 using System.Xml;
+using System.Xml.Linq;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.ColorSchemes
@@ -24,12 +25,9 @@ namespace TempoIDE.Classes.ColorSchemes
 
         public void Highlight(ref SyntaxTextBox textBox);
 
-        public static XmlDocument GetXmlDocumentFromString(string data)
+        public static XDocument GetXDocumentFromString(string data)
         {
-            var document = new XmlDocument();
-            document.LoadXml(data);
-
-            return document;
+            return XDocument.Parse(data);
         }
     }
 

@@ -30,7 +30,8 @@ namespace TempoIDE.UserControls
             set
                 {
                     Clear();
-                    AppendText(value);
+                    Console.WriteLine("--" + value + "--");
+                    AppendTextAtCaret(value);
                 }
             }
 
