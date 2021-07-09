@@ -104,6 +104,31 @@ namespace TempoIDE.UserControls
             TextChanged?.Invoke(this, default);
         }
 
+        public string GetTypingWord(bool includeNumbers = false)
+        {
+            string word = "";
+            
+            for (var index = CaretIndex - 1; index >= 0; index--)
+            {
+                var selected = characters[index];
+
+                if (char.IsLetter(selected.Value))
+                {
+                    word = word.Insert(0, selected.ToString());
+                }
+                else if (includeNumbers && char.IsNumber(selected.Value))
+                {
+                    word = word.Insert(0, selected.ToString());
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return word;
+        }
+
         public void SetScheme(string schemeExtension)
         {
             scheme = schemeExtension == null ? null : ColorScheme.GetColorSchemeByExtension(schemeExtension);
@@ -135,8 +160,7 @@ namespace TempoIDE.UserControls
         
         public void Highlight()
         {
-            var stb = this;
-            scheme?.Highlight(ref stb);
+            scheme?.Highlight(this);
         }
     }
 }

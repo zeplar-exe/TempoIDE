@@ -39,6 +39,31 @@ namespace TempoIDE.UserControls
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             Highlight();
+
+            var autoCompletions = scheme?.GetAutoCompletions(this);
+
+            if (autoCompletions != null && autoCompletions.Length != 0)
+            {
+                AutoComplete.Visibility = Visibility.Visible;
+
+                AutoComplete.Translate.X = CaretRect.Right;
+                AutoComplete.Translate.Y = CaretRect.Bottom;
+    
+                selectedAutoComplete = autoCompletions[0];
+    
+                AutoComplete.Words.Children.Clear();
+    
+                foreach (string word in autoCompletions)
+                {
+                    AutoComplete.Words.Children.Add(new TextBlock { Text = word });
+                }
+            }
+            else
+            {
+                selectedAutoComplete = null;
+                AutoComplete.Visibility = Visibility.Collapsed;
+            }
+
             InvalidateVisual();
         }
 
@@ -76,7 +101,16 @@ namespace TempoIDE.UserControls
                 case Key.Tab:
                 {
                     e.Handled = true;
-                    AppendTextAtCaret('\t');
+
+                    if (selectedAutoComplete == null)
+                    {
+                        AppendTextAtCaret('\t');
+                    }
+                    else
+                    {
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(), "") + " ");
+                        selectedAutoComplete = null;
+                    }
 
                     break;
                 }

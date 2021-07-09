@@ -77,9 +77,11 @@ namespace TempoIDE.UserControls
         private Thread caretThread;
         private bool caretVisible;
 
-        private IColorScheme scheme;
+        private ISyntaxScheme scheme;
         private readonly List<SyntaxChar> characters = new List<SyntaxChar>();
         private int[] selectionRange = {0, 0};
+
+        private string selectedAutoComplete;
 
         public SyntaxTextBox()
         {

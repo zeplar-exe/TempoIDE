@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 using System.Xml;
 using TempoIDE.ProgramData;
@@ -7,7 +8,7 @@ using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.ColorSchemes
 {
-    public class CsColorScheme : IProgrammingLanguageColorScheme
+    public class CsSyntaxScheme : IProgrammingLanguageColorScheme
     {
         public Brush Default => Brushes.White;
         public Brush Number => Brushes.LightCoral;
@@ -17,16 +18,13 @@ namespace TempoIDE.Classes.ColorSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(ref SyntaxTextBox textBox)
+        public void Highlight(SyntaxTextBox textBox)
         {
             int? wordStartIndex = null;
             string word = "";
-            
-            var xmlData = IColorScheme.GetXDocumentFromString(ProgramFiles.intellisense_cs);
-            var keywords = new List<string>();
 
-            if (xmlData.Root is null)
-                throw new Exception("CS intellisense xml document is invalid.");
+            var xmlData = XmlLoader.Get("intellisense.cs");
+            var keywords = new List<string>();
 
             foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
             {
@@ -54,7 +52,7 @@ namespace TempoIDE.Classes.ColorSchemes
                 }
                 else
                 {
-                    if (wordStartIndex == null) // always true?
+                    if (wordStartIndex == null)
                         continue;
                     
                     if (keywords.Contains(word))
@@ -68,14 +66,34 @@ namespace TempoIDE.Classes.ColorSchemes
                 }
             }
             
-            if (wordStartIndex == null) // always true?
+            if (wordStartIndex == null)
                 return;
             
             if (keywords.Contains(word))
+            {
                 for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
                 {
                     textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
                 }
+            }
+        }
+
+        public string[] GetAutoCompletions(SyntaxTextBox textBox)
+        {
+            var xmlData = XmlLoader.Get("intellisense.cs");
+            var keywords = new List<string>();
+
+            foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
+            {
+                keywords.Add(keyword.Value);
+            }
+
+            var typingWord = textBox.GetTypingWord();
+            
+            if (string.IsNullOrWhiteSpace(typingWord))
+                return null;
+
+            return keywords.Where(kw => kw.StartsWith(typingWord) && kw != typingWord).ToArray();
         }
     }
 }

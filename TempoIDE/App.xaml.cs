@@ -10,6 +10,8 @@ namespace TempoIDE
             #if DEBUG
             ConsoleManager.Show();
             #endif
+            
+            XmlLoader.Load();
         }
     }
 }

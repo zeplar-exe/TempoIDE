@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:userControls="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
              Loaded="SyntaxTextBox_OnLoaded"
              PreviewMouseLeftButtonDown="SyntaxTextBox_OnMouseLeftButtonDown"
@@ -11,6 +12,14 @@
              TextInput="SyntaxTextBox_OnTextInput"
              KeyDown="SyntaxTextBox_OnKeyDown">
     
-    <TextBlock Opacity="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-    <!--This TextBlock is required in order to catch PreviewMouseLEftButtonDown events-->
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <TextBlock Opacity="0"/>
+        <!--This TextBlock is required in order to catch PreviewMouseLEftButtonDown events-->
+        
+        <userControls:AutoCompleteBox
+            x:Name="AutoComplete"
+            Visibility="Collapsed" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"/>
+    </Grid>
 </UserControl>

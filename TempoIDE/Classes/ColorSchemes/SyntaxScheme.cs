@@ -7,31 +7,28 @@ namespace TempoIDE.Classes.ColorSchemes
 {
     public static class ColorScheme
     {
-        public static IColorScheme GetColorSchemeByExtension(string extension)
+        public static ISyntaxScheme GetColorSchemeByExtension(string extension)
         {
             switch (extension.Replace(".", string.Empty))
             {
                 case "cs":
-                    return new CsColorScheme();
+                    return new CsSyntaxScheme();
                 default:
-                    return new DefaultColorScheme();
+                    return new DefaultSyntaxScheme();
             }
         }
     }
 
-    public interface IColorScheme
+    public interface ISyntaxScheme
     {
         public Brush Default { get; }
 
-        public void Highlight(ref SyntaxTextBox textBox);
-
-        public static XDocument GetXDocumentFromString(string data)
-        {
-            return XDocument.Parse(data);
-        }
+        public void Highlight(SyntaxTextBox textBox);
+        
+        public string[] GetAutoCompletions(SyntaxTextBox textBox);
     }
 
-    public interface IProgrammingLanguageColorScheme : IColorScheme
+    public interface IProgrammingLanguageColorScheme : ISyntaxScheme
     {
         public Brush Number { get; }
         public Brush Comment { get; }
