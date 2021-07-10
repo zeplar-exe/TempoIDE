@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
@@ -63,10 +64,7 @@ namespace TempoIDE.UserControls
             TextChanged?.Invoke(this, default);
         }
         
-        public double GetDpi()
-        {
-            return VisualTreeHelper.GetDpi(this).PixelsPerDip;
-        }
+        public double GetDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
         private CharDrawInfo GetDefaultDrawInfo()
         {
@@ -94,6 +92,20 @@ namespace TempoIDE.UserControls
         {
             if (characters.Count == 0 || CaretIndex == 0)
                 return;
+
+            if (SelectionRange.Size > 0)
+            {
+                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);// new IntVector(SelectionRange.Start, CaretOffset.Y);
+                
+                foreach (int _ in SelectionRange)
+                {
+                    RemoveIndex(SelectionRange.Start);
+                }
+                
+                ClearSelection();
+                
+                return;
+            }
 
             for (; count > 0; count--)
             {

@@ -41,7 +41,7 @@ namespace TempoIDE.UserControls
         public IntVector CaretOffset
         {
             get => caretOffset;
-            private set
+            internal set
             {
                 if (!VerifyCaretOffset(value))
                     return;
@@ -64,7 +64,7 @@ namespace TempoIDE.UserControls
 
         public int CaretIndex { get; private set; }
 
-        public IntRange SelectionRange { get; private set; } = new IntRange(0, 0);
+        public IntRange SelectionRange = new IntRange(0, 0);
         public bool IsReadOnly = true;
         
         public int LineHeight = 15;
@@ -73,7 +73,9 @@ namespace TempoIDE.UserControls
         public readonly List<IEditorCommand> Commands = new List<IEditorCommand>()
         {
             new Copy(),
-            new Paste()
+            new Paste(),
+            new Cut(),
+            new SelectAll()
         };
 
         public event RoutedEventHandler TextChanged;
@@ -122,6 +124,31 @@ namespace TempoIDE.UserControls
             totalIndex += offset.X;
 
             return totalIndex;
+        }
+
+        private IntVector GetCaretOffsetAtIndex(int index)
+        {
+            var lines = GetLines();
+
+            var indexCount = 0;
+            var lineNo = 0;
+            var columnNo = 0;
+
+            foreach (var line in lines)
+            {
+                foreach (var column in line)
+                {
+                    if (indexCount == index)
+                        return new IntVector(columnNo, lineNo);
+
+                    columnNo++;
+                    indexCount++;
+                }
+
+                lineNo++;
+            }
+            
+            throw new Exception("Index must be valid.");
         }
 
         private bool VerifyCaretOffset(IntVector offset, bool throwError = false)
