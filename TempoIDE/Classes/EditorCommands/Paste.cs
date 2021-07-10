@@ -16,19 +16,17 @@ namespace TempoIDE.Classes.EditorCommands
         {
             if (textBox.GetSelectedText() == string.Empty)
             {
-                // TODO: This appends after the newline if the caret is at that point
-                
                 textBox.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
             }
             else
             {
-                return; 
-                // TODO: Fix this, it removes characters when it shouldn't
-
                 foreach (int index in textBox.SelectionRange)
                 {
                     textBox.RemoveIndex(index);
                 }
+                
+                textBox.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
+                textBox.ClearSelection();
             }
         }
     }

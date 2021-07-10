@@ -23,7 +23,7 @@ namespace TempoIDE.UserControls
             isSelecting = true;
             SelectionRange = new IntRange(CaretIndex, CaretIndex);
         }
-
+        
         private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
         {
             var clickPos = mouse.GetPosition(this);
@@ -42,7 +42,7 @@ namespace TempoIDE.UserControls
             {
                 if (totalWidth > clickPos.X)
                 {
-                    break;
+                    break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
                 }
 
                 totalWidth += character.Size.Width;

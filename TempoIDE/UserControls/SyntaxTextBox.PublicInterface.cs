@@ -85,6 +85,11 @@ namespace TempoIDE.UserControls
                 new IntVector(CaretOffset.X + 1, CaretOffset.Y);
         }
 
+        public void ClearSelection()
+        {
+            SelectionRange = new IntRange(CaretIndex, CaretIndex);
+        }
+
         public void Backspace(int count)
         {
             if (characters.Count == 0 || CaretIndex == 0)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 namespace TempoIDE.Classes
@@ -27,12 +28,12 @@ namespace TempoIDE.Classes
                 return new IntRange(End, Start);
             }
 
-            if (End < Start)
-            {
-                return new IntRange(Start, End);
-            }
-
             return this;
+        }
+
+        public override string ToString()
+        {
+            return $"{Start}, {End}";
         }
 
         public IEnumerator GetEnumerator()
