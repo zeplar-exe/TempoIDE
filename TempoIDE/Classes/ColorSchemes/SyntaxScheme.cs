@@ -23,7 +23,7 @@ namespace TempoIDE.Classes.ColorSchemes
     {
         public Brush Default { get; }
 
-        public void Highlight(SyntaxTextBox textBox);
+        public void Highlight(ColoredLabel textBox);
         
         public string[] GetAutoCompletions(SyntaxTextBox textBox);
     }

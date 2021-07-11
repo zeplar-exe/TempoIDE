@@ -121,7 +121,7 @@ namespace TempoIDE.UserControls
         public string GetTypingWord(bool includeNumbers = false)
         {
             string word = "";
-
+            
             for (var index = CaretIndex - 1; index >= 0; index--)
             {
                 var selected = TextArea.Characters[index];

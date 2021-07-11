@@ -138,6 +138,7 @@ namespace TempoIDE.UserControls
 
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
+            Scheme?.Highlight(this);
             InvalidateVisual();
         }
 

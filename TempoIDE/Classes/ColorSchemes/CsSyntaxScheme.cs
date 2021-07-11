@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security;
 using System.Windows.Media;
 using System.Xml;
 using Microsoft.CodeAnalysis;
@@ -21,7 +22,7 @@ namespace TempoIDE.Classes.ColorSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(SyntaxTextBox textBox)
+        public void Highlight(ColoredLabel textBox)
         {
             int? wordStartIndex = null;
             string word = "";
@@ -34,7 +35,7 @@ namespace TempoIDE.Classes.ColorSchemes
                 keywords.Add(keyword.Value);
             }
 
-            var text = textBox.TextArea.Text;
+            var text = textBox.Text;
             var charIndex = 0;
             
             SyntaxTree tree = CSharpSyntaxTree.ParseText(text);
@@ -44,11 +45,11 @@ namespace TempoIDE.Classes.ColorSchemes
 
             foreach (var character in text)
             {
-                textBox.TextArea.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
+                textBox.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
 
                 if (char.IsNumber(character))
                 {
-                    textBox.TextArea.UpdateIndex(charIndex, new SyntaxChar(
+                    textBox.UpdateIndex(charIndex, new SyntaxChar(
                         character,
                         new CharDrawInfo(textBox.FontSize, new Typeface("Verdana"), textBox.GetDpi(), Number)
                     ));
@@ -63,9 +64,9 @@ namespace TempoIDE.Classes.ColorSchemes
                 {
                     if (wordStartIndex == null)
                         continue;
-                    
+
                     if (keywords.Contains(word))
-                        textBox.TextArea.UpdateIndex(new IntRange(
+                        textBox.UpdateIndex(new IntRange(
                             (int)wordStartIndex, 
                             (int)wordStartIndex + word.Length), 
                             Identifier, new Typeface("Verdana"));
@@ -84,7 +85,7 @@ namespace TempoIDE.Classes.ColorSchemes
             {
                 for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
                 {
-                    textBox.TextArea.UpdateIndex(index, Identifier, new Typeface("Verdana"));
+                    textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
                 }
             }
         }
@@ -98,12 +99,12 @@ namespace TempoIDE.Classes.ColorSchemes
             {
                 keywords.Add(keyword.Value);
             }
-
+            
             var typingWord = textBox.GetTypingWord();
             
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
-
+            
             return keywords.Where(kw => kw.StartsWith(typingWord) && kw != typingWord).ToArray();
         }
     }

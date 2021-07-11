@@ -61,7 +61,7 @@ namespace TempoIDE.UserControls
                 {
                     if (totalWidth > clickPos.X)
                     {
-                        break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
+                        break;
                     }
                 }
                 else
@@ -69,7 +69,7 @@ namespace TempoIDE.UserControls
                     if (totalWidth > clickPos.X)
                     {
                         column--;
-                        break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
+                        break;
                     }
                 }
 
@@ -100,30 +100,6 @@ namespace TempoIDE.UserControls
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             TextChanged?.Invoke(sender, e);
-            
-            var autoCompletions = TextArea.Scheme?.GetAutoCompletions(this);
-
-            if (autoCompletions != null && autoCompletions.Length != 0)
-            {
-                AutoComplete.Visibility = Visibility.Visible;
-
-                AutoComplete.Translate.X = CaretRect.Right;
-                AutoComplete.Translate.Y = CaretRect.Bottom;
-    
-                selectedAutoComplete = autoCompletions[0];
-    
-                AutoComplete.Words.Children.Clear();
-    
-                foreach (string word in autoCompletions)
-                {
-                    AutoComplete.Words.Children.Add(new TextBlock { Text = word });
-                }
-            }
-            else
-            {
-                selectedAutoComplete = null;
-                AutoComplete.Visibility = Visibility.Collapsed;
-            }
         }
 
         private void SyntaxTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
@@ -132,8 +108,9 @@ namespace TempoIDE.UserControls
                 return;
 
             AppendTextAtCaret(e.Text);
+            HandleAutoCompletion();
         }
-
+        
         private void SyntaxTextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (IsReadOnly)
@@ -176,6 +153,8 @@ namespace TempoIDE.UserControls
                         AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(), ""));
                         selectedAutoComplete = null;
                     }
+                    
+                    HandleAutoCompletion();
 
                     break;
                 }

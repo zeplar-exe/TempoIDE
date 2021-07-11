@@ -9,7 +9,7 @@ namespace TempoIDE.Classes.ColorSchemes
     {
         public Brush Default => Brushes.White;
 
-        public void Highlight(SyntaxTextBox textBox)
+        public void Highlight(ColoredLabel textBox)
         {
             
         }

@@ -90,6 +90,33 @@ namespace TempoIDE.UserControls
         }
 
         #region Private Interface
+        
+        private void HandleAutoCompletion()
+        {
+            var autoCompletions = TextArea.Scheme?.GetAutoCompletions(this);
+
+            if (autoCompletions != null && autoCompletions.Length != 0)
+            {
+                AutoComplete.Visibility = Visibility.Visible;
+
+                AutoComplete.Translate.X = CaretRect.Right;
+                AutoComplete.Translate.Y = CaretRect.Bottom;
+    
+                selectedAutoComplete = autoCompletions[0];
+    
+                AutoComplete.Words.Children.Clear();
+    
+                foreach (string word in autoCompletions)
+                {
+                    AutoComplete.Words.Children.Add(new TextBlock { Text = word });
+                }
+            }
+            else
+            {
+                selectedAutoComplete = null;
+                AutoComplete.Visibility = Visibility.Collapsed;
+            }
+        }
 
         private int GetCaretIndexAtOffset(IntVector offset)
         {
