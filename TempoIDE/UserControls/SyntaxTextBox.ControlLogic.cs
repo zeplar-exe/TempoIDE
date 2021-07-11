@@ -140,6 +140,10 @@ namespace TempoIDE.UserControls
 
                     break;
                 }
+                case Key.Delete:
+                    Frontspace(1);
+                    
+                    break;
                 case Key.Tab:
                 {
                     e.Handled = true;
