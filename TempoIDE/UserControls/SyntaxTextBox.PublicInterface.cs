@@ -96,8 +96,7 @@ namespace TempoIDE.UserControls
             for (; count > 0; count--)
             {
                 SyntaxChar character = TextArea.Characters[CaretIndex - 1];
-                
-                TextArea.RemoveIndex(CaretIndex - 1);
+                var index = CaretIndex - 1;
                 
                 if (character.Value == ColoredLabel.NewLine)
                 {
@@ -108,6 +107,8 @@ namespace TempoIDE.UserControls
                 {
                     CaretOffset = new IntVector(CaretOffset.X - 1, CaretOffset.Y);
                 }
+                
+                TextArea.RemoveIndex(index); // Has to be done this way because of stupid race conditions
             }
         }
 
@@ -120,7 +121,7 @@ namespace TempoIDE.UserControls
         public string GetTypingWord(bool includeNumbers = false)
         {
             string word = "";
-            
+
             for (var index = CaretIndex - 1; index >= 0; index--)
             {
                 var selected = TextArea.Characters[index];

@@ -39,7 +39,17 @@ namespace TempoIDE.UserControls
 
         public int CaretIndex { get; private set; }
 
-        public IntRange SelectionRange = new IntRange(0, 0);
+        private IntRange selectionRange = new IntRange(0, 0);
+        public IntRange SelectionRange
+        {
+            get => selectionRange;
+            set
+            {
+                selectionRange = value;
+                
+                TextArea.InvalidateVisual();
+            }
+        }
         public bool IsReadOnly = true;
         
         public int LineHeight = 15;

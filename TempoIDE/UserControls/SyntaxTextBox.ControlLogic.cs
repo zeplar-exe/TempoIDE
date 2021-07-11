@@ -37,9 +37,7 @@ namespace TempoIDE.UserControls
             if (isSelecting)
             {
                 CaretOffset = GetCaretOffsetByClick(e);
-                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);//.Arrange();
-
-                TextArea.InvalidateVisual();
+                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
             }
         }
         
@@ -175,7 +173,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(), "") + " ");
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(), ""));
                         selectedAutoComplete = null;
                     }
 

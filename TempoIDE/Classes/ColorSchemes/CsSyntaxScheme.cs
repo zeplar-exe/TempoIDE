@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using System.Xml;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.ProgramData;
 using TempoIDE.UserControls;
 
@@ -31,24 +34,30 @@ namespace TempoIDE.Classes.ColorSchemes
                 keywords.Add(keyword.Value);
             }
 
-            foreach (var charPair in textBox.TextArea.EnumerateCharacters())
+            var text = textBox.TextArea.Text;
+            var charIndex = 0;
+            
+            SyntaxTree tree = CSharpSyntaxTree.ParseText(text);
+            CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
+
+            
+
+            foreach (var character in text)
             {
-                textBox.TextArea.UpdateIndex(charPair.index, Default, new Typeface("Verdana"));
-                
-                var rawChar = charPair.character.Value;
-                
-                if (char.IsNumber(rawChar))
+                textBox.TextArea.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
+
+                if (char.IsNumber(character))
                 {
-                    textBox.TextArea.UpdateIndex(charPair.index, new SyntaxChar(
-                        rawChar,
+                    textBox.TextArea.UpdateIndex(charIndex, new SyntaxChar(
+                        character,
                         new CharDrawInfo(textBox.FontSize, new Typeface("Verdana"), textBox.GetDpi(), Number)
                     ));
                 }
-                else if (char.IsLetter(rawChar))
+                else if (char.IsLetter(character))
                 {
-                    wordStartIndex ??= charPair.index;
+                    wordStartIndex ??= charIndex;
 
-                    word += rawChar;
+                    word += character;
                 }
                 else
                 {
@@ -64,6 +73,8 @@ namespace TempoIDE.Classes.ColorSchemes
                     word = "";
                     wordStartIndex = null;
                 }
+
+                charIndex++;
             }
             
             if (wordStartIndex == null)

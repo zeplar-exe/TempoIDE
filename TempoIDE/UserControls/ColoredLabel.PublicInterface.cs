@@ -140,7 +140,7 @@ namespace TempoIDE.UserControls
         public void RemoveIndex(IntRange indices)
         {
             foreach (int index in indices)
-                Characters.RemoveAt(index);
+                Characters.RemoveAt(indices.Start);
             
             TextChanged?.Invoke(this, default);
         }
