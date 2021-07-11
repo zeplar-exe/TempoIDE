@@ -22,6 +22,9 @@
         <DependentUpon>ProgramFiles.resx</DependentUpon>
       </Compile>
       <Compile Remove="packages\**" />
+      <Compile Update="UserControls\ColoredLabel.PublicInterface.cs">
+        <DependentUpon>ColoredLabel.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

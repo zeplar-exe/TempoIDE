@@ -1,1 +1,1 @@
-aaathrow new Exception("Offset must be valid.");throw new Exception("Offset must be valid.");
+Helforeach(n ne n indices)o

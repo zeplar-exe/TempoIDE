@@ -15,8 +15,10 @@
              KeyDown="SyntaxTextBox_OnKeyDown">
     
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <TextBlock Opacity="0"/>
-        <!--This TextBlock is required in order to catch PreviewMouseLEftButtonDown events-->
+        <userControls:ColoredLabel 
+            x:Name="TextArea"
+            OnAfterRender="TextArea_OnAfterRender"
+            OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"/>
         
         <userControls:AutoCompleteBox
             x:Name="AutoComplete"

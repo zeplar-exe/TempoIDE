@@ -53,7 +53,7 @@ namespace TempoIDE.UserControls
                     ReloadOpenFiles();
                 }
                 
-                TextEditor.SetScheme(openFileInfo.Extension);
+                TextEditor.TextArea.SetScheme(openFileInfo.Extension);
             }
 
             TextEditor.Clear();
@@ -71,7 +71,7 @@ namespace TempoIDE.UserControls
             UpdateText();
             openFiles.Remove(file);
             ReloadOpenFiles();
-            TextEditor.SetScheme(null);
+            TextEditor.TextArea.SetScheme(null);
         }
 
         private void FileButton_OnClick(object sender, FileTabEventArgs e)
@@ -149,12 +149,12 @@ namespace TempoIDE.UserControls
             var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
             var text = reader.ReadToEnd();
 
-            if (text == TextEditor.Text)
+            if (text == TextEditor.TextArea.Text)
                 return;
                     
             SkipTextChange(delegate
             {
-                TextEditor.Text = text;
+                TextEditor.TextArea.Text = text;
             });
                 
             reader.Close();
@@ -170,7 +170,7 @@ namespace TempoIDE.UserControls
             using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
             using var writer = new StreamWriter(stream);
             stream.SetLength(0);
-            writer.Write(TextEditor.Text);
+            writer.Write(TextEditor.TextArea.Text);
         }
     }
 }

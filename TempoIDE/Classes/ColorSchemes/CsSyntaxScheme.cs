@@ -31,15 +31,15 @@ namespace TempoIDE.Classes.ColorSchemes
                 keywords.Add(keyword.Value);
             }
 
-            foreach (var charPair in textBox.EnumerateCharacters())
+            foreach (var charPair in textBox.TextArea.EnumerateCharacters())
             {
-                textBox.UpdateIndex(charPair.index, Default, new Typeface("Verdana"));
+                textBox.TextArea.UpdateIndex(charPair.index, Default, new Typeface("Verdana"));
                 
                 var rawChar = charPair.character.Value;
                 
                 if (char.IsNumber(rawChar))
                 {
-                    textBox.UpdateIndex(charPair.index, new SyntaxChar(
+                    textBox.TextArea.UpdateIndex(charPair.index, new SyntaxChar(
                         rawChar,
                         new CharDrawInfo(textBox.FontSize, new Typeface("Verdana"), textBox.GetDpi(), Number)
                     ));
@@ -56,10 +56,10 @@ namespace TempoIDE.Classes.ColorSchemes
                         continue;
                     
                     if (keywords.Contains(word))
-                        for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
-                        {
-                            textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
-                        }
+                        textBox.TextArea.UpdateIndex(new IntRange(
+                            (int)wordStartIndex, 
+                            (int)wordStartIndex + word.Length), 
+                            Identifier, new Typeface("Verdana"));
 
                     word = "";
                     wordStartIndex = null;
@@ -73,7 +73,7 @@ namespace TempoIDE.Classes.ColorSchemes
             {
                 for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
                 {
-                    textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
+                    textBox.TextArea.UpdateIndex(index, Identifier, new Typeface("Verdana"));
                 }
             }
         }

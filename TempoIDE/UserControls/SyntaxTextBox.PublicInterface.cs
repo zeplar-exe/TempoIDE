@@ -20,7 +20,7 @@ namespace TempoIDE.UserControls
             StringBuilder builder = new StringBuilder();
 
             foreach (int index in SelectionRange)
-                builder.Append(characters[index].Value);
+                builder.Append(TextArea.GetCharacterAtIndex(index).Value);
 
             return builder.ToString();
         }
@@ -28,40 +28,29 @@ namespace TempoIDE.UserControls
         public void AppendTextAtCaret(string text)
         {
             foreach (var character in text)
-                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
-
-            TextChanged?.Invoke(this, default);
+                CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
         }
 
         public void AppendTextAtCaret(char character)
         {
-            AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
-            
-            TextChanged?.Invoke(this, default);
+            CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
         }
 
         public void AppendTextAtCaret(SyntaxChar character)
         {
-            AppendCharacter(character);
-            
-            TextChanged?.Invoke(this, default);
+            CaretAppendWrapper(character);
         }
-
-        [Obsolete("This overload has a O(n^2) time complexity, it is recommended that you pass a string instead.")]
-        public void AppendTextAtCaret(IEnumerable<char> syntaxChars)
+        
+        public void AppendTextAtCaret(IEnumerable<char> characters)
         {
-            foreach (var character in syntaxChars)
-                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()));
-            
-            TextChanged?.Invoke(this, default);
+            foreach (var character in characters)
+                CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
         }
 
         public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
         {
             foreach (var character in syntaxChars)
-                AppendCharacter(character);
-            
-            TextChanged?.Invoke(this, default);
+                CaretAppendWrapper(character);
         }
         
         public double GetDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
@@ -71,14 +60,14 @@ namespace TempoIDE.UserControls
             return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
         }
 
-        private void AppendCharacter(SyntaxChar character)
+        private void CaretAppendWrapper(SyntaxChar character)
         {
-            if (CaretIndex >= characters.Count)
-                characters.Add(character);
+            if (CaretIndex >= TextArea.Characters.Count)
+                TextArea.AppendText(character);
             else
-                characters.Insert(CaretIndex, character);
+                TextArea.AppendText(character, CaretIndex);
 
-            CaretOffset = character.Value == NewLine ?
+            CaretOffset = character.Value == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
                 new IntVector(CaretOffset.X + 1, CaretOffset.Y);
         }
@@ -86,22 +75,19 @@ namespace TempoIDE.UserControls
         public void ClearSelection()
         {
             SelectionRange = new IntRange(CaretIndex, CaretIndex);
+            InvalidateVisual();
         }
 
         public void Backspace(int count)
         {
-            if (characters.Count == 0 || CaretIndex == 0)
+            if (TextArea.Characters.Count == 0 || CaretIndex == 0)
                 return;
 
             if (SelectionRange.Size > 0)
             {
-                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);// new IntVector(SelectionRange.Start, CaretOffset.Y);
+                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
                 
-                foreach (int _ in SelectionRange)
-                {
-                    RemoveIndex(SelectionRange.Start);
-                }
-                
+                TextArea.RemoveIndex(SelectionRange);
                 ClearSelection();
                 
                 return;
@@ -109,11 +95,11 @@ namespace TempoIDE.UserControls
 
             for (; count > 0; count--)
             {
-                SyntaxChar character = characters[CaretIndex - 1];
+                SyntaxChar character = TextArea.Characters[CaretIndex - 1];
                 
-                characters.RemoveAt(CaretIndex - 1);
+                TextArea.RemoveIndex(CaretIndex - 1);
                 
-                if (character.Value == NewLine)
+                if (character.Value == ColoredLabel.NewLine)
                 {
                     var lines = GetLines();
                     CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1);
@@ -123,16 +109,12 @@ namespace TempoIDE.UserControls
                     CaretOffset = new IntVector(CaretOffset.X - 1, CaretOffset.Y);
                 }
             }
-
-            TextChanged?.Invoke(this, default);
         }
 
         public void Clear()
         {
-            characters.Clear();
+            TextArea.Clear();
             CaretOffset = new IntVector(0, 0);
-
-            TextChanged?.Invoke(this, default);
         }
 
         public string GetTypingWord(bool includeNumbers = false)
@@ -141,7 +123,7 @@ namespace TempoIDE.UserControls
             
             for (var index = CaretIndex - 1; index >= 0; index--)
             {
-                var selected = characters[index];
+                var selected = TextArea.Characters[index];
 
                 if (char.IsLetter(selected.Value))
                 {
@@ -158,45 +140,6 @@ namespace TempoIDE.UserControls
             }
 
             return word;
-        }
-
-        public void SetScheme(string schemeExtension)
-        {
-            scheme = schemeExtension == null ? null : ColorScheme.GetColorSchemeByExtension(schemeExtension);
-        }
-
-        public void UpdateIndex(int index, SyntaxChar newCharacter)
-        {
-            characters[index] = newCharacter;
-        }
-        
-        public void UpdateIndex(int index, Brush color, Typeface typeface)
-        {
-            characters[index] = new SyntaxChar(characters[index].Value,
-                new CharDrawInfo(FontSize, typeface, GetDpi(), color));
-        }
-
-        public void RemoveIndex(int index)
-        {
-            characters.RemoveAt(index);
-        }
-
-        public SyntaxChar GetCharacterAtIndex(int index)
-        {
-            return characters[index];
-        }
-
-        public IEnumerable<(int index, SyntaxChar character)> EnumerateCharacters()
-        {
-            for (var index = 0; index < characters.Count; index++)
-            {
-                yield return (index, characters[index]);
-            }
-        }
-        
-        public void Highlight()
-        {
-            scheme?.Highlight(this);
         }
     }
 }

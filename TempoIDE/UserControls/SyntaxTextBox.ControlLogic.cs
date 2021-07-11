@@ -80,14 +80,14 @@ namespace TempoIDE.UserControls
             caretThread?.Interrupt();
             caretVisible = false;
             
-            InvalidateVisual();
+            TextArea.InvalidateVisual();
         }
 
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            Highlight();
-
-            var autoCompletions = scheme?.GetAutoCompletions(this);
+            TextChanged?.Invoke(sender, e);
+            
+            var autoCompletions = TextArea.Scheme?.GetAutoCompletions(this);
 
             if (autoCompletions != null && autoCompletions.Length != 0)
             {
@@ -110,8 +110,6 @@ namespace TempoIDE.UserControls
                 selectedAutoComplete = null;
                 AutoComplete.Visibility = Visibility.Collapsed;
             }
-
-            InvalidateVisual();
         }
 
         private void SyntaxTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
@@ -140,7 +138,7 @@ namespace TempoIDE.UserControls
                 case Key.Enter:
                 {
                     e.Handled = true;
-                    AppendTextAtCaret(NewLine);
+                    AppendTextAtCaret(ColoredLabel.NewLine);
 
                     break;
                 }
@@ -217,42 +215,19 @@ namespace TempoIDE.UserControls
             }
         }
 
-        protected override void OnRender(DrawingContext drawingContext)
+        private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)
         {
-            base.OnRender(drawingContext);
-
-            var line = 0;
-
-            var lineWidth = 0d;
-            var index = 0;
-
-            foreach (var character in characters)
+            if (SelectionRange.Size > 0 && SelectionRange.Contains(index))
             {
-                if (character.Value == NewLine)
-                {
-                    line++;
-                    lineWidth = 0d;
-                    continue;
-                }
-
-                var charPos = new Point(lineWidth, line * LineHeight);
-                var charSize = character.Size;
-
-                if (SelectionRange.Size > 0 && SelectionRange.Contains(index))
-                {
-                    drawingContext.DrawRectangle(Brushes.DarkCyan, null, new Rect(charPos, charSize));
-                }
-                
-                character.Draw(drawingContext, charPos);
-
-                lineWidth += charSize.Width;
-
-                index++;
+                context.DrawRectangle(Brushes.DarkCyan, null, charRect);
             }
+        }
 
+        private void TextArea_OnAfterRender(DrawingContext context)
+        {
             if (caretVisible)
             {
-                drawingContext.DrawRectangle(Brushes.White, null, CaretRect);
+                context.DrawRectangle(Brushes.White, null, CaretRect);
             }
         }
     }

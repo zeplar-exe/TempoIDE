@@ -15,7 +15,7 @@ namespace TempoIDE.Classes.EditorCommands
         
         public void Execute(SyntaxTextBox textBox)
         {
-            textBox.SelectionRange = new IntRange(0, textBox.Text.Length);
+            textBox.SelectionRange = new IntRange(0, textBox.TextArea.Text.Length);
         }
     }
 }

@@ -1,40 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
 using TempoIDE.Classes;
-using TempoIDE.Classes.ColorSchemes;
 using TempoIDE.Classes.EditorCommands;
 
 namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl, IInputElement
     {
-        public string Text
-        {
-            get
-            {
-                var stringBuilder = new StringBuilder();
-                
-                foreach (var character in characters)
-                {
-                    stringBuilder.Append(character.Value);
-                }
-
-                return stringBuilder.ToString();
-            }
-            set
-                {
-                    Clear();
-                    AppendTextAtCaret(value);
-                }
-            }
-
         public Rect CaretRect { get; private set; }
         
         private IntVector caretOffset;
@@ -81,13 +56,10 @@ namespace TempoIDE.UserControls
         public event RoutedEventHandler TextChanged;
 
         private static readonly int CaretBlinkFrequencyMs = 500;
-        private const char NewLine = '\r';
-        
+
         private Thread caretThread;
         private bool caretVisible;
 
-        private ISyntaxScheme scheme;
-        private readonly List<SyntaxChar> characters = new List<SyntaxChar>();
         private bool isSelecting;
 
         private string selectedAutoComplete;
@@ -104,7 +76,7 @@ namespace TempoIDE.UserControls
 
             CaretRect = new Rect(0, 0, 1, LineHeight);
 
-            TextChanged += SyntaxTextBox_OnTextChanged;
+            TextArea.TextChanged += SyntaxTextBox_OnTextChanged;
         }
 
         #region Private Interface
@@ -180,9 +152,9 @@ namespace TempoIDE.UserControls
             List<List<SyntaxChar>> lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
             int currentIndex = 0;
 
-            foreach (var character in characters)
+            foreach (var character in TextArea.Characters)
             {
-                if (character.Value == NewLine)
+                if (character.Value == ColoredLabel.NewLine)
                 {
                     if (!omitNewLines)
                         lines[currentIndex].Add(character);
@@ -196,8 +168,11 @@ namespace TempoIDE.UserControls
                     lines[currentIndex].Add(character);
                 }
             }
-            
-            return lines.ToArray();
+
+            var arr = lines.ToArray();
+            lines = null; // Memory allocation issue fixed?
+
+            return arr;
         }
 
         private void CaretBlinkerThread()
@@ -214,7 +189,7 @@ namespace TempoIDE.UserControls
                 }
 
                 Dispatcher.Invoke(delegate { caretVisible = !caretVisible; });
-                Dispatcher.Invoke(InvalidateVisual);
+                Dispatcher.Invoke(TextArea.InvalidateVisual);
             }
         }
         
