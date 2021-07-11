@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using TempoIDE.Classes.Types;
 using TempoIDE.ProgramData;
 using TempoIDE.UserControls;
 
@@ -36,15 +37,11 @@ namespace TempoIDE.Classes.ColorSchemes
             }
 
             var text = textBox.Text;
-            var charIndex = 0;
-            
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(text);
-            CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
-
-            
 
             foreach (var character in text)
             {
+                var charIndex = text.IndexOf(character);
+                
                 textBox.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
 
                 if (char.IsNumber(character))
@@ -74,8 +71,6 @@ namespace TempoIDE.Classes.ColorSchemes
                     word = "";
                     wordStartIndex = null;
                 }
-
-                charIndex++;
             }
             
             if (wordStartIndex == null)
@@ -100,7 +95,14 @@ namespace TempoIDE.Classes.ColorSchemes
                 keywords.Add(keyword.Value);
             }
             
-            var typingWord = textBox.GetTypingWord();
+            SyntaxTree tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
+            CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
+            
+            var context = CaretContext.FromSyntaxTree(root);
+            
+            
+            
+            var typingWord = textBox.GetTypingWordAtIndex(textBox.CaretIndex - 1);
             
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;

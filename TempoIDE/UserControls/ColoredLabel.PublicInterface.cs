@@ -101,8 +101,6 @@ namespace TempoIDE.UserControls
         public void UpdateIndex(int index, SyntaxChar newCharacter)
         {
             Characters[index] = newCharacter;
-            
-            TextChanged?.Invoke(this, default);
         }
         
         public void UpdateIndex(IntRange indices, SyntaxChar newCharacter)

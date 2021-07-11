@@ -80,6 +80,9 @@ namespace TempoIDE.UserControls
 
         public void Backspace(int count)
         {
+            if (TextArea.Characters.Count == 0 || CaretIndex == 0)
+                return;
+
             if (SelectionRange.Size > 0)
             {
                 CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
@@ -89,9 +92,6 @@ namespace TempoIDE.UserControls
                 
                 return;
             }
-            
-            if (TextArea.Characters.Count == 0 || CaretIndex == 0)
-                return;
 
             for (; count > 0; count--)
             {
@@ -107,9 +107,12 @@ namespace TempoIDE.UserControls
                 {
                     CaretOffset = new IntVector(CaretOffset.X - 1, CaretOffset.Y);
                 }
+                
+                TextArea.RemoveIndex(index);
             }
             
             TextArea.RemoveIndex(new IntRange(CaretIndex, CaretIndex + count));
+            HandleAutoCompletion();
         }
         
         public void Frontspace(int count)
@@ -137,11 +140,11 @@ namespace TempoIDE.UserControls
             CaretOffset = new IntVector(0, 0);
         }
 
-        public string GetTypingWord(bool includeNumbers = false)
+        public string GetTypingWordAtIndex(int index, bool includeNumbers = false)
         {
             string word = "";
             
-            for (var index = CaretIndex - 1; index >= 0; index--)
+            for (; index >= 0; index--)
             {
                 var selected = TextArea.Characters[index];
 

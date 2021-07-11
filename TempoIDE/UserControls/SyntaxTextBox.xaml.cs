@@ -68,6 +68,7 @@ namespace TempoIDE.UserControls
         private static readonly int CaretBlinkFrequencyMs = 500;
 
         private Thread caretThread;
+        private bool overrideCaretVisibility;
         private bool caretVisible;
 
         private bool isSelecting;

@@ -25,6 +25,9 @@
       <Compile Update="UserControls\ColoredLabel.PublicInterface.cs">
         <DependentUpon>ColoredLabel.xaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\SyntaxTextBox.Mouse.cs">
+        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

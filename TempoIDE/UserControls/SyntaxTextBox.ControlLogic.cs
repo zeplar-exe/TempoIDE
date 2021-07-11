@@ -12,74 +12,6 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl
     {
-        private double selectStartXPosition;
-        private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (IsReadOnly)
-                return;
-
-            selectStartXPosition = e.GetPosition(this).X;
-            
-            Focus();
-            CaretOffset = GetCaretOffsetByClick(e);
-
-            isSelecting = true;
-            SelectionRange = new IntRange(CaretIndex, CaretIndex);
-        }
-        
-        private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
-        {
-            isSelecting = false;
-        }
-
-        private void SyntaxTextBox_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (isSelecting)
-            {
-                CaretOffset = GetCaretOffsetByClick(e);
-                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
-            }
-        }
-        
-        private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
-        {
-            var clickPos = mouse.GetPosition(this);
-            var lines = GetLines();
-
-            var line = Math.Clamp(
-                (int) Math.Floor(clickPos.Y / LineHeight),
-                0,
-                GetLineCount() - 1
-            );
-
-            var column = 0;
-            var totalWidth = 0d;
-            
-            foreach (var character in lines[line])
-            {
-                if (clickPos.X > selectStartXPosition)
-                {
-                    if (totalWidth > clickPos.X)
-                    {
-                        break;
-                    }
-                }
-                else
-                {
-                    if (totalWidth > clickPos.X)
-                    {
-                        column--;
-                        break;
-                    }
-                }
-
-                totalWidth += character.Size.Width;
-                column++;
-            }
-
-            return new IntVector(column, line);
-        }
-
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (IsReadOnly)
@@ -99,6 +31,8 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
+            overrideCaretVisibility = true;
+
             TextChanged?.Invoke(sender, e);
         }
 
@@ -106,6 +40,14 @@ namespace TempoIDE.UserControls
         {
             if (IsReadOnly)
                 return;
+            
+            if (SelectionRange.Size > 0)
+            {
+                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
+            
+                TextArea.RemoveIndex(SelectionRange);
+                ClearSelection();
+            }
 
             AppendTextAtCaret(e.Text);
             HandleAutoCompletion();
@@ -119,7 +61,10 @@ namespace TempoIDE.UserControls
             foreach (var command in Commands)
             {
                 if (command.Keybinds.All(Keyboard.IsKeyDown))
+                {
                     command.Execute(this);
+                    e.Handled = true;
+                }
             }
             
             switch (e.Key)
@@ -154,7 +99,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(), ""));
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWordAtIndex(CaretIndex - 1), ""));
                         selectedAutoComplete = null;
                     }
                     
@@ -170,6 +115,7 @@ namespace TempoIDE.UserControls
                 case Key.Left:
                 {
                     e.Handled = true;
+                    overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(-1, 0);
                     
                     if (VerifyCaretOffset(newPosition))
@@ -180,6 +126,7 @@ namespace TempoIDE.UserControls
                 case Key.Right:
                 {
                     e.Handled = true;
+                    overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(1, 0);
 
                     if (VerifyCaretOffset(newPosition))
@@ -190,6 +137,7 @@ namespace TempoIDE.UserControls
                 case Key.Up:
                 {
                     e.Handled = true;
+                    overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, -1);
 
                     if (VerifyCaretOffset(newPosition))
@@ -200,6 +148,7 @@ namespace TempoIDE.UserControls
                 case Key.Down:
                 {
                     e.Handled = true;
+                    overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, 1);
 
                     if (VerifyCaretOffset(newPosition))
@@ -224,6 +173,14 @@ namespace TempoIDE.UserControls
 
         private void TextArea_OnAfterRender(DrawingContext context)
         {
+            if (overrideCaretVisibility)
+            {
+                context.DrawRectangle(Brushes.White, null, CaretRect);
+                overrideCaretVisibility = false;
+                
+                return;
+            }
+            
             if (caretVisible)
             {
                 context.DrawRectangle(Brushes.White, null, CaretRect);
