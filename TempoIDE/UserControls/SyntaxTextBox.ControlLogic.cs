@@ -12,16 +12,35 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl
     {
+        private double selectStartXPosition;
         private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsReadOnly)
                 return;
+
+            selectStartXPosition = e.GetPosition(this).X;
             
             Focus();
             CaretOffset = GetCaretOffsetByClick(e);
 
             isSelecting = true;
             SelectionRange = new IntRange(CaretIndex, CaretIndex);
+        }
+        
+        private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        {
+            isSelecting = false;
+        }
+
+        private void SyntaxTextBox_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            if (isSelecting)
+            {
+                CaretOffset = GetCaretOffsetByClick(e);
+                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);//.Arrange();
+
+                TextArea.InvalidateVisual();
+            }
         }
         
         private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
@@ -40,9 +59,20 @@ namespace TempoIDE.UserControls
             
             foreach (var character in lines[line])
             {
-                if (totalWidth > clickPos.X)
+                if (clickPos.X > selectStartXPosition)
                 {
-                    break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
+                    if (totalWidth > clickPos.X)
+                    {
+                        break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
+                    }
+                }
+                else
+                {
+                    if (totalWidth > clickPos.X)
+                    {
+                        column--;
+                        break; // TODO: Narrowed down the issue to here, basically, the mouse doesn't move fast enough to register as a character backwards
+                    }
                 }
 
                 totalWidth += character.Size.Width;
@@ -50,20 +80,6 @@ namespace TempoIDE.UserControls
             }
 
             return new IntVector(column, line);
-        }
-
-        private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
-        {
-            isSelecting = false;
-        }
-
-        private void SyntaxTextBox_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (isSelecting)
-            {
-                CaretOffset = GetCaretOffsetByClick(e);
-                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex).Arrange();
-            }
         }
 
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
@@ -217,7 +233,9 @@ namespace TempoIDE.UserControls
 
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)
         {
-            if (SelectionRange.Size > 0 && SelectionRange.Contains(index))
+            var range = SelectionRange.Arrange();
+            
+            if (range.Size > 0 && range.Contains(index))
             {
                 context.DrawRectangle(Brushes.DarkCyan, null, charRect);
             }

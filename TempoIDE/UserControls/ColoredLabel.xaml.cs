@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Windows;
@@ -102,9 +103,9 @@ namespace TempoIDE.UserControls
             TextChanged += ColoredLabel_OnTextChanged;
         }
 
-        private int GetLineCount()
+        internal int GetLineCount()
         {
-            return GetLines().Length;
+            return Characters.Count(c => c.Value == NewLine) + 1;
         }
 
         private List<SyntaxChar>[] GetLines(bool omitNewLines = false)

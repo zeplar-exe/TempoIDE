@@ -23,6 +23,8 @@ namespace TempoIDE.Classes
 
         public IntRange Arrange()
         {
+            Console.WriteLine(Start > End);
+            
             if (Start > End)
             {
                 return new IntRange(End, Start);
