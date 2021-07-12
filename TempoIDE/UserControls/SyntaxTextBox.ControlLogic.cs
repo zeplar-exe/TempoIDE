@@ -1,11 +1,9 @@
-using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -50,7 +48,7 @@ namespace TempoIDE.UserControls
             }
 
             AppendTextAtCaret(e.Text);
-            HandleAutoCompletion();
+            UpdateAutoCompletion();
         }
         
         private void SyntaxTextBox_OnKeyDown(object sender, KeyEventArgs e)
@@ -74,13 +72,25 @@ namespace TempoIDE.UserControls
                 case Key.Enter:
                 {
                     e.Handled = true;
-                    AppendTextAtCaret(ColoredLabel.NewLine);
+
+                    if (selectedAutoComplete == null)
+                    {
+                        AppendTextAtCaret(ColoredLabel.NewLine);
+                    }
+                    else
+                    {
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWordAtIndex(CaretIndex - 1), ""));
+                        selectedAutoComplete = null;
+                    }
+
+                    UpdateAutoCompletion();
 
                     break;
                 }
                 case Key.Back:
                 {
                     e.Handled = true;
+                    
                     Backspace(1);
 
                     break;
@@ -102,9 +112,9 @@ namespace TempoIDE.UserControls
                         AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWordAtIndex(CaretIndex - 1), ""));
                         selectedAutoComplete = null;
                     }
-                    
-                    HandleAutoCompletion();
 
+                    UpdateAutoCompletion();
+                    
                     break;
                 }
                 
@@ -134,7 +144,7 @@ namespace TempoIDE.UserControls
 
                     break;
                 }
-                case Key.Up:
+                case Key.Up: // TODO: AutoComplete navigation
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;

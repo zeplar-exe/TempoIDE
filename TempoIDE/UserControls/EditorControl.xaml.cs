@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls

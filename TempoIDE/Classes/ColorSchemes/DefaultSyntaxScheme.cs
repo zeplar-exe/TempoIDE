@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows.Media;
 using TempoIDE.UserControls;
 

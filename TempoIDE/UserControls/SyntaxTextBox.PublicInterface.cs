@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
-using TempoIDE.Classes.ColorSchemes;
 
 namespace TempoIDE.UserControls
 {
@@ -96,23 +93,21 @@ namespace TempoIDE.UserControls
             for (; count > 0; count--)
             {
                 SyntaxChar character = TextArea.Characters[CaretIndex - 1];
-                var index = CaretIndex - 1;
+                
+                TextArea.RemoveIndex(CaretIndex - 1);
                 
                 if (character.Value == ColoredLabel.NewLine)
                 {
-                    var lines = GetLines();
+                    var lines = TextArea.GetLines();
                     CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1);
                 }
                 else
                 {
                     CaretOffset = new IntVector(CaretOffset.X - 1, CaretOffset.Y);
                 }
-                
-                TextArea.RemoveIndex(index);
             }
             
-            TextArea.RemoveIndex(new IntRange(CaretIndex, CaretIndex + count));
-            HandleAutoCompletion();
+            UpdateAutoCompletion();
         }
         
         public void Frontspace(int count)

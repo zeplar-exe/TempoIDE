@@ -44,6 +44,8 @@
 
     <ItemGroup>
       <None Remove="packages\**" />
+      <Compile Remove="ExplorerTest\stuff.cs" />
+      <None Include="ExplorerTest\stuff.cs" />
     </ItemGroup>
 
     <ItemGroup>

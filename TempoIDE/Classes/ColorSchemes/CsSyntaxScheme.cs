@@ -1,14 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security;
 using System.Windows.Media;
-using System.Xml;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.Classes.Types;
-using TempoIDE.ProgramData;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.ColorSchemes
@@ -43,13 +39,10 @@ namespace TempoIDE.Classes.ColorSchemes
                 var charIndex = text.IndexOf(character);
                 
                 textBox.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
-
+                
                 if (char.IsNumber(character))
                 {
-                    textBox.UpdateIndex(charIndex, new SyntaxChar(
-                        character,
-                        new CharDrawInfo(textBox.FontSize, new Typeface("Verdana"), textBox.GetDpi(), Number)
-                    ));
+                    textBox.UpdateIndex(charIndex, Number, new Typeface("Verdana"));
                 }
                 else if (char.IsLetter(character))
                 {
@@ -78,10 +71,12 @@ namespace TempoIDE.Classes.ColorSchemes
             
             if (keywords.Contains(word))
             {
-                for (int index = (int) wordStartIndex; index < wordStartIndex + word.Length; index++)
-                {
-                    textBox.UpdateIndex(index, Identifier, new Typeface("Verdana"));
-                }
+                textBox.UpdateIndex(new IntRange(
+                    (int)wordStartIndex, 
+                    (int)wordStartIndex + word.Length),
+                    Identifier,
+                    new Typeface("Verdana")
+                );
             }
         }
 

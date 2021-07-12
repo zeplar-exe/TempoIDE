@@ -26,7 +26,7 @@ namespace TempoIDE.UserControls
                 
                 CaretRect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
 
-                var line = GetLines()[value.Y];
+                var line = TextArea.GetLines()[value.Y];
                 
                 for (int columnNo = 0; columnNo < value.X; columnNo++)
                 {
@@ -34,6 +34,8 @@ namespace TempoIDE.UserControls
                 }
                 
                 CaretRect = Rect.Offset(CaretRect, 0, LineHeight * value.Y);
+                
+                TextArea.InvalidateVisual();
             }
         }
 
@@ -92,7 +94,7 @@ namespace TempoIDE.UserControls
 
         #region Private Interface
         
-        private void HandleAutoCompletion()
+        private void UpdateAutoCompletion()
         {
             var autoCompletions = TextArea.Scheme?.GetAutoCompletions(this);
 
@@ -124,7 +126,7 @@ namespace TempoIDE.UserControls
             VerifyCaretOffset(offset, true);
 
             var totalIndex = 0;
-            var lines = GetLines();
+            var lines = TextArea.GetLines();
 
             for (int lineNo = 0; lineNo < offset.Y; lineNo++)
             {
@@ -138,7 +140,7 @@ namespace TempoIDE.UserControls
 
         private IntVector GetCaretOffsetAtIndex(int index)
         {
-            var lines = GetLines();
+            var lines = TextArea.GetLines();
 
             var indexCount = 0;
             var lineNo = 0;
@@ -163,7 +165,7 @@ namespace TempoIDE.UserControls
 
         private bool VerifyCaretOffset(IntVector offset, bool throwError = false)
         {
-            var lines = GetLines();
+            var lines = TextArea.GetLines();
 
             // ReSharper disable once ReplaceWithSingleAssignment.True
             bool result = true;
@@ -180,7 +182,7 @@ namespace TempoIDE.UserControls
             return result;
         }
         
-        private int GetLineCount()
+        /*private int GetLineCount()
         {
             return GetLines().Length;
         }
@@ -211,7 +213,7 @@ namespace TempoIDE.UserControls
             lines = null; // Memory allocation issue fixed?
 
             return arr;
-        }
+        }*/
 
         private void CaretBlinkerThread()
         {

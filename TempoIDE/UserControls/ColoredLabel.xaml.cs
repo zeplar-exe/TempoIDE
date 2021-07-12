@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.ColorSchemes;
-using TempoIDE.Classes.EditorCommands;
 
 namespace TempoIDE.UserControls
 {
@@ -40,7 +37,7 @@ namespace TempoIDE.UserControls
 
         public event RoutedEventHandler TextChanged;
 
-        public const char NewLine = '\r';
+        public const char NewLine = '\n';
 
         internal ISyntaxScheme Scheme { get; private set; }
         internal readonly List<SyntaxChar> Characters = new List<SyntaxChar>();
@@ -102,13 +99,46 @@ namespace TempoIDE.UserControls
         {
             TextChanged += ColoredLabel_OnTextChanged;
         }
+        
+        public int GetLineCount()
+        {
+            return GetLines().Length;
+        }
 
-        internal int GetLineCount()
+        public List<SyntaxChar>[] GetLines(bool omitNewLines = false)
+        {
+            List<List<SyntaxChar>> lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
+            int currentIndex = 0;
+
+            foreach (var character in Characters)
+            {
+                if (character.Value == ColoredLabel.NewLine)
+                {
+                    if (!omitNewLines)
+                        lines[currentIndex].Add(character);
+                    
+                    currentIndex++;
+
+                    lines.Add(new List<SyntaxChar>());
+                }
+                else
+                {
+                    lines[currentIndex].Add(character);
+                }
+            }
+
+            var arr = lines.ToArray();
+            lines = null; // Memory allocation issue fixed?
+
+            return arr;
+        }
+
+        /*internal int GetLineCount()
         {
             return Characters.Count(c => c.Value == NewLine) + 1;
         }
 
-        private List<SyntaxChar>[] GetLines(bool omitNewLines = false)
+        public List<SyntaxChar>[] GetLines(bool omitNewLines = false)
         {
             List<List<SyntaxChar>> lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
             int currentIndex = 0;
@@ -134,7 +164,7 @@ namespace TempoIDE.UserControls
             lines = null; // Memory allocation issue fixed?
 
             return arr;
-        }
+        }*/
 
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {

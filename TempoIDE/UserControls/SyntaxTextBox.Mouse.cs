@@ -40,12 +40,12 @@ namespace TempoIDE.UserControls
         private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)
         {
             var clickPos = mouse.GetPosition(this);
-            var lines = GetLines();
+            var lines = TextArea.GetLines();
 
             var line = Math.Clamp(
                 (int) Math.Floor(clickPos.Y / LineHeight),
                 0,
-                GetLineCount() - 1
+                TextArea.GetLineCount() - 1
             );
 
             var column = 0;
@@ -53,6 +53,9 @@ namespace TempoIDE.UserControls
 
             foreach (var character in lines[line])
             {
+                if (character.Value == ColoredLabel.NewLine)
+                    break;
+                
                 if (clickPos.X > selectStartXPosition)
                 {
                     if (totalWidth > clickPos.X)
