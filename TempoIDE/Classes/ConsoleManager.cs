@@ -67,15 +67,15 @@ namespace TempoIDE.Classes
 
         static void InvalidateOutAndError()
         {
-            Type type = typeof(Console);
+            var type = typeof(Console);
 
-            System.Reflection.FieldInfo _out = type.GetField("_out",
+            var _out = type.GetField("_out",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 
-            System.Reflection.FieldInfo _error = type.GetField("_error",
+            var _error = type.GetField("_error",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 
-            System.Reflection.MethodInfo _InitializeStdOutError = type.GetMethod("InitializeStdOutError",
+            var _InitializeStdOutError = type.GetMethod("InitializeStdOutError",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.NonPublic);
 
             Debug.Assert(_out != null);

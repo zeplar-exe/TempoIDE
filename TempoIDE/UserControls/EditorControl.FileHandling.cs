@@ -37,7 +37,7 @@ namespace TempoIDE.UserControls
             {
                 openFileInfo.Refresh();
 
-                bool containsFile = openFiles.Any(pair => pair.Key.FullName == openFileInfo.FullName);
+                var containsFile = openFiles.Any(pair => pair.Key.FullName == openFileInfo.FullName);
 
                 if (!containsFile)
                 {
@@ -57,7 +57,7 @@ namespace TempoIDE.UserControls
 
             TextEditor.Clear();
 
-            string text = file == null
+            var text = file == null
                 ? string.Empty
                 : new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
             TextEditor.AppendTextAtCaret(text);
@@ -80,9 +80,9 @@ namespace TempoIDE.UserControls
 
         private void FileClose_OnClick(object sender, FileTabEventArgs e)
         {
-            int index = openFiles.IndexOf((FileInfo) e.TabButton.Resources["FileInfo"]);
-            int nextIndex = index;
-            int lastIndex = index - 1;
+            var index = openFiles.IndexOf((FileInfo) e.TabButton.Resources["FileInfo"]);
+            var nextIndex = index;
+            var lastIndex = index - 1;
             
             if (writerThread.IsAlive)
                 writerThread.Interrupt();

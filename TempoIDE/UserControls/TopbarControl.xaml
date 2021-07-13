@@ -5,10 +5,11 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:TempoIDE.UserControls"
             mc:Ignorable="d"
-            d:DesignHeight="300" d:DesignWidth="300">
+            d:DesignHeight="300" d:DesignWidth="300"
+            Loaded="TopbarControl_OnLoaded">
     
     <Border
-        Height="25"
+        MaxHeight="18"
         BorderBrush="{StaticResource BaseBorderColor}"
         Background="Transparent"
         BorderThickness="0, 0, 0, 1"
@@ -16,14 +17,37 @@
         
         <Grid>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="25"/>
                 <ColumnDefinition Width="25"/>
                 <ColumnDefinition Width="25"/>
             </Grid.ColumnDefinitions>
             
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <StackPanel.Resources>
+                    <Style TargetType="{x:Type local:TopbarMenu}">
+                        <Setter Property="Margin" Value="3,0" />
+                    </Style>
+                </StackPanel.Resources>
+                
+                <local:TopbarMenu MenuName="File">
+                    <local:TopbarMenu.Items>
+                        <local:TopbarMenuItem Description="Create Solution..."/>
+                        <local:TopbarMenuItem Description="Open existing"/>
+                    </local:TopbarMenu.Items>
+                </local:TopbarMenu>
+                
+                <local:TopbarMenu MenuName="Edit">
+                    <local:TopbarMenu.Items>
+                        <local:TopbarMenuItem Description="Undo"/>
+                        <local:TopbarMenuItem Description="Redo"/>
+                    </local:TopbarMenu.Items>
+                </local:TopbarMenu>
+            </StackPanel>
+            
             <Button 
-                Grid.Column="1" 
+                Grid.Column="2" 
                 Content="Min" 
                 Background="Transparent"
                 Foreground="White"
@@ -31,7 +55,7 @@
                 Click="MinimizeButton_OnClick"/>
             
             <Button 
-                Grid.Column="2" 
+                Grid.Column="3" 
                 Content="Max" 
                 Background="Transparent"
                 Foreground="White"
@@ -39,7 +63,7 @@
                 Click="MaximizeButton_OnClick"/>
             
             <Button 
-                Grid.Column="3" 
+                Grid.Column="4" 
                 Content="X" 
                 Background="Transparent"
                 Foreground="White"

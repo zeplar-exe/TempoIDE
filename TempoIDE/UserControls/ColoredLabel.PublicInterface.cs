@@ -140,6 +140,39 @@ namespace TempoIDE.UserControls
         {
             return Characters[index];
         }
+        
+        public int GetLineCount()
+        {
+            return GetLines().Length;
+        }
+
+        public List<SyntaxChar>[] GetLines(bool omitNewLines = false)
+        {
+            var lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
+            var currentIndex = 0;
+
+            foreach (var character in Characters)
+            {
+                if (character.Value == ColoredLabel.NewLine)
+                {
+                    if (!omitNewLines)
+                        lines[currentIndex].Add(character);
+                    
+                    currentIndex++;
+
+                    lines.Add(new List<SyntaxChar>());
+                }
+                else
+                {
+                    lines[currentIndex].Add(character);
+                }
+            }
+
+            var arr = lines.ToArray();
+            lines = null; // Memory allocation issue fixed?
+
+            return arr;
+        }
 
         public IEnumerable<(int index, SyntaxChar character)> EnumerateCharacters()
         {

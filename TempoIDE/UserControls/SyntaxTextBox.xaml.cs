@@ -28,7 +28,7 @@ namespace TempoIDE.UserControls
 
                 var line = TextArea.GetLines()[value.Y];
                 
-                for (int columnNo = 0; columnNo < value.X; columnNo++)
+                for (var columnNo = 0; columnNo < value.X; columnNo++)
                 {
                     CaretRect = Rect.Offset(CaretRect, line[columnNo].Size.Width, 0);
                 }
@@ -109,7 +109,7 @@ namespace TempoIDE.UserControls
     
                 AutoComplete.Words.Children.Clear();
     
-                foreach (string word in autoCompletions)
+                foreach (var word in autoCompletions)
                 {
                     AutoComplete.Words.Children.Add(new TextBlock { Text = word });
                 }
@@ -128,7 +128,7 @@ namespace TempoIDE.UserControls
             var totalIndex = 0;
             var lines = TextArea.GetLines();
 
-            for (int lineNo = 0; lineNo < offset.Y; lineNo++)
+            for (var lineNo = 0; lineNo < offset.Y; lineNo++)
             {
                 totalIndex += lines[lineNo].Count;
             }
@@ -168,7 +168,7 @@ namespace TempoIDE.UserControls
             var lines = TextArea.GetLines();
 
             // ReSharper disable once ReplaceWithSingleAssignment.True
-            bool result = true;
+            var result = true;
 
             if (lines.Length <= offset.Y || offset.Y < 0)
                 result = false;

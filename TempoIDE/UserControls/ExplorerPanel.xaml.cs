@@ -102,7 +102,7 @@ namespace TempoIDE.UserControls
 
         private void AddDirectory(DirectoryInfo directory, int indentationLevel, Expander parent = null)
         {
-            foreach (string filePath in Directory.GetFileSystemEntries(directory.FullName))
+            foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
             {
                 if (Directory.Exists(filePath))
                 {
@@ -213,7 +213,7 @@ namespace TempoIDE.UserControls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            Size returnSize = new Size();
+            var returnSize = new Size();
             
             foreach (UIElement child in Children)
             {

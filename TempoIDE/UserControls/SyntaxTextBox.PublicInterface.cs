@@ -14,7 +14,7 @@ namespace TempoIDE.UserControls
             if (SelectionRange.Size == 0)
                 return string.Empty;
 
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
 
             foreach (int index in SelectionRange)
                 builder.Append(TextArea.GetCharacterAtIndex(index).Value);
@@ -92,7 +92,7 @@ namespace TempoIDE.UserControls
 
             for (; count > 0; count--)
             {
-                SyntaxChar character = TextArea.Characters[CaretIndex - 1];
+                var character = TextArea.Characters[CaretIndex - 1];
                 
                 TextArea.RemoveIndex(CaretIndex - 1);
                 
@@ -137,7 +137,7 @@ namespace TempoIDE.UserControls
 
         public string GetTypingWordAtIndex(int index, bool includeNumbers = false)
         {
-            string word = "";
+            var word = "";
             
             for (; index >= 0; index--)
             {

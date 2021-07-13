@@ -37,7 +37,7 @@ namespace TempoIDE.Classes
 
         public IEnumerator GetEnumerator()
         {
-            for (int integer = Start; integer < End; integer++)
+            for (var integer = Start; integer < End; integer++)
                 yield return integer;
         }
     }

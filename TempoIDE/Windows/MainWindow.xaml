@@ -92,12 +92,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <userControls:TopbarControl Grid.Row="0"/>
-            
             <Grid
                 Grid.Row="1">
                 
@@ -113,6 +107,9 @@
 
                 <userControls:EditorControl x:Name="Editor" Grid.Row="0" Grid.Column="2"/>
             </Grid>
+            
+            <userControls:TopbarControl Grid.Row="0"/>
+            <!-- TopbarControl must be placed here to correctly overlay -->
         </Grid>
     </Grid>
 </Window>

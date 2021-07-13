@@ -22,7 +22,7 @@ namespace TempoIDE.Classes.ColorSchemes
         public void Highlight(ColoredLabel textBox)
         {
             int? wordStartIndex = null;
-            string word = "";
+            var word = "";
 
             var xmlData = XmlLoader.Get("intellisense.cs");
             var keywords = new List<string>();
@@ -57,8 +57,8 @@ namespace TempoIDE.Classes.ColorSchemes
 
                     if (keywords.Contains(word))
                         textBox.UpdateIndex(new IntRange(
-                            (int)wordStartIndex, 
-                            (int)wordStartIndex + word.Length), 
+                            wordStartIndex.ToRealValue(), 
+                            wordStartIndex.ToRealValue() + word.Length), 
                             Identifier, new Typeface("Verdana"));
 
                     word = "";
@@ -72,8 +72,8 @@ namespace TempoIDE.Classes.ColorSchemes
             if (keywords.Contains(word))
             {
                 textBox.UpdateIndex(new IntRange(
-                    (int)wordStartIndex, 
-                    (int)wordStartIndex + word.Length),
+                        wordStartIndex.ToRealValue(), 
+                        wordStartIndex.ToRealValue() + word.Length),
                     Identifier,
                     new Typeface("Verdana")
                 );
@@ -90,8 +90,8 @@ namespace TempoIDE.Classes.ColorSchemes
                 keywords.Add(keyword.Value);
             }
             
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
-            CompilationUnitSyntax root = tree.GetCompilationUnitRoot();
+            var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
+            var root = tree.GetCompilationUnitRoot();
             
             var context = CaretContext.FromSyntaxTree(root);
             

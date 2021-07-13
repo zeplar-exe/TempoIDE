@@ -28,6 +28,9 @@
       <Compile Update="UserControls\SyntaxTextBox.Mouse.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\TopbarControl.WindowManipulations.cs">
+        <DependentUpon>TopbarControl.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
