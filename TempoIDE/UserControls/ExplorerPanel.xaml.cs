@@ -27,7 +27,8 @@ namespace TempoIDE.UserControls
         
         private const int IndentationSpace = 30;
 
-        private DirectoryInfo currentDirectory = new DirectoryInfo(@"C:\Users\zande\Code\C#\TempoIDE\TempoIDE\TempoIDE\ExplorerTest");
+        private DirectoryInfo currentDirectory = new DirectoryInfo(
+            Directory.CreateDirectory(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ExplorerTest")).FullName);
         
         private FileInfo openFile;
         private FileInfo OpenFile
