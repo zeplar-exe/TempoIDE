@@ -9,6 +9,8 @@
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         WindowStyle="None"
         AllowsTransparency="True"
+        KeyDown="MainWindow_OnKeyDown"
+        Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
     
     <Window.Resources>

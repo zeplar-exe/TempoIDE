@@ -31,6 +31,12 @@
       <Compile Update="UserControls\TopbarControl.WindowManipulations.cs">
         <DependentUpon>TopbarControl.xaml</DependentUpon>
       </Compile>
+      <Compile Update="UserControls\SyntaxTextBox.TryCommands.cs">
+        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\MainWindow.Resizers.cs">
+        <DependentUpon>MainWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -48,7 +54,6 @@
     <ItemGroup>
       <None Remove="packages\**" />
       <Compile Remove="ExplorerTest\stuff.cs" />
-      <None Include="ExplorerTest\stuff.cs" />
     </ItemGroup>
 
     <ItemGroup>

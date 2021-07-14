@@ -1,90 +1,81 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using System.Xml.Linq;
+using TempoIDE.Classes;
 
 namespace TempoIDE.Windows
 {
     public partial class MainWindow
     {
+        private List<AppCommand> Commands = new List<AppCommand>();
+        
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        #region ResizeWindows
-
-        private bool resizeInProcess;
-
-        private void Resize_Init(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Rectangle senderRect)
-            {
-                resizeInProcess = true;
-                senderRect.CaptureMouse();
-            }
-        }
-
-        private void Resize_End(object sender, MouseButtonEventArgs e)
-        {
-            if (sender is Rectangle senderRect)
-            {
-                resizeInProcess = false;
-                ;
-                senderRect.ReleaseMouseCapture();
-            }
-        }
-
-        private void Resizing_Form(object sender, MouseEventArgs e)
-        {
-            if (!resizeInProcess) 
-                return;
-            
-            var senderRect = sender as Rectangle;
-            var mainWindow = senderRect.Tag as Window;
-                
-            if (senderRect != null)
-            {
-                var width = e.GetPosition(mainWindow).X;
-                var height = e.GetPosition(mainWindow).Y;
-                senderRect.CaptureMouse();
-                if (senderRect.Name.ToLower().Contains("right"))
-                {
-                    width += 5;
-                    if (width > 0)
-                        mainWindow.Width = width;
-                }
-
-                if (senderRect.Name.ToLower().Contains("left"))
-                {
-                    width -= 5;
-                    mainWindow.Left += width;
-                    width = mainWindow.Width - width;
-                    if (width > 0) mainWindow.Width = width;
-                }
-
-                if (senderRect.Name.ToLower().Contains("bottom"))
-                {
-                    height += 5;
-                    if (height > 0)
-                        mainWindow.Height = height;
-                }
-
-                if (senderRect.Name.ToLower().Contains("top"))
-                {
-                    height -= 5;
-                    mainWindow.Top += height;
-                    height = mainWindow.Height - height;
-                    if (height > 0) mainWindow.Height = height;
-                }
-            }
-        }
-
-        #endregion
-
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             Editor.TextWriter();
+        }
+        
+        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            var commands = XmlLoader.Get("app.commands.edit");
+
+            foreach (var command in commands.Root.Elements("command"))
+            {
+                var name = command.Attribute("Name")?.Value;
+                var keybinds = command.Element("Keybind");
+
+                if (name is null)
+                {
+                    Console.WriteLine($@"WARNING: Xml attribute 'name' is not valid on element '{command.Name}' (in app.commands.edit.xml)");
+                    continue;
+                }
+
+                if (keybinds is null)
+                {
+                    Console.WriteLine($@"WARNING: Xml attribute 'Keybind' is not valid on element '{name}' (in app.commands.edit.xml)");
+                    return;
+                }
+                
+                Commands.Add(
+                    new AppCommand(name, ParseKeybindFromXElement(keybinds)
+                ));
+            }
+        }
+
+        private Keybind ParseKeybindFromXElement(XElement xml)
+        {
+            var keys = new List<Key>();
+            
+            foreach (var key in xml.Elements())
+            {
+                if (Enum.TryParse(key.Value, out Key parsed))
+                    keys.Add(parsed);
+                else
+                    Console.WriteLine($@"WARNING: Key '{key.Value}' is not valid.");
+            }
+
+            return new Keybind(keys.ToArray());
+        }
+
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        {
+            foreach (var command in Commands)
+            {
+                if (command.Keybind.IsPressed())
+                {
+                    AppCommands.FromAppCommand(command, this);
+
+                    e.Handled = true;
+                    break;
+                }
+            }
         }
     }
 }

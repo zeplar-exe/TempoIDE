@@ -13,11 +13,14 @@ namespace TempoIDE.Classes
         {
             LoadedXml.Clear();
             
+            
             LoadedXml.Add("intellisense.cs", XDocument.Parse(ProgramFiles.intellisense_cs));
+            
+            LoadedXml.Add("app.commands.edit", XDocument.Parse(ProgramFiles.app_commands_edit));
 
-            foreach (var pair in LoadedXml)
-                if (pair.Value.Root is null)
-                    throw new Exception($"Xml document '{pair.Key}' does not have a root.");
+            foreach (var (key, document) in LoadedXml)
+                if (document.Root is null)
+                    throw new Exception($"Xml document '{key}' does not have a root.");
         }
 
         public static XDocument Get(string name)

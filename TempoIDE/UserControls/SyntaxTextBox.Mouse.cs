@@ -16,7 +16,7 @@ namespace TempoIDE.UserControls
 
             selectStartXPosition = e.GetPosition(this).X;
 
-            Focus();
+            Keyboard.Focus(this);
             CaretOffset = GetCaretOffsetByClick(e);
 
             isSelecting = true;

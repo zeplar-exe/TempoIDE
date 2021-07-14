@@ -18,6 +18,18 @@ namespace TempoIDE.UserControls
                 typeof(TopbarMenuItem)
             );
 
+        public string Keybinds
+        {
+            get => (string) GetValue(KeybindsProperty);
+            set => SetValue(KeybindsProperty, value);
+        }
+
+        public static readonly DependencyProperty KeybindsProperty =
+            DependencyProperty.Register(
+                "Keybinds", typeof(string),
+                typeof(TopbarMenuItem)
+            );
+
         public TopbarMenuItem()
         {
             InitializeComponent();
@@ -26,6 +38,7 @@ namespace TempoIDE.UserControls
         private void TopbarMenuItem_OnLoaded(object sender, RoutedEventArgs e)
         {
             DescriptionTextBlock.Text = Description;
+            KeybindTextBlock.Text = Keybinds;
         }
     }
 }

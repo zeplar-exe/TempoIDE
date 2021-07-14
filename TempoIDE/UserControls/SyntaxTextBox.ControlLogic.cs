@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -55,15 +56,9 @@ namespace TempoIDE.UserControls
         {
             if (IsReadOnly)
                 return;
-            
-            foreach (var command in Commands)
-            {
-                if (command.Keybinds.All(Keyboard.IsKeyDown))
-                {
-                    command.Execute(this);
-                    e.Handled = true;
-                }
-            }
+
+            //if (ExecuteAnyCommand())
+                //e.Handled = true;
             
             switch (e.Key)
             {

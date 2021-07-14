@@ -60,6 +60,8 @@ namespace TempoIDE.UserControls
                     ItemsPanel.Visibility = Visibility.Collapsed;
                     Background = Brushes.Transparent;
                     
+                    OpenMenu = null;
+                    
                     return;
                 }
                 

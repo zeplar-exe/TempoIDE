@@ -40,8 +40,10 @@
                 
                 <local:TopbarMenu MenuName="Edit">
                     <local:TopbarMenu.Items>
-                        <local:TopbarMenuItem Description="Undo"/>
-                        <local:TopbarMenuItem Description="Redo"/>
+                        <local:TopbarMenuItem Description="Copy" Keybinds="Ctrl+C"/>
+                        <local:TopbarMenuItem Description="Paste" Keybinds="Ctrl+V"/>
+                        <local:TopbarMenuItem Description="Cut" Keybinds="Ctrl+X"/>
+                        <local:TopbarMenuItem Description="Select All" Keybinds="Ctrl+A"/>
                     </local:TopbarMenu.Items>
                 </local:TopbarMenu>
             </StackPanel>

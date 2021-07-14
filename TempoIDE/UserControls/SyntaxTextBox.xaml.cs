@@ -4,7 +4,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using TempoIDE.Classes;
-using TempoIDE.Classes.EditorCommands;
 
 namespace TempoIDE.UserControls
 {
@@ -56,14 +55,6 @@ namespace TempoIDE.UserControls
         
         public int LineHeight = 15;
         public new int FontSize = 14;
-
-        public readonly List<IEditorCommand> Commands = new List<IEditorCommand>()
-        {
-            new Copy(),
-            new Paste(),
-            new Cut(),
-            new SelectAll()
-        };
 
         public event RoutedEventHandler TextChanged;
 
@@ -181,39 +172,6 @@ namespace TempoIDE.UserControls
 
             return result;
         }
-        
-        /*private int GetLineCount()
-        {
-            return GetLines().Length;
-        }
-
-        private List<SyntaxChar>[] GetLines(bool omitNewLines = false)
-        {
-            List<List<SyntaxChar>> lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
-            int currentIndex = 0;
-
-            foreach (var character in TextArea.Characters)
-            {
-                if (character.Value == ColoredLabel.NewLine)
-                {
-                    if (!omitNewLines)
-                        lines[currentIndex].Add(character);
-                    
-                    currentIndex++;
-
-                    lines.Add(new List<SyntaxChar>());
-                }
-                else
-                {
-                    lines[currentIndex].Add(character);
-                }
-            }
-
-            var arr = lines.ToArray();
-            lines = null; // Memory allocation issue fixed?
-
-            return arr;
-        }*/
 
         private void CaretBlinkerThread()
         {
