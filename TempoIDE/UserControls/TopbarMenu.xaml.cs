@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -23,22 +24,22 @@ namespace TempoIDE.UserControls
                 typeof(TopbarMenu)
             );
 
-        public List<TopbarMenuItem> Items
+        public List<UIElement> Items
         {
-            get => (List<TopbarMenuItem>) GetValue(ItemsProperty);
+            get => (List<UIElement>) GetValue(ItemsProperty);
             set => SetValue(ItemsProperty, value);
         }
 
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register(
-                "Items", typeof(List<TopbarMenuItem>),
+                "Items", typeof(List<UIElement>),
                 typeof(TopbarMenu)
             );
 
         public TopbarMenu()
         {
             InitializeComponent();
-            Items = new List<TopbarMenuItem>();
+            Items = new List<UIElement>();
         }
 
         private void TopbarMenu_OnLoaded(object sender, RoutedEventArgs e)
@@ -46,7 +47,7 @@ namespace TempoIDE.UserControls
             MenuNameTextBlock.Text = MenuName;
 
             foreach (var item in Items)
-                ItemsPanel.Children.Add(item);
+                Menu.Items.Add(item);
         }
 
         private void TopbarMenu_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -57,7 +58,7 @@ namespace TempoIDE.UserControls
             {
                 if (OpenMenu == this)
                 {
-                    ItemsPanel.Visibility = Visibility.Collapsed;
+                    Menu.IsOpen = false;
                     Background = Brushes.Transparent;
                     
                     OpenMenu = null;
@@ -65,14 +66,15 @@ namespace TempoIDE.UserControls
                     return;
                 }
                 
-                OpenMenu.ItemsPanel.Visibility = Visibility.Collapsed;
+                OpenMenu.Menu.IsOpen = false;
                 OpenMenu.Background = Brushes.Transparent;
             }
             
             OpenMenu = this;
 
-            OpenMenu.Background = Resources["TopbarMenuSelectedColor"] as SolidColorBrush; //Brushes.Aquamarine;
-            ItemsPanel.Visibility = Visibility.Visible;
+            OpenMenu.Background = Resources["TopbarMenuSelectedColor"] as SolidColorBrush;
+            Menu.PlacementTarget = MenuNameTextBlock;
+            Menu.IsOpen = true;
         }
     }
 }

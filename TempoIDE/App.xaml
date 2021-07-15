@@ -6,6 +6,8 @@
     <Application.Resources>
         <SolidColorBrush x:Key="DarkBorderColor" Color="#333333"/>
         <SolidColorBrush x:Key="DarkToolbarBackgroundColor" Color="#4A4A4A"/>
+        <SolidColorBrush x:Key="DarkBaseTextColor" Color="White"/>
         <SolidColorBrush x:Key="DarkTextBoxBackgroundColor" Color="#1f1f1f"/>
+        <SolidColorBrush x:Key="DarkSeparatorColor" Color="Black"></SolidColorBrush>
     </Application.Resources>
 </Application>

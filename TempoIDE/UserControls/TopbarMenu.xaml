@@ -10,17 +10,18 @@
     <UserControl.Resources>
         <SolidColorBrush x:Key="TopbarMenuSelectedColor" Color="#466b8a"></SolidColorBrush>
     </UserControl.Resources>
-    
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Name="MenuNameTextBlock"/>
-        
-        <Border Grid.Row="1" Background="{StaticResource DarkToolbarBackgroundColor}" Visibility="Collapsed">
-            <StackPanel Name="ItemsPanel" MinWidth="140" Visibility="Collapsed" Background="{StaticResource DarkToolbarBackgroundColor}"/>
-        </Border>
-    </Grid>
-</UserControl>
+     
+     <UserControl.ContextMenu>
+         <ContextMenu 
+             Name="Menu" 
+             ContextMenuService.HorizontalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" 
+             Placement="Bottom"
+             Background="{StaticResource DarkToolbarBackgroundColor}"/>
+     </UserControl.ContextMenu>
+     
+    <TextBlock 
+        Name="MenuNameTextBlock"
+        Foreground="{StaticResource DarkBaseTextColor}" 
+        FontFamily="Roboto Thin" 
+        FontSize="13"/>
+ </UserControl>

@@ -24,7 +24,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
+    <Grid Margin="2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -98,8 +98,7 @@
             <!-- Topbar -->
             <Border
                 Grid.Row="0"
-                Grid.ZIndex="2"
-                MaxHeight="200"
+                Grid.ZIndex="200"
                 BorderBrush="{StaticResource DarkBorderColor}"
                 Background="Transparent"
                 BorderThickness="0, 0, 0, 1"
@@ -123,12 +122,20 @@
 
                         <local:TopbarMenu MenuName="File">
                             <local:TopbarMenu.Items>
-                                <local:TopbarMenuItem Description="Test" Keybinds="None"/>
+                                <MenuItem Header="New solution"/>
+                                <MenuItem Header="Open solution..."/>
                             </local:TopbarMenu.Items>
                         </local:TopbarMenu>
                             
                         <local:TopbarMenu MenuName="Edit">
-                            
+                            <local:TopbarMenu.Items>
+                                <MenuItem Header="Undo"/>
+                                <MenuItem Header="Redo"/>
+                                <local:ContextMenuSeparator/>
+                                <MenuItem Header="Copy"/>
+                                <MenuItem Header="Paste"/>
+                                <MenuItem Header="Cut"/>
+                            </local:TopbarMenu.Items>
                         </local:TopbarMenu>
                         
                         <local:TopbarMenu MenuName="View">
