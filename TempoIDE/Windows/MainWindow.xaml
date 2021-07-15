@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:userControls="clr-namespace:TempoIDE.UserControls"
+        xmlns:local="clr-namespace:TempoIDE.UserControls"
         mc:Ignorable="d"
         Background="#4A4A4A"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
@@ -12,31 +12,31 @@
         KeyDown="MainWindow_OnKeyDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
-    
+
     <Window.Resources>
         <Style x:Key="RectBorderStyle" TargetType="Rectangle">
             <Setter Property="Focusable" Value="False" />
             <Setter Property="Fill" Value="Transparent" />
             <Setter Property="Tag" Value="{Binding RelativeSource={RelativeSource AncestorType=Window}}" />
-            <EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init"/>
-            <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End"/>
-            <EventSetter Event="MouseMove" Handler="Resizing_Form"/>
+            <EventSetter Event="MouseLeftButtonDown" Handler="Resize_Init" />
+            <EventSetter Event="MouseLeftButtonUp" Handler="Resize_End" />
+            <EventSetter Event="MouseMove" Handler="Resizing_Form" />
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <!-- Window Resize Grips -->
         <Rectangle Grid.Column="0" Grid.Row="1"
                    Width="3"
@@ -87,31 +87,107 @@
                    VerticalAlignment="Bottom"
                    Cursor="SizeNESW"
                    Style="{StaticResource RectBorderStyle}" />
-        
+
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <Grid
-                Grid.Row="1">
-                
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <!-- Topbar -->
+            <Border
+                Grid.Row="0"
+                MaxHeight="18"
+                BorderBrush="{StaticResource DarkBorderColor}"
+                Background="Transparent"
+                BorderThickness="0, 0, 0, 1"
+                MouseDown="Topbar_OnMouseDown">
 
-                <userControls:EditorControl x:Name="Editor" Grid.Row="0" Grid.Column="2"/>
-            </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="25" />
+                        <ColumnDefinition Width="25" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <Style TargetType="{x:Type local:TopbarMenu}">
+                                <Setter Property="Margin" Value="3,0" />
+                            </Style>
+                        </StackPanel.Resources>
+
+                        <local:TopbarMenu MenuName="File">
+                            <local:TopbarMenu.Items>
+                                <local:TopbarMenuItem Description="Test" Keybinds="None"/>
+                            </local:TopbarMenu.Items>
+                        </local:TopbarMenu>
+                            
+                        <local:TopbarMenu MenuName="Edit">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="View">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="Navigation">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="Code">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="Build">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="Window">
+                            
+                        </local:TopbarMenu>
+                        
+                        <local:TopbarMenu MenuName="Help">
+                            
+                        </local:TopbarMenu>
+                    </StackPanel>
+
+                    <Button
+                        Grid.Column="2"
+                        Content="Min"
+                        Background="Transparent"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Click="MinimizeButton_OnClick" />
+
+                    <Button
+                        Grid.Column="3"
+                        Content="Max"
+                        Background="Transparent"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Click="MaximizeButton_OnClick" />
+
+                    <Button
+                        Grid.Column="4"
+                        Content="X"
+                        Background="Transparent"
+                        Foreground="White"
+                        BorderThickness="0"
+                        Click="CloseButton_OnClick" />
+                </Grid>
+            </Border>
             
-            <userControls:TopbarControl Grid.Row="0"/>
-            <!-- TopbarControl must be placed here to correctly overlay -->
+            <!-- Topbar... 2? -->
+            <Border Grid.Row="1"
+                Height="20"
+                BorderBrush="{StaticResource DarkBorderColor}"
+                BorderThickness="0, 0, 0, 1" />
+            
+            <local:EditorControl x:Name="Editor" Grid.Row="2" />
         </Grid>
     </Grid>
 </Window>

@@ -5,15 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300"
              PreviewMouseLeftButtonDown="TopbarMenu_OnPreviewMouseLeftButtonDown"
              Loaded="TopbarMenu_OnLoaded">
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="TopbarMenuSelectedColor" Color="#466b8a"></SolidColorBrush>
+    </UserControl.Resources>
     
-    <StackPanel>
-        <TextBlock Name="MenuNameTextBlock"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
         
-        <Canvas>
-            <StackPanel Name="ItemsPanel" Width="200" Visibility="Collapsed" ZIndex="2"/>
-        </Canvas>
-    </StackPanel>
+        <TextBlock Grid.Row="0" Name="MenuNameTextBlock"/>
+        
+        <!--Border Background="{StaticResource DarkToolbarBackgroundColor}" Visibility="Collapsed"-->
+        <StackPanel Grid.Row="1" Panel.ZIndex="2" Name="ItemsPanel" MinWidth="140" Visibility="Collapsed" Background="{StaticResource DarkToolbarBackgroundColor}"/>
+        <!--Border-->
+    </Grid>
 </UserControl>

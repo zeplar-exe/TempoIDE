@@ -17,9 +17,6 @@ namespace TempoIDE.UserControls
         private bool textChangedBeforeUpdate;
         private bool skipTextChanged;
 
-        private string selectedAutoComplete;
-        private string typingWord;
-
         public EditorControl()
         {
             InitializeComponent();

@@ -20,7 +20,7 @@ namespace TempoIDE.UserControls
         public static readonly DependencyProperty MenuNameProperty =
             DependencyProperty.Register(
                 "MenuName", typeof(string),
-                typeof(TopbarControl)
+                typeof(TopbarMenu)
             );
 
         public List<TopbarMenuItem> Items
@@ -71,7 +71,7 @@ namespace TempoIDE.UserControls
             
             OpenMenu = this;
 
-            OpenMenu.Background = Brushes.Aquamarine;
+            OpenMenu.Background = Resources["TopbarMenuSelectedColor"] as SolidColorBrush; //Brushes.Aquamarine;
             ItemsPanel.Visibility = Visibility.Visible;
         }
     }

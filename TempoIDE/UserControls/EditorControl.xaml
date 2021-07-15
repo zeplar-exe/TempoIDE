@@ -15,7 +15,7 @@
     <userControls:ExplorerPanel Grid.Column="0" MinWidth="120" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
 
     <GridSplitter 
-        Background="{StaticResource BaseBorderColor}"
+        Background="{StaticResource DarkBorderColor}"
         Grid.Row="0"
         Grid.Column="1" 
         VerticalAlignment="Stretch"
@@ -49,23 +49,24 @@
         <Grid Grid.Row="1" >
             <userControls:SyntaxTextBox
                 x:Name="TextEditor"
-                BorderBrush="{StaticResource BaseBorderColor}"
+                BorderBrush="{StaticResource DarkBorderColor}"
+                Background="{StaticResource DarkTextBoxBackgroundColor}"
                 BorderThickness="0, 1, 0, 1"
                 FontSize="17"
             
                 Loaded="TextEditor_OnLoaded"
-                TextChanged="TextEditor_OnTextChanged"><!--Background="#313131"-->
+                TextChanged="TextEditor_OnTextChanged">
                 
                 <userControls:SyntaxTextBox.ContextMenu>
                     <userControls:EditorContextMenu/>
                 </userControls:SyntaxTextBox.ContextMenu>
             </userControls:SyntaxTextBox>
             
-            <userControls:AutoCompleteBox
+            <!--<userControls:AutoCompleteBox
                 x:Name="AutoComplete"
                 Visibility="Collapsed" 
                 HorizontalAlignment="Left" 
-                VerticalAlignment="Top"/>
+                VerticalAlignment="Top"/>-->
         </Grid>
 
         <Grid Grid.Row="2">

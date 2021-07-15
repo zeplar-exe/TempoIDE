@@ -1,3 +1,4 @@
+using System;
 using System.Windows;
 using TempoIDE.Classes;
 
@@ -15,7 +16,7 @@ namespace TempoIDE.UserControls
         public bool TryCopyText()
         {
             var text = GetSelectedText();
-
+            
             if (string.IsNullOrEmpty(text)) 
                 return false;
             

@@ -4,7 +4,8 @@
              StartupUri="Windows/MainWindow.xaml"
              Startup="App_OnStartup">
     <Application.Resources>
-        <SolidColorBrush x:Key="BaseBorderColor" Color="#CECECE"/>
-        <SolidColorBrush x:Key="BaseBackgroundColor" Color="#4A4A4A"/>
+        <SolidColorBrush x:Key="DarkBorderColor" Color="#333333"/>
+        <SolidColorBrush x:Key="DarkToolbarBackgroundColor" Color="#4A4A4A"/>
+        <SolidColorBrush x:Key="DarkTextBoxBackgroundColor" Color="#1f1f1f"/>
     </Application.Resources>
 </Application>

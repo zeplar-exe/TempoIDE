@@ -1,11 +1,12 @@
+using System;
 using System.Windows;
 using System.Windows.Input;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.Windows
 {
-    public partial class TopbarControl
+    public partial class MainWindow
     {
-        private void OnMouseDown(object sender, MouseEventArgs e)
+        private void Topbar_OnMouseDown(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
                 Application.Current.MainWindow?.DragMove();
@@ -18,10 +19,15 @@ namespace TempoIDE.UserControls
 
         private void MaximizeButton_OnClick(object sender, RoutedEventArgs e)
         {
-            if (mainWindow?.WindowState == WindowState.Normal)
-                SystemCommands.MaximizeWindow(mainWindow);
+            if (WindowState == WindowState.Normal)
+                SystemCommands.MaximizeWindow(this);
             else
-                SystemCommands.RestoreWindow(mainWindow);
+                SystemCommands.RestoreWindow(this);
+        }
+        
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

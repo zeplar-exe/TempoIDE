@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
@@ -21,16 +22,18 @@ namespace TempoIDE.Classes.ColorSchemes
 
         public void Highlight(ColoredLabel textBox)
         {
-            int? wordStartIndex = null;
+            int? readStartIndex = null;
             var word = "";
 
             var xmlData = XmlLoader.Get("intellisense.cs");
-            var keywords = new List<string>();
+            // var keywords = new List<string>();
+            //
+            // foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
+            // {
+            //     keywords.Add(keyword.Value);
+            // }
 
-            foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
-            {
-                keywords.Add(keyword.Value);
-            }
+            var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
 
@@ -43,37 +46,40 @@ namespace TempoIDE.Classes.ColorSchemes
                 if (char.IsNumber(character))
                 {
                     textBox.UpdateIndex(charIndex, Number, new Typeface("Verdana"));
+                    
+                    if (readStartIndex != null)
+                        word += character;
                 }
                 else if (char.IsLetter(character))
                 {
-                    wordStartIndex ??= charIndex;
+                    readStartIndex ??= charIndex;
 
                     word += character;
                 }
                 else
                 {
-                    if (wordStartIndex == null)
+                    if (readStartIndex == null)
                         continue;
 
-                    if (keywords.Contains(word))
+                    if (keywords.Any(kw => word == kw.Value))
                         textBox.UpdateIndex(new IntRange(
-                            wordStartIndex.ToRealValue(), 
-                            wordStartIndex.ToRealValue() + word.Length), 
+                            readStartIndex.ToRealValue(), 
+                            readStartIndex.ToRealValue() + word.Length), 
                             Identifier, new Typeface("Verdana"));
 
                     word = "";
-                    wordStartIndex = null;
+                    readStartIndex = null;
                 }
             }
             
-            if (wordStartIndex == null)
+            if (readStartIndex == null)
                 return;
             
-            if (keywords.Contains(word))
+            if (keywords.Any(kw => word == kw.Value))
             {
                 textBox.UpdateIndex(new IntRange(
-                        wordStartIndex.ToRealValue(), 
-                        wordStartIndex.ToRealValue() + word.Length),
+                        readStartIndex.ToRealValue(), 
+                        readStartIndex.ToRealValue() + word.Length),
                     Identifier,
                     new Typeface("Verdana")
                 );
@@ -83,26 +89,17 @@ namespace TempoIDE.Classes.ColorSchemes
         public string[] GetAutoCompletions(SyntaxTextBox textBox)
         {
             var xmlData = XmlLoader.Get("intellisense.cs");
-            var keywords = new List<string>();
+            var keywords = xmlData.Root.Element("keywords").Elements("kw");
+            
+            // var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
+            // var root = tree.GetCompilationUnitRoot();
 
-            foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
-            {
-                keywords.Add(keyword.Value);
-            }
-            
-            var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
-            var root = tree.GetCompilationUnitRoot();
-            
-            var context = CaretContext.FromSyntaxTree(root);
-            
-            
-            
             var typingWord = textBox.GetTypingWordAtIndex(textBox.CaretIndex - 1);
             
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
             
-            return keywords.Where(kw => kw.StartsWith(typingWord) && kw != typingWord).ToArray();
+            return keywords.Select(kw => kw.Value).Where(kw => kw.StartsWith(typingWord) && kw != typingWord).ToArray();
         }
     }
 }

@@ -9,14 +9,11 @@ namespace TempoIDE.Classes
     {
         public readonly char Value;
         public readonly FormattedText FormattedText;
-
-        public readonly Brush ForegroundBrush;
         public readonly Size Size;
 
         public SyntaxChar(char value, CharDrawInfo info)
         {
             Value = value;
-            ForegroundBrush = info.Foreground;
 
             FormattedText = new FormattedText(
                 Value.ToString(),

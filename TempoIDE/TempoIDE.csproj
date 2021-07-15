@@ -28,13 +28,16 @@
       <Compile Update="UserControls\SyntaxTextBox.Mouse.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
-      <Compile Update="UserControls\TopbarControl.WindowManipulations.cs">
-        <DependentUpon>TopbarControl.xaml</DependentUpon>
-      </Compile>
       <Compile Update="UserControls\SyntaxTextBox.TryCommands.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
       <Compile Update="Windows\MainWindow.Resizers.cs">
+        <DependentUpon>MainWindow.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\MainWindow.Topbar.cs">
+        <DependentUpon>MainWindow.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\MainWindow.TopbarCommands.cs">
         <DependentUpon>MainWindow.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
