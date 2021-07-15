@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
-namespace TempoIDE.Classes.ColorSchemes
+namespace TempoIDE.Classes.SyntaxSchemes
 {
     public class CsSyntaxScheme : IProgrammingLanguageColorScheme
     {
@@ -26,33 +21,27 @@ namespace TempoIDE.Classes.ColorSchemes
             var word = "";
 
             var xmlData = XmlLoader.Get("intellisense.cs");
-            // var keywords = new List<string>();
-            //
-            // foreach (var keyword in xmlData.Root.Element("keywords").Elements("kw"))
-            // {
-            //     keywords.Add(keyword.Value);
-            // }
-
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
 
-            foreach (var character in text)
+            for (var index = 0; index < text.Length; index++)
             {
-                var charIndex = text.IndexOf(character);
-                
-                textBox.UpdateIndex(charIndex, Default, new Typeface("Verdana"));
-                
+                var character = text[index];
+
+                textBox.UpdateIndex(index, Default, new Typeface("Verdana"));
+
                 if (char.IsNumber(character))
                 {
-                    textBox.UpdateIndex(charIndex, Number, new Typeface("Verdana"));
-                    
                     if (readStartIndex != null)
                         word += character;
+                    else
+                        textBox.UpdateIndex(index, Number, new Typeface("Verdana"));
                 }
                 else if (char.IsLetter(character))
                 {
-                    readStartIndex ??= charIndex;
+                    if (readStartIndex == null)
+                        readStartIndex = index;
 
                     word += character;
                 }
@@ -63,26 +52,26 @@ namespace TempoIDE.Classes.ColorSchemes
 
                     if (keywords.Any(kw => word == kw.Value))
                         textBox.UpdateIndex(new IntRange(
-                            readStartIndex.ToRealValue(), 
-                            readStartIndex.ToRealValue() + word.Length), 
+                                readStartIndex.ToRealValue(),
+                                readStartIndex.ToRealValue() + word.Length),
                             Identifier, new Typeface("Verdana"));
-
+                    
                     word = "";
                     readStartIndex = null;
                 }
             }
-            
+
             if (readStartIndex == null)
                 return;
+            
+            Console.WriteLine((int)readStartIndex);
             
             if (keywords.Any(kw => word == kw.Value))
             {
                 textBox.UpdateIndex(new IntRange(
                         readStartIndex.ToRealValue(), 
-                        readStartIndex.ToRealValue() + word.Length),
-                    Identifier,
-                    new Typeface("Verdana")
-                );
+                        readStartIndex.ToRealValue() + word.Length), 
+                    Identifier, new Typeface("Verdana"));
             }
         }
 

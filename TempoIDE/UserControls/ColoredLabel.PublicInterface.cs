@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Windows.Media;
 using TempoIDE.Classes;
-using TempoIDE.Classes.ColorSchemes;
+using TempoIDE.Classes.SyntaxSchemes;
 
 namespace TempoIDE.UserControls
 {

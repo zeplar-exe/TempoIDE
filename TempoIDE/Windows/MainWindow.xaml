@@ -98,7 +98,8 @@
             <!-- Topbar -->
             <Border
                 Grid.Row="0"
-                MaxHeight="18"
+                Grid.ZIndex="2"
+                MaxHeight="200"
                 BorderBrush="{StaticResource DarkBorderColor}"
                 Background="Transparent"
                 BorderThickness="0, 0, 0, 1"
