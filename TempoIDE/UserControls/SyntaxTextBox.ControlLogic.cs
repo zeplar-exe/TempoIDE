@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes;
+using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -40,13 +41,7 @@ namespace TempoIDE.UserControls
             if (IsReadOnly)
                 return;
             
-            if (SelectionRange.Size > 0)
-            {
-                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
-            
-                TextArea.RemoveIndex(SelectionRange);
-                ClearSelection();
-            }
+            Backspace(0);
 
             AppendTextAtCaret(e.Text);
             UpdateAutoCompletion();
@@ -57,9 +52,6 @@ namespace TempoIDE.UserControls
             if (IsReadOnly)
                 return;
 
-            //if (ExecuteAnyCommand())
-                //e.Handled = true;
-            
             switch (e.Key)
             {
                 #region Special
@@ -100,7 +92,7 @@ namespace TempoIDE.UserControls
 
                     if (selectedAutoComplete == null)
                     {
-                        AppendTextAtCaret('\t');
+                        AppendTextAtCaret("    ");
                     }
                     else
                     {
@@ -139,14 +131,21 @@ namespace TempoIDE.UserControls
 
                     break;
                 }
-                case Key.Up: // TODO: AutoComplete navigation
+                case Key.Up:
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, -1);
 
                     if (VerifyCaretOffset(newPosition))
+                    {
+                        var index = GetCaretIndexAtOffset(newPosition);
+
+                        if (TextArea.GetCharacterAtIndex(index).Value == ColoredLabel.NewLine)
+                            newPosition -= new IntVector(1, 0);
+                        
                         CaretOffset = newPosition;
+                    }
 
                     break;
                 }

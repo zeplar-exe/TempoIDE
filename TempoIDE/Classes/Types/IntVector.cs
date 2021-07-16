@@ -1,4 +1,4 @@
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public struct IntVector
     {

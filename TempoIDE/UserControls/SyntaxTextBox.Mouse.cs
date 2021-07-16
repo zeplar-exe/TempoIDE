@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Classes;
+using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -25,6 +26,17 @@ namespace TempoIDE.UserControls
 
         private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
+            isSelecting = false;
+        }
+        
+        private void SyntaxTextBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            if (isSelecting)
+            {
+                CaretOffset = GetCaretOffsetByClick(e);
+                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
+            }
+
             isSelecting = false;
         }
 
@@ -75,6 +87,8 @@ namespace TempoIDE.UserControls
                 totalWidth += character.Size.Width;
                 column++;
             }
+
+            column = Math.Clamp(column, 0, Int32.MaxValue);
 
             return new IntVector(column, line);
         }

@@ -1,6 +1,10 @@
 using System;
 using System.Linq;
 using System.Windows.Media;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.SyntaxSchemes
@@ -63,9 +67,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
             if (readStartIndex == null)
                 return;
-            
-            Console.WriteLine((int)readStartIndex);
-            
+
             if (keywords.Any(kw => word == kw.Value))
             {
                 textBox.UpdateIndex(new IntRange(
@@ -80,11 +82,13 @@ namespace TempoIDE.Classes.SyntaxSchemes
             var xmlData = XmlLoader.Get("intellisense.cs");
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
             
-            // var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
-            // var root = tree.GetCompilationUnitRoot();
+            var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
+            var root = tree.GetCompilationUnitRoot();
+
+            // TODO: AutoComplete context
 
             var typingWord = textBox.GetTypingWordAtIndex(textBox.CaretIndex - 1);
-            
+                 
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
             

@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public readonly struct IntRange : IEnumerable
     {

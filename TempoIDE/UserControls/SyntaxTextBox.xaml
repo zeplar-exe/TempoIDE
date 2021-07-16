@@ -12,7 +12,8 @@
              GotFocus="SyntaxTextBox_OnGotFocus"
              LostFocus="SyntaxTextBox_OnLostFocus"
              TextInput="SyntaxTextBox_OnTextInput"
-             KeyDown="SyntaxTextBox_OnKeyDown">
+             KeyDown="SyntaxTextBox_OnKeyDown"
+             MouseLeave="SyntaxTextBox_OnMouseLeave">
     
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <userControls:ColoredLabel 

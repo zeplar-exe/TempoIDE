@@ -1,22 +1,8 @@
-using System;
-using System.Windows.Input;
-using System.Reflection;
+using TempoIDE.Classes.Types;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Classes
 {
-    public readonly struct AppCommand
-    {
-        public readonly string Name;
-        public readonly Keybind Keybind;
-
-        public AppCommand(string name, Keybind keybind)
-        {
-            Name = name;
-            Keybind = keybind;
-        }
-    }
-
     public static class AppCommands
     {
         public static void FromAppCommand(AppCommand command, MainWindow mainWindow)

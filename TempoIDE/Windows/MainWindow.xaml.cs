@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using TempoIDE.Classes;
+using TempoIDE.Classes.Types;
+using TempoIDE.UserControls;
 
 namespace TempoIDE.Windows
 {
@@ -24,28 +28,40 @@ namespace TempoIDE.Windows
         
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var commands = XmlLoader.Get("app.commands.edit");
+            var menus = XmlLoader.Get("app.commands");
 
-            foreach (var command in commands.Root.Elements("command"))
+            foreach (var menu in menus.Root.Elements("menu"))
             {
-                var name = command.Attribute("Name")?.Value;
-                var keybinds = command.Element("Keybind");
-
-                if (name is null)
-                {
-                    Console.WriteLine($@"WARNING: Xml attribute 'name' is not valid on element '{command.Name}' (in app.commands.edit.xml)");
-                    continue;
-                }
-
-                if (keybinds is null)
-                {
-                    Console.WriteLine($@"WARNING: Xml attribute 'Keybind' is not valid on element '{name}' (in app.commands.edit.xml)");
-                    return;
-                }
+                var menuName = menu.Attribute("Name")?.Value;
+                var commands = menu.Elements();
                 
-                Commands.Add(
-                    new AppCommand(name, ParseKeybindFromXElement(keybinds)
-                ));
+                var newMenu = new TopbarMenu { MenuName = menuName ?? "Menu" };
+
+                foreach (var command in commands)
+                {
+                    if (command.Name == "divider")
+                    {
+                        newMenu.Items.Add(new ContextMenuSeparator());
+                        continue;
+                    }
+                    
+                    var commandName = command.Attribute("Name")?.Value;
+                    var keybinds = command.Element("Keybind");
+
+                    if (commandName is null)
+                    {
+                        Console.WriteLine($@"WARNING: Xml attribute 'Name' is not valid on element '{command.Name}' (in app.commands.xml)");
+                        commandName = "Command";
+                    }
+
+                    var keybind = ParseKeybindFromXElement(keybinds);
+
+                    newMenu.Items.Add(new MenuItem { Header = commandName, InputGestureText = keybind.ToString()/* TODO: Keybinds */ });
+
+                    Commands.Add(new AppCommand(commandName, keybind));
+                }
+
+                TopbarMenu.Children.Add(newMenu);
             }
         }
 
@@ -53,11 +69,14 @@ namespace TempoIDE.Windows
         {
             var keys = new List<Key>();
             
+            if (xml is null)
+                return new Keybind(keys.ToArray());
+            
             foreach (var key in xml.Elements())
             {
                 if (Enum.TryParse(key.Value, out Key parsed))
                     keys.Add(parsed);
-                else
+                else if (key.Value != "None")
                     Console.WriteLine($@"WARNING: Key '{key.Value}' is not valid.");
             }
 

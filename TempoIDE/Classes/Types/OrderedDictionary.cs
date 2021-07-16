@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public class OrderedDictionary<TK, TV> : List<KeyValuePair<TK, TV>>
     {

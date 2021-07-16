@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.SyntaxSchemes;
+using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {

@@ -2,7 +2,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     // TODO: Set this back to a struct if performance dwindles
     public readonly struct SyntaxChar

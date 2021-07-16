@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <menu Name="File">
+        <command Name="New solution"/>
+        <command Name="Open solution..."/>
+        <command Name="Close solution"/>
+        <divider/>
+        <command Name="Settings"/>
+    </menu>
+    
+    <menu Name="Edit">
+        <command Name="Copy">
+            <Keybind>
+                <Key>LeftCtrl</Key>
+                <Key>C</Key>
+            </Keybind>
+        </command>
+        
+        <command Name="Paste">
+            <Keybind>
+                <Key>LeftCtrl</Key>
+                <Key>V</Key>
+            </Keybind>
+        </command>
+    
+        <command Name="Cut">
+            <Keybind>
+                <Key>LeftCtrl</Key>
+                <Key>X</Key>
+            </Keybind>
+        </command>
+        
+        <command Name="Select All">
+            <Keybind>
+                <Key>LeftCtrl</Key>
+                <Key>A</Key>
+            </Keybind>
+        </command>
+    </menu>
+    
+    <menu Name="View">
+        
+    </menu>
+    
+    <menu Name="Navigation">
+        
+    </menu>
+    
+    <menu Name="Code">
+        
+    </menu>
+    
+    <menu Name="Build">
+        
+    </menu>
+    
+    <menu Name="Window">
+        
+    </menu>
+</root>

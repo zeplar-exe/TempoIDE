@@ -1,7 +1,7 @@
 using System.Windows;
 using TempoIDE.UserControls;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public delegate void FileTabEventHandler(object sender, FileTabEventArgs e);
     

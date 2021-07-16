@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public readonly struct CharDrawInfo
     {

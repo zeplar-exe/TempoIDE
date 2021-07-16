@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes;
+using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {

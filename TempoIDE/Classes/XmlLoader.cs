@@ -16,7 +16,7 @@ namespace TempoIDE.Classes
             
             LoadedXml.Add("intellisense.cs", XDocument.Parse(ProgramFiles.intellisense_cs));
             
-            LoadedXml.Add("app.commands.edit", XDocument.Parse(ProgramFiles.app_commands_edit));
+            LoadedXml.Add("app.commands", XDocument.Parse(ProgramFiles.app_commands));
 
             foreach (var (key, document) in LoadedXml)
                 if (document.Root is null)

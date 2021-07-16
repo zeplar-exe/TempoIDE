@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes;
+using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -77,18 +78,25 @@ namespace TempoIDE.UserControls
 
         public void Backspace(int count)
         {
-            if (TextArea.Characters.Count == 0 || CaretIndex == 0)
+            if (TextArea.Characters.Count == 0)
                 return;
 
-            if (SelectionRange.Size > 0)
+            var range = SelectionRange.Arrange();
+
+            if (range.Size > 0)
             {
-                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
+                CaretOffset = GetCaretOffsetAtIndex(range.Start);
                 
-                TextArea.RemoveIndex(SelectionRange);
+                TextArea.RemoveIndex(range);
                 ClearSelection();
+                
+                UpdateAutoCompletion();
                 
                 return;
             }
+            
+            if (CaretIndex == 0)
+                return;
 
             for (; count > 0; count--)
             {
@@ -119,6 +127,8 @@ namespace TempoIDE.UserControls
                 TextArea.RemoveIndex(SelectionRange);
                 ClearSelection();
                 
+                UpdateAutoCompletion();
+                
                 return;
             }
             
@@ -126,6 +136,8 @@ namespace TempoIDE.UserControls
                 return;
 
             TextArea.RemoveIndex(new IntRange(CaretIndex, CaretIndex + count));
+            
+            UpdateAutoCompletion();
         }
 
         public void Clear()

@@ -37,9 +37,6 @@
       <Compile Update="Windows\MainWindow.Topbar.cs">
         <DependentUpon>MainWindow.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Windows\MainWindow.TopbarCommands.cs">
-        <DependentUpon>MainWindow.xaml</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

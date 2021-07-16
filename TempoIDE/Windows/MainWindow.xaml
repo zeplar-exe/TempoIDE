@@ -113,14 +113,14 @@
                         <ColumnDefinition Width="25" />
                     </Grid.ColumnDefinitions>
                     
-                    <StackPanel Grid.Column="0" Orientation="Horizontal">
+                    <StackPanel Name="TopbarMenu" Grid.Column="0" Orientation="Horizontal">
                         <StackPanel.Resources>
                             <Style TargetType="{x:Type local:TopbarMenu}">
                                 <Setter Property="Margin" Value="3,0" />
                             </Style>
                         </StackPanel.Resources>
 
-                        <local:TopbarMenu MenuName="File">
+                        <!--<local:TopbarMenu MenuName="File">
                             <local:TopbarMenu.Items>
                                 <MenuItem Header="New solution"/>
                                 <MenuItem Header="Open solution..."/>
@@ -160,7 +160,7 @@
                         
                         <local:TopbarMenu MenuName="Help">
                             
-                        </local:TopbarMenu>
+                        </local:TopbarMenu>-->
                     </StackPanel>
 
                     <Button

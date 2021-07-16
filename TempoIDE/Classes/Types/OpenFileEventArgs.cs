@@ -1,7 +1,7 @@
 using System.IO;
 using System.Windows;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public delegate void OpenFileEventHandler(object sender, OpenFileEventArgs e);
     

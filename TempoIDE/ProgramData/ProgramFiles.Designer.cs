@@ -62,32 +62,30 @@ namespace TempoIDE.ProgramData {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;!-- NOTE! Whitespace in names is replaced with an empty string --&gt;
         ///&lt;root&gt;
-        ///    &lt;command Name=&quot;Copy&quot;&gt;
-        ///        &lt;Keybind&gt;
-        ///            &lt;Key&gt;LeftCtrl&lt;/Key&gt;
-        ///            &lt;Key&gt;C&lt;/Key&gt;
-        ///        &lt;/Keybind&gt;
-        ///    &lt;/command&gt;
+        ///    &lt;menu Name=&quot;File&quot;&gt;
+        ///        &lt;command Name=&quot;New solution&quot;/&gt;
+        ///        &lt;command Name=&quot;Open solution...&quot;/&gt;
+        ///        &lt;command Name=&quot;Close solution&quot;/&gt;
+        ///        &lt;divider/&gt;
+        ///        &lt;command Name=&quot;Settings&quot;/&gt;
+        ///    &lt;/menu&gt;
         ///    
-        ///    &lt;command Name=&quot;Paste&quot;&gt;
-        ///        &lt;Keybind&gt;
-        ///            &lt;Key&gt;LeftCtrl&lt;/Key&gt;
-        ///            &lt;Key&gt;V&lt;/Key&gt;
-        ///        &lt;/Keybind&gt;
-        ///    &lt;/command&gt;
-        ///
-        ///    &lt;command Name=&quot;Cut&quot;&gt;
-        ///        &lt;Keybind&gt;
-        ///            &lt;Key&gt;LeftCtrl&lt;/Key&gt;
-        ///            &lt;Key&gt;X&lt;/Key&gt;
-        ///        &lt;/Keybind&gt;
-        ///   [rest of string was truncated]&quot;;.
+        ///    &lt;menu Name=&quot;Edit&quot;&gt;
+        ///        &lt;command Name=&quot;Copy&quot;&gt;
+        ///            &lt;Keybind&gt;
+        ///                &lt;Key&gt;LeftCtrl&lt;/Key&gt;
+        ///                &lt;Key&gt;C&lt;/Key&gt;
+        ///            &lt;/Keybind&gt;
+        ///        &lt;/command&gt;
+        ///        
+        ///        &lt;command Name=&quot;Paste&quot;&gt;
+        ///            &lt;Keybind&gt;
+        ///      [rest of string was truncated]&quot;;.
         /// </summary>
-        internal static string app_commands_edit {
+        internal static string app_commands {
             get {
-                return ResourceManager.GetString("app_commands_edit", resourceCulture);
+                return ResourceManager.GetString("app_commands", resourceCulture);
             }
         }
         
