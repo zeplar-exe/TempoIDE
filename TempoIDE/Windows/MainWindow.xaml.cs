@@ -28,7 +28,7 @@ namespace TempoIDE.Windows
         
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var menus = XmlLoader.Get("app.commands");
+            var menus = ResourceCache.Get("app.commands");
 
             foreach (var menu in menus.Root.Elements("menu"))
             {
@@ -55,12 +55,18 @@ namespace TempoIDE.Windows
                     }
 
                     var keybind = ParseKeybindFromXElement(keybinds);
-
-                    newMenu.Items.Add(new MenuItem { Header = commandName, InputGestureText = keybind.ToString()/* TODO: Keybinds */ });
+                    
+                    newMenu.Items.Add(new MenuItem
+                    {
+                        Header = commandName,
+                        CommandParameter = this,
+                        Command = (ICommand) AppCommands.FromName(commandName) ?? new RoutedCommand(),
+                        InputGestureText = keybind.ToString()
+                    });
 
                     Commands.Add(new AppCommand(commandName, keybind));
                 }
-
+                
                 TopbarMenu.Children.Add(newMenu);
             }
         }
@@ -85,11 +91,13 @@ namespace TempoIDE.Windows
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
+            return;
+            
             foreach (var command in Commands)
             {
                 if (command.Keybind.IsPressed())
                 {
-                    AppCommands.FromAppCommand(command, this);
+                    
 
                     e.Handled = true;
                     break;

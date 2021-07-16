@@ -11,7 +11,7 @@ namespace TempoIDE
             ConsoleManager.Show();
             #endif
             
-            XmlLoader.Load();
+            ResourceCache.Load();
         }
     }
 }

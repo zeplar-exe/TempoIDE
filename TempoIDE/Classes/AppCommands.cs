@@ -1,3 +1,5 @@
+using System;
+using System.Windows.Input;
 using TempoIDE.Classes.Types;
 using TempoIDE.Windows;
 
@@ -5,29 +7,87 @@ namespace TempoIDE.Classes
 {
     public static class AppCommands
     {
-        public static void FromAppCommand(AppCommand command, MainWindow mainWindow)
+        public static object FromName(string commandName)
         {
-            typeof(AppCommands).GetMethod(command.Name.Replace(" ", string.Empty))?.Invoke(null, new object[] { mainWindow });
+            var type = typeof(AppCommands).GetNestedType(commandName.Replace(" ", ""));
+
+            return type == null ? null : Activator.CreateInstance(type);
+        }
+
+        public class Copy : ICommand
+        {
+            public bool CanExecute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+            }
+
+            public void Execute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                window.Editor.TextEditor.TryCopyText();
+            }
+
+            public event EventHandler CanExecuteChanged;
         }
         
-        public static void Copy(MainWindow mainWindow)
+        public class Paste : ICommand
         {
-            mainWindow.Editor.TextEditor.TryCopyText();
+            public bool CanExecute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+            }
+
+            public void Execute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                window.Editor.TextEditor.TryPasteText();
+            }
+
+            public event EventHandler CanExecuteChanged;
         }
 
-        public static void Paste(MainWindow mainWindow)
+        public class Cut : ICommand
         {
-            mainWindow.Editor.TextEditor.TryPasteText();
+            public bool CanExecute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+            }
+
+            public void Execute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                window.Editor.TextEditor.TryCutText();
+            }
+
+            public event EventHandler CanExecuteChanged;
         }
 
-        public static void Cut(MainWindow mainWindow)
+        public class SelectAll : ICommand
         {
-            mainWindow.Editor.TextEditor.TryCutText();
-        }
+            public bool CanExecute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+            }
 
-        public static void SelectAll(MainWindow mainWindow)
-        {
-            mainWindow.Editor.TextEditor.TrySelectAll();
+            public void Execute(object parameter)
+            {
+                var window = parameter as MainWindow;
+                
+                window.Editor.TextEditor.TrySelectAll();
+            }
+
+            public event EventHandler CanExecuteChanged;
         }
     }
 }

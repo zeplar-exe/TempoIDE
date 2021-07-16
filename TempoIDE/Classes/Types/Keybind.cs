@@ -1,25 +1,26 @@
+using System;
 using System.Linq;
 using System.Windows.Input;
 
 namespace TempoIDE.Classes.Types
 {
-    public struct Keybind
+    public readonly struct Keybind
     {
-        public readonly Key[] Keys;
+        private readonly Key[] keys;
 
         public Keybind(Key[] keys)
         {
-            Keys = keys;
+            this.keys = keys;
         }
 
-        public readonly bool IsPressed()
+        public bool IsPressed()
         {
-            return Keys.All(Keyboard.IsKeyDown);
+            return keys.Length > 1 && keys.All(Keyboard.IsKeyDown);
         }
 
         public override string ToString()
         {
-            return string.Join("+", Keys);
+            return string.Join("+", keys);
         }
     }
 }

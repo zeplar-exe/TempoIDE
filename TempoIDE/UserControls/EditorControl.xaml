@@ -12,7 +12,7 @@
         <ColumnDefinition Width="*"/>
     </Grid.ColumnDefinitions>
 
-    <userControls:ExplorerPanel Grid.Column="0" MinWidth="120" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+    <userControls:ExplorerPanel x:Name="Explorer" Grid.Column="0" MinWidth="120" OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
 
     <GridSplitter 
         Background="{StaticResource DarkBorderColor}"

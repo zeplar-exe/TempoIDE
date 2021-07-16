@@ -16,11 +16,6 @@
       <Compile Update="UserControls\SyntaxTextBox.PublicInterface.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
-      <Compile Update="ProgramData\ProgramFiles.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ProgramFiles.resx</DependentUpon>
-      </Compile>
       <Compile Remove="packages\**" />
       <Compile Update="UserControls\ColoredLabel.PublicInterface.cs">
         <DependentUpon>ColoredLabel.xaml</DependentUpon>
@@ -44,11 +39,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="ProgramData\ProgramFiles.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ProgramFiles.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
       <EmbeddedResource Remove="packages\**" />
+      <None Remove="ProgramData\intellisense.cs.xml" />
+      <EmbeddedResource Include="Resources\intellisense-cs.xml" />
+      <None Remove="ProgramData\app.commands.xml" />
+      <EmbeddedResource Include="Resources\app-commands.xml" />
     </ItemGroup>
 
     <ItemGroup>

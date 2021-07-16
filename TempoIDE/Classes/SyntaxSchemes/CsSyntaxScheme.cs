@@ -24,7 +24,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
             int? readStartIndex = null;
             var word = "";
 
-            var xmlData = XmlLoader.Get("intellisense.cs");
+            var xmlData = ResourceCache.Get("intellisense.cs");
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
@@ -79,7 +79,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public string[] GetAutoCompletions(SyntaxTextBox textBox)
         {
-            var xmlData = XmlLoader.Get("intellisense.cs");
+            var xmlData = ResourceCache.Get("intellisense.cs");
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
             
             var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
