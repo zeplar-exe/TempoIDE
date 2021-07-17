@@ -7,13 +7,6 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox
     {
-        public bool TrySelectAll()
-        {
-            SelectionRange = new IntRange(0, TextArea.Text.Length);
-
-            return true;
-        }
-
         public bool TryCopyText()
         {
             var text = GetSelectedText();
@@ -57,6 +50,13 @@ namespace TempoIDE.UserControls
             Clipboard.SetText(text, TextDataFormat.UnicodeText);
             Backspace(0);
         
+            return true;
+        }
+        
+        public bool TrySelectAll()
+        {
+            SelectionRange = new IntRange(0, TextArea.Text.Length);
+            
             return true;
         }
     }

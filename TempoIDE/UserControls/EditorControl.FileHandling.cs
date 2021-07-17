@@ -101,11 +101,6 @@ namespace TempoIDE.UserControls
             }
         }
 
-        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
-        {
-            Dispatcher.Invoke(() => { OpenFile(e.NewFile); });
-        }
-        
         private const int WriterCooldown = 2;
 
         private void TextWriterThread()

@@ -9,7 +9,6 @@
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         WindowStyle="None"
         AllowsTransparency="True"
-        KeyDown="MainWindow_OnKeyDown"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
 
@@ -195,7 +194,31 @@
                 BorderBrush="{StaticResource DarkBorderColor}"
                 BorderThickness="0, 0, 0, 1" />
             
-            <local:EditorControl x:Name="Editor" Grid.Row="2" />
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <local:ExplorerPanel
+                    Grid.Column="0"
+                    x:Name="Explorer" 
+                    MinWidth="120" 
+                    GotFocus="Explorer_OnGotFocus" 
+                    OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+
+                <GridSplitter 
+                    Background="{StaticResource DarkBorderColor}"
+                    Grid.Column="1" 
+                    VerticalAlignment="Stretch"
+                    Width="1"/>
+                
+                <local:EditorControl 
+                    Grid.Column="2" 
+                    x:Name="Editor" 
+                    GotFocus="Editor_OnGotFocus" />
+            </Grid>
         </Grid>
     </Grid>
 </Window>

@@ -20,7 +20,7 @@ namespace TempoIDE.Classes
             {
                 var window = parameter as MainWindow;
                 
-                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+                return window.Editor.TextEditor.IsFocused || window.Explorer.IsFocused;
             }
 
             public void Execute(object parameter)
@@ -39,7 +39,7 @@ namespace TempoIDE.Classes
             {
                 var window = parameter as MainWindow;
                 
-                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+                return window.Editor.TextEditor.IsFocused || window.Explorer.IsFocused;
             }
 
             public void Execute(object parameter)
@@ -58,7 +58,7 @@ namespace TempoIDE.Classes
             {
                 var window = parameter as MainWindow;
                 
-                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+                return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
             }
 
             public void Execute(object parameter)
@@ -77,7 +77,7 @@ namespace TempoIDE.Classes
             {
                 var window = parameter as MainWindow;
                 
-                return window.Editor.TextEditor.IsFocused || window.Editor.Explorer.IsFocused;
+                return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
             }
 
             public void Execute(object parameter)

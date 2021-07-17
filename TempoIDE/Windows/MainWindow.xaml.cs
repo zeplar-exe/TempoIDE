@@ -14,8 +14,6 @@ namespace TempoIDE.Windows
 {
     public partial class MainWindow
     {
-        private List<AppCommand> Commands = new List<AppCommand>();
-        
         public MainWindow()
         {
             InitializeComponent();
@@ -53,8 +51,8 @@ namespace TempoIDE.Windows
                         Console.WriteLine($@"WARNING: Xml attribute 'Name' is not valid on element '{command.Name}' (in app.commands.xml)");
                         commandName = "Command";
                     }
-
-                    var keybind = ParseKeybindFromXElement(keybinds);
+                    
+                    var keybind = ParseKeybindingFromXElement(keybinds);
                     
                     newMenu.Items.Add(new MenuItem
                     {
@@ -63,18 +61,16 @@ namespace TempoIDE.Windows
                         Command = (ICommand) AppCommands.FromName(commandName) ?? new RoutedCommand(),
                         InputGestureText = keybind.ToString()
                     });
-
-                    Commands.Add(new AppCommand(commandName, keybind));
                 }
-                
+
                 TopbarMenu.Children.Add(newMenu);
             }
         }
 
-        private Keybind ParseKeybindFromXElement(XElement xml)
+        private Keybind ParseKeybindingFromXElement(XElement xml)
         {
             var keys = new List<Key>();
-            
+
             if (xml is null)
                 return new Keybind(keys.ToArray());
             
@@ -89,20 +85,19 @@ namespace TempoIDE.Windows
             return new Keybind(keys.ToArray());
         }
 
-        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
+        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
         {
-            return;
-            
-            foreach (var command in Commands)
-            {
-                if (command.Keybind.IsPressed())
-                {
-                    
+            Editor.OpenFile(e.NewFile);
+        }
 
-                    e.Handled = true;
-                    break;
-                }
-            }
+        private void Editor_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested);
+        }
+
+        private void Explorer_OnGotFocus(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested); // TODO: Doesn't work at all
         }
     }
 }
