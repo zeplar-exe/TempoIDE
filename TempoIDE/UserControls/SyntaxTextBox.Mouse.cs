@@ -36,7 +36,7 @@ namespace TempoIDE.UserControls
                 CaretOffset = GetCaretOffsetByClick(e);
                 SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
             }
-
+            
             isSelecting = false;
         }
 
@@ -63,30 +63,31 @@ namespace TempoIDE.UserControls
             var column = 0;
             var totalWidth = 0d;
 
-            foreach (var character in lines[line])
-            {
-                if (character.Value == ColoredLabel.NewLine)
-                    break;
-                
-                if (clickPos.X > selectStartXPosition)
+            if (clickPos.X > 0)
+                foreach (var character in lines[line])
                 {
-                    if (totalWidth > clickPos.X)
-                    {
+                    if (character.Value == ColoredLabel.NewLine)
                         break;
-                    }
-                }
-                else
-                {
-                    if (totalWidth > clickPos.X)
+                    
+                    if (clickPos.X > selectStartXPosition)
                     {
-                        column--;
-                        break;
+                        if (totalWidth > clickPos.X)
+                        {
+                            break;
+                        }
                     }
-                }
+                    else
+                    {
+                        if (totalWidth > clickPos.X)
+                        {
+                            column--;
+                            break;
+                        }
+                    }
 
-                totalWidth += character.Size.Width;
-                column++;
-            }
+                    totalWidth += character.Size.Width;
+                    column++;
+                }
 
             column = Math.Clamp(column, 0, Int32.MaxValue);
 

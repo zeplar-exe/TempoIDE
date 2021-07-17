@@ -16,7 +16,13 @@
              Name="Menu" 
              ContextMenuService.HorizontalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" 
              Placement="Bottom"
-             Background="{StaticResource DarkToolbarBackgroundColor}"/>
+             Background="{StaticResource DarkToolbarBackgroundColor}">
+             <ContextMenu.Resources>
+                 <Style TargetType="{x:Type MenuItem}">
+                     <Setter Property="Foreground" Value="{StaticResource DarkBaseTextColor}"/>
+                 </Style>
+             </ContextMenu.Resources> 
+         </ContextMenu>
      </UserControl.ContextMenu>
      
     <TextBlock 

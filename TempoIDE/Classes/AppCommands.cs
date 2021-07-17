@@ -30,7 +30,11 @@ namespace TempoIDE.Classes
                 window.Editor.TextEditor.TryCopyText();
             }
 
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
         }
         
         public class Paste : ICommand
@@ -49,7 +53,11 @@ namespace TempoIDE.Classes
                 window.Editor.TextEditor.TryPasteText();
             }
 
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
         }
 
         public class Cut : ICommand
@@ -68,7 +76,11 @@ namespace TempoIDE.Classes
                 window.Editor.TextEditor.TryCutText();
             }
 
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
         }
 
         public class SelectAll : ICommand
@@ -87,7 +99,11 @@ namespace TempoIDE.Classes
                 window.Editor.TextEditor.TrySelectAll();
             }
 
-            public event EventHandler CanExecuteChanged;
+            public event EventHandler CanExecuteChanged
+            {
+                add => CommandManager.RequerySuggested += value;
+                remove => CommandManager.RequerySuggested -= value;
+            }
         }
     }
 }
