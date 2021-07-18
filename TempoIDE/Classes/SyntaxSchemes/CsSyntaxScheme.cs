@@ -1,9 +1,6 @@
-using System;
 using System.Linq;
 using System.Windows.Media;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 

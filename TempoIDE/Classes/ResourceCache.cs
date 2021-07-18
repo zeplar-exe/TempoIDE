@@ -2,9 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Windows;
 using System.Xml.Linq;
-using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes
 {
@@ -14,9 +12,9 @@ namespace TempoIDE.Classes
 
         private static readonly Dictionary<string, string> RequiredFiles = new Dictionary<string, string>
         {
-            {"app.commands", "TempoIDE.Resources.app-commands.xml"},
+            {"app.commands", "TempoIDE.Resources.Configs.app-commands.xml"},
             
-            {"intellisense.cs", "TempoIDE.Resources.intellisense-cs.xml"},
+            {"intellisense.cs", "TempoIDE.Resources.Configs.intellisense-cs.xml"},
         };
 
         public static void Load()

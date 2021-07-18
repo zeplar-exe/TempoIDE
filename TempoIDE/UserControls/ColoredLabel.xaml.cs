@@ -1,10 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TempoIDE.Classes;
 using TempoIDE.Classes.SyntaxSchemes;
 using TempoIDE.Classes.Types;
 

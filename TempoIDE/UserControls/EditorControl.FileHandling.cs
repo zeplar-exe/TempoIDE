@@ -1,7 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading;
-using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls

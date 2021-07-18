@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace TempoIDE.Classes
@@ -16,9 +15,9 @@ namespace TempoIDE.Classes
             return collection[^1];
         }
 
-        public static TType ToRealValue<TType>(this TType? nullable) where TType : struct
+        public static T ToRealValue<T>(this T? nullable) where T : struct
         {
-            return (TType) nullable;
+            return (T) nullable;
         }
     }
 }

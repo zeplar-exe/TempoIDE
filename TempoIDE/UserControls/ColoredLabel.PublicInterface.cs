@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Windows.Media;
-using TempoIDE.Classes;
 using TempoIDE.Classes.SyntaxSchemes;
 using TempoIDE.Classes.Types;
 

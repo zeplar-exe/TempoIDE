@@ -40,10 +40,10 @@
 
     <ItemGroup>
       <EmbeddedResource Remove="packages\**" />
+      <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
       <None Remove="ProgramData\intellisense.cs.xml" />
-      <EmbeddedResource Include="Resources\intellisense-cs.xml" />
+      <EmbeddedResource Include="Resources\Configs\app-commands.xml" />
       <None Remove="ProgramData\app.commands.xml" />
-      <EmbeddedResource Include="Resources\app-commands.xml" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,6 +53,10 @@
 
     <ItemGroup>
       <Page Remove="packages\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Images" />
     </ItemGroup>
 
 </Project>

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -45,12 +43,15 @@ namespace TempoIDE.UserControls
         private void TopbarMenu_OnLoaded(object sender, RoutedEventArgs e)
         {
             MenuNameTextBlock.Text = MenuName;
+            Menu.PlacementTarget = MenuNameTextBlock;
 
             foreach (var item in Items)
                 Menu.Items.Add(item);
+            
+            Menu.Closed += OnMenuClosed;
         }
 
-        private void TopbarMenu_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void TopbarMenu_OnPreviewMouseLeftButtonDown(object sender, RoutedEventArgs e)
         {
             // TODO: Clean this up
             
@@ -73,8 +74,14 @@ namespace TempoIDE.UserControls
             OpenMenu = this;
 
             OpenMenu.Background = Resources["TopbarMenuSelectedColor"] as SolidColorBrush;
-            Menu.PlacementTarget = MenuNameTextBlock;
             Menu.IsOpen = true;
+        }
+
+        private void OnMenuClosed(object sender, RoutedEventArgs e)
+        {
+            Background = Brushes.Transparent;
+                    
+            OpenMenu = null; // TODO: Placement is broken
         }
     }
 }
