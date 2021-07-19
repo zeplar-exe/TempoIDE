@@ -58,9 +58,15 @@ namespace TempoIDE.Windows
                         Header = commandName,
                         CommandParameter = this,
                         Command = routedCommand,
-                        InputBindings = { new KeyBinding(routedCommand, new KeyGesture(keybind.Key, keybind.Modifiers)) },
                         InputGestureText = keybind.ToString()
                     });
+
+                    var binding = new KeyBinding(routedCommand, new KeyGesture(keybind.Key, keybind.Modifiers))
+                    {
+                        CommandParameter = this
+                    };
+                    
+                    InputBindings.Add(binding);
                 }
 
                 TopbarMenu.Children.Add(newMenu);

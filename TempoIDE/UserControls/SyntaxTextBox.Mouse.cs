@@ -63,10 +63,14 @@ namespace TempoIDE.UserControls
             var totalWidth = 0d;
 
             if (clickPos.X > 0)
+            {
                 foreach (var character in lines[line])
                 {
+                    totalWidth += character.Size.Width;
+                    column++;
+
                     if (character.Value == ColoredLabel.NewLine)
-                        break;
+                        column--;
                     
                     if (clickPos.X > selectStartXPosition)
                     {
@@ -83,13 +87,11 @@ namespace TempoIDE.UserControls
                             break;
                         }
                     }
-
-                    totalWidth += character.Size.Width;
-                    column++;
                 }
-
-            column = Math.Clamp(column, 0, Int32.MaxValue);
-
+            }
+            
+            column = Math.Clamp(column, 0, int.MaxValue);
+            
             return new IntVector(column, line);
         }
     }
