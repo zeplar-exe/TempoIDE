@@ -111,7 +111,7 @@ namespace TempoIDE.UserControls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(-1, 0);
-                    
+
                     if (VerifyCaretOffset(newPosition))
                         CaretOffset = newPosition;
 
@@ -135,14 +135,7 @@ namespace TempoIDE.UserControls
                     var newPosition = CaretOffset + new IntVector(0, -1);
 
                     if (VerifyCaretOffset(newPosition))
-                    {
-                        var index = GetCaretIndexAtOffset(newPosition);
-
-                        if (TextArea.GetCharacterAtIndex(index).Value == ColoredLabel.NewLine)
-                            newPosition -= new IntVector(1, 0);
-                        
                         CaretOffset = newPosition;
-                    }
 
                     break;
                 }

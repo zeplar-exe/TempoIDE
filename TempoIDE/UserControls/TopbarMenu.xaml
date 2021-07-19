@@ -13,8 +13,7 @@
      
      <UserControl.ContextMenu>
          <ContextMenu 
-             Name="Menu" 
-             ContextMenuService.HorizontalOffset="{Binding RelativeSource={RelativeSource Self}, Path=ActualWidth}" 
+             Name="Menu"
              Placement="Bottom"
              Background="{StaticResource DarkToolbarBackgroundColor}">
              <ContextMenu.Resources>

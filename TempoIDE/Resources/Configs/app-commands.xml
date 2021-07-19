@@ -11,28 +11,28 @@
     <menu Name="Edit">
         <command Name="Copy">
             <Keybind>
-                <Key>LeftCtrl</Key>
+                <Control>Control</Control>
                 <Key>C</Key>
             </Keybind>
         </command>
         
         <command Name="Paste">
             <Keybind>
-                <Key>LeftCtrl</Key>
+                <Control>Control</Control>
                 <Key>V</Key>
             </Keybind>
         </command>
     
         <command Name="Cut">
             <Keybind>
-                <Key>LeftCtrl</Key>
+                <Control>Control</Control>
                 <Key>X</Key>
             </Keybind>
         </command>
         
-        <command Name="Select All">
+        <command Name="Select All" NoMenu="True">
             <Keybind>
-                <Key>LeftCtrl</Key>
+                <Control>Control</Control>
                 <Key>A</Key>
             </Keybind>
         </command>

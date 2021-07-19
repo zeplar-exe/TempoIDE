@@ -8,6 +8,7 @@ namespace TempoIDE.Classes
 {
     public static class ResourceCache
     {
+        private static readonly Dictionary<string, string> LoadedText = new Dictionary<string, string>();
         private static readonly Dictionary<string, XDocument> LoadedXml = new Dictionary<string, XDocument>();
 
         private static readonly Dictionary<string, string> RequiredFiles = new Dictionary<string, string>
@@ -27,8 +28,18 @@ namespace TempoIDE.Classes
             {
                 using var stream = assembly.GetManifestResourceStream(path);
                 using var reader = new StreamReader(stream);
+
+                var text = reader.ReadToEnd();
                 
-                LoadedXml.Add(name, XDocument.Parse(reader.ReadToEnd()));
+                switch (Path.GetExtension(path))
+                {
+                    case ".xml":
+                        LoadedXml.Add(name, XDocument.Parse(text));
+                        break;
+                    default:
+                        LoadedText.Add(name, text);
+                        break;
+                }
             }
 
             foreach (var (key, document) in LoadedXml)
@@ -36,9 +47,14 @@ namespace TempoIDE.Classes
                     throw new Exception($"Xml document '{key}' does not have a root.");
         }
 
-        public static XDocument Get(string name)
+        public static XDocument GetXml(string name)
         {
             return LoadedXml[name];
+        }
+
+        public static string GetText(string name)
+        {
+            return LoadedText[name];
         }
     }
 }

@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
@@ -15,7 +17,7 @@ namespace TempoIDE.UserControls
 
             var builder = new StringBuilder();
 
-            foreach (int index in SelectionRange)
+            foreach (int index in SelectionRange.Arrange())
                 builder.Append(TextArea.GetCharacterAtIndex(index).Value);
 
             return builder.ToString();

@@ -24,7 +24,7 @@ namespace TempoIDE.Windows
         
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            var menus = ResourceCache.Get("app.commands");
+            var menus = ResourceCache.GetXml("app.commands");
 
             foreach (var menu in menus.Root.Elements("menu"))
             {
@@ -40,7 +40,7 @@ namespace TempoIDE.Windows
                         newMenu.Items.Add(new ContextMenuSeparator());
                         continue;
                     }
-                    
+
                     var commandName = command.Attribute("Name")?.Value;
                     var keybinds = command.Element("Keybind");
 
@@ -51,12 +51,14 @@ namespace TempoIDE.Windows
                     }
                     
                     var keybind = ParseKeybindingFromXElement(keybinds);
+                    var routedCommand = (ICommand) AppCommands.FromName(commandName) ?? new RoutedCommand();
                     
                     newMenu.Items.Add(new MenuItem
                     {
                         Header = commandName,
                         CommandParameter = this,
-                        Command = (ICommand) AppCommands.FromName(commandName) ?? new RoutedCommand(),
+                        Command = routedCommand,
+                        InputBindings = { new KeyBinding(routedCommand, new KeyGesture(keybind.Key, keybind.Modifiers)) },
                         InputGestureText = keybind.ToString()
                     });
                 }
@@ -67,20 +69,23 @@ namespace TempoIDE.Windows
 
         private Keybind ParseKeybindingFromXElement(XElement xml)
         {
-            var keys = new List<Key>();
+            var singleKey = Key.None;
+            var modifiers = ModifierKeys.None;
 
             if (xml is null)
-                return new Keybind(keys.ToArray());
+                return new Keybind(singleKey, modifiers);
             
             foreach (var key in xml.Elements())
             {
-                if (Enum.TryParse(key.Value, out Key parsed))
-                    keys.Add(parsed);
+                if (key.Name == "Key" && Enum.TryParse(key.Value, out Key parsedKey))
+                    singleKey = parsedKey;
+                else if (key.Name == "Control" && Enum.TryParse(key.Value, out ModifierKeys parsedModifier))
+                    modifiers |= parsedModifier;
                 else if (key.Value != "None")
                     Console.WriteLine($@"WARNING: Key '{key.Value}' is not valid.");
             }
 
-            return new Keybind(keys.ToArray());
+            return new Keybind(singleKey, modifiers);
         }
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
