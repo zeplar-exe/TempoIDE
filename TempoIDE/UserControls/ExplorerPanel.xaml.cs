@@ -50,48 +50,29 @@ namespace TempoIDE.UserControls
         
         private ExplorerPanelElement selectedElement;
         private Thread updaterThread;
+        private DirectoryWatcher watcher;
         
         public ExplorerPanel()
         {
             InitializeComponent();
         }
         
-        private void ExplorerPanel_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
-                return;
-
-            updaterThread = new Thread(DirectoryUpdaterThread);
-            updaterThread.Start();
-            
-            UpdateDirectory(currentDirectory); // TODO: Replace this with a file dialog
-        }
-
         public void UpdateDirectory(DirectoryInfo newDirectory)
         {
             currentDirectory = newDirectory;
-
+            
+            watcher = new DirectoryWatcher(newDirectory);
+            watcher.Changed += delegate
+            {
+                Dispatcher.Invoke(delegate { FillFromDirectory(currentDirectory); });
+            };
+            
             FillFromDirectory(newDirectory);
         }
 
         public void UpdateSolution(FileInfo solutionDirectory)
         {
             currentSolution = solutionDirectory;
-        }
-
-        private const int UpdaterCooldown = 3;
-        private void DirectoryUpdaterThread() // TODO: Use ExplorerPanelElement instead of UIElements
-        {
-            while (true)
-            {
-                Thread.Sleep(UpdaterCooldown * 1000);
-                
-                Dispatcher.Invoke(() =>
-                {
-                    if (currentDirectory != null) 
-                        FillFromDirectory(currentDirectory);
-                });
-            }
         }
 
         private void FillFromDirectory(DirectoryInfo directoryPath)
