@@ -71,6 +71,14 @@ namespace TempoIDE.UserControls
             openFiles.Remove(file);
             ReloadOpenFiles();
             TextEditor.TextArea.SetScheme(null);
+            
+            TextEditor.IsReadOnly = openFiles.Count == 0;
+        }
+        
+        public void CloseAll()
+        {
+            foreach (var file in openFiles)
+                CloseFile(file.Key);
         }
 
         private void FileButton_OnClick(object sender, FileTabEventArgs e)

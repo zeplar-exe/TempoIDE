@@ -2,7 +2,7 @@
 <root>
     <menu Name="File">
         <command Name="New solution"/>
-        <command Name="Open solution..."/>
+        <command Name="Open File..."/>
         <command Name="Close solution"/>
         <divider/>
         <command Name="Settings"/>

@@ -1,7 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using System.Windows.Input;
 using Microsoft.Win32;
 using TempoIDE.Classes.Types;
 using TempoIDE.Windows;
@@ -17,18 +16,17 @@ namespace TempoIDE.Classes
             return type == null ? null : Activator.CreateInstance(type);
         }
 
-        public class OpenSolution : AppCommand
+        public class OpenFile : AppCommand
         {
             public override bool CanExecute(object parameter) => true;
 
             public override void Execute(object parameter)
             {
-                var mainWindow = (MainWindow) parameter;
-                var dialog = new OpenFileDialog { Filter = "Solution files|*.sln" };
+                var dialog = new OpenFileDialog();
 
                 if (dialog.ShowDialog().ToRealValue())
                 {
-                    mainWindow.Explorer.UpdateDirectory(new DirectoryInfo(new FileInfo(dialog.FileName).Directory.FullName));
+                    EnvironmentManager.LoadEnvironment(dialog.FileName, EnvironmentFilterMode.Solution);   
                 }
             }
         }

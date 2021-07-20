@@ -81,7 +81,7 @@ namespace TempoIDE.UserControls
         {
             Background = Brushes.Transparent;
                     
-            OpenMenu = null; // TODO: Placement is broken
+            OpenMenu = null;
         }
     }
 }

@@ -31,8 +31,6 @@ namespace TempoIDE.UserControls
 
         private DirectoryInfo currentDirectory = new DirectoryInfo(
             Directory.CreateDirectory(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ExplorerTest")).FullName);
-
-        private FileInfo currentSolution;
         
         private FileInfo openFile;
         private FileInfo OpenFile
@@ -49,50 +47,54 @@ namespace TempoIDE.UserControls
         public event OpenFileEventHandler OpenFileEvent;
         
         private ExplorerPanelElement selectedElement;
-        private Thread updaterThread;
-        private DirectoryWatcher watcher;
-        
+
         public ExplorerPanel()
         {
             InitializeComponent();
         }
-        
-        public void UpdateDirectory(DirectoryInfo newDirectory)
+
+        public void AppendElement(ExplorerPanelElement element, int indentationLevel, ExplorerPanelExpander parent = null)
         {
-            currentDirectory = newDirectory;
-            
-            watcher = new DirectoryWatcher(newDirectory);
-            watcher.Changed += delegate
+            element.SetValue(IndentationLevel, indentationLevel);
+            element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
+
+            if (parent?.Content == null)
             {
-                Dispatcher.Invoke(delegate { FillFromDirectory(currentDirectory); });
-            };
-            
-            FillFromDirectory(newDirectory);
+                Children.Add(element);
+            }
+            else
+            {
+                element.Padding = new Thickness(IndentationSpace, 0, 0, 0);
+                parent.ExpanderContent.Children.Add(element);
+            }
         }
 
-        public void UpdateSolution(FileInfo solutionDirectory)
+        public void AppendExpander(ExplorerPanelExpander expander, int indentationLevel, ExplorerPanelExpander parent = null)
         {
-            currentSolution = solutionDirectory;
+            expander.SetValue(IndentationLevel, indentationLevel);
+
+            if (parent?.Content == null)
+            {
+                Children.Add(expander);
+            }
+            else
+            {
+                expander.Padding = new Thickness(IndentationSpace, 0, 0, 0);
+                // I have no idea why the padding here is needed but without it the panel breaks
+                
+                parent.ExpanderContent.Children.Add(expander);
+            }
         }
 
-        private void FillFromDirectory(DirectoryInfo directoryPath)
-        {
-            Children.Clear();
-            directoryPath.Refresh();
-            
-            var topLevelExpander = AddFileExpander(Path.GetFileName(directoryPath.Name.Trim('\\')), 0, null);
-            AddDirectory(directoryPath, 1, topLevelExpander);
-        }
-
-        private void AddDirectory(DirectoryInfo directory, int indentationLevel, ExplorerPanelExpander parent = null)
+        public void AppendDirectory(DirectoryInfo directory, int indentationLevel, ExplorerPanelExpander parent = null)
         {
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
             {
                 if (Directory.Exists(filePath))
                 {
-                    var expanderParent = AddFileExpander(Path.GetFileName(filePath), indentationLevel, parent);
+                    var expanderParent = AppendExpander(Path.GetFileName(filePath), indentationLevel, parent);
                     
-                    AddDirectory(
+                    AppendDirectory(
                         new DirectoryInfo(filePath), 
                         indentationLevel, 
                         expanderParent
@@ -101,14 +103,14 @@ namespace TempoIDE.UserControls
                 
                 if (explorerExtensions.Contains(Path.GetExtension(filePath)))
                 {
-                    AddFileTextBlock(Path.GetFileName(filePath), filePath, indentationLevel, parent);
+                    AppendElement(Path.GetFileName(filePath), filePath, indentationLevel, parent);
                 }
                 
                 UpdateLayout();
             }
         }
 
-        private void AddFileTextBlock(string text, string directory, int indent, ExplorerPanelExpander parent)
+        private void AppendElement(string text, string directory, int indent, ExplorerPanelExpander parent)
         {
             var element = new ExplorerPanelElement
             {
@@ -156,18 +158,10 @@ namespace TempoIDE.UserControls
             }
         }
         
-        private ExplorerPanelExpander AddFileExpander(string path, int indent, ExplorerPanelExpander parent)
+        private ExplorerPanelExpander AppendExpander(string path, int indent, ExplorerPanelExpander parent)
         {
             var expander = new ExplorerPanelExpander
             {
-                // PanelElement =
-                // {
-                //     FilePath = path,
-                //     Text =
-                //     {
-                //         Text = Path.GetFileName(path)
-                //     }
-                // },
                 ElementExpander =
                 {
                     IsExpanded = true
@@ -192,6 +186,8 @@ namespace TempoIDE.UserControls
             
             return expander;
         }
+        
+        public void Clear() => Children.Clear();
 
         #region Attached Properties
 

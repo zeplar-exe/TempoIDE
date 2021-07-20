@@ -4,7 +4,6 @@ using System.Windows.Media;
 
 namespace TempoIDE.Classes.Types
 {
-    // TODO: Set this back to a struct if performance dwindles
     public readonly struct SyntaxChar
     {
         public readonly char Value;

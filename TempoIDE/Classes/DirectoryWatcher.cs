@@ -6,12 +6,12 @@ namespace TempoIDE.Classes
 {
     public class DirectoryWatcher
     {
-        public event RoutedEventHandler Changed;
+        public event FileSystemEventHandler Changed;
         
         private FileSystemWatcher watcher;
         private DirectoryInfo directory;
 
-        public DirectoryWatcher(DirectoryInfo directoryInfo)
+        public DirectoryWatcher(DirectoryInfo directoryInfo, string filter = "")
         {
             directory = directoryInfo;
 
@@ -22,11 +22,12 @@ namespace TempoIDE.Classes
                                    NotifyFilters.DirectoryName |
                                    NotifyFilters.FileName;
 
-            watcher.Changed += delegate { Changed?.Invoke(this, default); };
-            watcher.Created += delegate { Changed?.Invoke(this, default); };
-            watcher.Deleted += delegate { Changed?.Invoke(this, default); };
-            watcher.Renamed += delegate { Changed?.Invoke(this, default); };
+            watcher.Changed += (sender, e) => Changed?.Invoke(sender, e);
+            watcher.Created += (sender, e) => Changed?.Invoke(sender, e);
+            watcher.Deleted += (sender, e) => Changed?.Invoke(sender, e);
+            watcher.Renamed += (sender, e) => Changed?.Invoke(sender, e);
 
+            watcher.Filter = filter;
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
         }

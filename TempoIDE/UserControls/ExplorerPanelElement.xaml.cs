@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TempoIDE.UserControls
 {
@@ -33,7 +34,7 @@ namespace TempoIDE.UserControls
                 type = file.Extension switch
                 {
                     ".csproj" => ExplorerPanelElementType.Project,
-                    "sln" => ExplorerPanelElementType.Solution,
+                    ".sln" => ExplorerPanelElementType.Solution,
                     _ => ExplorerPanelElementType.File
                 };
             }

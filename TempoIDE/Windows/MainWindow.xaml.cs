@@ -106,7 +106,7 @@ namespace TempoIDE.Windows
 
         private void Explorer_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested); // TODO: Doesn't work at all
+            Dispatcher.Invoke(CommandManager.InvalidateRequerySuggested);
         }
     }
 }

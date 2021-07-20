@@ -16,6 +16,8 @@ namespace TempoIDE.Classes
             {"app.commands", "TempoIDE.Resources.Configs.app-commands.xml"},
             
             {"intellisense.cs", "TempoIDE.Resources.Configs.intellisense-cs.xml"},
+            
+            {"explorer.element.context.cs", "TempoIDE.Resources.Configs.explorer-context.xml"},
         };
 
         public static void Load()

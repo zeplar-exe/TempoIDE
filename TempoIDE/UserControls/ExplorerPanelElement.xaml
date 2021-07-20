@@ -6,6 +6,10 @@
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.ContextMenu>
+        <local:ExplorerPanelContextMenu/>
+    </UserControl.ContextMenu>
+    
     <Grid>
         <Image Name="Icon"/>
         <TextBlock Name="Text"/>
