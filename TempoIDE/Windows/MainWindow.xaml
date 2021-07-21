@@ -5,10 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
         mc:Ignorable="d"
-        Background="#4A4A4A"
+        Style="{StaticResource MainWindowStyle}"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
-        WindowStyle="None"
-        AllowsTransparency="True"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
 
@@ -197,14 +195,14 @@
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
                 <local:ExplorerPanel
                     Grid.Column="0"
                     x:Name="Explorer" 
-                    MinWidth="120" 
+                    MinWidth="170" 
                     GotFocus="Explorer_OnGotFocus" 
                     OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
 
@@ -212,7 +210,7 @@
                     Background="{StaticResource DarkBorderColor}"
                     Grid.Column="1" 
                     VerticalAlignment="Stretch"
-                    Width="1"/>
+                    Width="3"/>
                 
                 <local:EditorControl 
                     Grid.Column="2" 

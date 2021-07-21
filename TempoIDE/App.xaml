@@ -5,9 +5,24 @@
              Startup="App_OnStartup">
     <Application.Resources>
         <SolidColorBrush x:Key="DarkBorderColor" Color="#333333"/>
+        <SolidColorBrush x:Key="DarkBackgroundColor" Color="#1A1A1A"/>
         <SolidColorBrush x:Key="DarkToolbarBackgroundColor" Color="#4A4A4A"/>
         <SolidColorBrush x:Key="DarkBaseTextColor" Color="White"/>
         <SolidColorBrush x:Key="DarkTextBoxBackgroundColor" Color="#1f1f1f"/>
-        <SolidColorBrush x:Key="DarkSeparatorColor" Color="Black"></SolidColorBrush>
+        <SolidColorBrush x:Key="DarkSeparatorColor" Color="Black"/>
+        
+        <Style x:Key="MainWindowStyle" TargetType="Window">
+            <Setter Property="Background" Value="#1A1A1A"/>
+            <Setter Property="WindowStyle" Value="None"/>
+            <Setter Property="AllowsTransparency" Value="True"/>
+        </Style>
+        
+        <Style x:Key="ExplorerPanelStyle" TargetType="Panel">
+            <Setter Property="Background" Value="#2b2b2b"/>
+        </Style>
+        
+        <Style x:Key="AutoCompleteBoxStyle" TargetType="Canvas">
+            <Setter Property="Background" Value="#4d4747"></Setter>
+        </Style>
     </Application.Resources>
 </Application>

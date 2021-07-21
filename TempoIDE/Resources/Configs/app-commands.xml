@@ -1,36 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
     <menu Name="File">
-        <command Name="New solution"/>
-        <command Name="Open File..."/>
-        <command Name="Close solution"/>
+        <command Name="New solution" Command="NewSolutionCommand"/>
+        <command Name="Open..." Command="OpenDropdown">
+            <command Name="File..." Command="OpenFileCommand"/>
+            <command Name="Folder..." Command="OpenFolderCommand"/>
+        </command>
+        <command Name="Close solution" Command="CloseSolutionCommand"/>
         <divider/>
-        <command Name="Settings"/>
+        <command Name="Settings" Command="SettingsCommand"/>
     </menu>
     
     <menu Name="Edit">
-        <command Name="Copy">
+        <command Name="Copy" Command="CopyTextCommand">
             <Keybind>
                 <Control>Control</Control>
                 <Key>C</Key>
             </Keybind>
         </command>
         
-        <command Name="Paste">
+        <command Name="Paste" Command="PasteTextCommand">
             <Keybind>
                 <Control>Control</Control>
                 <Key>V</Key>
             </Keybind>
         </command>
     
-        <command Name="Cut">
+        <command Name="Cut" Command="CutTextCommand">
             <Keybind>
                 <Control>Control</Control>
                 <Key>X</Key>
             </Keybind>
         </command>
         
-        <command Name="Select All" NoMenu="True">
+        <command Name="Select All" Command="SelectAllTextCommand" NoMenu="True">
             <Keybind>
                 <Control>Control</Control>
                 <Key>A</Key>

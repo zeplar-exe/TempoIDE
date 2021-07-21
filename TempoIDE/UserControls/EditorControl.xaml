@@ -3,9 +3,18 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:userControls="clr-namespace:TempoIDE.UserControls"
+             xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <Grid.Resources>
+        <Style x:Key="TextBoxStyle" TargetType="local:SyntaxTextBox">
+            <Setter Property="Background" Value="#1f1f1f"/>
+            <Setter Property="BorderBrush" Value="#333333"/>
+            <Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+    </Grid.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.055*"/>
@@ -15,7 +24,6 @@
             
         <ScrollViewer
             Grid.Row="0"
-            Name="FileSelect"
             VerticalScrollBarVisibility="Hidden"
             HorizontalScrollBarVisibility="Auto">
                 
@@ -24,7 +32,7 @@
                 Orientation="Horizontal">
             
                 <StackPanel.Resources>
-                    <Style TargetType="{x:Type userControls:EditorTabButton}">
+                    <Style TargetType="{x:Type local:EditorTabButton}">
                         <Setter Property="Width" Value="120"/>
                     </Style>
                 </StackPanel.Resources>
@@ -32,22 +40,13 @@
         </ScrollViewer>
         
         <Grid Grid.Row="1" >
-            <userControls:SyntaxTextBox
+            <local:SyntaxTextBox
                 x:Name="TextEditor"
-                BorderBrush="{StaticResource DarkBorderColor}"
-                Background="{StaticResource DarkTextBoxBackgroundColor}"
-                BorderThickness="0, 1, 0, 1"
-                FontSize="17"
+                Style="{StaticResource TextBoxStyle}"
             
                 Loaded="TextEditor_OnLoaded"
                 TextChanged="TextEditor_OnTextChanged">
-            </userControls:SyntaxTextBox>
-            
-            <!--<userControls:AutoCompleteBox
-                x:Name="AutoComplete"
-                Visibility="Collapsed" 
-                HorizontalAlignment="Left" 
-                VerticalAlignment="Top"/>-->
+            </local:SyntaxTextBox>
         </Grid>
 
         <Grid Grid.Row="2">

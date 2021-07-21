@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -40,37 +41,55 @@ namespace TempoIDE.Windows
                         newMenu.Items.Add(new ContextMenuSeparator());
                         continue;
                     }
-
-                    var commandName = command.Attribute("Name")?.Value;
-                    var keybinds = command.Element("Keybind");
-
-                    if (commandName is null)
-                    {
-                        Console.WriteLine($@"WARNING: Xml attribute 'Name' is not valid on element '{command.Name}' (in app.commands.xml)");
-                        commandName = "Command";
-                    }
                     
-                    var keybind = ParseKeybindingFromXElement(keybinds);
-                    var routedCommand = (ICommand) AppCommands.FromName(commandName) ?? new RoutedCommand();
+                    if (command.Name != "command")
+                        continue;
                     
-                    newMenu.Items.Add(new MenuItem
-                    {
-                        Header = commandName,
-                        CommandParameter = this,
-                        Command = routedCommand,
-                        InputGestureText = keybind.ToString()
-                    });
-
-                    var binding = new KeyBinding(routedCommand, new KeyGesture(keybind.Key, keybind.Modifiers))
-                    {
-                        CommandParameter = this
-                    };
-                    
-                    InputBindings.Add(binding);
+                    newMenu.Items.Add(MenuItemFromXml(command));
                 }
 
                 TopbarMenu.Children.Add(newMenu);
             }
+        }
+
+        private MenuItem MenuItemFromXml(XElement command)
+        {
+            var commandName = command.Attribute("Name")?.Value;
+            var commandId = command.Attribute("Command")?.Value;
+            var keybinds = command.Element("Keybind");
+
+            if (commandName is null)
+            {
+                Console.WriteLine($@"WARNING: Xml attribute 'Name' is not valid on element '{command.Name}' (in app.commands.xml)");
+                commandName = "Command";
+            }
+
+            var keybind = ParseKeybindingFromXElement(keybinds);
+            var routedCommand = (ICommand) AppCommands.FromName(commandId) ?? new RoutedCommand();
+
+            var newMenuItem = new MenuItem
+            {
+                Header = commandName,
+                CommandParameter = this,
+                Command = routedCommand,
+                InputGestureText = keybind.ToString()
+            };
+
+            var items = command.Elements("command").Select(MenuItemFromXml).ToList();
+
+            if (items.Count > 0)
+            {
+                newMenuItem.ItemsSource = items;
+            }
+
+            var binding = new KeyBinding(newMenuItem.Command, new KeyGesture(keybind.Key, keybind.Modifiers))
+            {
+                CommandParameter = this
+            };
+            
+            InputBindings.Add(binding);
+
+            return newMenuItem;
         }
 
         private Keybind ParseKeybindingFromXElement(XElement xml)

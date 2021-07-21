@@ -233,6 +233,7 @@ namespace TempoIDE.UserControls
                 
                 yPos += child.DesiredSize.Height;
             }
+            
             return finalSize;
         }
     }

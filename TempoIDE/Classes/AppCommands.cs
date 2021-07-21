@@ -4,6 +4,7 @@ using System.Reflection;
 using Microsoft.Win32;
 using TempoIDE.Classes.Types;
 using TempoIDE.Windows;
+using Ookii.Dialogs.Wpf;
 
 namespace TempoIDE.Classes
 {
@@ -11,12 +12,22 @@ namespace TempoIDE.Classes
     {
         public static object FromName(string commandName)
         {
+            if (string.IsNullOrWhiteSpace(commandName))
+                return null;
+            
             var type = typeof(AppCommands).GetNestedType(commandName.Replace(" ", "").Replace(".", ""), BindingFlags.Public | BindingFlags.IgnoreCase);
 
             return type == null ? null : Activator.CreateInstance(type);
         }
 
-        public class OpenFile : AppCommand
+        public class OpenDropdown : AppCommand
+        {
+            public override bool CanExecute(object parameter) => true;
+
+            public override void Execute(object parameter) { }
+        }
+
+        public class OpenFileCommand : AppCommand
         {
             public override bool CanExecute(object parameter) => true;
 
@@ -26,74 +37,89 @@ namespace TempoIDE.Classes
 
                 if (dialog.ShowDialog().ToRealValue())
                 {
-                    EnvironmentManager.LoadEnvironment(dialog.FileName, EnvironmentFilterMode.Solution);   
+                    EnvironmentHelper.LoadEnvironment(dialog.FileName, EnvironmentFilterMode.File);   
                 }
             }
         }
 
-        public class Copy : AppCommand
+        public class OpenFolderCommand : AppCommand
+        {
+            public override bool CanExecute(object parameter) => true;
+
+            public override void Execute(object parameter)
+            {
+                var dialog = new VistaFolderBrowserDialog();
+                
+                if (dialog.ShowDialog().ToRealValue())
+                {
+                    EnvironmentHelper.LoadEnvironment(dialog.SelectedPath, EnvironmentFilterMode.Directory);   
+                }
+            }
+        }
+
+        public class CopyTextCommand : AppCommand
         {
             public override bool CanExecute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 return window.Editor.TextEditor.IsFocused || window.Explorer.IsFocused;
             }
 
             public override void Execute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 window.Editor.TextEditor.TryCopyText();
             }
         }
         
-        public class Paste : AppCommand
+        public class PasteTextCommand : AppCommand
         {
             public override bool CanExecute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 return window.Editor.TextEditor.IsFocused || window.Explorer.IsFocused;
             }
 
             public override void Execute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 window.Editor.TextEditor.TryPasteText();
             }
         }
 
-        public class Cut : AppCommand
+        public class CutTextCommand : AppCommand
         {
             public override bool CanExecute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
             }
 
             public override void Execute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 window.Editor.TextEditor.TryCutText();
             }
         }
 
-        public class SelectAll : AppCommand
+        public class SelectAllTextCommand : AppCommand
         {
             public override bool CanExecute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
             }
 
             public override void Execute(object parameter)
             {
-                var window = parameter as MainWindow;
+                var window = EnvironmentHelper.MainWindow;
                 
                 window.Editor.TextEditor.TrySelectAll();
             }

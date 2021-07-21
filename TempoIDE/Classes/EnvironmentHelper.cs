@@ -6,7 +6,7 @@ using TempoIDE.Windows;
 
 namespace TempoIDE.Classes
 {
-    public static class EnvironmentManager
+    public static class EnvironmentHelper
     {
         public static MainWindow MainWindow => Application.Current.MainWindow as MainWindow;
         public static EnvironmentFilterMode FilterMode;
@@ -52,13 +52,17 @@ namespace TempoIDE.Classes
                     
                     break;
                 case EnvironmentFilterMode.File:
-                    var fileDirectory = new DirectoryInfo(path);
+                    var filePath = new FileInfo(path);
+
+                    if (filePath.Extension == ".sln")
+                        goto case EnvironmentFilterMode.Solution;
+
                     var element = new ExplorerPanelElement
                     {
                         FilePath = path,
                     };
                     
-                    directoryWatcher = new DirectoryWatcher(fileDirectory, Path.GetFileName(path));
+                    directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(path));
                     directoryWatcher.Changed += DirectoryChanged;
                     
                     MainWindow.Explorer.AppendElement(element, 0);
