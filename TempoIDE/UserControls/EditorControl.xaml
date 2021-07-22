@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid.Resources>
         <Style x:Key="TextBoxStyle" TargetType="local:SyntaxTextBox">
-            <Setter Property="Background" Value="#1f1f1f"/>
+            <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
             <Setter Property="BorderBrush" Value="#333333"/>
             <Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
             <Setter Property="FontSize" Value="17"/>

@@ -96,7 +96,7 @@
             <Border
                 Grid.Row="0"
                 Grid.ZIndex="200"
-                BorderBrush="{StaticResource DarkBorderColor}"
+                BorderBrush="{StaticResource BorderColor}"
                 Background="Transparent"
                 BorderThickness="0, 0, 0, 1"
                 MouseDown="Topbar_OnMouseDown">
@@ -116,55 +116,13 @@
                                 <Setter Property="Margin" Value="3,0" />
                             </Style>
                         </StackPanel.Resources>
-
-                        <!--<local:TopbarMenu MenuName="File">
-                            <local:TopbarMenu.Items>
-                                <MenuItem Header="New solution"/>
-                                <MenuItem Header="Open solution..."/>
-                            </local:TopbarMenu.Items>
-                        </local:TopbarMenu>
-                            
-                        <local:TopbarMenu MenuName="Edit">
-                            <local:TopbarMenu.Items>
-                                <MenuItem Header="Undo"/>
-                                <MenuItem Header="Redo"/>
-                                <local:ContextMenuSeparator/>
-                                <MenuItem Header="Copy"/>
-                                <MenuItem Header="Paste"/>
-                                <MenuItem Header="Cut"/>
-                            </local:TopbarMenu.Items>
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="View">
-                            
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="Navigation">
-                            
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="Code">
-                            
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="Build">
-                            
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="Window">
-                            
-                        </local:TopbarMenu>
-                        
-                        <local:TopbarMenu MenuName="Help">
-                            
-                        </local:TopbarMenu>-->
                     </StackPanel>
 
                     <Button
                         Grid.Column="2"
                         Content="Min"
                         Background="Transparent"
-                        Foreground="White"
+                        Foreground="{DynamicResource BaseTextColor}"
                         BorderThickness="0"
                         Click="MinimizeButton_OnClick" />
 
@@ -172,7 +130,7 @@
                         Grid.Column="3"
                         Content="Max"
                         Background="Transparent"
-                        Foreground="White"
+                        Foreground="{DynamicResource BaseTextColor}"
                         BorderThickness="0"
                         Click="MaximizeButton_OnClick" />
 
@@ -180,7 +138,7 @@
                         Grid.Column="4"
                         Content="X"
                         Background="Transparent"
-                        Foreground="White"
+                        Foreground="{DynamicResource BaseTextColor}"
                         BorderThickness="0"
                         Click="CloseButton_OnClick" />
                 </Grid>
@@ -189,7 +147,7 @@
             <!-- Topbar... 2? -->
             <Border Grid.Row="1"
                 Height="20"
-                BorderBrush="{StaticResource DarkBorderColor}"
+                BorderBrush="{DynamicResource BorderColor}"
                 BorderThickness="0, 0, 0, 1" />
             
             <Grid Grid.Row="2">
@@ -207,7 +165,7 @@
                     OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
 
                 <GridSplitter 
-                    Background="{StaticResource DarkBorderColor}"
+                    Background="{DynamicResource BorderColor}"
                     Grid.Column="1" 
                     VerticalAlignment="Stretch"
                     Width="3"/>

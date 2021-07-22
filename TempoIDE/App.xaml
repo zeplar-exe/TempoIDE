@@ -4,25 +4,37 @@
              StartupUri="Windows/MainWindow.xaml"
              Startup="App_OnStartup">
     <Application.Resources>
-        <SolidColorBrush x:Key="DarkBorderColor" Color="#333333"/>
-        <SolidColorBrush x:Key="DarkBackgroundColor" Color="#1A1A1A"/>
-        <SolidColorBrush x:Key="DarkToolbarBackgroundColor" Color="#4A4A4A"/>
-        <SolidColorBrush x:Key="DarkBaseTextColor" Color="White"/>
-        <SolidColorBrush x:Key="DarkTextBoxBackgroundColor" Color="#1f1f1f"/>
-        <SolidColorBrush x:Key="DarkSeparatorColor" Color="Black"/>
+        <ResourceDictionary x:Key="Styles">
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Skins/Dark.xaml"></ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
         
-        <Style x:Key="MainWindowStyle" TargetType="Window">
-            <Setter Property="Background" Value="#1A1A1A"/>
-            <Setter Property="WindowStyle" Value="None"/>
-            <Setter Property="AllowsTransparency" Value="True"/>
-        </Style>
-        
-        <Style x:Key="ExplorerPanelStyle" TargetType="Panel">
-            <Setter Property="Background" Value="#2b2b2b"/>
-        </Style>
-        
-        <Style x:Key="AutoCompleteBoxStyle" TargetType="Canvas">
-            <Setter Property="Background" Value="#4d4747"></Setter>
-        </Style>
+            <Style x:Key="MainWindowStyle" TargetType="Window">
+                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
+                <Setter Property="WindowStyle" Value="None"/>
+                <Setter Property="AllowsTransparency" Value="True"/>
+            </Style>
+            
+            <Style x:Key="ExplorerPanelStyle" TargetType="Panel">
+                <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
+            </Style>
+            
+            <Style x:Key="AutoCompleteBoxStyle" TargetType="Canvas">
+                <Setter Property="Background" Value="#4d4747"/>
+            </Style>
+            
+            
+            <Style x:Key="TopbarContextMenuStyle" TargetType="ContextMenu">
+                <Setter Property="Background" Value="{DynamicResource DarkToolbarBackgroundColor}"/>
+            </Style>
+            
+            <Style x:Key="MenuItemStyle" TargetType="MenuItem">
+                <Setter Property="Background" Value="{DynamicResource DarkBaseTextColor}"/>
+            </Style>
+            
+            <Style x:Key="ContextMenuSeparatorStyle" TargetType="MenuItem">
+                <Setter Property="Background" Value="{DynamicResource DarkBackgroundColor}"/>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

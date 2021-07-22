@@ -62,4 +62,21 @@
       <Folder Include="Resources\Icons" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\TempoCompiler\TempoCompiler.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Skins\Dark.xaml" />
+      <Resource Include="Skins\Dark.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+      </Resource>
+      <Page Remove="Skins\Light.xaml" />
+      <Resource Include="Skins\Light.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+      </Resource>
+    </ItemGroup>
+
 </Project>
