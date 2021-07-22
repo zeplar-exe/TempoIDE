@@ -84,7 +84,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
             // TODO: AutoComplete context
 
-            var typingWord = textBox.GetTypingWordAtIndex(textBox.CaretIndex - 1);
+            var typingWord = textBox.GetTypingWord(true);
                  
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;

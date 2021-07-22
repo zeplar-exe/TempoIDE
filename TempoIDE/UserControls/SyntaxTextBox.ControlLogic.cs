@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -63,7 +65,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWordAtIndex(CaretIndex - 1), ""));
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(true), ""));
                         selectedAutoComplete = null;
                     }
 
@@ -74,12 +76,19 @@ namespace TempoIDE.UserControls
                 case Key.Back:
                 {
                     e.Handled = true;
+
+                    var preceding = GetCharactersFromIndex(CaretIndex, -TabSize);
                     
-                    Backspace(1);
+                    if (string.IsNullOrWhiteSpace(preceding) && preceding != null)
+                        Backspace(preceding.Length);
+                    else
+                        Backspace(1);
 
                     break;
                 }
                 case Key.Delete:
+                    e.Handled = true;
+                    
                     Frontspace(1);
                     
                     break;
@@ -89,11 +98,19 @@ namespace TempoIDE.UserControls
 
                     if (selectedAutoComplete == null)
                     {
-                        AppendTextAtCaret("    ");
+                        var mod = CaretOffset.X % 4;
+
+                        if (mod == 0)
+                            mod = TabSize;
+                        else
+                            mod = Math.Abs(mod - TabSize); 
+                        // It's really hacky but it works in completing a sequence of n spaces
+
+                        AppendTextAtCaret(string.Concat(Enumerable.Repeat(" ", mod)));
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWordAtIndex(CaretIndex - 1), ""));
+                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(true), ""));
                         selectedAutoComplete = null;
                     }
 

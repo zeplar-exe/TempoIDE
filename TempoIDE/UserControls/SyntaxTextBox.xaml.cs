@@ -50,6 +50,8 @@ namespace TempoIDE.UserControls
                 TextArea.InvalidateVisual();
             }
         }
+
+        public int TabSize = 4;
         public bool IsReadOnly = true;
         
         public int LineHeight = 15;

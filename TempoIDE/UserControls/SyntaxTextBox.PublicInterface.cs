@@ -147,8 +147,21 @@ namespace TempoIDE.UserControls
             CaretOffset = new IntVector(0, 0);
         }
 
-        public string GetTypingWordAtIndex(int index, bool includeNumbers = false)
+        public string GetCharactersFromIndex(int index, int places)
         {
+            var range = new IntRange(index, index + places).Arrange();
+            var characters = new StringBuilder();
+            
+            foreach (int n in range)
+                if (n >= 0 && n < TextArea.Characters.Count)
+                    characters.Append(TextArea.Characters[n].Value);
+
+            return characters.ToString();
+        }
+
+        public string GetTypingWord(bool includeNumbers = false)
+        {
+            var index = CaretIndex - 1;
             var word = "";
             
             for (; index >= 0; index--)
