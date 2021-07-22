@@ -1,6 +1,6 @@
 namespace TempoCompiler.Cs
 {
-    public enum TokenType
+    public enum Token
     {
         Unknown = 0,
         
@@ -24,13 +24,27 @@ namespace TempoCompiler.Cs
         Virtual, Void, Volatile, 
         While, Where,
         
+        Assignment,
+        Equals, DoesNotEqual,
+        Not,
+
+        Plus, Minus, Multiply, Divide, Modulus,
+        GreaterThan, LessThan, GreaterThanOrEqual, LessThanOrEqual,
+        
+        NullCoalesce, NullCoalesceAssignment, Ternary,
+        
+        Verbatim, Formatted,
+
+        Or, And, HorizontalLine, Ampersand, Slave, Tilde, Backslash,
+        
         Identifier, Number,
-        Period, Comma, DoubleQuote, SingleQuote,
+        Period, Comma, Colon, Semicolon,
+        DoubleQuote, SingleQuote,
         LeftParen, RightParen,
         LeftBracket, RightBracket,
         BlockOpen, BlockClose,
-        
-        Whitespace,
-        EndOfFile
+
+        Whitespace, Comment, XmlComment,
+        Newline, EndOfFile
     }
 }

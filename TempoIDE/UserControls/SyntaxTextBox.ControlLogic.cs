@@ -103,8 +103,7 @@ namespace TempoIDE.UserControls
                         if (mod == 0)
                             mod = TabSize;
                         else
-                            mod = Math.Abs(mod - TabSize); 
-                        // It's really hacky but it works in completing a sequence of n spaces
+                            mod = Math.Abs(mod - TabSize);
 
                         AppendTextAtCaret(string.Concat(Enumerable.Repeat(" ", mod)));
                     }

@@ -107,10 +107,6 @@ namespace TempoCompiler.Cs
             new TokenDef(@"\>=", Token.GreaterThanOrEqual, 5),
             new TokenDef(@"\<=", Token.LessThanOrEqual, 5),
             
-            new TokenDef(@"\??", Token.NullCoalesce, 5),
-            new TokenDef(@"\??=", Token.NullCoalesceAssignment, 5),
-            new TokenDef(@"\?:", Token.Ternary, 5),
-            
             new TokenDef(@"\@", Token.Verbatim, 5),
             new TokenDef(@"\$", Token.Formatted, 5),
             
@@ -120,8 +116,9 @@ namespace TempoCompiler.Cs
             new TokenDef(@"\&", Token.Ampersand, 5),
             new TokenDef(@"`", Token.Slave, 5),
             new TokenDef(@"~", Token.Tilde, 5),
-            new TokenDef(@"\\", Token.Backslash, 5),
-
+            new TokenDef(@"\\", Token.Tilde, 5),
+            
+            
             new TokenDef("[A-Za-z1-9_]+", Token.Identifier, 6),
             new TokenDef(@"\d+", Token.Number, 5),
 
@@ -178,10 +175,10 @@ namespace TempoCompiler.Cs
 
                 if (longest == null)
                     yield break;
+                
+                yield return longest ?? new LexerToken("", Token.Unknown, readPosition);
 
-                yield return longest; // TODO: Errors
-
-                readPosition += longest.Value.Length;
+                readPosition += longest?.Value.Length ?? 0;
 
                 matches.Clear();
             }

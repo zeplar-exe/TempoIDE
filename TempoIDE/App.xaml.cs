@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using TempoCompiler.Cs;
 using TempoIDE.Classes;
 
 namespace TempoIDE
@@ -12,6 +13,7 @@ namespace TempoIDE
             #endif
 
             //ThemeHelper.LoadTheme(Theme.Light);
+            new Compiler(null);
             
             ResourceCache.Load();
         }

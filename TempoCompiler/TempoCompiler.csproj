@@ -4,4 +4,24 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Cs\TestResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>TestResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Cs\TestResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>TestResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Cs\TestInputFile.cs" />
+      <Resource Include="Cs\TestInputFile.cs" />
+    </ItemGroup>
+
 </Project>

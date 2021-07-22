@@ -7,7 +7,8 @@ namespace TempoCompiler.Cs
     {
         public Compiler(FileInfo[] files)
         {
-            
+            foreach (var token in new Lexer(TestResources.TestInputFile))
+                Console.WriteLine(token.Value);
         }
     }
 }
