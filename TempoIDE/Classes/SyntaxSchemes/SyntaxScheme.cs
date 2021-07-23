@@ -1,4 +1,5 @@
 using System.Windows.Media;
+using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.SyntaxSchemes
@@ -23,7 +24,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public void Highlight(ColoredLabel textBox);
         
-        public string[] GetAutoCompletions(SyntaxTextBox textBox);
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox);
     }
 
     public interface IProgrammingLanguageColorScheme : ISyntaxScheme

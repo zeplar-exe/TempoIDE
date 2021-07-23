@@ -74,7 +74,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
             }
         }
 
-        public string[] GetAutoCompletions(SyntaxTextBox textBox)
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
         {
             var xmlData = ResourceCache.GetXml("intellisense.cs");
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
@@ -89,7 +89,11 @@ namespace TempoIDE.Classes.SyntaxSchemes
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
             
-            return keywords.Select(kw => kw.Value).Where(kw => kw.StartsWith(typingWord) && kw != typingWord).ToArray();
+            return keywords
+                .Select(kw => kw.Value)
+                .Where(kw => kw.StartsWith(typingWord) && kw != typingWord)
+                .Select(kw => new AutoCompletion(kw))
+                .ToArray();
         }
     }
 }

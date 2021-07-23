@@ -1,14 +1,9 @@
-using System;
 using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
-using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -21,17 +16,13 @@ namespace TempoIDE.UserControls
         private readonly SolidColorBrush selectedFileBrush = Brushes.Gray;
         private readonly SolidColorBrush openedFileBrush = Brushes.CornflowerBlue;
         
-        private const string SolutionExtension = ".sln";
-        private readonly string[] explorerExtensions = new[]
+        private readonly string[] explorerExtensions =
         {
             ".txt", ".cs"
         };
         
         private const int IndentationSpace = 30;
 
-        private DirectoryInfo currentDirectory = new DirectoryInfo(
-            Directory.CreateDirectory(Path.Join(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "ExplorerTest")).FullName);
-        
         private FileInfo openFile;
         private FileInfo OpenFile
         {
@@ -53,9 +44,8 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        public void AppendElement(ExplorerPanelElement element, int indentationLevel, ExplorerPanelExpander parent = null)
+        public void AppendElement(ExplorerPanelElement element, ExplorerPanelExpander parent = null)
         {
-            element.SetValue(IndentationLevel, indentationLevel);
             element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
 
             if (parent?.Content == null)
@@ -69,10 +59,8 @@ namespace TempoIDE.UserControls
             }
         }
 
-        public void AppendExpander(ExplorerPanelExpander expander, int indentationLevel, ExplorerPanelExpander parent = null)
+        public void AppendExpander(ExplorerPanelExpander expander, ExplorerPanelExpander parent = null)
         {
-            expander.SetValue(IndentationLevel, indentationLevel);
-
             if (parent?.Content == null)
             {
                 Children.Add(expander);
@@ -80,37 +68,37 @@ namespace TempoIDE.UserControls
             else
             {
                 expander.Padding = new Thickness(IndentationSpace, 0, 0, 0);
-                // I have no idea why the padding here is needed but without it the panel breaks
-                
+
                 parent.ExpanderContent.Children.Add(expander);
             }
         }
 
-        public void AppendDirectory(DirectoryInfo directory, int indentationLevel, ExplorerPanelExpander parent = null)
+        public void AppendDirectory(DirectoryInfo directory, ExplorerPanelExpander parent = null)
         {
+            var root = AppendExpander(directory.FullName, parent);
+            
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
             {
                 if (Directory.Exists(filePath))
                 {
-                    var expanderParent = AppendExpander(Path.GetFileName(filePath), indentationLevel, parent);
+                    var expanderParent = AppendExpander(Path.GetFileName(filePath), root);
                     
                     AppendDirectory(
-                        new DirectoryInfo(filePath), 
-                        indentationLevel, 
+                        new DirectoryInfo(filePath),
                         expanderParent
                     );
                 }
                 
                 if (explorerExtensions.Contains(Path.GetExtension(filePath)))
                 {
-                    AppendElement(Path.GetFileName(filePath), filePath, indentationLevel, parent);
+                    AppendElement(Path.GetFileName(filePath), filePath, root);
                 }
                 
                 UpdateLayout();
             }
         }
 
-        private void AppendElement(string text, string directory, int indent, ExplorerPanelExpander parent)
+        private void AppendElement(string text, string directory, ExplorerPanelExpander parent)
         {
             var element = new ExplorerPanelElement
             {
@@ -120,7 +108,6 @@ namespace TempoIDE.UserControls
                 },
                 FilePath = directory
             };
-            element.SetValue(IndentationLevel, indent);
             element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
 
             if (parent?.Content == null)
@@ -150,15 +137,14 @@ namespace TempoIDE.UserControls
                 
                 element.Background = selectedFileBrush;
             }
-
-            if (e.ClickCount == 2)
+            else if (e.ClickCount == 2)
             {
                 element.Background = openedFileBrush;
                 OpenFile = new FileInfo(element.FilePath);
             }
         }
         
-        private ExplorerPanelExpander AppendExpander(string path, int indent, ExplorerPanelExpander parent)
+        private ExplorerPanelExpander AppendExpander(string path, ExplorerPanelExpander parent)
         {
             var expander = new ExplorerPanelExpander
             {
@@ -170,8 +156,6 @@ namespace TempoIDE.UserControls
 
             ((ExplorerPanelElement) expander.ElementExpander.Header).FilePath = path;
 
-            expander.SetValue(IndentationLevel, indent);
-
             if (parent?.Content == null)
             {
                 Children.Add(expander);
@@ -179,8 +163,6 @@ namespace TempoIDE.UserControls
             else
             {
                 expander.Padding = new Thickness(IndentationSpace, 0, 0, 0);
-                // I have no idea why the padding here is needed but without it the panel breaks
-                
                 parent.ExpanderContent.Children.Add(expander);
             }
             
@@ -188,25 +170,6 @@ namespace TempoIDE.UserControls
         }
         
         public void Clear() => Children.Clear();
-
-        #region Attached Properties
-
-        public static readonly DependencyProperty IndentationLevel = DependencyProperty.RegisterAttached(
-            "IndendtationLevel",
-            typeof(int),
-            typeof(ExplorerPanel)
-        );
-        
-        public static void SetIndentationLevel(UIElement element, int value)
-        {
-            element.SetValue(IndentationLevel, value);
-        }
-        public static int GetIndentationLevel(UIElement element)
-        {
-            return (int)element.GetValue(IndentationLevel);
-        }
-        
-        #endregion
 
         protected override Size MeasureOverride(Size availableSize)
         {
@@ -229,7 +192,7 @@ namespace TempoIDE.UserControls
             
             foreach (UIElement child in InternalChildren)
             {
-                child.Arrange(new Rect(new Point(IndentationSpace * GetIndentationLevel(child), yPos), child.DesiredSize));
+                child.Arrange(new Rect(new Point(0, yPos), child.DesiredSize));
                 
                 yPos += child.DesiredSize.Height;
             }

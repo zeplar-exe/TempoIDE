@@ -1,4 +1,5 @@
 using System.Windows.Media;
+using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.SyntaxSchemes
@@ -12,7 +13,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
             
         }
         
-        public string[] GetAutoCompletions(SyntaxTextBox textBox)
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
         {
             return null;
         }

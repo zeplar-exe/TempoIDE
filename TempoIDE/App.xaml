@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="Windows/MainWindow.xaml"
-             Startup="App_OnStartup">
+             Startup="App_OnStartup"
+              >
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
@@ -19,10 +20,15 @@
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
-            <Style x:Key="AutoCompleteBoxStyle" TargetType="Canvas">
+            <Style x:Key="AutoCompleteBoxStyle" TargetType="ListBox">
                 <Setter Property="Background" Value="#4d4747"/>
             </Style>
             
+            <DataTemplate x:Key="AutoCompleteItemTemplate">
+                <ListBoxItem Background="Transparent">
+                    
+                </ListBoxItem>
+            </DataTemplate>
             
             <Style x:Key="TopbarContextMenuStyle" TargetType="ContextMenu">
                 <Setter Property="Background" Value="{DynamicResource DarkToolbarBackgroundColor}"/>

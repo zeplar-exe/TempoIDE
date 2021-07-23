@@ -67,7 +67,7 @@ namespace TempoIDE.UserControls
 
         private bool isSelecting;
 
-        private string selectedAutoComplete;
+        private AutoCompletionSelection autoCompletions;
 
         public SyntaxTextBox()
         {
@@ -80,35 +80,27 @@ namespace TempoIDE.UserControls
             IsTabStop = true;
 
             CaretRect = new Rect(0, 0, 1, LineHeight);
-
-            TextArea.TextChanged += SyntaxTextBox_OnTextChanged;
         }
 
         #region Private Interface
         
         private void UpdateAutoCompletion()
         {
-            var autoCompletions = TextArea.Scheme?.GetAutoCompletions(this);
+            var newCompletions = TextArea.Scheme?.GetAutoCompletions(this);
 
-            if (autoCompletions != null && autoCompletions.Length != 0)
+            if (newCompletions != null && newCompletions.Length != 0)
             {
+                autoCompletions = new AutoCompletionSelection(newCompletions);
+                
                 AutoComplete.Visibility = Visibility.Visible;
 
                 AutoComplete.Translate.X = CaretRect.Right;
                 AutoComplete.Translate.Y = CaretRect.Bottom;
-    
-                selectedAutoComplete = autoCompletions[0];
-    
-                AutoComplete.Words.Children.Clear();
-    
-                foreach (var word in autoCompletions)
-                {
-                    AutoComplete.Words.Children.Add(new TextBlock { Text = word });
-                }
+
+                AutoComplete.SupplyAutoCompletions(newCompletions);
             }
             else
             {
-                selectedAutoComplete = null;
                 AutoComplete.Visibility = Visibility.Collapsed;
             }
         }

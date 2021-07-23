@@ -59,14 +59,13 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (selectedAutoComplete == null)
+                    if (autoCompletions.Selected == null)
                     {
                         AppendTextAtCaret(ColoredLabel.NewLine);
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(true), ""));
-                        selectedAutoComplete = null;
+                        autoCompletions.Selected.Execute(this);
                     }
 
                     UpdateAutoCompletion();
@@ -96,7 +95,7 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (selectedAutoComplete == null)
+                    if (autoCompletions.Selected == null)
                     {
                         var mod = CaretOffset.X % 4;
 
@@ -109,8 +108,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        AppendTextAtCaret(selectedAutoComplete.Replace(GetTypingWord(true), ""));
-                        selectedAutoComplete = null;
+                        autoCompletions.Selected?.Execute(this);
                     }
 
                     UpdateAutoCompletion();
@@ -169,6 +167,11 @@ namespace TempoIDE.UserControls
                 
                 #endregion
             }
+        }
+        
+        private void AutoComplete_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            autoCompletions.Index = AutoComplete.SelectedIndex == -1 ? 0 : AutoComplete.SelectedIndex;
         }
 
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)

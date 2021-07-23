@@ -1,5 +1,6 @@
-﻿using System.Windows;
-using TempoCompiler.Cs;
+﻿using System;
+using System.Windows;
+using System.Windows.Navigation;
 using TempoIDE.Classes;
 
 namespace TempoIDE
@@ -11,9 +12,9 @@ namespace TempoIDE
             #if DEBUG
             ConsoleManager.Show();
             #endif
-
+            
             //ThemeHelper.LoadTheme(Theme.Light);
-            new Compiler(null);
+            //new Compiler(null);
             
             ResourceCache.Load();
         }

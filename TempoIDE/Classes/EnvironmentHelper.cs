@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Windows;
 using TempoIDE.UserControls;
@@ -36,8 +35,8 @@ namespace TempoIDE.Classes
                     };
 
                     var slnDirectory = new FileInfo(path).Directory;
-                    MainWindow.Explorer.AppendExpander(topLevel, 0);
-                    MainWindow.Explorer.AppendDirectory(slnDirectory, 0, topLevel);
+                    MainWindow.Explorer.AppendExpander(topLevel);
+                    MainWindow.Explorer.AppendDirectory(slnDirectory, topLevel);
 
                     directoryWatcher = new DirectoryWatcher(slnDirectory);
                     directoryWatcher.Changed += DirectoryChanged;
@@ -45,7 +44,7 @@ namespace TempoIDE.Classes
                     break;
                 case EnvironmentFilterMode.Directory:
                     var directory = new DirectoryInfo(path);
-                    MainWindow.Explorer.AppendDirectory(directory, 0);
+                    MainWindow.Explorer.AppendDirectory(directory);
                     
                     directoryWatcher = new DirectoryWatcher(directory);
                     directoryWatcher.Changed += DirectoryChanged;
@@ -65,9 +64,32 @@ namespace TempoIDE.Classes
                     directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(path));
                     directoryWatcher.Changed += DirectoryChanged;
                     
-                    MainWindow.Explorer.AppendElement(element, 0);
+                    MainWindow.Explorer.AppendElement(element);
                     break;
             }
+        }
+
+        public static EnvironmentFilterMode GetPathType(string path)
+        {
+            var mode = EnvironmentFilterMode.None;
+            
+            if (Directory.Exists(path))
+            {
+                mode = EnvironmentFilterMode.Directory;
+            }
+            else if (File.Exists(path))
+            {
+                var file = new FileInfo(path);
+
+                mode = file.Extension switch
+                {
+                    ".csproj" => EnvironmentFilterMode.File,
+                    ".sln" => EnvironmentFilterMode.Solution,
+                    _ => EnvironmentFilterMode.None
+                };
+            }
+
+            return mode;
         }
 
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)

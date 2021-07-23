@@ -1,9 +1,7 @@
 using System;
-using System.IO;
 using System.Reflection;
 using Microsoft.Win32;
 using TempoIDE.Classes.Types;
-using TempoIDE.Windows;
 using Ookii.Dialogs.Wpf;
 
 namespace TempoIDE.Classes

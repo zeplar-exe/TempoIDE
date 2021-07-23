@@ -16,12 +16,14 @@
         <userControls:ColoredLabel 
             x:Name="TextArea"
             OnAfterRender="TextArea_OnAfterRender"
-            OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"/>
+            OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"
+            TextChanged="SyntaxTextBox_OnTextChanged"/>
         
         <userControls:AutoCompleteBox
             x:Name="AutoComplete"
             Visibility="Collapsed" 
             HorizontalAlignment="Left" 
-            VerticalAlignment="Top"/>
+            VerticalAlignment="Top"
+            SelectionChanged="AutoComplete_OnSelectionChanged"/>
     </Grid>
 </UserControl>
