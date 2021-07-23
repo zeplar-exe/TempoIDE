@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -54,8 +56,9 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                element.Padding = new Thickness(IndentationSpace, 0, 0, 0);
-                parent.ExpanderContent.Children.Add(element);
+                element.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
+                parent.Children.Add(element);
+                Children.Add(element);
             }
         }
 
@@ -67,47 +70,43 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                expander.Padding = new Thickness(IndentationSpace, 0, 0, 0);
+                expander.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
 
-                parent.ExpanderContent.Children.Add(expander);
+                parent.Children.Add(expander);
+                Children.Add(expander);
             }
         }
 
         public void AppendDirectory(DirectoryInfo directory, ExplorerPanelExpander parent = null)
         {
             var root = AppendExpander(directory.FullName, parent);
-            
+
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
             {
                 if (Directory.Exists(filePath))
                 {
-                    var expanderParent = AppendExpander(Path.GetFileName(filePath), root);
-                    
                     AppendDirectory(
                         new DirectoryInfo(filePath),
-                        expanderParent
+                        root
                     );
                 }
                 
                 if (explorerExtensions.Contains(Path.GetExtension(filePath)))
                 {
-                    AppendElement(Path.GetFileName(filePath), filePath, root);
+                    AppendElement(new DirectoryInfo(filePath), root);
                 }
                 
                 UpdateLayout();
             }
         }
 
-        private void AppendElement(string text, string directory, ExplorerPanelExpander parent)
+        private void AppendElement(DirectoryInfo directory, ExplorerPanelExpander parent)
         {
             var element = new ExplorerPanelElement
             {
-                Text =
-                {
-                    Text = Path.GetFileName(text)
-                },
-                FilePath = directory
+                FilePath = directory.FullName
             };
+            
             element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
 
             if (parent?.Content == null)
@@ -116,8 +115,9 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                element.Padding = new Thickness(IndentationSpace, 0, 0, 0);
-                parent.ExpanderContent.Children.Add(element);
+                element.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
+                parent.Children.Add(element);
+                Children.Add(element);
             }
         }
 
@@ -153,7 +153,7 @@ namespace TempoIDE.UserControls
                     IsExpanded = true
                 }
             };
-
+            
             ((ExplorerPanelElement) expander.ElementExpander.Header).FilePath = path;
 
             if (parent?.Content == null)
@@ -162,8 +162,9 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                expander.Padding = new Thickness(IndentationSpace, 0, 0, 0);
-                parent.ExpanderContent.Children.Add(expander);
+                expander.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
+                parent.Children.Add(expander);
+                Children.Add(expander);
             }
             
             return expander;
@@ -180,7 +181,6 @@ namespace TempoIDE.UserControls
                 child.Measure(availableSize);
 
                 returnSize.Height += child.DesiredSize.Height;
-                returnSize.Width += child.DesiredSize.Width;
             }
             
             return returnSize;

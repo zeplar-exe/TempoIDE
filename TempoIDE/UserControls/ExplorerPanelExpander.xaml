@@ -7,12 +7,10 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <Expander Name="ElementExpander">
+        <Expander Name="ElementExpander" Expanded="ElementExpander_OnExpanded" Collapsed="ElementExpander_OnCollapsed">
             <Expander.Header>
                 <local:ExplorerPanelElement x:Name="Element"/>
             </Expander.Header>
-            
-            <StackPanel Name="ExpanderContent"></StackPanel>
         </Expander>
     </Grid>
     

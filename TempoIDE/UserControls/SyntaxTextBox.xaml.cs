@@ -91,13 +91,14 @@ namespace TempoIDE.UserControls
             if (newCompletions != null && newCompletions.Length != 0)
             {
                 autoCompletions = new AutoCompletionSelection(newCompletions);
-                
+
                 AutoComplete.Visibility = Visibility.Visible;
 
                 AutoComplete.Translate.X = CaretRect.Right;
                 AutoComplete.Translate.Y = CaretRect.Bottom;
-
+                
                 AutoComplete.SupplyAutoCompletions(newCompletions);
+                AutoComplete.SelectedIndex = 0;
             }
             else
             {
