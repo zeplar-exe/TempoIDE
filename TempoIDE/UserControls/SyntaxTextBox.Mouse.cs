@@ -17,10 +17,10 @@ namespace TempoIDE.UserControls
             selectStartXPosition = e.GetPosition(this).X;
 
             Keyboard.Focus(this);
-            CaretOffset = GetCaretOffsetByClick(e);
+            MoveCaret(GetCaretOffsetByClick(e));
 
             isSelecting = true;
-            SelectionRange = new IntRange(CaretIndex, CaretIndex);
+            Select(new IntRange(CaretIndex, CaretIndex));
         }
 
         private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
@@ -32,8 +32,8 @@ namespace TempoIDE.UserControls
         {
             if (isSelecting)
             {
-                CaretOffset = GetCaretOffsetByClick(e);
-                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
+                MoveCaret(GetCaretOffsetByClick(e));
+                Select(new IntRange(SelectionRange.Start, CaretIndex));
             }
             
             isSelecting = false;
@@ -43,8 +43,8 @@ namespace TempoIDE.UserControls
         {
             if (isSelecting)
             {
-                CaretOffset = GetCaretOffsetByClick(e);
-                SelectionRange = new IntRange(SelectionRange.Start, CaretIndex);
+                MoveCaret(GetCaretOffsetByClick(e));
+                Select(new IntRange(SelectionRange.Start, CaretIndex));
             }
         }
 

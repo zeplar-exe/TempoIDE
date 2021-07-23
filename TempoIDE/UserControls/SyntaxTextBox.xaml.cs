@@ -9,47 +9,10 @@ namespace TempoIDE.UserControls
     public partial class SyntaxTextBox : UserControl, IInputElement
     {
         public Rect CaretRect { get; private set; }
-        
-        private IntVector caretOffset;
-        public IntVector CaretOffset
-        {
-            get => caretOffset;
-            internal set
-            {
-                if (!VerifyCaretOffset(value))
-                    return;
-
-                caretOffset = value;
-                CaretIndex = GetCaretIndexAtOffset(value);
-                
-                CaretRect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
-
-                var line = TextArea.GetLines()[value.Y];
-                
-                for (var columnNo = 0; columnNo < value.X; columnNo++)
-                {
-                    CaretRect = Rect.Offset(CaretRect, line[columnNo].Size.Width, 0);
-                }
-                
-                CaretRect = Rect.Offset(CaretRect, 0, LineHeight * value.Y);
-                
-                TextArea.InvalidateVisual();
-            }
-        }
-
+        public IntVector CaretOffset;
         public int CaretIndex { get; private set; }
-
-        private IntRange selectionRange = new IntRange(0, 0);
-        public IntRange SelectionRange
-        {
-            get => selectionRange;
-            set
-            {
-                selectionRange = value;
-                
-                TextArea.InvalidateVisual();
-            }
-        }
+        
+        public IntRange SelectionRange = new IntRange(0, 0);
 
         public int TabSize = 4;
         public bool IsReadOnly = true;
@@ -66,8 +29,8 @@ namespace TempoIDE.UserControls
         private bool caretVisible;
 
         private bool isSelecting;
-
-        private AutoCompletionSelection autoCompletions;
+        
+        public AutoCompletionSelection AutoCompletions;
 
         public SyntaxTextBox()
         {
@@ -90,14 +53,14 @@ namespace TempoIDE.UserControls
 
             if (newCompletions != null && newCompletions.Length != 0)
             {
-                autoCompletions = new AutoCompletionSelection(newCompletions);
+                AutoCompletions = new AutoCompletionSelection(newCompletions);
 
-                AutoComplete.Visibility = Visibility.Visible;
+                AutoComplete.Enable();
+                AutoComplete.Update(AutoCompletions.Choices);
 
                 AutoComplete.Translate.X = CaretRect.Right;
                 AutoComplete.Translate.Y = CaretRect.Bottom;
                 
-                AutoComplete.SupplyAutoCompletions(newCompletions);
                 AutoComplete.SelectedIndex = 0;
             }
             else

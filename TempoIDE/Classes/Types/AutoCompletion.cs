@@ -14,6 +14,9 @@ namespace TempoIDE.Classes.Types
         public virtual void Execute(SyntaxTextBox textBox)
         {
             textBox.AppendTextAtCaret(Value.ReplaceFirst(textBox.GetTypingWord(true), ""));
+            
+            textBox.AutoComplete.Disable();
+            textBox.AutoCompletions = null;
         }
     }
 }

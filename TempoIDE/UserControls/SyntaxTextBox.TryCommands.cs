@@ -53,7 +53,7 @@ namespace TempoIDE.UserControls
         
         public bool TrySelectAll()
         {
-            SelectionRange = new IntRange(0, TextArea.Text.Length);
+            Select(new IntRange(0, TextArea.Text.Length));
             
             return true;
         }

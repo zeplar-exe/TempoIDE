@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
@@ -8,18 +9,43 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox : UserControl
     {
-        public string GetSelectedText()
+        public void MoveCaret(IntVector position)
         {
-            if (SelectionRange.Size == 0)
-                return string.Empty;
+            if (!VerifyCaretOffset(position))
+                return;
+            
+            AutoComplete.Disable();
 
-            var builder = new StringBuilder();
+            CaretOffset = position;
+            CaretIndex = GetCaretIndexAtOffset(position);
+            
+            CaretRect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
 
-            foreach (int index in SelectionRange.Arrange())
-                builder.Append(TextArea.GetCharacterAtIndex(index).Value);
-
-            return builder.ToString();
+            var line = TextArea.GetLines()[position.Y];
+            
+            for (var columnNo = 0; columnNo < position.X; columnNo++)
+            {
+                CaretRect = Rect.Offset(CaretRect, line[columnNo].Size.Width, 0);
+            }
+            
+            CaretRect = Rect.Offset(CaretRect, 0, LineHeight * position.Y);
+            
+            TextArea.InvalidateVisual();
         }
+
+        public void Select(IntRange range)
+        {
+            SelectionRange = range;
+            
+            TextArea.InvalidateVisual();
+        }
+        
+        public void ClearSelection()
+        {
+            Select(new IntRange(CaretIndex, CaretIndex));
+        }
+
+        #region AppendText
         
         public void AppendTextAtCaret(string text)
         {
@@ -63,16 +89,12 @@ namespace TempoIDE.UserControls
             else
                 TextArea.AppendText(character, CaretIndex);
 
-            CaretOffset = character.Value == ColoredLabel.NewLine ?
+            MoveCaret(character.Value == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
-                new IntVector(CaretOffset.X + 1, CaretOffset.Y);
+                new IntVector(CaretOffset.X + 1, CaretOffset.Y));
         }
-
-        public void ClearSelection()
-        {
-            SelectionRange = new IntRange(CaretIndex, CaretIndex);
-            InvalidateVisual();
-        }
+        
+        #endregion
 
         public void Backspace(int count)
         {
@@ -83,7 +105,7 @@ namespace TempoIDE.UserControls
 
             if (range.Size > 0)
             {
-                CaretOffset = GetCaretOffsetAtIndex(range.Start);
+                MoveCaret(GetCaretOffsetAtIndex(range.Start));
                 
                 TextArea.RemoveIndex(range);
                 ClearSelection();
@@ -105,11 +127,11 @@ namespace TempoIDE.UserControls
                 if (character.Value == ColoredLabel.NewLine)
                 {
                     var lines = TextArea.GetLines();
-                    CaretOffset = new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1);
+                    MoveCaret(new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1));
                 }
                 else
                 {
-                    CaretOffset = new IntVector(CaretOffset.X - 1, CaretOffset.Y);
+                    MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
                 }
             }
             
@@ -120,7 +142,7 @@ namespace TempoIDE.UserControls
         {
             if (SelectionRange.Size > 0)
             {
-                CaretOffset = GetCaretOffsetAtIndex(SelectionRange.Start);
+                MoveCaret(GetCaretOffsetAtIndex(SelectionRange.Start));
                 
                 TextArea.RemoveIndex(SelectionRange);
                 ClearSelection();
@@ -142,7 +164,7 @@ namespace TempoIDE.UserControls
         {
             TextArea.Clear();
             ClearSelection();
-            CaretOffset = new IntVector(0, 0);
+            MoveCaret(new IntVector(0, 0));
         }
 
         public string GetCharactersFromIndex(int index, int places)
@@ -155,6 +177,19 @@ namespace TempoIDE.UserControls
                     characters.Append(TextArea.Characters[n].Value);
 
             return characters.ToString();
+        }
+        
+        public string GetSelectedText()
+        {
+            if (SelectionRange.Size == 0)
+                return string.Empty;
+
+            var builder = new StringBuilder();
+
+            foreach (int index in SelectionRange.Arrange())
+                builder.Append(TextArea.GetCharacterAtIndex(index).Value);
+
+            return builder.ToString();
         }
 
         public string GetTypingWord(bool includeNumbers = false)

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
@@ -24,6 +25,8 @@ namespace TempoIDE.UserControls
         {
             caretThread?.Interrupt();
             caretVisible = false;
+
+            AutoCompletions.Index = 0;
             
             TextArea.InvalidateVisual();
         }
@@ -59,15 +62,11 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (autoCompletions.Selected == null)
-                    {
+                    if (AutoCompletions == null)
                         AppendTextAtCaret(ColoredLabel.NewLine);
-                    }
                     else
-                    {
-                        autoCompletions.Selected.Execute(this);
-                    }
-
+                        AutoCompletions.Selected?.Execute(this);
+                    
                     UpdateAutoCompletion();
 
                     break;
@@ -95,7 +94,7 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (autoCompletions.Selected == null)
+                    if (AutoCompletions == null)
                     {
                         var mod = CaretOffset.X % 4;
 
@@ -108,7 +107,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        autoCompletions.Selected?.Execute(this);
+                        AutoCompletions.Selected?.Execute(this);
                     }
 
                     UpdateAutoCompletion();
@@ -127,7 +126,7 @@ namespace TempoIDE.UserControls
                     var newPosition = CaretOffset + new IntVector(-1, 0);
 
                     if (VerifyCaretOffset(newPosition))
-                        CaretOffset = newPosition;
+                        MoveCaret(newPosition);
 
                     break;
                 }
@@ -138,7 +137,7 @@ namespace TempoIDE.UserControls
                     var newPosition = CaretOffset + new IntVector(1, 0);
 
                     if (VerifyCaretOffset(newPosition))
-                        CaretOffset = newPosition;
+                        MoveCaret(newPosition);
 
                     break;
                 }
@@ -148,8 +147,13 @@ namespace TempoIDE.UserControls
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, -1);
 
-                    if (VerifyCaretOffset(newPosition))
-                        CaretOffset = newPosition;
+                    if (AutoCompletions != null)
+                    {
+                        AutoCompletions.Index--;
+                        AutoComplete.MoveSelectedIndex(LogicalDirection.Backward);
+                    }
+                    else if (VerifyCaretOffset(newPosition))
+                        MoveCaret(newPosition);
 
                     break;
                 }
@@ -159,19 +163,19 @@ namespace TempoIDE.UserControls
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, 1);
 
-                    if (VerifyCaretOffset(newPosition))
-                        CaretOffset = newPosition;
+                    if (AutoCompletions != null)
+                    {
+                        AutoCompletions.Index++;
+                        AutoComplete.MoveSelectedIndex(LogicalDirection.Forward);
+                    }
+                    else if (VerifyCaretOffset(newPosition))
+                        MoveCaret(newPosition);
 
                     break;
                 }
                 
                 #endregion
             }
-        }
-        
-        private void AutoComplete_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            autoCompletions.Index = AutoComplete.SelectedIndex == -1 ? 0 : AutoComplete.SelectedIndex;
         }
 
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)

@@ -6,9 +6,10 @@ using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.SyntaxSchemes
 {
-    public class CsSyntaxScheme : IProgrammingLanguageColorScheme
+    public class CsSyntaxScheme : IProgrammingLanguageSyntaxScheme
     {
         public Brush Default => Brushes.White;
+        public Brush String => Brushes.SeaGreen;
         public Brush Number => Brushes.LightCoral;
         public Brush Comment => Brushes.ForestGreen;
         public Brush Identifier => Brushes.CornflowerBlue;

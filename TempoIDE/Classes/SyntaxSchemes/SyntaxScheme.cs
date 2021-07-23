@@ -27,9 +27,10 @@ namespace TempoIDE.Classes.SyntaxSchemes
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox);
     }
 
-    public interface IProgrammingLanguageColorScheme : ISyntaxScheme
+    public interface IProgrammingLanguageSyntaxScheme : ISyntaxScheme
     {
         public Brush Number { get; }
+        public Brush String { get; }
         public Brush Comment { get; }
         public Brush Identifier { get; }
         public Brush Type { get; }

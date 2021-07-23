@@ -23,7 +23,6 @@
             x:Name="AutoComplete"
             Visibility="Collapsed" 
             HorizontalAlignment="Left" 
-            VerticalAlignment="Top"
-            SelectionChanged="AutoComplete_OnSelectionChanged"/>
+            VerticalAlignment="Top"/>
     </Grid>
 </UserControl>
