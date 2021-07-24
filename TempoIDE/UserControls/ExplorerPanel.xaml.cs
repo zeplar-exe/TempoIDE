@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
+using TempoIDE.Windows;
 
 namespace TempoIDE.UserControls
 {
@@ -79,24 +82,47 @@ namespace TempoIDE.UserControls
 
         public void AppendDirectory(DirectoryInfo directory, ExplorerPanelExpander parent = null)
         {
-            var root = AppendExpander(directory.FullName, parent);
+            var worker = new BackgroundWorker
+            {
+                WorkerReportsProgress = true
+            };
+            
+            worker.DoWork += delegate { AppendDirectoryThread(directory, parent); };
 
+            worker.RunWorkerAsync();
+        }
+
+        private void AppendDirectoryThread(DirectoryInfo directory, ExplorerPanelExpander parent = null)
+        {
+            ExplorerPanelExpander root = null;
+            
+            Dispatcher.InvokeAsync(delegate
+            {
+                root = AppendExpander(directory.FullName, parent);
+            });
+            
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
             {
                 if (Directory.Exists(filePath))
                 {
-                    AppendDirectory(
-                        new DirectoryInfo(filePath),
-                        root
-                    );
+                    Dispatcher.InvokeAsync(delegate
+                    {
+                        AppendDirectoryThread(
+                            new DirectoryInfo(filePath),
+                            root
+                        );
+                    });
                 }
                 
                 if (explorerExtensions.Contains(Path.GetExtension(filePath)))
                 {
-                    AppendElement(new DirectoryInfo(filePath), root);
+                    Dispatcher.InvokeAsync(delegate
+                    {
+                        AppendElement(new DirectoryInfo(filePath), root);
+                    });
                 }
                 
-                UpdateLayout();
+                Dispatcher.InvokeAsync(UpdateLayout);
             }
         }
 
@@ -146,15 +172,9 @@ namespace TempoIDE.UserControls
         
         private ExplorerPanelExpander AppendExpander(string path, ExplorerPanelExpander parent)
         {
-            var expander = new ExplorerPanelExpander
-            {
-                ElementExpander =
-                {
-                    IsExpanded = true
-                }
-            };
+            var expander = new ExplorerPanelExpander();
             
-            ((ExplorerPanelElement) expander.ElementExpander.Header).FilePath = path;
+            expander.Element.FilePath = path;
 
             if (parent?.Content == null)
             {
@@ -174,7 +194,7 @@ namespace TempoIDE.UserControls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var returnSize = new Size();
+            var returnSize = new Size(); // TODO: Does not account for being given space
             
             foreach (UIElement child in Children)
             {

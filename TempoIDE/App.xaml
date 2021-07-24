@@ -9,6 +9,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Skins/Dark.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
+            
+            <ContextMenu x:Key="RegularFileContextMenu"></ContextMenu>
         
             <Style x:Key="MainWindowStyle" TargetType="Window">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>

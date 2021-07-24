@@ -120,12 +120,13 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <local:ExplorerPanel
-                    Grid.Column="0"
-                    x:Name="Explorer" 
-                    MinWidth="170" 
-                    GotFocus="Explorer_OnGotFocus" 
-                    OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <local:ExplorerPanel
+                        x:Name="Explorer" 
+                        MinWidth="170" 
+                        GotFocus="Explorer_OnGotFocus" 
+                        OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+                </ScrollViewer>
 
                 <GridSplitter 
                     Background="{DynamicResource BorderColor}"
