@@ -31,15 +31,15 @@
             </DataTemplate>
             
             <Style x:Key="TopbarContextMenuStyle" TargetType="ContextMenu">
-                <Setter Property="Background" Value="{DynamicResource DarkToolbarBackgroundColor}"/>
+                <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
             </Style>
             
             <Style x:Key="MenuItemStyle" TargetType="MenuItem">
-                <Setter Property="Background" Value="{DynamicResource DarkBaseTextColor}"/>
+                <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
             </Style>
             
             <Style x:Key="ContextMenuSeparatorStyle" TargetType="MenuItem">
-                <Setter Property="Background" Value="{DynamicResource DarkBackgroundColor}"/>
+                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

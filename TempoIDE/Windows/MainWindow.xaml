@@ -93,63 +93,26 @@
             </Grid.RowDefinitions>
 
             <!-- Topbar -->
-            <Border
-                Grid.Row="0"
-                Grid.ZIndex="200"
-                BorderBrush="{StaticResource BorderColor}"
-                Background="Transparent"
-                BorderThickness="0, 0, 0, 1"
-                MouseDown="Topbar_OnMouseDown">
-
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="25" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <StackPanel Name="TopbarMenu" Grid.Column="0" Orientation="Horizontal">
-                        <StackPanel.Resources>
-                            <Style TargetType="{x:Type local:TopbarMenu}">
-                                <Setter Property="Margin" Value="3,0" />
-                            </Style>
-                        </StackPanel.Resources>
-                    </StackPanel>
-
-                    <Button
-                        Grid.Column="2"
-                        Content="Min"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="MinimizeButton_OnClick" />
-
-                    <Button
-                        Grid.Column="3"
-                        Content="Max"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="MaximizeButton_OnClick" />
-
-                    <Button
-                        Grid.Column="4"
-                        Content="X"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="CloseButton_OnClick" />
-                </Grid>
-            </Border>
+            <local:TopbarControl 
+                Grid.Row="0" 
+                Grid.ZIndex="200" 
+                x:Name="Topbar"/>
             
             <!-- Topbar... 2? -->
             <Border Grid.Row="1"
                 Height="20"
                 BorderBrush="{DynamicResource BorderColor}"
-                BorderThickness="0, 0, 0, 1" />
-            
+                BorderThickness="0, 0, 0, 1">
+                
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </Border>
+
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>

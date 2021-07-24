@@ -47,7 +47,7 @@ namespace TempoIDE.Windows
                     newMenu.Items.Add(MenuItemFromXml(command));
                 }
 
-                TopbarMenu.Children.Add(newMenu);
+                Topbar.TopbarMenu.Children.Add(newMenu);
             }
         }
 

@@ -1,6 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
+using Microsoft.CodeAnalysis;
 using TempoIDE.UserControls;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.Emit;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Classes
@@ -9,7 +14,25 @@ namespace TempoIDE.Classes
     {
         public static MainWindow MainWindow => Application.Current.MainWindow as MainWindow;
         public static EnvironmentFilterMode FilterMode;
+        public static string EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
+
+        public static void Compile()
+        {
+            if (FilterMode != EnvironmentFilterMode.Solution)
+                return;
+            
+            var process = new System.Diagnostics.Process();
+            var startInfo = new System.Diagnostics.ProcessStartInfo
+            {
+                WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden,
+                FileName = "cmd.exe",
+                Arguments = $"cd {new FileInfo(EnvironmentPath).Directory} && dotnet build {EnvironmentPath} && dotnet publish {EnvironmentPath}"
+            };
+
+            process.StartInfo = startInfo;
+            process.Start();
+        }
 
         public static void CreateSolution(string path)
         {
@@ -22,6 +45,12 @@ namespace TempoIDE.Classes
         {
             MainWindow.Explorer.Clear();
             MainWindow.Editor.CloseAll();
+
+            if (new FileInfo(path).Extension == ".sln")
+                mode = EnvironmentFilterMode.Solution;
+            
+            FilterMode = mode;
+            EnvironmentPath = path;
             
             switch (mode)
             {

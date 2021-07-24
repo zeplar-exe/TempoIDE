@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>netcoreapp3.1-windows</TargetFramework>
         <UseWPF>true</UseWPF>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
     <ItemGroup>
@@ -27,9 +27,6 @@
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
       <Compile Update="Windows\MainWindow.Resizers.cs">
-        <DependentUpon>MainWindow.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Windows\MainWindow.Topbar.cs">
         <DependentUpon>MainWindow.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
