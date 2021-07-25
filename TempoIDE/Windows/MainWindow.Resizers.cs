@@ -1,3 +1,4 @@
+using System;
 using System.Windows.Input;
 using System.Windows.Shapes;
 
@@ -31,14 +32,13 @@ namespace TempoIDE.Windows
             if (!isResizing)
                 return;
 
-            var senderRect = sender as Rectangle;
-            var mainWindow = senderRect?.Tag as MainWindow;
-
-            if (senderRect != null && mainWindow != null)
+            if (sender is Rectangle senderRect && senderRect?.Tag is MainWindow mainWindow)
             {
                 var width = e.GetPosition(mainWindow).X;
                 var height = e.GetPosition(mainWindow).Y;
+                
                 senderRect.CaptureMouse();
+                
                 if (senderRect.Name.ToLower().Contains("right"))
                 {
                     width += 5;

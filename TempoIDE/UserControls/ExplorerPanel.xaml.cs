@@ -200,7 +200,7 @@ namespace TempoIDE.UserControls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            var returnSize = new Size(); // TODO: Does not account for being given space
+            var returnSize = new Size(0, 0); // TODO: Does not account for being given space
             
             foreach (UIElement child in Children)
             {

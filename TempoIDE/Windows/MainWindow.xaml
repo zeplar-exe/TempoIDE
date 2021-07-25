@@ -39,27 +39,32 @@
 
         <!-- Window Resize Grips -->
         <Rectangle Grid.Column="0" Grid.Row="1"
+                   Name="GripLeft"
                    Width="3"
                    HorizontalAlignment="Left"
                    Cursor="SizeWE"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Column="2" Grid.Row="1"
+                   Name="GripRight"
                    Width="3"
                    HorizontalAlignment="Right"
                    Cursor="SizeWE"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Row="0" Grid.Column="1"
+                   Name="GripTop"
                    Height="3"
                    VerticalAlignment="Top"
                    Cursor="SizeNS"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Row="2" Grid.Column="1"
+                   Name="GripBottom"
                    Height="3"
                    VerticalAlignment="Bottom"
                    Cursor="SizeNS"
                    Style="{StaticResource RectBorderStyle}" />
 
         <Rectangle Grid.Row="0" Grid.Column="0"
+                   Name="GripTopLeft"
                    Width="3"
                    Height="3"
                    HorizontalAlignment="Left"
@@ -67,6 +72,7 @@
                    Cursor="SizeNWSE"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Row="2" Grid.Column="2"
+                   Name="GridBottomRight"
                    Width="3"
                    Height="3"
                    HorizontalAlignment="Right"
@@ -74,6 +80,7 @@
                    Cursor="SizeNWSE"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Row="0" Grid.Column="2"
+                   Name="GripTopRight"
                    Width="3"
                    Height="3"
                    HorizontalAlignment="Right"
@@ -81,6 +88,7 @@
                    Cursor="SizeNESW"
                    Style="{StaticResource RectBorderStyle}" />
         <Rectangle Grid.Row="2" Grid.Column="0"
+                   Name="GripBottomLeft"
                    Width="3"
                    Height="3"
                    HorizontalAlignment="Left"
@@ -94,21 +102,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
-            <!-- Topbar... 2? -->
-            <Border Grid.Row="1"
-                Height="20"
-                BorderBrush="{DynamicResource BorderColor}"
-                BorderThickness="0, 0, 0, 1">
-                
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-            </Border>
 
             <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
@@ -117,13 +110,33 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <local:ExplorerPanel
-                        x:Name="Explorer" 
-                        MinWidth="170" 
-                        GotFocus="Explorer_OnGotFocus" 
-                        OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
-                </ScrollViewer>
+                <TabControl 
+                    Grid.Column="0"
+                    TabStripPlacement="Left" 
+                    Padding="-1" 
+                    HorizontalAlignment="Stretch">
+                    
+                    <TabControl.ItemContainerStyle>
+                        <Style TargetType="TabItem">
+                            <Setter Property="FontSize" Value="9.5"/>
+                            <Setter Property="LayoutTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="270"/>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </TabControl.ItemContainerStyle>
+                    
+                    <TabItem Header="Explorer">
+                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                            <local:ExplorerPanel
+                                x:Name="Explorer" 
+                                MinWidth="170" 
+                                GotFocus="Explorer_OnGotFocus" 
+                                OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+                        </ScrollViewer>
+                    </TabItem>
+                </TabControl>
 
                 <GridSplitter 
                     Background="{DynamicResource BorderColor}"
@@ -134,12 +147,20 @@
                 <local:EditorControl 
                     Grid.Column="2" 
                     x:Name="Editor" 
-                    GotFocus="Editor_OnGotFocus" />
+                    GotFocus="Editor_OnGotFocus"/>
             </Grid>
             
             <!-- Topbar -->
             <local:TopbarControl 
                 Grid.Row="0"/>
+            
+            <!-- Topbar... 2? -->
+            <Border 
+                Grid.Row="1"
+                Height="20"
+                BorderBrush="{DynamicResource BorderColor}"
+                BorderThickness="0, 0, 0, 1">
+            </Border>
         </Grid>
     </Grid>
 </Window>
