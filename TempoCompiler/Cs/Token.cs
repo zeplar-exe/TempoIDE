@@ -33,7 +33,7 @@ namespace TempoCompiler.Cs
         
         NullCoalesce, NullCoalesceAssignment, Ternary,
         
-        Verbatim, Formatted,
+        Var, Verbatim, Formatted,
 
         Or, And, HorizontalLine, Ampersand, Slave, Tilde, Backslash,
         

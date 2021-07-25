@@ -109,6 +109,7 @@ namespace TempoCompiler.Cs
             new TokenDef(@"\??=", Token.NullCoalesceAssignment, 5),
             new TokenDef(@"\?:", Token.Ternary, 5),
             
+            new TokenDef(@"var", Token.Var, 5),
             new TokenDef(@"\@", Token.Verbatim, 5),
             new TokenDef(@"\$", Token.Formatted, 5),
             
