@@ -1,9 +1,12 @@
 ﻿<Window x:Class="TempoIDE.Windows.MainWindow"
+        x:Name="ThisWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
+        xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
+        xmlns:windows="clr-namespace:TempoIDE.Windows"
         mc:Ignorable="d"
         Style="{StaticResource MainWindowStyle}"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
@@ -20,7 +23,7 @@
             <EventSetter Event="MouseMove" Handler="Resizing_Form" />
         </Style>
     </Window.Resources>
-
+    
     <Grid Margin="2">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -91,12 +94,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <!-- Topbar -->
-            <local:TopbarControl 
-                Grid.Row="0" 
-                Grid.ZIndex="200" 
-                x:Name="Topbar"/>
             
             <!-- Topbar... 2? -->
             <Border Grid.Row="1"
@@ -139,6 +136,10 @@
                     x:Name="Editor" 
                     GotFocus="Editor_OnGotFocus" />
             </Grid>
+            
+            <!-- Topbar -->
+            <local:TopbarControl 
+                Grid.Row="0"/>
         </Grid>
     </Grid>
 </Window>

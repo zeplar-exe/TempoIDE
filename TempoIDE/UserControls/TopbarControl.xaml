@@ -4,8 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
+             xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
+             xmlns:types="clr-namespace:TempoIDE.Classes.Types"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    <Border.Resources>
+        <types:GestureConverter x:Key="GestureConverter"/>
+    </Border.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -15,12 +21,98 @@
             <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
                     
-        <StackPanel x:Name="TopbarMenu" Grid.Column="0" Orientation="Horizontal">
+        <StackPanel Grid.Column="0" Orientation="Horizontal">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type local:TopbarMenu}">
                     <Setter Property="Margin" Value="3,0" />
                 </Style>
             </StackPanel.Resources>
+            
+            <local:TopbarMenu MenuName="File">
+                <local:TopbarMenu.Items>
+                    <MenuItem Header="New solution" CommandParameter="{RelativeSource TemplatedParent}">
+                        <MenuItem.Command>
+                            <commands:NewSolutionCommand/>
+                        </MenuItem.Command>
+                    </MenuItem>
+                    
+                    <MenuItem Header="Open...">
+                        <MenuItem.Command>
+                            <commands:OpenDropdown/>
+                        </MenuItem.Command>
+                        
+                        <MenuItem.ItemsSource>
+                            <x:Array x:Type="MenuItem">
+                                <MenuItem Header="File..." CommandParameter="{RelativeSource TemplatedParent}">
+                                    <MenuItem.Command>
+                                        <commands:OpenFileCommand/>
+                                    </MenuItem.Command>
+                                </MenuItem>
+                            
+                                <MenuItem Header="Folder..." CommandParameter="{RelativeSource TemplatedParent}">
+                                    <MenuItem.Command>
+                                        <commands:OpenFolderCommand/>
+                                    </MenuItem.Command>
+                                </MenuItem>
+                            </x:Array>
+                        </MenuItem.ItemsSource>
+                    </MenuItem>
+                </local:TopbarMenu.Items>
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Edit">
+                <local:TopbarMenu.Items>
+                    <MenuItem 
+                        Header="Copy" 
+                        CommandParameter="{RelativeSource TemplatedParent}"
+                        InputGestureText="Ctrl+C">
+                    </MenuItem>
+                    
+                    <MenuItem
+                        Header="Paste"
+                        CommandParameter="{RelativeSource TemplatedParent}"
+                        InputGestureText="Ctrl+V">
+                        
+                        <MenuItem.Command>
+                            <commands:PasteTextCommand/>
+                        </MenuItem.Command>
+                    </MenuItem>
+                    
+                    <MenuItem
+                        Header="Cut"
+                        CommandParameter="{RelativeSource TemplatedParent}"
+                        InputGestureText="Ctrl+X">
+                        
+                        <MenuItem.Command>
+                            <commands:CutTextCommand/>
+                        </MenuItem.Command>
+                    </MenuItem>
+                </local:TopbarMenu.Items>
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="View">
+
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Navigation">
+
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Code">
+
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Build">
+
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Window">
+
+            </local:TopbarMenu>
+            
+            <local:TopbarMenu MenuName="Help">
+
+            </local:TopbarMenu>
         </StackPanel>
         
         <Label Grid.Column="1" MouseLeftButtonDown="Topbar_OnPreviewMouseLeftButtonDown"/>

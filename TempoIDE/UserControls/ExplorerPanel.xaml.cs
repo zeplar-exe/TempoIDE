@@ -144,6 +144,8 @@ namespace TempoIDE.UserControls
                 element.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
                 parent.Children.Add(element);
                 Children.Add(element);
+                
+                parent.ElementExpander.IsExpanded = parent.ElementExpander.IsExpanded;
             }
         }
 
@@ -175,6 +177,7 @@ namespace TempoIDE.UserControls
             var expander = new ExplorerPanelExpander();
             
             expander.Element.FilePath = path;
+            expander.ElementExpander.IsExpanded = true;
 
             if (parent?.Content == null)
             {
@@ -183,8 +186,11 @@ namespace TempoIDE.UserControls
             else
             {
                 expander.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
+
                 parent.Children.Add(expander);
                 Children.Add(expander);
+
+                parent.ElementExpander.IsExpanded = parent.ElementExpander.IsExpanded;
             }
             
             return expander;

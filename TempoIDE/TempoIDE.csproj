@@ -40,7 +40,6 @@
       <EmbeddedResource Remove="packages\**" />
       <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
       <None Remove="ProgramData\intellisense.cs.xml" />
-      <EmbeddedResource Include="Resources\Configs\app-commands.xml" />
       <None Remove="ProgramData\app.commands.xml" />
       <None Remove="Resources\Configs\explorer-context.xml" />
       <EmbeddedResource Include="Resources\Configs\explorer-context.xml" />

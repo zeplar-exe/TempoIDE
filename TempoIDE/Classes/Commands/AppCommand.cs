@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace TempoIDE.Classes.Types
+namespace TempoIDE.Classes.Commands
 {
     public abstract class AppCommand : ICommand
     {
