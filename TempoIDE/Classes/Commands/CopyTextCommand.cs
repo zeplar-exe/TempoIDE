@@ -10,7 +10,6 @@ namespace TempoIDE.Classes.Commands
         public override bool CanExecute(object parameter)
         {
             var window = EnvironmentHelper.MainWindow;
-            window = (MainWindow) parameter;
 
             return window.Editor.TextEditor.IsFocused || window.Explorer.IsFocused;
         }
