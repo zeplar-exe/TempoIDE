@@ -43,7 +43,6 @@ namespace TempoIDE.Classes
         
         public static void LoadEnvironment(string path, EnvironmentFilterMode mode)
         {
-            MainWindow.Explorer.Clear();
             MainWindow.Editor.CloseAll();
 
             if (new FileInfo(path).Extension == ".sln")
@@ -52,50 +51,7 @@ namespace TempoIDE.Classes
             FilterMode = mode;
             EnvironmentPath = path;
             
-            switch (mode)
-            {
-                case EnvironmentFilterMode.None:
-                    break;
-                case EnvironmentFilterMode.Solution:
-                    var topLevel = new ExplorerPanelExpander
-                    {
-                        Element = { FilePath = path },
-                        ElementExpander = { IsExpanded = true }
-                    };
-
-                    var slnDirectory = new FileInfo(path).Directory;
-                    MainWindow.Explorer.AppendExpander(topLevel);
-                    MainWindow.Explorer.AppendDirectory(slnDirectory, topLevel);
-
-                    directoryWatcher = new DirectoryWatcher(slnDirectory);
-                    directoryWatcher.Changed += DirectoryChanged;
-                    
-                    break;
-                case EnvironmentFilterMode.Directory:
-                    var directory = new DirectoryInfo(path);
-                    MainWindow.Explorer.AppendDirectory(directory);
-                    
-                    directoryWatcher = new DirectoryWatcher(directory);
-                    directoryWatcher.Changed += DirectoryChanged;
-                    
-                    break;
-                case EnvironmentFilterMode.File:
-                    var filePath = new FileInfo(path);
-
-                    if (filePath.Extension == ".sln")
-                        goto case EnvironmentFilterMode.Solution;
-
-                    var element = new ExplorerPanelElement
-                    {
-                        FilePath = path,
-                    };
-                    
-                    directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(path));
-                    directoryWatcher.Changed += DirectoryChanged;
-                    
-                    MainWindow.Explorer.AppendElement(element);
-                    break;
-            }
+            LoadExplorer();
         }
 
         public static EnvironmentFilterMode GetPathType(string path)
@@ -123,7 +79,48 @@ namespace TempoIDE.Classes
 
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)
         {
+            LoadExplorer();
+        }
+
+        private static void LoadExplorer()
+        {
+            MainWindow.Explorer.Clear();
             
+            switch (FilterMode)
+            {
+                case EnvironmentFilterMode.None:
+                    break;
+                case EnvironmentFilterMode.Solution:
+                    var topLevel = new ExplorerPanelElement(EnvironmentPath);
+                    var slnDirectory = new FileInfo(EnvironmentPath).Directory;
+                    
+                    MainWindow.Explorer.AppendElement(EnvironmentPath);
+                    MainWindow.Explorer.AppendDirectory(slnDirectory, topLevel);
+
+                    directoryWatcher = new DirectoryWatcher(slnDirectory);
+                    directoryWatcher.Changed += DirectoryChanged;
+                    
+                    break;
+                case EnvironmentFilterMode.Directory:
+                    var directory = new DirectoryInfo(EnvironmentPath);
+                    MainWindow.Explorer.AppendDirectory(directory);
+                    
+                    directoryWatcher = new DirectoryWatcher(directory);
+                    directoryWatcher.Changed += DirectoryChanged;
+                    
+                    break;
+                case EnvironmentFilterMode.File:
+                    var filePath = new FileInfo(EnvironmentPath);
+
+                    if (filePath.Extension == ".sln")
+                        goto case EnvironmentFilterMode.Solution;
+                    
+                    directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(EnvironmentPath));
+                    directoryWatcher.Changed += DirectoryChanged;
+                    
+                    MainWindow.Explorer.AppendElement(EnvironmentPath);
+                    break;
+            }
         }
     }
 

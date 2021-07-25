@@ -11,7 +11,16 @@
     </UserControl.ContextMenu>
     
     <Grid>
-        <Image Name="Icon"/>
-        <TextBlock Name="Text" Foreground="{DynamicResource BaseTextColor}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Button Name="ExpandButton" Grid.Column="0" Click="ExpandButton_OnClick">
+            <Image Width="20"/>
+        </Button>
+        <Image Grid.Column="1" Name="Icon"/>
+        <TextBlock Grid.Column="2" Name="Text" Foreground="{DynamicResource BaseTextColor}"/>
     </Grid>
 </UserControl>

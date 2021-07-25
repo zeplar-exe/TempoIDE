@@ -29,6 +29,9 @@ namespace TempoIDE.UserControls
 
         public void OpenFile(FileInfo file)
         {
+            if (!file.Exists)
+                return;
+            
             UpdateText();
 
             openFileInfo = file;

@@ -1,5 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TempoIDE.UserControls
 {
@@ -12,10 +17,28 @@ namespace TempoIDE.UserControls
             set { filePath = value; Update(); }
         }
         private ExplorerPanelElementType type;
+        
+        public bool IsExpanded { get; private set; }
+        public readonly ObservableCollection<ExplorerPanelElement> Children = new ObservableCollection<ExplorerPanelElement>();
 
         public ExplorerPanelElement()
         {
             InitializeComponent();
+
+            Expand();
+            RefreshChildren();
+            Children.CollectionChanged += delegate { RefreshChildren(); };
+        }
+        
+        public ExplorerPanelElement(string path)
+        {
+            InitializeComponent();
+
+            FilePath = path;
+            
+            Expand();
+            RefreshChildren();
+            Children.CollectionChanged += delegate { RefreshChildren(); };
         }
 
         private void Update()
@@ -64,6 +87,48 @@ namespace TempoIDE.UserControls
                     
                     break;
                 }
+            }
+        }
+        
+        private void ExpandButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            IsExpanded = !IsExpanded;
+
+            RefreshChildren();
+        }
+
+        public void RefreshChildren()
+        {
+            if (Children.Count == 0)
+                ExpandButton.Visibility = Visibility.Collapsed;
+            else
+                ExpandButton.Visibility = Visibility.Visible;
+            
+            if (IsExpanded)
+                Expand();
+            else
+                Collapse();
+        }
+
+        public void Expand()
+        {
+            IsExpanded = true;
+            
+            foreach (var element in Children)
+            {
+                element.Expand();
+                element.Visibility = Visibility.Visible;
+            }
+        }
+
+        public void Collapse()
+        {
+            IsExpanded = false;
+
+            foreach (var element in Children)
+            {
+                element.Collapse();
+                element.Visibility = Visibility.Collapsed;
             }
         }
     }

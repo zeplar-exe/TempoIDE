@@ -49,8 +49,10 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        public void AppendElement(ExplorerPanelElement element, ExplorerPanelExpander parent = null)
+        public ExplorerPanelElement AppendElement(string path, ExplorerPanelElement parent = null)
         {
+            var element = new ExplorerPanelElement(path);
+            
             element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
 
             if (parent?.Content == null)
@@ -63,24 +65,11 @@ namespace TempoIDE.UserControls
                 parent.Children.Add(element);
                 Children.Add(element);
             }
+
+            return element;
         }
 
-        public void AppendExpander(ExplorerPanelExpander expander, ExplorerPanelExpander parent = null)
-        {
-            if (parent?.Content == null)
-            {
-                Children.Add(expander);
-            }
-            else
-            {
-                expander.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
-
-                parent.Children.Add(expander);
-                Children.Add(expander);
-            }
-        }
-
-        public void AppendDirectory(DirectoryInfo directory, ExplorerPanelExpander parent = null)
+        public void AppendDirectory(DirectoryInfo directory, ExplorerPanelElement parent = null)
         {
             var worker = new BackgroundWorker
             {
@@ -92,13 +81,13 @@ namespace TempoIDE.UserControls
             worker.RunWorkerAsync();
         }
 
-        private void AppendDirectoryThread(DirectoryInfo directory, ExplorerPanelExpander parent = null)
+        private void AppendDirectoryThread(DirectoryInfo directory, ExplorerPanelElement parent = null)
         {
-            ExplorerPanelExpander root = null;
+            ExplorerPanelElement root = null;
             
             Dispatcher.InvokeAsync(delegate
             {
-                root = AppendExpander(directory.FullName, parent);
+                root = AppendElement(directory.FullName, parent);
             });
             
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
@@ -118,34 +107,11 @@ namespace TempoIDE.UserControls
                 {
                     Dispatcher.InvokeAsync(delegate
                     {
-                        AppendElement(new DirectoryInfo(filePath), root);
+                        AppendElement(filePath, root);
                     });
                 }
                 
                 Dispatcher.InvokeAsync(UpdateLayout);
-            }
-        }
-
-        private void AppendElement(DirectoryInfo directory, ExplorerPanelExpander parent)
-        {
-            var element = new ExplorerPanelElement
-            {
-                FilePath = directory.FullName
-            };
-            
-            element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
-
-            if (parent?.Content == null)
-            {
-                Children.Add(element);
-            }
-            else
-            {
-                element.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
-                parent.Children.Add(element);
-                Children.Add(element);
-                
-                parent.ElementExpander.IsExpanded = parent.ElementExpander.IsExpanded;
             }
         }
 
@@ -171,31 +137,7 @@ namespace TempoIDE.UserControls
                 OpenFile = new FileInfo(element.FilePath);
             }
         }
-        
-        private ExplorerPanelExpander AppendExpander(string path, ExplorerPanelExpander parent)
-        {
-            var expander = new ExplorerPanelExpander();
-            
-            expander.Element.FilePath = path;
-            expander.ElementExpander.IsExpanded = true;
 
-            if (parent?.Content == null)
-            {
-                Children.Add(expander);
-            }
-            else
-            {
-                expander.Padding = new Thickness(IndentationSpace + parent.Padding.Left, 0, 0, 0);
-
-                parent.Children.Add(expander);
-                Children.Add(expander);
-
-                parent.ElementExpander.IsExpanded = parent.ElementExpander.IsExpanded;
-            }
-            
-            return expander;
-        }
-        
         public void Clear() => Children.Clear();
 
         protected override Size MeasureOverride(Size availableSize)

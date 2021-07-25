@@ -118,7 +118,6 @@
                     
                     <TabControl.ItemContainerStyle>
                         <Style TargetType="TabItem">
-                            <Setter Property="FontSize" Value="9.5"/>
                             <Setter Property="LayoutTransform">
                                 <Setter.Value>
                                     <RotateTransform Angle="270"/>
@@ -138,7 +137,7 @@
                     </TabItem>
                 </TabControl>
 
-                    <GridSplitter 
+                <GridSplitter 
                     Background="{DynamicResource BorderColor}"
                     Grid.Column="1" 
                     VerticalAlignment="Stretch"
