@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Commands;
 using TempoIDE.Classes.Types;
 
@@ -25,12 +26,14 @@ namespace TempoIDE.Windows
         {
             InputBindings.Clear();
             
+            var shortcuts = Properties.Shortcuts.Default;
+
             InputBindings.AddRange(new List<KeyBinding>
             {
-                new KeyBinding(new CopyTextCommand(), Key.C, ModifierKeys.Control),
-                new KeyBinding(new PasteTextCommand(), Key.V, ModifierKeys.Control),
-                new KeyBinding(new CutTextCommand(), Key.X, ModifierKeys.Control),
-                new KeyBinding(new SelectAllTextCommand(), Key.A, ModifierKeys.Control)
+                new KeyBinding(new CopyTextCommand(), shortcuts.Copy.ToGesture()),
+                new KeyBinding(new PasteTextCommand(), shortcuts.Paste.ToGesture()),
+                new KeyBinding(new CutTextCommand(), shortcuts.Cut.ToGesture()),
+                new KeyBinding(new SelectAllTextCommand(), shortcuts.SelectAll.ToGesture())
             });
         }
 

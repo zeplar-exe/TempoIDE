@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
-             xmlns:types="clr-namespace:TempoIDE.Classes.Types"
+             xmlns:properties="clr-namespace:TempoIDE.Properties"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Border.Resources>
-        <types:GestureConverter x:Key="GestureConverter"/>
+        <properties:Shortcuts x:Key="Shortcuts"></properties:Shortcuts>
     </Border.Resources>
     
     <Grid>
@@ -43,13 +43,13 @@
                         
                         <MenuItem.ItemsSource>
                             <x:Array x:Type="MenuItem">
-                                <MenuItem Header="File..." CommandParameter="{RelativeSource TemplatedParent}">
+                                <MenuItem Header="File...">
                                     <MenuItem.Command>
                                         <commands:OpenFileCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                             
-                                <MenuItem Header="Folder..." CommandParameter="{RelativeSource TemplatedParent}">
+                                <MenuItem Header="Folder...">
                                     <MenuItem.Command>
                                         <commands:OpenFolderCommand/>
                                     </MenuItem.Command>
@@ -63,15 +63,17 @@
             <local:TopbarMenu MenuName="Edit">
                 <local:TopbarMenu.Items>
                     <MenuItem 
-                        Header="Copy" 
-                        CommandParameter="{RelativeSource TemplatedParent}"
-                        InputGestureText="Ctrl+C">
+                        Header="Copy"
+                        InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
+                        
+                        <MenuItem.Command>
+                            <commands:CopyTextCommand/>
+                        </MenuItem.Command>
                     </MenuItem>
                     
                     <MenuItem
                         Header="Paste"
-                        CommandParameter="{RelativeSource TemplatedParent}"
-                        InputGestureText="Ctrl+V">
+                        InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
                         
                         <MenuItem.Command>
                             <commands:PasteTextCommand/>
@@ -80,8 +82,7 @@
                     
                     <MenuItem
                         Header="Cut"
-                        CommandParameter="{RelativeSource TemplatedParent}"
-                        InputGestureText="Ctrl+X">
+                        InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
                         
                         <MenuItem.Command>
                             <commands:CutTextCommand/>
