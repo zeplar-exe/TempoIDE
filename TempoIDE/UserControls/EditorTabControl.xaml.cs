@@ -4,12 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace TempoIDE.UserControls
 {
     public partial class EditorTabControl : UserControl
     {
-        private EditorTabItem lastSelected;
+        public EditorTabItem LastSelected { get; private set; }
         
         public ObservableCollection<FileInfo> Items { get; } = new ObservableCollection<FileInfo>(); 
         
@@ -58,13 +59,14 @@ namespace TempoIDE.UserControls
                 .Cast<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
 
-            lastSelected = tab;
+            LastSelected = tab;
+            ListBox.SelectedItem = tab;
             ContentDisplay.Child = tab.Editor;
         }
 
         public void Close(FileInfo file)
         {
-            if (file.FullName == lastSelected?.BoundFile.FullName)
+            if (file.FullName == LastSelected?.BoundFile.FullName)
                 ContentDisplay.Child = null;
             
             Items.Remove(file);
@@ -103,19 +105,23 @@ namespace TempoIDE.UserControls
             }
         }
 
+        public Editor GetFocusedEditor()
+        {
+            var selected = GetSelectedItem().Editor;
+
+            return selected.IsFocused ? selected : null;
+        }
+
         public EditorTabItem GetSelectedItem()
         {
-            if (ListBox.SelectedItems.Count == 0)
-                return null;
-
-            return ListBox.SelectedItems[0] as EditorTabItem;
+            return ListBox.SelectedItem as EditorTabItem;
         }
         
         private void ListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             Open(GetSelectedItem()?.BoundFile);
             
-            lastSelected = GetSelectedItem();
+            LastSelected = GetSelectedItem();
         }
     }
 }

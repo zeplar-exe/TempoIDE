@@ -9,7 +9,7 @@ namespace TempoIDE.Classes.Commands
             if (window.Editor.SelectedEditor == null)
                 return false;
             
-            return window.Editor.Tabs.GetSelectedItem() != null || window.Editor.IsFocused;
+            return window.Editor.Tabs.GetFocusedEditor() != null || window.Explorer.IsFocused;
         }
 
         public override void Execute(object parameter)
