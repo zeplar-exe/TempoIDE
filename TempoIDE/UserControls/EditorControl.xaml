@@ -6,58 +6,31 @@
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid.Resources>
-        <Style x:Key="TextBoxStyle" TargetType="local:SyntaxTextBox">
-            <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
-            <Setter Property="BorderBrush" Value="#333333"/>
-            <Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
-            <Setter Property="FontSize" Value="17"/>
-        </Style>
-    </Grid.Resources>
-    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="0.055*"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
-            
-        <ScrollViewer
-            Grid.Row="0"
-            VerticalScrollBarVisibility="Hidden"
-            HorizontalScrollBarVisibility="Auto">
-                
-            <StackPanel 
-                Name="FileSelectPanel"
-                Orientation="Horizontal">
-            
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type local:EditorTabButton}">
-                        <Setter Property="Width" Value="120"/>
-                    </Style>
-                </StackPanel.Resources>
-            </StackPanel>
-        </ScrollViewer>
         
-        <Grid Grid.Row="1" >
-            <local:SyntaxTextBox
-                x:Name="TextEditor"
-                Style="{StaticResource TextBoxStyle}"
+        <local:EditorTabControl
+            x:Name="Tabs"
+            Grid.Row="1"
+            Background="{DynamicResource PrimaryBackgroundColor}">
             
-                Loaded="TextEditor_OnLoaded"
-                TextChanged="TextEditor_OnTextChanged">
-            </local:SyntaxTextBox>
-        </Grid>
+            <local:EditorTabControl.ItemsPanelTemplate>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </local:EditorTabControl.ItemsPanelTemplate>
+        </local:EditorTabControl>
 
         <Grid Grid.Row="2">
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="20"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-
-            <TextBlock Name="CurrentFileNameDisplay" Grid.Column="0"/>
         </Grid>
     </Grid>
 </Grid>

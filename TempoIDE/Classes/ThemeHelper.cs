@@ -9,7 +9,7 @@ namespace TempoIDE.Classes
         
         public static void LoadTheme(Theme theme)
         {
-            var themePath = new Uri(SkinsUri + theme + ".xaml", UriKind.Relative);
+            var themePath = new Uri(SkinsUri + theme.ToString() + ".xaml", UriKind.Relative);
             
             App.Current.Resources.MergedDictionaries[0] = Application.LoadComponent(themePath) as ResourceDictionary;
         }

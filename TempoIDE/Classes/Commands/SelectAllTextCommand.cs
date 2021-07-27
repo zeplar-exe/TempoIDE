@@ -1,6 +1,3 @@
-using TempoIDE.Classes.Types;
-using TempoIDE.Windows;
-
 namespace TempoIDE.Classes.Commands
 {
     public class SelectAllTextCommand : AppCommand
@@ -9,14 +6,17 @@ namespace TempoIDE.Classes.Commands
         {
             var window = EnvironmentHelper.MainWindow;
             
-            return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
+            if (window.Editor.SelectedEditor == null)
+                return false;
+            
+            return window.Editor.Tabs.GetSelectedItem() != null || window.Editor.IsFocused;
         }
 
         public override void Execute(object parameter)
         {
             var window = EnvironmentHelper.MainWindow;
             
-            window.Editor.TextEditor.TrySelectAll();
+            window.Editor.SelectedEditor.TrySelectAll();
         }
     }
 }

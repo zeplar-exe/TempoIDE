@@ -9,21 +9,21 @@ namespace TempoIDE.UserControls
     {
         private double selectStartXPosition;
 
-        private void SyntaxTextBox_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void SyntaxTextBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsReadOnly)
                 return;
 
             selectStartXPosition = e.GetPosition(this).X;
 
-            Keyboard.Focus(this);
+            Focus();
             MoveCaret(GetCaretOffsetByClick(e));
 
             isSelecting = true;
             Select(new IntRange(CaretIndex, CaretIndex));
         }
 
-        private void SyntaxTextBox_OnMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        private void SyntaxTextBox_OnPreviewMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             isSelecting = false;
         }
@@ -39,7 +39,7 @@ namespace TempoIDE.UserControls
             isSelecting = false;
         }
 
-        private void SyntaxTextBox_OnMouseMove(object sender, MouseEventArgs e)
+        private void SyntaxTextBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (isSelecting)
             {

@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,7 +9,7 @@ using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
-    public partial class SyntaxTextBox : UserControl
+    public partial class SyntaxTextBox
     {
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
@@ -26,8 +25,8 @@ namespace TempoIDE.UserControls
             caretThread?.Interrupt();
             caretVisible = false;
 
-            AutoCompletions.Index = 0;
-            
+            if (AutoCompletions != null) AutoCompletions.Index = 0;
+
             TextArea.InvalidateVisual();
         }
 

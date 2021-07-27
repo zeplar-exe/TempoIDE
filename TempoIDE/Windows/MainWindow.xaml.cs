@@ -39,12 +39,12 @@ namespace TempoIDE.Windows
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            Editor.TextWriter();
+            Editor.SelectedEditor?.UpdateFile();
         }
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
         {
-            Editor.OpenFile(e.NewFile);
+            Editor.Tabs.Open(e.NewFile);
         }
 
         private void Editor_OnGotFocus(object sender, RoutedEventArgs e)

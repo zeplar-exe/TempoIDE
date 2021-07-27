@@ -1,5 +1,3 @@
-using TempoIDE.Classes.Types;
-
 namespace TempoIDE.Classes.Commands
 {
     public class OpenDropdown : AppCommand

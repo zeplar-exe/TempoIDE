@@ -1,6 +1,3 @@
-using TempoIDE.Classes.Types;
-using TempoIDE.Windows;
-
 namespace TempoIDE.Classes.Commands
 {
     public class CutTextCommand : AppCommand
@@ -8,15 +5,18 @@ namespace TempoIDE.Classes.Commands
         public override bool CanExecute(object parameter)
         {
             var window = EnvironmentHelper.MainWindow;
+            
+            if (window.Editor.SelectedEditor == null)
+                return false;
 
-            return window.Editor.TextEditor.IsFocused || window.Editor.IsFocused;
+            return window.Editor.Tabs.GetSelectedItem() != null || window.Editor.IsFocused;
         }
 
         public override void Execute(object parameter)
         {
             var window = EnvironmentHelper.MainWindow;
             
-            window.Editor.TextEditor.TryCutText();
+            window.Editor.SelectedEditor.TryCut();
         }
     }
 }

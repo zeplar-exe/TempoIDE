@@ -1,46 +1,14 @@
-using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Windows;
 using System.Windows.Controls;
-using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
     public partial class EditorControl : Grid
     {
-        private Thread writerThread;
-
-        private FileInfo openFileInfo;
-        private readonly OrderedDictionary<FileInfo, EditorTabButton> openFiles = new OrderedDictionary<FileInfo, EditorTabButton>();
-
-        private bool textChangedBeforeUpdate;
-        private bool skipTextChanged;
-
         public EditorControl()
         {
             InitializeComponent();
-        }
-
-        private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            writerThread = new Thread(TextWriterThread);
-            writerThread.Start();
-        }
-
-        private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
-        {
-            if (skipTextChanged)
-                return;
-            
-            textChangedBeforeUpdate = true;
-        }
-
-        private void SkipTextChange(Action method)
-        {
-            skipTextChanged = true;
-            method.Invoke();
-            skipTextChanged = false;
         }
     }
 }

@@ -1,5 +1,4 @@
 using Ookii.Dialogs.Wpf;
-using TempoIDE.Classes.Types;
 
 namespace TempoIDE.Classes.Commands
 {

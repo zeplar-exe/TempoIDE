@@ -15,7 +15,7 @@ namespace TempoIDE.UserControls
         public IntRange SelectionRange = new IntRange(0, 0);
 
         public int TabSize = 4;
-        public bool IsReadOnly = true;
+        public bool IsReadOnly;
         
         public int LineHeight = 15;
         public new int FontSize = 14;

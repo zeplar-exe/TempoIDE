@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using Microsoft.CodeAnalysis;
 using TempoIDE.UserControls;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.Emit;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Classes
@@ -43,7 +38,7 @@ namespace TempoIDE.Classes
         
         public static void LoadEnvironment(string path, EnvironmentFilterMode mode)
         {
-            MainWindow.Editor.CloseAll();
+            MainWindow.Editor.Tabs.CloseAll();
 
             if (new FileInfo(path).Extension == ".sln")
                 mode = EnvironmentFilterMode.Solution;

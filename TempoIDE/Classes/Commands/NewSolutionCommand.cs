@@ -1,5 +1,4 @@
 using Microsoft.Win32;
-using TempoIDE.Classes.Types;
 
 namespace TempoIDE.Classes.Commands
 {

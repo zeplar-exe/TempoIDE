@@ -1,13 +1,12 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
-    public partial class SyntaxTextBox : UserControl
+    public partial class SyntaxTextBox
     {
         public void MoveCaret(IntVector position)
         {

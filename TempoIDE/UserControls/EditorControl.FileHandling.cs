@@ -1,181 +1,31 @@
 using System.IO;
-using System.Linq;
-using System.Threading;
-using TempoIDE.Classes.Types;
+using System.Windows.Input;
 
 namespace TempoIDE.UserControls
 {
     public partial class EditorControl
     {
-        public void ReloadOpenFiles()
+        public Editor SelectedEditor => Tabs.GetSelectedItem()?.Editor;
+
+        private void FileClose_OnClick(object sender, MouseButtonEventArgs e)
         {
-            FileSelectPanel.Children.Clear();
-
-            foreach (var pair in openFiles)
-            {
-                FileSelectPanel.Children.Add(pair.Value);
-            }
-
-            if (openFiles.Count == 0)
-            {
-                TextEditor.Clear();
-                TextEditor.IsReadOnly = true;
-            }
-            else
-            {
-                TextEditor.IsReadOnly = false;
-            }
-        }
-
-        public void OpenFile(FileInfo file)
-        {
-            if (!file.Exists)
-                return;
+            /*var tabItem = (EditorTabItem)sender;
             
-            UpdateText();
-
-            openFileInfo = file;
-
-            if (openFileInfo != null)
-            {
-                openFileInfo.Refresh();
-
-                var containsFile = openFiles.Any(pair => pair.Key.FullName == openFileInfo.FullName);
-
-                if (!containsFile)
-                {
-                    var fileButton = new EditorTabButton();
-
-                    fileButton.TabButton.Content = file.Name;
-                    fileButton.Resources["FileInfo"] = openFileInfo;
-                    fileButton.OnButtonClicked += FileButton_OnClick;
-                    fileButton.OnCloseClicked += FileClose_OnClick;
-
-                    openFiles.Add(openFileInfo, fileButton);
-                    ReloadOpenFiles();
-                }
-                
-                TextEditor.TextArea.SetScheme(openFileInfo.Extension);
-            }
-
-            TextEditor.Clear();
-
-            var text = file == null
-                ? string.Empty
-                : new StreamReader(file.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
-            TextEditor.AppendTextAtCaret(text);
-            TextEditor.IsReadOnly = file == null;
-            CurrentFileNameDisplay.Text = file?.FullName;
-        }
-
-        public void CloseFile(FileInfo file)
-        {
-            UpdateText();
-            openFiles.Remove(file);
-            ReloadOpenFiles();
-            TextEditor.TextArea.SetScheme(null);
-            
-            TextEditor.IsReadOnly = openFiles.Count == 0;
-        }
-        
-        public void CloseAll()
-        {
-            foreach (var file in openFiles)
-                CloseFile(file.Key);
-        }
-
-        private void FileButton_OnClick(object sender, FileTabEventArgs e)
-        {
-            OpenFile((FileInfo) e.TabButton.Resources["FileInfo"]);
-        }
-
-        private void FileClose_OnClick(object sender, FileTabEventArgs e)
-        {
-            var index = openFiles.IndexOf((FileInfo) e.TabButton.Resources["FileInfo"]);
+            var index = openFiles.IndexOf(tabItem.BoundFile);
             var nextIndex = index;
             var lastIndex = index - 1;
-            
-            if (writerThread.IsAlive)
-                writerThread.Interrupt();
-            
-            CloseFile((FileInfo) e.TabButton.Resources["FileInfo"]);
+
+            //CloseFile(tabItem.BoundFile);
 
             if (index == 0)
             {
                 if (nextIndex < openFiles.Count)
-                    OpenFile((FileInfo) openFiles[nextIndex].Value.Resources["FileInfo"]);
+                    Tabs.Open(openFiles[nextIndex]);
             }
             else
             {
-                OpenFile((FileInfo) openFiles[lastIndex].Value.Resources["FileInfo"]);
-            }
-        }
-
-        private const int WriterCooldown = 2;
-
-        private void TextWriterThread()
-        {
-            while (true)
-            {
-                try
-                {
-                    Thread.Sleep(WriterCooldown * 1000);
-                }
-                catch (ThreadInterruptedException)
-                {
-                    return;
-                }
-                
-                Dispatcher.Invoke(TextWriter);
-            }
-        }
-
-        internal void TextWriter()
-        {
-            if (!textChangedBeforeUpdate)
-            {
-                UpdateText();
-            }
-            else
-            {
-                UpdateFile();
-            }
-
-            textChangedBeforeUpdate = false;
-        }
-
-        private void UpdateText()
-        {
-            if (openFileInfo == null) 
-                return;
-                    
-            openFileInfo.Refresh();
-            
-            var reader = new StreamReader(new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            var text = reader.ReadToEnd();
-
-            if (text == TextEditor.TextArea.Text)
-                return;
-                    
-            SkipTextChange(delegate
-            {
-                TextEditor.TextArea.Text = text;
-            });
-                
-            reader.Close();
-        }
-
-        private void UpdateFile()
-        {
-            if (openFileInfo == null) 
-                return;
-                    
-            openFileInfo.Refresh();
-            
-            using var stream = new FileStream(openFileInfo.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
-            using var writer = new StreamWriter(stream);
-            stream.SetLength(0);
-            writer.Write(TextEditor.TextArea.Text);
+                Tabs.Open(openFiles[lastIndex]);
+            }*/
         }
     }
 }

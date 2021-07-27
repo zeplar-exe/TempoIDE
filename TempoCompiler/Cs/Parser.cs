@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using TempoCompiler.Cs.Syntax;
 
 namespace TempoCompiler.Cs

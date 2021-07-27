@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Classes.Types;
-using TempoIDE.Windows;
 
 namespace TempoIDE.UserControls
 {
