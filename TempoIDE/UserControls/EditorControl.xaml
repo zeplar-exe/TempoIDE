@@ -16,7 +16,7 @@
         <local:EditorTabControl
             x:Name="Tabs"
             Grid.Row="1"
-            Background="{DynamicResource PrimaryBackgroundColor}"
+            Background="{DynamicResource SecondaryBackgroundColor}"
             SelectedTabColor="CornflowerBlue"
             HoveredTabColor="LightSlateGray"
             UnselectedTabColor="Transparent">

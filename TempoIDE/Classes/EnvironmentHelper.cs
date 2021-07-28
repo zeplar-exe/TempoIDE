@@ -12,6 +12,14 @@ namespace TempoIDE.Classes
         public static string EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
 
+        public static bool IsCoreElementFocused()
+        {
+            if (MainWindow.Editor.SelectedEditor == null)
+                return false;
+
+            return MainWindow.Editor.Tabs.GetFocusedEditor() != null || MainWindow.Explorer.IsFocused;
+        }
+        
         public static void Compile()
         {
             if (FilterMode != EnvironmentFilterMode.Solution)
@@ -75,6 +83,7 @@ namespace TempoIDE.Classes
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)
         {
             LoadExplorer();
+            MainWindow.Editor.Tabs.Refresh();
         }
 
         private static void LoadExplorer()

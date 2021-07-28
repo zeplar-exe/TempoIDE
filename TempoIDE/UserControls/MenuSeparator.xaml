@@ -1,6 +1,6 @@
-<MenuItem x:Class="TempoIDE.UserControls.ContextMenuSeparator"
+<MenuItem x:Class="TempoIDE.UserControls.MenuSeparator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              Height="3"
-             Style="{DynamicResource ContextMenuSeparatorStyle}">
+             Background="{DynamicResource PrimaryBackgroundColor}">
 </MenuItem>

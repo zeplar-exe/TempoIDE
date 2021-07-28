@@ -18,6 +18,11 @@
             Orientation="Horizontal"
             Background="{DynamicResource SecondaryBackgroundColor}">
             
+            <StackPanel.Resources>
+                <Style TargetType="local:EditorTabItem">
+                    <Setter Property="MinWidth" Value="150"/>
+                </Style>
+            </StackPanel.Resources>
         </StackPanel>
         
         <Border Grid.Row="1" Name="ContentDisplay">

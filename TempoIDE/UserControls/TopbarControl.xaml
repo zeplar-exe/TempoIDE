@@ -32,27 +32,31 @@
                 </MenuItem.Resources>
                 
                 <MenuItem Header="New solution" Background="{DynamicResource ToolbarBackgroundColor}">
-                    <MenuItem.Command>
-                        <commands:NewSolutionCommand/>
-                    </MenuItem.Command>
+                    <MenuItem.Command> <commands:NewSolutionCommand/> </MenuItem.Command>
                 </MenuItem>
                 
                 <MenuItem Header="Open...">
-                    <MenuItem.Command>
-                        <commands:OpenDropdown/>
-                    </MenuItem.Command>
+                    <MenuItem.Command> <commands:OpenDropdown/> </MenuItem.Command>
                     
                     <MenuItem Header="File...">
-                        <MenuItem.Command>
-                            <commands:OpenFileCommand/>
-                        </MenuItem.Command>
+                        <MenuItem.Command> <commands:OpenFileCommand/> </MenuItem.Command>
                     </MenuItem>
                         
                     <MenuItem Header="Folder...">
-                        <MenuItem.Command>
-                            <commands:OpenFolderCommand/>
-                        </MenuItem.Command>
+                        <MenuItem.Command> <commands:OpenFolderCommand/></MenuItem.Command>
                     </MenuItem>
+                </MenuItem>
+                
+                <local:MenuSeparator/>
+                
+                <MenuItem Header="Settings">
+                    <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
+                </MenuItem>
+                
+                <local:MenuSeparator/>
+                
+                <MenuItem Header="Exit">
+                    <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
                 </MenuItem>
             </MenuItem>
             

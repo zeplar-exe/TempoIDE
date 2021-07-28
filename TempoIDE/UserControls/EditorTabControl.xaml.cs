@@ -37,7 +37,7 @@ namespace TempoIDE.UserControls
                 Files.Add(file.FullName);
 
             var tab = TabsPanel.Children
-                .Cast<EditorTabItem>()
+                .OfType<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
             
             tab.Background = SelectedTabColor;
@@ -55,13 +55,17 @@ namespace TempoIDE.UserControls
 
         public void Close(FileInfo file)
         {
-            if (file.FullName == SelectedItem?.BoundFile.FullName)
+            var closingSelected = file.FullName == SelectedItem?.BoundFile.FullName;
+            
+            var index = Files.IndexOf(file.FullName);
+            var nextIndex = index + 1;
+            var lastIndex = index - 1;
+            
+            Files.Remove(file.FullName);
+            
+            if (closingSelected)
             {
                 SelectedItem = null;
-                
-                var index = Files.IndexOf(file.FullName);
-                var nextIndex = index + 1;
-                var lastIndex = index - 1;
 
                 if (index == 0)
                 {
@@ -72,11 +76,7 @@ namespace TempoIDE.UserControls
                 {
                     Open(Files[lastIndex].ToFile());
                 }
-
-                Files.Remove(file.FullName);
             }
-
-            Files.Remove(file.FullName);
         }
 
         public void CloseAll()
@@ -92,9 +92,7 @@ namespace TempoIDE.UserControls
             foreach (var path in Files.ToArray())
             {
                 var fileInfo = path.ToFile();
-                
-                fileInfo.Refresh();
-                
+
                 if (!fileInfo.Exists)
                 {
                     Files.Remove(path);

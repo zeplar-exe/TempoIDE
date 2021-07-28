@@ -34,6 +34,9 @@
       <Compile Update="UserControls\EditorTabItem.xaml.cs">
         <DependentUpon>EditorTabItem.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\SettingsWindow.Resizers.cs">
+        <DependentUpon>SettingsWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

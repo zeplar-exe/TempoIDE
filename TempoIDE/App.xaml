@@ -10,7 +10,7 @@
                 <ResourceDictionary Source="Skins/Dark.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
 
-            <Style x:Key="MainWindowStyle" TargetType="Window">
+            <Style x:Key="WindowStyle" TargetType="Window">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
                 <Setter Property="WindowStyle" Value="None"/>
                 <Setter Property="AllowsTransparency" Value="True"/>
@@ -30,16 +30,12 @@
                 </ListBoxItem>
             </DataTemplate>
             
-            <Style x:Key="TopbarContextMenuStyle" TargetType="ContextMenu">
+            <Style x:Key="TopbarMenuItemStyle" TargetType="ContextMenu">
                 <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
             </Style>
             
             <Style x:Key="MenuItemStyle" TargetType="MenuItem">
                 <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
-            </Style>
-            
-            <Style x:Key="ContextMenuSeparatorStyle" TargetType="MenuItem">
-                <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
             </Style>
         </ResourceDictionary>
     </Application.Resources>
