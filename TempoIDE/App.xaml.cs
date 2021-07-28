@@ -14,8 +14,6 @@ namespace TempoIDE
             
             //ThemeHelper.LoadTheme(Theme.Light);
             new Compiler(null);
-            
-            ResourceCache.Load();
         }
     }
 }

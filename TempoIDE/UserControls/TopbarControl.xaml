@@ -20,102 +20,83 @@
             <ColumnDefinition Width="25" />
             <ColumnDefinition Width="25" />
         </Grid.ColumnDefinitions>
-                    
-        <StackPanel Grid.Column="0" Orientation="Horizontal">
-            <StackPanel.Resources>
-                <Style TargetType="{x:Type local:TopbarMenu}">
-                    <Setter Property="Margin" Value="3,0" />
-                </Style>
-            </StackPanel.Resources>
-            
-            <local:TopbarMenu MenuName="File">
-                <local:TopbarMenu.Items>
-                    <MenuItem Header="New solution" CommandParameter="{RelativeSource TemplatedParent}">
-                        <MenuItem.Command>
-                            <commands:NewSolutionCommand/>
-                        </MenuItem.Command>
-                    </MenuItem>
-                    
-                    <MenuItem Header="Open...">
-                        <MenuItem.Command>
-                            <commands:OpenDropdown/>
-                        </MenuItem.Command>
-                        
-                        <MenuItem.ItemsSource>
-                            <x:Array x:Type="MenuItem">
-                                <MenuItem Header="File...">
-                                    <MenuItem.Command>
-                                        <commands:OpenFileCommand/>
-                                    </MenuItem.Command>
-                                </MenuItem>
-                            
-                                <MenuItem Header="Folder...">
-                                    <MenuItem.Command>
-                                        <commands:OpenFolderCommand/>
-                                    </MenuItem.Command>
-                                </MenuItem>
-                            </x:Array>
-                        </MenuItem.ItemsSource>
-                    </MenuItem>
-                </local:TopbarMenu.Items>
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Edit">
-                <local:TopbarMenu.Items>
-                    <MenuItem 
-                        Header="Copy"
-                        InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
-                        
-                        <MenuItem.Command>
-                            <commands:CopyTextCommand/>
-                        </MenuItem.Command>
-                    </MenuItem>
-                    
-                    <MenuItem
-                        Header="Paste"
-                        InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
-                        
-                        <MenuItem.Command>
-                            <commands:PasteTextCommand/>
-                        </MenuItem.Command>
-                    </MenuItem>
-                    
-                    <MenuItem
-                        Header="Cut"
-                        InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
-                        
-                        <MenuItem.Command>
-                            <commands:CutTextCommand/>
-                        </MenuItem.Command>
-                    </MenuItem>
-                </local:TopbarMenu.Items>
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="View">
-
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Navigation">
-
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Code">
-
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Build">
-
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Window">
-
-            </local:TopbarMenu>
-            
-            <local:TopbarMenu MenuName="Help">
-
-            </local:TopbarMenu>
-        </StackPanel>
         
+        <Menu 
+            Grid.Column="0" 
+            Background="Transparent" 
+            Foreground="{DynamicResource BaseTextColor}">
+            
+            <MenuItem Header="File" Background="Transparent">
+                <MenuItem.Resources>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemStyle}"/>
+                </MenuItem.Resources>
+                
+                <MenuItem Header="New solution" Background="{DynamicResource ToolbarBackgroundColor}">
+                    <MenuItem.Command>
+                        <commands:NewSolutionCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+                
+                <MenuItem Header="Open...">
+                    <MenuItem.Command>
+                        <commands:OpenDropdown/>
+                    </MenuItem.Command>
+                    
+                    <MenuItem Header="File...">
+                        <MenuItem.Command>
+                            <commands:OpenFileCommand/>
+                        </MenuItem.Command>
+                    </MenuItem>
+                        
+                    <MenuItem Header="Folder...">
+                        <MenuItem.Command>
+                            <commands:OpenFolderCommand/>
+                        </MenuItem.Command>
+                    </MenuItem>
+                </MenuItem>
+            </MenuItem>
+            
+            <MenuItem Header="Edit" Background="Transparent">
+                <MenuItem.Resources>
+                    <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemStyle}"/>
+                </MenuItem.Resources>
+                
+                <MenuItem 
+                    Header="Copy"
+                    InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
+                    
+                    <MenuItem.Command>
+                        <commands:CopyTextCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+                
+                <MenuItem
+                    Header="Paste"
+                    InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
+                    
+                    <MenuItem.Command>
+                        <commands:PasteTextCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+                
+                <MenuItem
+                    Header="Cut"
+                    InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
+                    
+                    <MenuItem.Command>
+                        <commands:CutTextCommand/>
+                    </MenuItem.Command>
+                </MenuItem>
+            </MenuItem>
+            
+            <MenuItem Header="View"></MenuItem>
+            <MenuItem Header="Navigation"></MenuItem>
+            <MenuItem Header="Code"></MenuItem>
+            <MenuItem Header="Build"></MenuItem>
+            <MenuItem Header="Window"></MenuItem>
+            <MenuItem Header="Help"></MenuItem>
+        </Menu>
+    
         <Label Grid.Column="1" MouseLeftButtonDown="Topbar_OnPreviewMouseLeftButtonDown"/>
 
         <Button

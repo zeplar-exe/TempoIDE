@@ -150,8 +150,7 @@
             </Grid>
             
             <!-- Topbar -->
-            <local:TopbarControl 
-                Grid.Row="0"/>
+            <local:TopbarControl Grid.Row="0"/>
             
             <!-- Topbar... 2? -->
             <Border 

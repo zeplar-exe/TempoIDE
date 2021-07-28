@@ -3,6 +3,8 @@
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoCompiler_002FCs_002FTestResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoIDE_002FProgramData_002FProgramFiles/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoIDE_002FProperties_002FResources/@EntryIndexedValue">True</s:Boolean>
+	
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Frontspace/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UserDictionary/Words/=Keybind/@EntryIndexedValue">True</s:Boolean>

@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Windows.Media;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis.CSharp;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
@@ -22,7 +23,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
             int? readStartIndex = null;
             var word = "";
 
-            var xmlData = ResourceCache.GetXml("intellisense.cs");
+            var xmlData = ResourceCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
@@ -77,7 +78,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
         {
-            var xmlData = ResourceCache.GetXml("intellisense.cs");
+            var xmlData = ResourceCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
             
             var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);

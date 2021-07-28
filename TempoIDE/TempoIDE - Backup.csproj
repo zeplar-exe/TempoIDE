@@ -7,11 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Update="Properties\Shortcuts.Designer.cs">
-        <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Shortcuts.settings</DependentUpon>
-      </Compile>
       <Compile Update="UserControls\EditorControl.FileHandling.cs">
         <DependentUpon>EditorControl.xaml</DependentUpon>
       </Compile>
@@ -34,6 +29,8 @@
       <Compile Update="UserControls\EditorTabItem.xaml.cs">
         <DependentUpon>EditorTabItem.xaml</DependentUpon>
       </Compile>
+      <EmbeddedResource Remove="Properties\Resources.resx" />
+      <Compile Include="Properties\Resources.resx" />
     </ItemGroup>
 
     <ItemGroup>
@@ -79,13 +76,6 @@
       <EmbeddedResource Include="Resources\Icons\png-icon.png" />
       <None Remove="Resources\Icons\xml-icon.png" />
       <EmbeddedResource Include="Resources\Icons\xml-icon.png" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Properties\Shortcuts.settings">
-        <Generator>SettingsSingleFileGenerator</Generator>
-        <LastGenOutput>Shortcuts.Designer.cs</LastGenOutput>
-      </None>
     </ItemGroup>
 
 </Project>

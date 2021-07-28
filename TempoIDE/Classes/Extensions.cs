@@ -1,11 +1,51 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace TempoIDE.Classes
 {
     public static class Extensions
     {
+        public static bool Null(this object obj)
+        {
+            return obj == null;
+        }
+
+        public static bool NotNull(this object obj)
+        {
+            return obj != null;
+        }
+
+        public static FileInfo ToFile(this string path)
+        {
+            return new FileInfo(path);
+        }
+        
+        public static BitmapImage ToBitmapImage(this Bitmap bitmap)
+        {         
+            var ms = new MemoryStream();
+            
+            bitmap.Save(ms, ImageFormat.Bmp);
+            
+            var image = new BitmapImage();
+            
+            image.BeginInit();
+            ms.Seek(0, SeekOrigin.Begin);
+            
+            image.StreamSource = ms;
+            
+            image.EndInit();
+
+            return image;
+        }
+
         public static string ReplaceFirst(this string text, string search, string replace)
         {
             var pos = text.IndexOf(search, StringComparison.Ordinal);

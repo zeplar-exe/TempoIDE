@@ -5,7 +5,7 @@ namespace TempoIDE.UserControls
 {
     public partial class EditorControl
     {
-        public Editor SelectedEditor => Tabs.GetSelectedItem()?.Editor;
+        public Editor SelectedEditor => Tabs.SelectedItem?.Editor;
 
         private void FileClose_OnClick(object sender, MouseButtonEventArgs e)
         {

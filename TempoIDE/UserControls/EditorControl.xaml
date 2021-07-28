@@ -17,12 +17,6 @@
             x:Name="Tabs"
             Grid.Row="1"
             Background="{DynamicResource PrimaryBackgroundColor}">
-            
-            <local:EditorTabControl.ItemsPanelTemplate>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </local:EditorTabControl.ItemsPanelTemplate>
         </local:EditorTabControl>
 
         <Grid Grid.Row="2">

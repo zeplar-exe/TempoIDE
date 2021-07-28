@@ -12,17 +12,13 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <ListBox
-            Grid.Row="0" 
-            x:Name="ListBox"
-            SelectionMode="Single"
-            Background="{DynamicResource SecondaryBackgroundColor}"
-            BorderThickness="0"
-            VerticalContentAlignment="Stretch"
-            ItemTemplate="{Binding ItemsTemplate}"
-            ItemsPanel="{Binding ItemsPanelTemplate}"
-            SelectionChanged="ListBox_OnSelectionChanged">
-        </ListBox>
+        <StackPanel
+            Grid.Row="0"
+            x:Name="TabsPanel"
+            Orientation="Horizontal"
+            Background="{DynamicResource SecondaryBackgroundColor}">
+            
+        </StackPanel>
         
         <Border Grid.Row="1" Name="ContentDisplay">
             

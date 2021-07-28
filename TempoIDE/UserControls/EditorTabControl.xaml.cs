@@ -5,123 +5,107 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
 {
     public partial class EditorTabControl : UserControl
     {
-        public EditorTabItem LastSelected { get; private set; }
+        public EditorTabItem SelectedItem { get; private set; }
         
-        public ObservableCollection<FileInfo> Items { get; } = new ObservableCollection<FileInfo>(); 
+        public ObservableCollection<string> Files { get; } = new ObservableCollection<string>(); 
         
         public EditorTabControl()
         {
             DataContext = this;
-            Items.CollectionChanged += delegate { Refresh(); };
+            Files.CollectionChanged += delegate { Refresh(); };
             
             InitializeComponent();
         }
 
-        #region Dependency Props
-
-        public ItemsPanelTemplate ItemsPanelTemplate
-        {
-            get => (ItemsPanelTemplate) GetValue(ItemsPanelTemplateProperty);
-            set => SetValue(ItemsPanelTemplateProperty, value);
-        }
-
-        public static readonly DependencyProperty ItemsPanelTemplateProperty =
-            DependencyProperty.Register(
-                "ItemsPanelTemplate", typeof(ItemsPanelTemplate),
-                typeof(EditorTabControl)
-            );
-        
-        public DataTemplate ItemsTemplate
-        {
-            get => (DataTemplate) GetValue(ItemsTemplateProperty);
-            set => SetValue(ItemsTemplateProperty, value);
-        }
-
-        public static readonly DependencyProperty ItemsTemplateProperty =
-            DependencyProperty.Register(
-                "ItemTemplate", typeof(DataTemplate),
-                typeof(EditorTabControl)
-            );
-        
-        #endregion
-
         public void Open(FileInfo file)
         {
-            if (Items.All(f => f.FullName != file.FullName))
-                Items.Add(file);
+            if (!file.Exists)
+                return;
+            
+            if (!Files.Contains(file.FullName))
+                Files.Add(file.FullName);
 
-            var tab = ListBox.Items
+            var tab = TabsPanel.Children
                 .Cast<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
 
-            LastSelected = tab;
-            ListBox.SelectedItem = tab;
+            SelectedItem = tab;
             ContentDisplay.Child = tab.Editor;
         }
 
         public void Close(FileInfo file)
         {
-            if (file.FullName == LastSelected?.BoundFile.FullName)
-                ContentDisplay.Child = null;
-            
-            Items.Remove(file);
+            if (file.FullName == SelectedItem?.BoundFile.FullName)
+            {
+                var index = Files.IndexOf(file.FullName);
+                var nextIndex = index + 1;
+                var lastIndex = index - 1;
+
+                if (index == 0)
+                {
+                    if (nextIndex < Files.Count)
+                        Open(Files[nextIndex].ToFile());
+                }
+                else
+                {
+                    Open(Files[lastIndex].ToFile());
+                }
+
+                Files.Remove(file.FullName);
+            }
+
+            Files.Remove(file.FullName);
         }
 
         public void CloseAll()
         {
-            foreach (var item in Items.ToArray())
-                Close(item);
+            foreach (var item in Files.ToArray())
+                Close(item.ToFile());
         }
 
         public void Refresh()
         {
-            ListBox.Items.Clear();
+            TabsPanel.Children.Clear();
 
-            foreach (var file in Items)
+            foreach (var path in Files.ToArray())
             {
-                file.Refresh();
+                var fileInfo = path.ToFile();
                 
-                if (!file.Exists)
+                fileInfo.Refresh();
+                
+                if (!fileInfo.Exists)
                 {
-                    Items.Remove(file);
+                    Files.Remove(path);
                     continue;
                 }
 
                 var tab = new EditorTabItem
                 {
-                    Header = { Text = file.Name },
-                    Editor = Editor.FromExtension(file.Extension),
-                    BoundFile = file
+                    Header = { Text = fileInfo.Name },
+                    Editor = Editor.FromExtension(fileInfo.Extension),
+                    BoundFile = fileInfo
                 };
                 
-                tab.Editor.Update(file);
+                tab.Editor.Update(fileInfo);
+                tab.Selected += delegate { Open(tab.BoundFile); };
+                tab.Closed += delegate { Close(tab.BoundFile);};
 
-                ListBox.Items.Add(tab);
+                TabsPanel.Children.Add(tab);
             }
         }
 
         public Editor GetFocusedEditor()
         {
-            var selected = GetSelectedItem().Editor;
+            var selected = SelectedItem?.Editor;
 
-            return selected.IsFocused ? selected : null;
-        }
-
-        public EditorTabItem GetSelectedItem()
-        {
-            return ListBox.SelectedItem as EditorTabItem;
-        }
-        
-        private void ListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            Open(GetSelectedItem()?.BoundFile);
-            
-            LastSelected = GetSelectedItem();
+            return selected?.IsFocused ?? false 
+                ? selected : null;
         }
     }
 }
