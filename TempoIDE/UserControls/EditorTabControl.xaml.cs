@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
@@ -23,6 +24,10 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
+        public Brush SelectedTabColor { get; set; }
+        public Brush HoveredTabColor { get; set; }
+        public Brush UnselectedTabColor { get; set; }
+
         public void Open(FileInfo file)
         {
             if (!file.Exists)
@@ -34,6 +39,15 @@ namespace TempoIDE.UserControls
             var tab = TabsPanel.Children
                 .Cast<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
+            
+            tab.Background = SelectedTabColor;
+            tab.IsSelected = true;
+
+            if (SelectedItem.NotNull())
+            {
+                SelectedItem.IsSelected = false;
+                SelectedItem.Background = UnselectedTabColor;
+            }
 
             SelectedItem = tab;
             ContentDisplay.Child = tab.Editor;
@@ -43,6 +57,8 @@ namespace TempoIDE.UserControls
         {
             if (file.FullName == SelectedItem?.BoundFile.FullName)
             {
+                SelectedItem = null;
+                
                 var index = Files.IndexOf(file.FullName);
                 var nextIndex = index + 1;
                 var lastIndex = index - 1;
@@ -89,11 +105,22 @@ namespace TempoIDE.UserControls
                 {
                     Header = { Text = fileInfo.Name },
                     Editor = Editor.FromExtension(fileInfo.Extension),
-                    BoundFile = fileInfo
+                    BoundFile = fileInfo,
+                    Background = UnselectedTabColor
                 };
                 
                 tab.Editor.Update(fileInfo);
                 tab.Selected += delegate { Open(tab.BoundFile); };
+                tab.MouseMove += delegate
+                {
+                    if (!tab.IsSelected) 
+                        tab.Background = HoveredTabColor;
+                };
+                tab.MouseLeave += delegate
+                {
+                    if (!tab.IsSelected) 
+                        tab.Background = UnselectedTabColor;
+                };
                 tab.Closed += delegate { Close(tab.BoundFile);};
 
                 TabsPanel.Children.Add(tab);

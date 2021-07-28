@@ -22,6 +22,8 @@ namespace TempoIDE.UserControls
             }
         }
 
+        public bool IsSelected;
+
         public event EventHandler Selected;
         public event EventHandler Closed;
         
@@ -29,9 +31,10 @@ namespace TempoIDE.UserControls
         {
             InitializeComponent();
         }
-        
+
         private void EditorTabItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            IsSelected = true;
             Selected?.Invoke(this, new EventArgs());
         }
 

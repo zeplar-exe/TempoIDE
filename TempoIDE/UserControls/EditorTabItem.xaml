@@ -23,6 +23,12 @@
             VerticalAlignment="Center" 
             Foreground="{DynamicResource BaseTextColor}"/>
         
-        <Button Grid.Column="4" Name="Close" Content="X" Click="Close_OnClick"/>
+        <Button 
+            Grid.Column="4"
+            Name="Close" 
+            Background="Transparent" 
+            BorderThickness="0"
+            Content="X" 
+            Click="Close_OnClick"/>
     </Grid>
 </UserControl>
