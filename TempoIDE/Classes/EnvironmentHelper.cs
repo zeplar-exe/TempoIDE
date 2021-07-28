@@ -1,4 +1,5 @@
 using System.IO;
+using System.Linq;
 using System.Windows;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;
@@ -8,6 +9,8 @@ namespace TempoIDE.Classes
     public static class EnvironmentHelper
     {
         public static MainWindow MainWindow => Application.Current.MainWindow as MainWindow;
+        public static Window ActiveWindow => Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
+        
         public static EnvironmentFilterMode FilterMode;
         public static string EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;

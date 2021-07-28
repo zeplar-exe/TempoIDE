@@ -149,14 +149,14 @@ namespace TempoCompiler.Cs
 
         public Lexer(string input)
         {
+            Array.Sort(tokens);
+            
             text = input;
         }
 
         public IEnumerator<LexerToken> GetEnumerator()
         {
-            Array.Sort(tokens);
-
-            List<LexerToken> matches = new List<LexerToken>(100);
+            var matches = new List<LexerToken>(tokens.Length);
             
             while (readPosition < text.Length)
             {
@@ -176,11 +176,18 @@ namespace TempoCompiler.Cs
                 var longest = matches.OrderByDescending(m => m.Value.Length).FirstOrDefault();
 
                 if (longest == null)
-                    yield break;
+                {
+                    yield return new LexerToken(text[readPosition].ToString(), Token.Unknown, readPosition);
+                    readPosition++;
 
-                yield return longest; // TODO: Errors
+                    continue;
+                }
+                else
+                {
+                    yield return longest;
 
-                readPosition += longest.Value.Length;
+                    readPosition += longest.Value.Length;   
+                }
 
                 matches.Clear();
             }

@@ -15,5 +15,20 @@ namespace TempoIDE
             //ThemeHelper.LoadTheme(Theme.Light);
             new Compiler(null);
         }
+
+        public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SystemCommands.MinimizeWindow(EnvironmentHelper.ActiveWindow);
+        }
+
+        public void MaximizeWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SystemCommands.MaximizeWindow(EnvironmentHelper.ActiveWindow);
+        }
+
+        public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SystemCommands.CloseWindow(EnvironmentHelper.ActiveWindow);
+        }
     }
 }
