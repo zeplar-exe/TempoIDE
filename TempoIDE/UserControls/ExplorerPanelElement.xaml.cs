@@ -1,100 +1,50 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using TempoIDE.Annotations;
 
 namespace TempoIDE.UserControls
 {
     public partial class ExplorerPanelElement : UserControl
     {
-        private string filePath;
-        public string FilePath
-        {
-            get => filePath;
-            set { filePath = value; Update(); }
-        }
-        private ExplorerPanelElementType type;
-        
         public bool IsExpanded { get; private set; }
         public readonly ObservableCollection<ExplorerPanelElement> Children = new ObservableCollection<ExplorerPanelElement>();
 
+        public string Header
+        {
+            get => (string) GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
+        }
+
+        public static readonly DependencyProperty HeaderProperty =
+            DependencyProperty.Register(
+                "Header", typeof(string),
+                typeof(ExplorerPanelElement)
+            );
+        
         public ExplorerPanelElement()
         {
             InitializeComponent();
 
-            Expand();
-            RefreshChildren();
-            Children.CollectionChanged += delegate { RefreshChildren(); };
-        }
-        
-        public ExplorerPanelElement(string path)
-        {
-            InitializeComponent();
-
-            FilePath = path;
+            Text.Text = Header;
             
             Expand();
-            RefreshChildren();
-            Children.CollectionChanged += delegate { RefreshChildren(); };
+            Refresh();
+            
+            Children.CollectionChanged += delegate { Refresh(); };
         }
 
-        private void Update()
-        {
-            if (Directory.Exists(filePath))
-            {
-                type = ExplorerPanelElementType.Directory;
-            }
-            else if (File.Exists(filePath))
-            {
-                var file = new FileInfo(filePath);
-
-                type = file.Extension switch
-                {
-                    ".csproj" => ExplorerPanelElementType.Project,
-                    ".sln" => ExplorerPanelElementType.Solution,
-                    _ => ExplorerPanelElementType.File
-                };
-            }
-
-            Text.Text = Path.GetFileName(filePath);
-
-            switch (type)
-            {
-                case ExplorerPanelElementType.Solution:
-                {
-                    Text.Text = Path.GetFileNameWithoutExtension(filePath);
-                    
-                    break;
-                }
-                case ExplorerPanelElementType.Project:
-                {
-                    Text.Text = Path.GetFileNameWithoutExtension(filePath);
-                    
-                    break;
-                }
-                case ExplorerPanelElementType.Directory:
-                {
-                    Text.Text = Path.GetFileNameWithoutExtension(filePath);
-                    
-                    break;
-                }
-                case ExplorerPanelElementType.File:
-                {
-                    Text.Text = Path.GetFileName(filePath);
-                    
-                    break;
-                }
-            }
-        }
-        
         private void ExpandButton_OnClick(object sender, RoutedEventArgs e)
         {
             IsExpanded = !IsExpanded;
 
-            RefreshChildren();
+            Refresh();
         }
 
-        public void RefreshChildren()
+        public void Refresh()
         {
             if (Children.Count == 0)
                 ExpandButton.Visibility = Visibility.Collapsed;
@@ -129,6 +79,4 @@ namespace TempoIDE.UserControls
             }
         }
     }
-    
-    public enum ExplorerPanelElementType { Solution, Project, Directory, File }
 }

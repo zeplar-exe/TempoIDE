@@ -1,4 +1,3 @@
-using System.IO;
 using System.Windows.Input;
 
 namespace TempoIDE.UserControls

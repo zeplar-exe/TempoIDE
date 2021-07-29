@@ -9,7 +9,7 @@ namespace TempoIDE.Classes.Commands
         public override void Execute(object parameter)
         {
             var settingWindow = new SettingsWindow { Owner = EnvironmentHelper.MainWindow };
-            //TODO: Implement a settings window identical to MainWindow without shooting myself in the foot
+            
             settingWindow.ShowDialog();
         }
     }

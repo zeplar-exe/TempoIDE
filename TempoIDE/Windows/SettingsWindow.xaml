@@ -3,10 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:local="clr-namespace:TempoIDE.Windows"
-        xmlns:userControls="clr-namespace:TempoIDE.UserControls"
+        xmlns:local="clr-namespace:TempoIDE.UserControls"
         mc:Ignorable="d"
         Style="{StaticResource WindowStyle}"
+        ResizeMode="CanResizeWithGrip"
         Title="Settings" Height="550" Width="800">
     
     <WindowChrome.WindowChrome>
@@ -14,6 +14,31 @@
     </WindowChrome.WindowChrome>
     
     <Grid>
-        <userControls:TopbarControl Grid.Row="0" Template="{StaticResource MainWindowTopbarTemplate}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <local:TopbarControl Grid.Row="0" Template="{StaticResource SettingsMenuTopbarTemplate}"/>
+        
+        <Grid Grid.Row="1">
+            <TreeView 
+                Background="{DynamicResource SecondaryBackgroundColor}">
+                
+                <TreeView.Resources>
+                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TextStyle}">
+                        <Setter Property="Background" Value="Transparent"></Setter>
+                    </Style>
+                </TreeView.Resources>
+                
+                <TreeViewItem Header="Hello">
+                    <TreeViewItem Header="Hello">
+                        <TreeViewItem Header="Hello">
+                    
+                        </TreeViewItem>
+                    </TreeViewItem>
+                </TreeViewItem>
+            </TreeView>
+        </Grid>
     </Grid>
 </Window>

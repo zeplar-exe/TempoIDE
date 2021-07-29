@@ -19,8 +19,7 @@
             Background="{DynamicResource SecondaryBackgroundColor}"
             SelectedTabColor="CornflowerBlue"
             HoveredTabColor="LightSlateGray"
-            UnselectedTabColor="Transparent">
-        </local:EditorTabControl>
+            UnselectedTabColor="Transparent" />
 
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>

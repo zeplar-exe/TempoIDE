@@ -11,11 +11,9 @@ namespace TempoIDE.UserControls
 {
     public partial class ExplorerPanel : Panel
     {
-        // TODO: Make selected file persistent with refreshes
-        // TODO: Handle deleted files accordingly
-        private readonly SolidColorBrush unselectedFileBrush = Brushes.Transparent;
-        private readonly SolidColorBrush selectedFileBrush = Brushes.Gray;
-        private readonly SolidColorBrush openedFileBrush = Brushes.CornflowerBlue;
+        public SolidColorBrush UnselectedFileBrush { get; set; } = Brushes.Transparent;
+        public SolidColorBrush SelectedFileBrush { get; set; } = Brushes.Gray;
+        public SolidColorBrush OpenedFileBrush { get; set; } = Brushes.CornflowerBlue;
         
         private readonly string[] explorerExtensions =
         {
@@ -24,19 +22,7 @@ namespace TempoIDE.UserControls
         
         private const int IndentationSpace = 30;
 
-        private FileInfo openFile;
-        private FileInfo OpenFile
-        {
-            get => openFile;
-            set
-            {
-                openFile = value;
-                
-                OpenFileEvent?.Invoke(this, new OpenFileEventArgs(value));
-            }
-        }
-
-        public event OpenFileEventHandler OpenFileEvent;
+        public event OpenFileEventHandler OpenElementEvent;
         
         private ExplorerPanelElement selectedElement;
 
@@ -45,10 +31,8 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        public ExplorerPanelElement AppendElement(string path, ExplorerPanelElement parent = null)
+        public ExplorerPanelElement AppendElement(ExplorerPanelElement element, ExplorerPanelElement parent = null)
         {
-            var element = new ExplorerPanelElement(path);
-            
             element.MouseLeftButtonDown += FileTextBlock_OnMouseUp;
 
             if (parent?.Content == null)
@@ -83,7 +67,7 @@ namespace TempoIDE.UserControls
             
             Dispatcher.InvokeAsync(delegate
             {
-                root = AppendElement(directory.FullName, parent);
+                root = AppendElement(new ExplorerFileElement(directory.FullName), parent);
             });
             
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
@@ -103,7 +87,7 @@ namespace TempoIDE.UserControls
                 {
                     Dispatcher.InvokeAsync(delegate
                     {
-                        AppendElement(filePath, root);
+                        AppendElement(new ExplorerFileElement(filePath), root);
                     });
                 }
                 
@@ -119,18 +103,19 @@ namespace TempoIDE.UserControls
             {
                 if (selectedElement != null)
                 {
-                    selectedElement.Background = unselectedFileBrush;
+                    selectedElement.Background = UnselectedFileBrush;
                     selectedElement = null;
                 }
 
                 selectedElement = element;
                 
-                element.Background = selectedFileBrush;
+                element.Background = SelectedFileBrush;
             }
             else if (e.ClickCount == 2)
             {
-                element.Background = openedFileBrush;
-                OpenFile = new FileInfo(element.FilePath);
+                element.Background = OpenedFileBrush;
+                
+                OpenElementEvent?.Invoke(this, new OpenExplorerElementArgs(element));
             }
         }
 

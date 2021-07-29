@@ -5,8 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
-        xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
-        xmlns:windows="clr-namespace:TempoIDE.Windows"
         mc:Ignorable="d"
         Style="{StaticResource WindowStyle}"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
@@ -66,7 +64,7 @@
                                 x:Name="Explorer" 
                                 MinWidth="170" 
                                 GotFocus="Explorer_OnGotFocus" 
-                                OpenFileEvent="ExplorerPanel_OnOpenFileEvent"/>
+                                OpenElementEvent="ExplorerPanel_OnOpenFileEvent"/>
                         </ScrollViewer>
                     </TabItem>
                 </TabControl>
@@ -91,8 +89,7 @@
                 Grid.Row="1"
                 Height="20"
                 BorderBrush="{DynamicResource BorderColor}"
-                BorderThickness="0, 0, 0, 1">
-            </Border>
+                BorderThickness="0, 0, 0, 1" />
         </Grid>
     </Grid>
 </Window>

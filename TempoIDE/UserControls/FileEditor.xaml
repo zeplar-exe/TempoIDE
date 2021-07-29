@@ -20,6 +20,5 @@
         x:Name="TextEditor"
         Style="{StaticResource TextBoxStyle}"
         Loaded="TextEditor_OnLoaded"
-        TextChanged="TextEditor_OnTextChanged">
-    </local:SyntaxTextBox>
+        TextChanged="TextEditor_OnTextChanged" />
 </local:Editor>

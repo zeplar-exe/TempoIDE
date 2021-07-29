@@ -10,7 +10,7 @@
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/Dark.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Skins/Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <properties:Shortcuts x:Key="Shortcuts"/>
@@ -30,9 +30,7 @@
             </Style>
             
             <DataTemplate x:Key="AutoCompleteItemTemplate">
-                <ListBoxItem Background="Transparent">
-                    
-                </ListBoxItem>
+                <ListBoxItem Background="Transparent" />
             </DataTemplate>
             
             <Style x:Key="TopbarMenuItemStyle" TargetType="ContextMenu">
@@ -41,6 +39,11 @@
             
             <Style x:Key="MenuItemStyle" TargetType="MenuItem">
                 <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
+            </Style>
+            
+            <Style x:Key="TextStyle">
+                <Setter Property="Control.Foreground" Value="{DynamicResource BaseTextColor}"/>
+                <Setter Property="Control.Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
             </Style>
             
             <ControlTemplate x:Key="MainWindowTopbarTemplate">
@@ -125,12 +128,12 @@
                             </MenuItem>
                         </MenuItem>
                         
-                        <MenuItem Header="View"></MenuItem>
-                        <MenuItem Header="Navigation"></MenuItem>
-                        <MenuItem Header="Code"></MenuItem>
-                        <MenuItem Header="Build"></MenuItem>
-                        <MenuItem Header="Window"></MenuItem>
-                        <MenuItem Header="Help"></MenuItem>
+                        <MenuItem Header="View" />
+                        <MenuItem Header="Navigation" />
+                        <MenuItem Header="Code" />
+                        <MenuItem Header="Build" />
+                        <MenuItem Header="Window" />
+                        <MenuItem Header="Help" />
                     </Menu>
 
                     <Button
@@ -139,8 +142,7 @@
                         Background="Transparent"
                         Foreground="{DynamicResource BaseTextColor}"
                         BorderThickness="0"
-                        Click="MinimizeWindow">
-                    </Button>
+                        Click="MinimizeWindow" />
 
                     <Button
                         Grid.Column="3"
@@ -152,6 +154,23 @@
 
                     <Button
                         Grid.Column="4"
+                        Content="X"
+                        Background="Transparent"
+                        Foreground="{DynamicResource BaseTextColor}"
+                        BorderThickness="0"
+                        Click="CloseWindow"/>
+                </Grid>
+            </ControlTemplate>
+            
+            <ControlTemplate x:Key="SettingsMenuTopbarTemplate">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <Button
+                        Grid.Column="1"
                         Content="X"
                         Background="Transparent"
                         Foreground="{DynamicResource BaseTextColor}"

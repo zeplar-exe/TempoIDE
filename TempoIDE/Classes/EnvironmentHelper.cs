@@ -9,7 +9,10 @@ namespace TempoIDE.Classes
     public static class EnvironmentHelper
     {
         public static MainWindow MainWindow => Application.Current.MainWindow as MainWindow;
-        public static Window ActiveWindow => Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive);
+        public static Window ActiveWindow => Application.Current
+            .Windows
+            .OfType<Window>()
+            .SingleOrDefault(x => x.IsActive);
         
         public static EnvironmentFilterMode FilterMode;
         public static string EnvironmentPath;
@@ -98,10 +101,10 @@ namespace TempoIDE.Classes
                 case EnvironmentFilterMode.None:
                     break;
                 case EnvironmentFilterMode.Solution:
-                    var topLevel = new ExplorerPanelElement(EnvironmentPath);
+                    var topLevel = new ExplorerFileElement(EnvironmentPath);
                     var slnDirectory = new FileInfo(EnvironmentPath).Directory;
                     
-                    MainWindow.Explorer.AppendElement(EnvironmentPath);
+                    MainWindow.Explorer.AppendElement(topLevel);
                     MainWindow.Explorer.AppendDirectory(slnDirectory, topLevel);
 
                     directoryWatcher = new DirectoryWatcher(slnDirectory);
@@ -125,7 +128,7 @@ namespace TempoIDE.Classes
                     directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(EnvironmentPath));
                     directoryWatcher.Changed += DirectoryChanged;
                     
-                    MainWindow.Explorer.AppendElement(EnvironmentPath);
+                    MainWindow.Explorer.AppendElement(new ExplorerFileElement(EnvironmentPath));
                     break;
             }
         }

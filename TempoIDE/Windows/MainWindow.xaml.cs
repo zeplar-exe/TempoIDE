@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Classes;
 using TempoIDE.Classes.Commands;
 using TempoIDE.Classes.Types;
+using TempoIDE.UserControls;
 
 namespace TempoIDE.Windows
 {
@@ -42,9 +44,14 @@ namespace TempoIDE.Windows
             Editor.SelectedEditor?.UpdateFile();
         }
 
-        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenFileEventArgs e)
+        private void ExplorerPanel_OnOpenFileEvent(object sender, OpenExplorerElementArgs e)
         {
-            Editor.Tabs.Open(e.NewFile);
+            var path = (e.Element as ExplorerFileElement)?.FilePath;
+            
+            if (path.Null())
+                return;
+                
+            Editor.Tabs.Open(new FileInfo(path));
         }
 
         private void Editor_OnGotFocus(object sender, RoutedEventArgs e)

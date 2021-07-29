@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <UserControl.ContextMenu>
         <local:ExplorerPanelContextMenu/>
     </UserControl.ContextMenu>
@@ -21,6 +22,6 @@
             <Image Width="20"/>
         </Button>
         <Image Grid.Column="1" Name="Icon"/>
-        <TextBlock Grid.Column="2" Name="Text" Foreground="{DynamicResource BaseTextColor}"/>
+        <TextBlock Grid.Column="2" Name="Text" Text="{Binding Header}" Foreground="{DynamicResource BaseTextColor}"/>
     </Grid>
 </UserControl>
