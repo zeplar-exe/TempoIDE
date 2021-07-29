@@ -1,5 +1,5 @@
-<Panel x:Class="TempoIDE.UserControls.ExplorerPanel"
+<TreeView x:Class="TempoIDE.UserControls.ExplorerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Style="{StaticResource ExplorerPanelStyle}">
-</Panel>
+             Style="{StaticResource ExplorerViewStyle}">
+</TreeView>

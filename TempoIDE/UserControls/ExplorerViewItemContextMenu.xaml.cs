@@ -2,9 +2,9 @@ using System.Windows.Controls;
 
 namespace TempoIDE.UserControls
 {
-    public partial class ExplorerPanelContextMenu : ContextMenu
+    public partial class ExplorerViewItemContextMenu : ContextMenu
     {
-        public ExplorerPanelContextMenu()
+        public ExplorerViewItemContextMenu()
         {
             InitializeComponent();
         }

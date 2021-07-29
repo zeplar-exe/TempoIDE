@@ -46,7 +46,7 @@ namespace TempoIDE.Windows
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenExplorerElementArgs e)
         {
-            var path = (e.Element as ExplorerFileElement)?.FilePath;
+            var path = (e.Element as ExplorerFileItem)?.FilePath;
             
             if (path.Null())
                 return;

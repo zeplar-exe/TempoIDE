@@ -8,11 +8,11 @@ namespace TempoIDE.Classes.Types
     
     public class OpenExplorerElementArgs : RoutedEventArgs
     {
-        public OpenExplorerElementArgs(ExplorerPanelElement element)
+        public OpenExplorerElementArgs(ExplorerViewItem element)
         {
             Element = element;
         }
 
-        public ExplorerPanelElement Element;
+        public ExplorerViewItem Element;
     }
 }

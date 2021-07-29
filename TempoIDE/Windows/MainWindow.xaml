@@ -60,7 +60,7 @@
                     
                     <TabItem Header="Explorer">
                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <local:ExplorerPanel
+                            <local:ExplorerView
                                 x:Name="Explorer" 
                                 MinWidth="170" 
                                 GotFocus="Explorer_OnGotFocus" 

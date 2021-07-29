@@ -21,7 +21,24 @@
                 <Setter Property="AllowsTransparency" Value="True"/>
             </Style>
             
-            <Style x:Key="ExplorerPanelStyle" TargetType="Panel">
+            <Style x:Key="TextStyle">
+                <Setter Property="Control.Foreground" Value="{DynamicResource BaseTextColor}"/>
+                <Setter Property="Control.Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
+            </Style>
+            
+            <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TextStyle}">
+                <Setter Property="Background" Value="Transparent"></Setter>
+            </Style>
+            
+            <Style TargetType="{x:Type locals:ExplorerViewItem}" BasedOn="{StaticResource TextStyle}">
+                <Setter Property="Background" Value="Transparent"></Setter>
+            </Style>
+            
+            <Style TargetType="{x:Type locals:ExplorerFileItem}" BasedOn="{StaticResource TextStyle}">
+                <Setter Property="Background" Value="Transparent"></Setter>
+            </Style>
+            
+            <Style x:Key="ExplorerViewStyle" TargetType="locals:ExplorerView">
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
@@ -39,11 +56,6 @@
             
             <Style x:Key="MenuItemStyle" TargetType="MenuItem">
                 <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
-            </Style>
-            
-            <Style x:Key="TextStyle">
-                <Setter Property="Control.Foreground" Value="{DynamicResource BaseTextColor}"/>
-                <Setter Property="Control.Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
             </Style>
             
             <ControlTemplate x:Key="MainWindowTopbarTemplate">

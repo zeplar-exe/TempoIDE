@@ -25,19 +25,9 @@
             <TreeView 
                 Background="{DynamicResource SecondaryBackgroundColor}">
                 
-                <TreeView.Resources>
-                    <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TextStyle}">
-                        <Setter Property="Background" Value="Transparent"></Setter>
-                    </Style>
-                </TreeView.Resources>
-                
-                <TreeViewItem Header="Hello">
-                    <TreeViewItem Header="Hello">
-                        <TreeViewItem Header="Hello">
-                    
-                        </TreeViewItem>
-                    </TreeViewItem>
-                </TreeViewItem>
+                <TreeViewItem Header="Appearance/Behavior"></TreeViewItem>
+                <TreeViewItem Header="Performance"></TreeViewItem>
+                <TreeViewItem Header="Keybinds"></TreeViewItem>
             </TreeView>
         </Grid>
     </Grid>

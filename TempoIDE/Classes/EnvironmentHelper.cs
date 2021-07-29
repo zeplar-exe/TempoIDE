@@ -101,9 +101,9 @@ namespace TempoIDE.Classes
                 case EnvironmentFilterMode.None:
                     break;
                 case EnvironmentFilterMode.Solution:
-                    var topLevel = new ExplorerFileElement(EnvironmentPath);
+                    var topLevel = new ExplorerFileItem(EnvironmentPath) { IsExpanded = true };
                     var slnDirectory = new FileInfo(EnvironmentPath).Directory;
-                    
+
                     MainWindow.Explorer.AppendElement(topLevel);
                     MainWindow.Explorer.AppendDirectory(slnDirectory, topLevel);
 
@@ -128,7 +128,7 @@ namespace TempoIDE.Classes
                     directoryWatcher = new DirectoryWatcher(filePath.Directory, Path.GetFileName(EnvironmentPath));
                     directoryWatcher.Changed += DirectoryChanged;
                     
-                    MainWindow.Explorer.AppendElement(new ExplorerFileElement(EnvironmentPath));
+                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(EnvironmentPath));
                     break;
             }
         }

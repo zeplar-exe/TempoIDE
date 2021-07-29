@@ -3,7 +3,7 @@ using System.Windows.Controls;
 
 namespace TempoIDE.UserControls
 {
-    public partial class ExplorerFileElement : ExplorerPanelElement
+    public class ExplorerFileItem : ExplorerViewItem
     {
         private string filePath;
         public string FilePath
@@ -13,20 +13,16 @@ namespace TempoIDE.UserControls
         }
         private ExplorerPanelElementType type;
         
-        public ExplorerFileElement()
+        public ExplorerFileItem()
         {
             InitializeComponent();
         }
         
-        public ExplorerFileElement(string path)
+        public ExplorerFileItem(string path)
         {
             InitializeComponent();
 
             FilePath = path;
-            
-            Expand();
-            Refresh();
-            Children.CollectionChanged += delegate { Refresh(); };
         }
         
         private void Update()
@@ -47,7 +43,7 @@ namespace TempoIDE.UserControls
                 };
             }
 
-            Header = Path.GetFileName(filePath);
+            HeaderText = Path.GetFileName(filePath);
 
             switch (type)
             {
