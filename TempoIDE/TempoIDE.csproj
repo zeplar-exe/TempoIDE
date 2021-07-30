@@ -28,9 +28,6 @@
       <Compile Update="UserControls\SyntaxTextBox.Mouse.cs">
         <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
       </Compile>
-      <Compile Update="Windows\MainWindow.Resizers.cs">
-        <DependentUpon>MainWindow.xaml</DependentUpon>
-      </Compile>
       <Compile Update="UserControls\EditorTabItem.xaml.cs">
         <DependentUpon>EditorTabItem.xaml</DependentUpon>
       </Compile>

@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace TempoIDE.UserControls
             ".txt", ".cs"
         };
         
-        public event OpenFileEventHandler OpenElementEvent;
+        public event OpenFileEventHandler OpenItemEvent;
 
         public ExplorerView()
         {
@@ -89,7 +90,7 @@ namespace TempoIDE.UserControls
             
             var element = (ExplorerViewItem) sender;
             
-            OpenElementEvent?.Invoke(this, new OpenExplorerElementArgs(element));
+            OpenItemEvent?.Invoke(this, new OpenExplorerElementArgs(element));
         }
 
         public void Clear() => Items.Clear();

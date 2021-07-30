@@ -17,6 +17,31 @@ namespace TempoIDE.Windows
             InitializeComponent();
         }
         
+        public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var window = EnvironmentHelper.ActiveWindow;
+            
+            if (window.WindowState.HasFlag(WindowState.Minimized))
+                SystemCommands.MaximizeWindow(window);
+            else
+                SystemCommands.MinimizeWindow(EnvironmentHelper.ActiveWindow);
+        }
+
+        public void MaximizeWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var window = EnvironmentHelper.ActiveWindow;
+            
+            if (window.WindowState.HasFlag(WindowState.Maximized))
+                SystemCommands.MinimizeWindow(window);
+            else
+                SystemCommands.MaximizeWindow(EnvironmentHelper.ActiveWindow);
+        }
+
+        public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SystemCommands.CloseWindow(EnvironmentHelper.ActiveWindow);
+        }
+        
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadKeybindings();

@@ -4,6 +4,7 @@
              xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
              xmlns:locals="clr-namespace:TempoIDE.UserControls"
              xmlns:properties="clr-namespace:TempoIDE.Properties"
+             xmlns:windows="clr-namespace:TempoIDE.Windows"
              StartupUri="Windows/MainWindow.xaml"
              Startup="App_OnStartup"
               >
@@ -15,7 +16,7 @@
             
             <properties:Shortcuts x:Key="Shortcuts"/>
 
-            <Style x:Key="WindowStyle" TargetType="Window">
+            <Style TargetType="{x:Type Window}">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
                 <Setter Property="WindowStyle" Value="None"/>
                 <Setter Property="AllowsTransparency" Value="True"/>
@@ -25,6 +26,8 @@
                 <Setter Property="Control.Foreground" Value="{DynamicResource BaseTextColor}"/>
                 <Setter Property="Control.Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
             </Style>
+            
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextStyle}"/>
             
             <Style TargetType="{x:Type TreeViewItem}" BasedOn="{StaticResource TextStyle}">
                 <Setter Property="Background" Value="Transparent"></Setter>
@@ -38,7 +41,7 @@
                 <Setter Property="Background" Value="Transparent"></Setter>
             </Style>
             
-            <Style x:Key="ExplorerViewStyle" TargetType="locals:ExplorerView">
+            <Style TargetType="{x:Type locals:ExplorerView}">
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
@@ -46,150 +49,21 @@
                 <Setter Property="Background" Value="#4d4747"/>
             </Style>
             
+            <Style TargetType="{x:Type Button}">
+                <Setter Property="Foreground" Value="{DynamicResource BaseTextColor}"/>
+            </Style>
+            
+            <Style TargetType="{x:Type Border}">
+                <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"></Setter>
+            </Style>
+            
+            <Style TargetType="{x:Type MenuItem}">
+                <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
+            </Style>
+            
             <DataTemplate x:Key="AutoCompleteItemTemplate">
                 <ListBoxItem Background="Transparent" />
             </DataTemplate>
-            
-            <Style x:Key="TopbarMenuItemStyle" TargetType="ContextMenu">
-                <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
-            </Style>
-            
-            <Style x:Key="MenuItemStyle" TargetType="MenuItem">
-                <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
-            </Style>
-            
-            <ControlTemplate x:Key="MainWindowTopbarTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="25" />
-                        <ColumnDefinition Width="25" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <Menu 
-                        Grid.Column="0" 
-                        Background="Transparent" 
-                        Foreground="{DynamicResource BaseTextColor}">
-                        
-                        <MenuItem Header="File" Background="Transparent">
-                            <MenuItem.Resources>
-                                <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemStyle}"/>
-                            </MenuItem.Resources>
-                            
-                            <MenuItem Header="New solution">
-                                <MenuItem.Command> <commands:NewSolutionCommand/> </MenuItem.Command>
-                            </MenuItem>
-                            
-                            <MenuItem Header="Open...">
-                                <MenuItem.Command> <commands:OpenDropdown/> </MenuItem.Command>
-                                
-                                <MenuItem Header="File...">
-                                    <MenuItem.Command> <commands:OpenFileCommand/> </MenuItem.Command>
-                                </MenuItem>
-                                    
-                                <MenuItem Header="Folder...">
-                                    <MenuItem.Command> <commands:OpenFolderCommand/></MenuItem.Command>
-                                </MenuItem>
-                            </MenuItem>
-                            
-                            <locals:MenuSeparator/>
-                            
-                            <MenuItem Header="Settings">
-                                <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
-                            </MenuItem>
-                            
-                            <locals:MenuSeparator/>
-                            
-                            <MenuItem Header="Exit">
-                                <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
-                            </MenuItem>
-                        </MenuItem>
-                        
-                        <MenuItem Header="Edit" Background="Transparent">
-                            <MenuItem.Resources>
-                                <Style TargetType="MenuItem" BasedOn="{StaticResource MenuItemStyle}"/>
-                            </MenuItem.Resources>
-                            
-                            <MenuItem 
-                                Header="Copy"
-                                InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
-                                
-                                <MenuItem.Command>
-                                    <commands:CopyTextCommand/>
-                                </MenuItem.Command>
-                            </MenuItem>
-                            
-                            <MenuItem
-                                Header="Paste"
-                                InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
-                                
-                                <MenuItem.Command>
-                                    <commands:PasteTextCommand/>
-                                </MenuItem.Command>
-                            </MenuItem>
-                            
-                            <MenuItem
-                                Header="Cut"
-                                InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
-                                
-                                <MenuItem.Command>
-                                    <commands:CutTextCommand/>
-                                </MenuItem.Command>
-                            </MenuItem>
-                        </MenuItem>
-                        
-                        <MenuItem Header="View" />
-                        <MenuItem Header="Navigation" />
-                        <MenuItem Header="Code" />
-                        <MenuItem Header="Build" />
-                        <MenuItem Header="Window" />
-                        <MenuItem Header="Help" />
-                    </Menu>
-
-                    <Button
-                        Grid.Column="2"
-                        Content="Min"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="MinimizeWindow" />
-
-                    <Button
-                        Grid.Column="3"
-                        Content="Max"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="MaximizeWindow"/>
-
-                    <Button
-                        Grid.Column="4"
-                        Content="X"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="CloseWindow"/>
-                </Grid>
-            </ControlTemplate>
-            
-            <ControlTemplate x:Key="SettingsMenuTopbarTemplate">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="25"/>
-                    </Grid.ColumnDefinitions>
-                    
-                    <Button
-                        Grid.Column="1"
-                        Content="X"
-                        Background="Transparent"
-                        Foreground="{DynamicResource BaseTextColor}"
-                        BorderThickness="0"
-                        Click="CloseWindow"/>
-                </Grid>
-            </ControlTemplate>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

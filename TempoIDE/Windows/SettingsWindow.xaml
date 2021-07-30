@@ -4,13 +4,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
+        xmlns:windows="clr-namespace:TempoIDE.Windows"
+        xmlns:classes="clr-namespace:TempoIDE.Classes"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
-        Style="{StaticResource WindowStyle}"
+        Style="{StaticResource {x:Type Window}}"
         ResizeMode="CanResizeWithGrip"
-        Title="Settings" Height="550" Width="800">
+        Title="Settings" Height="550" Width="800"
+        Loaded="SettingsWindow_OnLoaded">
     
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="15"/>
+        <WindowChrome CaptionHeight="30"/>
     </WindowChrome.WindowChrome>
     
     <Grid>
@@ -19,16 +23,81 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <local:TopbarControl Grid.Row="0" Template="{StaticResource SettingsMenuTopbarTemplate}"/>
+        <local:TopbarControl Grid.Row="0">
+            <local:TopbarControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="50"/>
+                        </Grid.ColumnDefinitions>
+                    
+                        <Button
+                            Grid.Column="1"
+                            Content="X"
+                            FontSize="17"
+                            Background="Transparent"
+                            Foreground="{DynamicResource BaseTextColor}"
+                            BorderThickness="0"
+                            Click="CloseWindow"/>
+                    </Grid>
+                </ControlTemplate>
+            </local:TopbarControl.Template>
+        </local:TopbarControl>
         
         <Grid Grid.Row="1">
-            <TreeView 
-                Background="{DynamicResource SecondaryBackgroundColor}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <local:ExplorerView
+                Grid.Column="0"
+                x:Name="Explorer"
+                Background="{DynamicResource SecondaryBackgroundColor}"
+                BorderThickness="0"
+                SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
-                <TreeViewItem Header="Appearance/Behavior"></TreeViewItem>
-                <TreeViewItem Header="Performance"></TreeViewItem>
-                <TreeViewItem Header="Keybinds"></TreeViewItem>
-            </TreeView>
+                <local:ExplorerViewItem Header="Appearance/Behavior" IsSelected="True">
+                    <windows:SettingsWindow.SectionTemplate>
+                        <ControlTemplate>
+                            <ControlTemplate.Resources>
+                                <ObjectDataProvider x:Key="ThemeData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+                                    <ObjectDataProvider.MethodParameters>
+                                        <x:Type TypeName="classes:Theme"/>
+                                    </ObjectDataProvider.MethodParameters>
+                                </ObjectDataProvider>
+                            </ControlTemplate.Resources>
+                            
+                            <Grid>
+                                <local:SettingsCategoryControl Header="Theme">
+                                    <ComboBox
+                                        Background="{StaticResource SecondaryBackgroundColor}"
+                                        ItemsSource="{Binding Source={StaticResource ThemeData}}"/>
+                                </local:SettingsCategoryControl>
+                            </Grid>
+                        </ControlTemplate>
+                    </windows:SettingsWindow.SectionTemplate>
+                </local:ExplorerViewItem>
+                
+                <local:ExplorerViewItem Header="Performance">
+                    <windows:SettingsWindow.SectionTemplate>
+                        <ControlTemplate>
+                            
+                        </ControlTemplate>
+                    </windows:SettingsWindow.SectionTemplate>
+                </local:ExplorerViewItem>
+                
+                <local:ExplorerViewItem Header="Keybinds">
+                    <windows:SettingsWindow.SectionTemplate>
+                        <ControlTemplate>
+                            
+                        </ControlTemplate>
+                    </windows:SettingsWindow.SectionTemplate>
+                </local:ExplorerViewItem>
+            </local:ExplorerView>
+            
+            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
         </Grid>
     </Grid>
 </Window>

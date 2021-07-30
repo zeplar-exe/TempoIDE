@@ -5,91 +5,172 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
+        xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
         mc:Ignorable="d"
-        Style="{StaticResource WindowStyle}"
+        Style="{StaticResource {x:Type Window}}"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
     
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="15"/>
+        <WindowChrome CaptionHeight="30"/>
     </WindowChrome.WindowChrome>
     
-    <Grid Margin="2">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
+        <!-- Topbar -->
+        <local:TopbarControl Grid.Row="0">
+            <local:TopbarControl.Template>
+                <ControlTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                            <ColumnDefinition Width="50" />
+                        </Grid.ColumnDefinitions>
+                        
+                        <Menu 
+                            Grid.Column="0" 
+                            Background="Transparent" 
+                            Foreground="{DynamicResource BaseTextColor}">
+                            
+                            <MenuItem Header="File" Background="Transparent">
+                                <MenuItem Header="New solution">
+                                    <MenuItem.Command> <commands:NewSolutionCommand/> </MenuItem.Command>
+                                </MenuItem>
+                                
+                                <MenuItem Header="Open...">
+                                    <MenuItem.Command> <commands:OpenDropdown/> </MenuItem.Command>
+                                    
+                                    <MenuItem Header="File...">
+                                        <MenuItem.Command> <commands:OpenFileCommand/> </MenuItem.Command>
+                                    </MenuItem>
+                                        
+                                    <MenuItem Header="Folder...">
+                                        <MenuItem.Command> <commands:OpenFolderCommand/></MenuItem.Command>
+                                    </MenuItem>
+                                </MenuItem>
+                                
+                                <local:MenuSeparator/>
+                                
+                                <MenuItem Header="Settings">
+                                    <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
+                                </MenuItem>
+                                
+                                <local:MenuSeparator/>
+                                
+                                <MenuItem Header="Exit">
+                                    <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
+                                </MenuItem>
+                            </MenuItem>
+                            
+                            <MenuItem Header="Edit" Background="Transparent">
+                                <MenuItem 
+                                    Header="Copy"
+                                    InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
+                                    
+                                    <MenuItem.Command>
+                                        <commands:CopyTextCommand/>
+                                    </MenuItem.Command>
+                                </MenuItem>
+                                
+                                <MenuItem
+                                    Header="Paste"
+                                    InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
+                                    
+                                    <MenuItem.Command>
+                                        <commands:PasteTextCommand/>
+                                    </MenuItem.Command>
+                                </MenuItem>
+                                
+                                <MenuItem
+                                    Header="Cut"
+                                    InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
+                                    
+                                    <MenuItem.Command>
+                                        <commands:CutTextCommand/>
+                                    </MenuItem.Command>
+                                </MenuItem>
+                            </MenuItem>
+                            
+                            <MenuItem Header="View" Background="Transparent"/>
+                            <MenuItem Header="Navigation" Background="Transparent"/>
+                            <MenuItem Header="Code" Background="Transparent"/>
+                            <MenuItem Header="Build" Background="Transparent"/>
+                            <MenuItem Header="Window" Background="Transparent"/>
+                            <MenuItem Header="Help" Background="Transparent"/>
+                        </Menu>
 
-            <Grid Grid.Row="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-                <TabControl 
-                    Grid.Column="0"
-                    TabStripPlacement="Left" 
-                    Padding="-1" 
-                    HorizontalAlignment="Stretch">
-                    
-                    <TabControl.ItemContainerStyle>
-                        <Style TargetType="TabItem">
-                            <Setter Property="LayoutTransform">
-                                <Setter.Value>
-                                    <RotateTransform Angle="270"/>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </TabControl.ItemContainerStyle>
-                    
-                    <TabItem Header="Explorer">
-                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <local:ExplorerView
-                                x:Name="Explorer" 
-                                MinWidth="170" 
-                                GotFocus="Explorer_OnGotFocus" 
-                                OpenElementEvent="ExplorerPanel_OnOpenFileEvent"/>
-                        </ScrollViewer>
-                    </TabItem>
-                </TabControl>
+                        <Button
+                            Grid.Column="2"
+                            Content="Min"
+                            FontSize="17"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="MinimizeWindow" />
 
-                <GridSplitter 
-                    Background="{DynamicResource BorderColor}"
-                    Grid.Column="1" 
-                    VerticalAlignment="Stretch"
-                    Width="3"/>
+                        <Button
+                            Grid.Column="3"
+                            Content="Max"
+                            FontSize="17"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="MaximizeWindow"/>
+
+                        <Button
+                            Grid.Column="4"
+                            Content="X"
+                            FontSize="17"
+                            Background="Transparent"
+                            BorderThickness="0"
+                            Click="CloseWindow"/>
+                    </Grid>
+                </ControlTemplate>
+            </local:TopbarControl.Template>
+        </local:TopbarControl>
+        
+        <!-- Topbar... 2? -->
+        <Border 
+            Grid.Row="1"
+            Height="20"
+            BorderThickness="0, 0, 0, 1" />
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="20" Width="170"/>
+                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <local:ExplorerView
+                Grid.Column="0"
+                x:Name="Explorer" 
+                GotFocus="Explorer_OnGotFocus" 
+                OpenItemEvent="ExplorerPanel_OnOpenFileEvent"/>
+
+            <GridSplitter 
+                Background="{DynamicResource BorderColor}"
+                Grid.Column="1" 
+                VerticalAlignment="Stretch"
                 
-                <local:EditorControl 
-                    Grid.Column="2" 
-                    x:Name="Editor" 
-                    GotFocus="Editor_OnGotFocus"/>
-            </Grid>
+                ResizeDirection="Columns"
+                ResizeBehavior="PreviousAndNext"
+                
+                Margin="-10,0"
+                BorderThickness="10,0"
+                BorderBrush="Transparent"/>
             
-            <!-- Topbar -->
-            <local:TopbarControl Grid.Row="0" Template="{StaticResource MainWindowTopbarTemplate}"/>
-            
-            <!-- Topbar... 2? -->
-            <Border 
-                Grid.Row="1"
-                Height="20"
-                BorderBrush="{DynamicResource BorderColor}"
-                BorderThickness="0, 0, 0, 1" />
+            <local:EditorControl 
+                Grid.Column="2" 
+                x:Name="Editor"
+                GotFocus="Editor_OnGotFocus"/>
         </Grid>
     </Grid>
 </Window>
