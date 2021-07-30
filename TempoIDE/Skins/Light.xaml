@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="PrimaryBackgroundColor" Color="#cfcfcf"/>
     <SolidColorBrush x:Key="SecondaryBackgroundColor" Color="#b5b0b0"/>
-    <SolidColorBrush x:Key="BorderColor" Color="#828282"/>
+    <SolidColorBrush x:Key="PrimaryBorderColor" Color="#828282"/>
+    <SolidColorBrush x:Key="SecondaryBorderColor" Color="#707371"/>
     <SolidColorBrush x:Key="ToolbarBackgroundColor" Color="#ffe8e8"/>
     <SolidColorBrush x:Key="BaseTextColor" Color="#2a2b2b"/>
     <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="#e0dcdc"/>

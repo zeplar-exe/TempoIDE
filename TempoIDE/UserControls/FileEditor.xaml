@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              GotFocus="FileEditor_OnGotFocus">
     <local:Editor.Resources>
-        <Style x:Key="TextBoxStyle" TargetType="local:SyntaxTextBox">
+        <Style TargetType="{x:Type local:SyntaxTextBox}">
             <Setter Property="Background" Value="{DynamicResource TextBoxBackgroundColor}"/>
             <Setter Property="BorderBrush" Value="#333333"/>
             <Setter Property="BorderThickness" Value="0, 1, 0, 1"/>
@@ -16,9 +16,10 @@
         </Style>
     </local:Editor.Resources>
     
-    <local:SyntaxTextBox
-        x:Name="TextEditor"
-        Style="{StaticResource TextBoxStyle}"
-        Loaded="TextEditor_OnLoaded"
-        TextChanged="TextEditor_OnTextChanged" />
+    <ScrollViewer>
+        <local:SyntaxTextBox
+            x:Name="TextEditor"
+            Loaded="TextEditor_OnLoaded"
+            TextChanged="TextEditor_OnTextChanged" />
+    </ScrollViewer>
 </local:Editor>

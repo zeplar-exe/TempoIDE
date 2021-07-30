@@ -72,8 +72,8 @@ namespace TempoIDE.Classes
         
         public static KeyGesture ToGesture(this string value)
         {
-            Key gestureKey = Key.None;
-            ModifierKeys gestureModifiers = ModifierKeys.None;
+            var gestureKey = Key.None;
+            var gestureModifiers = ModifierKeys.None;
 
             foreach (var key in value.Split("+"))
             {

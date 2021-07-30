@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -176,6 +177,14 @@ namespace TempoIDE.UserControls
                 #endregion
             }
         }
+
+        protected override Size MeasureOverride(Size constraint)
+        {
+            var longestLine = TextArea.GetLines().OrderByDescending(line => line.Count).FirstOrDefault();
+            var totalWidth = longestLine?.TotalWidth ?? 0;
+            
+            return new Size(totalWidth, LineHeight * TextArea.GetLineCount());
+        } // TODO: Gotta make my own fucking scrollbar
 
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)
         {

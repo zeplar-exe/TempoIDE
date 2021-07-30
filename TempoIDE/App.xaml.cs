@@ -13,7 +13,6 @@ namespace TempoIDE
             #endif
             
             //ThemeHelper.LoadTheme(Theme.Light);
-            //new Compiler(null);
         }
 
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)

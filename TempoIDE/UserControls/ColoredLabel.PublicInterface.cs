@@ -146,24 +146,25 @@ namespace TempoIDE.UserControls
             return GetLines().Length;
         }
 
-        public List<SyntaxChar>[] GetLines(bool omitNewLines = false)
+        public SyntaxCharCollection[] GetLines(bool omitNewLines = false)
         {
-            var lines = new List<List<SyntaxChar>> { new List<SyntaxChar>() };
+            var lines = new List<SyntaxCharCollection> { new SyntaxCharCollection() };
             var currentIndex = 0;
 
             foreach (var character in Characters)
             {
-                if (character.Value == ColoredLabel.NewLine)
+                if (character.Value == NewLine)
                 {
                     if (!omitNewLines)
                         lines[currentIndex].Add(character);
                     
                     currentIndex++;
 
-                    lines.Add(new List<SyntaxChar>());
+                    lines.Add(new SyntaxCharCollection());
                 }
                 else
                 {
+                    lines[currentIndex].TotalWidth += character.Size.Width;
                     lines[currentIndex].Add(character);
                 }
             }

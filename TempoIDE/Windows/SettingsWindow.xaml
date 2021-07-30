@@ -73,7 +73,8 @@
                                 <local:SettingsCategoryControl Header="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
-                                        ItemsSource="{Binding Source={StaticResource ThemeData}}"/>
+                                        ItemsSource="{Binding Source={StaticResource ThemeData}}"
+                                        ItemContainerStyle="{StaticResource TextStyle}"/>
                                 </local:SettingsCategoryControl>
                             </Grid>
                         </ControlTemplate>

@@ -68,6 +68,8 @@ namespace TempoIDE.UserControls
                 {
                     if (nextIndex < Files.Count)
                         Open(Files[nextIndex].ToFile());
+                    else
+                        ContentDisplay.Child = null;
                 }
                 else
                 {

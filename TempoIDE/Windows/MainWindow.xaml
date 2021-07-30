@@ -156,7 +156,7 @@
                 OpenItemEvent="ExplorerPanel_OnOpenFileEvent"/>
 
             <GridSplitter 
-                Background="{DynamicResource BorderColor}"
+                Background="{DynamicResource PrimaryBorderColor}"
                 Grid.Column="1" 
                 VerticalAlignment="Stretch"
                 

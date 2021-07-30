@@ -54,7 +54,7 @@
             </Style>
             
             <Style TargetType="{x:Type Border}">
-                <Setter Property="BorderBrush" Value="{StaticResource BorderColor}"></Setter>
+                <Setter Property="BorderBrush" Value="{StaticResource PrimaryBorderColor}"></Setter>
             </Style>
             
             <Style TargetType="{x:Type MenuItem}">
