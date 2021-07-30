@@ -164,7 +164,6 @@ namespace TempoIDE.UserControls
                 }
                 else
                 {
-                    lines[currentIndex].TotalWidth += character.Size.Width;
                     lines[currentIndex].Add(character);
                 }
             }

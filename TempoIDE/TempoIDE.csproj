@@ -54,11 +54,7 @@
     <ItemGroup>
       <Page Remove="packages\**" />
     </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\TempoCompiler\TempoCompiler.csproj" />
-    </ItemGroup>
-
+    
     <ItemGroup>
       <Page Remove="Skins\Dark.xaml" />
       <Resource Include="Skins\Dark.xaml">

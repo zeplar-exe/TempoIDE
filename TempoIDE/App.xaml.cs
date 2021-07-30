@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using TempoCompiler.Cs;
 using TempoIDE.Classes;
 
 namespace TempoIDE
