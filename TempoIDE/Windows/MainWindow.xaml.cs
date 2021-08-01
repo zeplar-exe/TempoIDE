@@ -73,7 +73,7 @@ namespace TempoIDE.Windows
         {
             var path = (e.Element as ExplorerFileItem)?.FilePath;
             
-            if (path.Null())
+            if (path == null)
                 return;
                 
             Editor.Tabs.Open(new FileInfo(path));

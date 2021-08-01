@@ -40,7 +40,7 @@ namespace TempoIDE.UserControls
             tab.Background = SelectedTabColor;
             tab.IsSelected = true;
 
-            if (SelectedItem.NotNull())
+            if (SelectedItem != null)
             {
                 SelectedItem.IsSelected = false;
                 SelectedItem.Background = UnselectedTabColor;

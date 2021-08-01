@@ -34,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Microsoft.Build" Version="16.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0-1.final" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
       <PackageReference Include="WriteableBitmapEx" Version="1.6.7" />

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -112,11 +113,8 @@ namespace TempoIDE.UserControls
             UpdateText();
             
             TextEditor.Clear();
-
-            var text = BoundFile == null
-                ? string.Empty
-                : new StreamReader(BoundFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
-            TextEditor.AppendTextAtCaret(text);
+            
+            TextEditor.AppendTextAtCaret(EnvironmentHelper.Cache.GetFile(BoundFile.FullName));
             TextEditor.IsReadOnly = file == null;
             
             TextEditor.TextArea.Scheme?.Highlight(TextEditor.TextArea);
@@ -160,8 +158,7 @@ namespace TempoIDE.UserControls
                     
             BoundFile.Refresh();
             
-            var reader = new StreamReader(new FileStream(BoundFile.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
-            var text = reader.ReadToEnd();
+            var text = EnvironmentHelper.Cache.GetFile(BoundFile.FullName);
 
             if (text == TextEditor.TextArea.Text)
                 return;
@@ -170,8 +167,6 @@ namespace TempoIDE.UserControls
             {
                 TextEditor.TextArea.Text = text;
             });
-                
-            reader.Close();
         }
 
         public override void UpdateFile()

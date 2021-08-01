@@ -10,16 +10,6 @@ namespace TempoIDE.Classes
 {
     public static class Extensions
     {
-        public static bool Null(this object obj)
-        {
-            return obj == null;
-        }
-
-        public static bool NotNull(this object obj)
-        {
-            return obj != null;
-        }
-
         public static FileInfo ToFile(this string path)
         {
             return new FileInfo(path);

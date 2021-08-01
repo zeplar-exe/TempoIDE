@@ -5,6 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              Loaded="ColoredLabel_OnLoaded">
-    <Image Name="ContentDisplay" Opacity="0"/>
-    <!--This TextBlock is required in order to catch PreviewMouseLeftButtonDown events-->
+    <Canvas Name="ContentDisplay" Opacity="0"/>
+    <!--This Canvas is required in order to catch PreviewMouseLeftButtonDown events-->
 </UserControl>

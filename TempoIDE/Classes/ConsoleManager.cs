@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Windows.Xps.Serialization;
 
 namespace TempoIDE.Classes
 {
@@ -24,6 +25,34 @@ namespace TempoIDE.Classes
         private static extern int GetConsoleOutputCP();
 
         public static bool HasConsole => GetConsoleWindow() != IntPtr.Zero;
+
+        public static ConsoleCommandErrorCode RunCommand(string exe, string directory, string args, int timeout = 10000)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                UseShellExecute = false,
+                CreateNoWindow = false,
+                FileName = exe,
+                WorkingDirectory = directory,
+                Arguments = args,
+            };
+
+            var process = Process.Start(startInfo);
+            
+            if (process == null)
+                return ConsoleCommandErrorCode.InternalError;
+            
+            process.WaitForExit(timeout);
+
+            try
+            {
+                return (ConsoleCommandErrorCode)process.ExitCode;
+            }
+            catch (InvalidOperationException)
+            {
+                return ConsoleCommandErrorCode.InternalError;
+            }
+        }
 
         /// <summary>
         /// Creates a new console instance if the process is not attached to a console already.
@@ -94,5 +123,11 @@ namespace TempoIDE.Classes
             Console.SetOut(TextWriter.Null);
             Console.SetError(TextWriter.Null);
         }
+    }
+    
+    public enum ConsoleCommandErrorCode
+    {
+        Success = 0,
+        InternalError = 256
     }
 } 
