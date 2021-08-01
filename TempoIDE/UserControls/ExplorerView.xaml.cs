@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -52,11 +51,11 @@ namespace TempoIDE.UserControls
 
         private void AppendDirectoryThread(DirectoryInfo directory, ExplorerViewItem parent = null)
         {
-            ExplorerViewItem root = null;
+            ExplorerViewItem root = parent;
             
             Dispatcher.InvokeAsync(delegate
             {
-                root = AppendElement(new ExplorerFileItem(directory.FullName), parent);
+                root ??= AppendElement(new ExplorerFileItem(directory.FullName), parent);
             });
 
             foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
@@ -67,7 +66,7 @@ namespace TempoIDE.UserControls
                     {
                         AppendDirectoryThread(
                             new DirectoryInfo(filePath),
-                            root
+                            AppendElement(new ExplorerFileItem(filePath), root)
                         );
                     });
                 }

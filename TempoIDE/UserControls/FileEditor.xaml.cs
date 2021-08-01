@@ -118,6 +118,8 @@ namespace TempoIDE.UserControls
                 : new StreamReader(BoundFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
             TextEditor.AppendTextAtCaret(text);
             TextEditor.IsReadOnly = file == null;
+            
+            TextEditor.TextArea.Scheme?.Highlight(TextEditor.TextArea);
         }
 
         private void TextWriterThread()

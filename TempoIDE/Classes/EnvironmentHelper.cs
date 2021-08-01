@@ -129,6 +129,7 @@ namespace TempoIDE.Classes
                     directoryWatcher.Changed += DirectoryChanged;
                     
                     MainWindow.Explorer.AppendElement(new ExplorerFileItem(EnvironmentPath));
+                    MainWindow.Editor.Tabs.Open(filePath);
                     break;
             }
         }

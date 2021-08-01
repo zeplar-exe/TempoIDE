@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -98,10 +97,7 @@ namespace TempoIDE.UserControls
                     {
                         var mod = CaretOffset.X % 4;
 
-                        if (mod == 0)
-                            mod = TabSize;
-                        else
-                            mod = Math.Abs(mod - TabSize);
+                        mod = mod == 0 ? TabSize : Math.Abs(mod - TabSize);
 
                         AppendTextAtCaret(string.Concat(Enumerable.Repeat(" ", mod)));
                     }
@@ -178,14 +174,6 @@ namespace TempoIDE.UserControls
             }
         }
 
-        protected override Size MeasureOverride(Size constraint)
-        {
-            var longestLine = TextArea.GetLines().OrderByDescending(line => line.Count).FirstOrDefault();
-            var totalWidth = longestLine?.TotalWidth ?? 0;
-            
-            return new Size(totalWidth, LineHeight * TextArea.GetLineCount());
-        } // TODO: Gotta make my own fucking scrollbar
-
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)
         {
             var range = SelectionRange.Arrange();
@@ -193,6 +181,7 @@ namespace TempoIDE.UserControls
             if (range.Size > 0 && range.Contains(index))
             {
                 context.DrawRectangle(Brushes.DarkCyan, null, charRect);
+                // TODO: Very slow when selecting many characters
             }
         }
 
@@ -202,11 +191,8 @@ namespace TempoIDE.UserControls
             {
                 context.DrawRectangle(Brushes.White, null, CaretRect);
                 overrideCaretVisibility = false;
-                
-                return;
             }
-            
-            if (caretVisible)
+            else if (caretVisible)
             {
                 context.DrawRectangle(Brushes.White, null, CaretRect);
             }

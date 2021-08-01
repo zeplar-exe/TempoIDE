@@ -70,6 +70,22 @@ namespace TempoIDE.Classes
             return (T) nullable;
         }
         
+        public static Bitmap ToBitmap(this WriteableBitmap writeBmp)
+        {
+            Bitmap bmp;
+            
+            using (var stream = new MemoryStream())
+            {
+                BitmapEncoder enc = new BmpBitmapEncoder();
+                
+                enc.Frames.Add(BitmapFrame.Create(writeBmp));
+                enc.Save(stream);
+                bmp = new Bitmap(stream);
+            }
+            
+            return bmp;
+        }
+        
         public static KeyGesture ToGesture(this string value)
         {
             var gestureKey = Key.None;

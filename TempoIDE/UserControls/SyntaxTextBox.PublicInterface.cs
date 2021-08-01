@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -17,18 +18,8 @@ namespace TempoIDE.UserControls
 
             CaretOffset = position;
             CaretIndex = GetCaretIndexAtOffset(position);
-            
-            CaretRect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
+            CaretRect = GetCaretRectAtPosition(position);
 
-            var line = TextArea.GetLines()[position.Y];
-            
-            for (var columnNo = 0; columnNo < position.X; columnNo++)
-            {
-                CaretRect = Rect.Offset(CaretRect, line[columnNo].Size.Width, 0);
-            }
-            
-            CaretRect = Rect.Offset(CaretRect, 0, LineHeight * position.Y);
-            
             TextArea.InvalidateVisual();
         }
 
@@ -42,6 +33,22 @@ namespace TempoIDE.UserControls
         public void ClearSelection()
         {
             Select(new IntRange(CaretIndex, CaretIndex));
+        }
+
+        public Rect GetCaretRectAtPosition(IntVector position)
+        {
+            var rect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
+
+            var line = TextArea.GetLines()[position.Y];
+            
+            for (var columnNo = 0; columnNo < position.X; columnNo++)
+            {
+                rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
+            }
+            
+            rect = Rect.Offset(rect, 0, TextArea.LineHeight * position.Y);
+            
+            return rect;
         }
 
         #region AppendText
@@ -78,7 +85,7 @@ namespace TempoIDE.UserControls
 
         private CharDrawInfo GetDefaultDrawInfo()
         {
-            return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
+            return new CharDrawInfo(TextArea.FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
         }
 
         private void CaretAppendWrapper(SyntaxChar character)

@@ -10,7 +10,6 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="0.055*"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="0.05*"/>
         </Grid.RowDefinitions>
         
         <local:EditorTabControl
@@ -20,13 +19,5 @@
             SelectedTabColor="CornflowerBlue"
             HoveredTabColor="LightSlateGray"
             UnselectedTabColor="Transparent" />
-
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="20"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-        </Grid>
     </Grid>
 </Grid>

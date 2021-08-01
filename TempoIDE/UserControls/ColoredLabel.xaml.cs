@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -102,29 +105,31 @@ namespace TempoIDE.UserControls
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
             Scheme?.Highlight(this);
-            InvalidateVisual();
+            InvalidateMeasure();//InvalidateVisual();
+            // TODO: Not 100% sure if this works correctly, needs further testing
+        }
+        
+        protected override Size MeasureOverride(Size constraint)
+        {
+            var longestLine = GetLines().OrderByDescending(line => line.Count).FirstOrDefault();
+            var totalWidth = longestLine?.TotalWidth ?? 0;
+            
+            return new Size(totalWidth, LineHeight * GetLineCount());
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
-
+            
             var line = 0;
 
             var lineWidth = 0d;
             var index = 0;
             
             OnBeforeRender?.Invoke(drawingContext);
-
+            
             foreach (var character in Characters)
             {
-                if (character.Value == NewLine)
-                {
-                    line++;
-                    lineWidth = 0d;
-                    continue;
-                }
-
                 var charPos = new Point(lineWidth, line * LineHeight);
                 var charSize = character.Size;
                 
@@ -133,14 +138,43 @@ namespace TempoIDE.UserControls
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 character.Draw(drawingContext, charPos);
-                
+
                 OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 lineWidth += charSize.Width;
                 index++;
+                
+                if (character.Value == NewLine)
+                {
+                    line++;
+                    lineWidth = 0d;
+                }
             }
             
             OnAfterRender?.Invoke(drawingContext);
+        }
+        
+        
+        private GlyphRun CreateGlyphRun(string text, Point origin)
+        {
+            var glyphTypeface = new GlyphTypeface(new Uri("file:///C:\\WINDOWS\\FONTS\\ARIAL.TTF"));
+
+            var glyphIndices = new ushort[text.Length];
+            var advanceWidths = new double[text.Length];
+
+            for (var index = 0; index < text.Length; index++)
+            {
+                var glyphIndex = (ushort)(text[index] - 29);
+                glyphIndices[index] = glyphIndex;
+                advanceWidths[index] = glyphTypeface.AdvanceWidths[glyphIndex] * FontSize;
+            }
+            
+            return new GlyphRun(
+                glyphTypeface, 0, false, 
+                FontSize, glyphIndices, origin, advanceWidths, 
+                null, null, null,
+                null, null, null
+            );
         }
     }
 }

@@ -16,9 +16,6 @@ namespace TempoIDE.UserControls
 
         public int TabSize = 4;
         public bool IsReadOnly;
-        
-        public int LineHeight = 15;
-        public new int FontSize = 14;
 
         public event RoutedEventHandler TextChanged;
 
@@ -42,7 +39,7 @@ namespace TempoIDE.UserControls
             Focusable = true;
             IsTabStop = true;
 
-            CaretRect = new Rect(0, 0, 1, LineHeight);
+            CaretRect = new Rect(0, 0, 1, TextArea.LineHeight);
         }
 
         #region Private Interface

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media;
 using TempoIDE.Classes.SyntaxSchemes;
 using TempoIDE.Classes.Types;
@@ -70,11 +71,12 @@ namespace TempoIDE.UserControls
             TextChanged?.Invoke(this, default);
         }
         
-        public double GetDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
+        public DpiScale GetDpi() => VisualTreeHelper.GetDpi(this);
+        public double GetTextDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
 
         private CharDrawInfo GetDefaultDrawInfo()
         {
-            return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
+            return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetTextDpi(), Brushes.White);
         }
 
         private void AppendCharacter(SyntaxChar character, int index)
@@ -111,14 +113,14 @@ namespace TempoIDE.UserControls
         public void UpdateIndex(int index, Brush color, Typeface typeface)
         {
             Characters[index] = new SyntaxChar(Characters[index].Value,
-                new CharDrawInfo(FontSize, typeface, GetDpi(), color));
+                new CharDrawInfo(FontSize, typeface, GetTextDpi(), color));
         }
         
         public void UpdateIndex(IntRange indices, Brush color, Typeface typeface)
         {
             foreach (int index in indices)
                 Characters[index] = new SyntaxChar(Characters[index].Value,
-                    new CharDrawInfo(FontSize, typeface, GetDpi(), color));
+                    new CharDrawInfo(FontSize, typeface, GetTextDpi(), color));
         }
 
         public void RemoveIndex(int index)
@@ -167,19 +169,8 @@ namespace TempoIDE.UserControls
                     lines[currentIndex].Add(character);
                 }
             }
-
-            var arr = lines.ToArray();
-            lines = null; // Memory allocation issue fixed?
-
-            return arr;
-        }
-
-        public IEnumerable<(int index, SyntaxChar character)> EnumerateCharacters()
-        {
-            for (var index = 0; index < Characters.Count; index++)
-            {
-                yield return (index, Characters[index]);
-            }
+            
+            return lines.ToArray();
         }
     }
 }

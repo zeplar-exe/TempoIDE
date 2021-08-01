@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.UserControls"
+             xmlns:classes="clr-namespace:TempoIDE.Classes"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
              GotFocus="FileEditor_OnGotFocus">
@@ -16,7 +17,7 @@
         </Style>
     </local:Editor.Resources>
     
-    <ScrollViewer>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
         <local:SyntaxTextBox
             x:Name="TextEditor"
             Loaded="TextEditor_OnLoaded"

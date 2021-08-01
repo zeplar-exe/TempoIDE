@@ -54,7 +54,7 @@ namespace TempoIDE.UserControls
             var lines = TextArea.GetLines();
 
             var line = Math.Clamp(
-                (int) Math.Floor(clickPos.Y / LineHeight),
+                (int) Math.Floor(clickPos.Y / TextArea.LineHeight),
                 0,
                 TextArea.GetLineCount() - 1
             );

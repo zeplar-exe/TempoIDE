@@ -1,37 +1,69 @@
+using System.Collections;
 using System.Collections.Generic;
 
 namespace TempoIDE.Classes.Types
 {
-    public class SyntaxCharCollection : List<SyntaxChar>
+    public class SyntaxCharCollection : ICollection<SyntaxChar>
     {
+        private List<SyntaxChar> items = new List<SyntaxChar>();
+
+        public int Count => items.Count;
+        public bool IsReadOnly => false;
+        
         public double TotalWidth;
 
-        public new void Add(SyntaxChar item)
+        public SyntaxChar this[int index]
+        {
+            get => items[index];
+            set => items[index] = value;
+        }
+        
+        public void Add(SyntaxChar item)
         {
             TotalWidth += item.Size.Width;
             
-            base.Add(item);
+            items.Add(item);
         }
 
-        public new void Insert(int index, SyntaxChar item)
+        public void Insert(int index, SyntaxChar item)
         {
             TotalWidth += item.Size.Width;
-
-            base.Insert(index, item);
+            
+            items.Insert(index, item);
         }
-
-        public new void Remove(SyntaxChar item)
+        
+        public bool Remove(SyntaxChar item)
         {
             TotalWidth -= item.Size.Width;
-
-            base.Remove(item);
+            
+            return items.Remove(item);
         }
 
-        public new void Clear()
+        public void Clear()
         {
             TotalWidth = 0;
             
-            base.Clear();
+            items.Clear();
+        }
+
+        public bool Contains(SyntaxChar item)
+        {
+            return items.Contains(item);
+        }
+
+        public void CopyTo(SyntaxChar[] array, int arrayIndex)
+        {
+            items.CopyTo(array, arrayIndex);
+        }
+        
+        public IEnumerator<SyntaxChar> GetEnumerator()
+        {
+            return items.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
