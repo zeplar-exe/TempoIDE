@@ -4,7 +4,7 @@ using TempoIDE.UserControls;
 
 namespace TempoIDE.Classes.SyntaxSchemes
 {
-    public static class ColorScheme
+    public static class SyntaxSchemeFactory
     {
         public static ISyntaxScheme GetColorSchemeByExtension(string extension)
         {

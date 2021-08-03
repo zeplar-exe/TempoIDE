@@ -8,9 +8,7 @@
         xmlns:classes="clr-namespace:TempoIDE.Classes"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
-        Style="{StaticResource {x:Type Window}}"
-        ResizeMode="CanResizeWithGrip"
-        Title="Settings" Height="550" Width="800"
+        Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
     
     <WindowChrome.WindowChrome>
@@ -23,33 +21,15 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <local:TopbarControl Grid.Row="0">
-            <local:TopbarControl.Template>
-                <ControlTemplate>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="50"/>
-                        </Grid.ColumnDefinitions>
-                    
-                        <Button
-                            Grid.Column="1"
-                            Content="X"
-                            FontSize="17"
-                            Background="Transparent"
-                            Foreground="{DynamicResource BaseTextColor}"
-                            BorderThickness="0"
-                            Click="CloseWindow"/>
-                    </Grid>
-                </ControlTemplate>
-            </local:TopbarControl.Template>
-        </local:TopbarControl>
+        <local:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
         
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
+            
+            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
             
             <local:ExplorerView
                 Grid.Column="0"
@@ -83,22 +63,16 @@
                 
                 <local:ExplorerViewItem Header="Performance">
                     <windows:SettingsWindow.SectionTemplate>
-                        <ControlTemplate>
-                            
-                        </ControlTemplate>
+                        <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
                 </local:ExplorerViewItem>
                 
                 <local:ExplorerViewItem Header="Keybinds">
                     <windows:SettingsWindow.SectionTemplate>
-                        <ControlTemplate>
-                            
-                        </ControlTemplate>
+                        <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
                 </local:ExplorerViewItem>
             </local:ExplorerView>
-            
-            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
         </Grid>
     </Grid>
 </Window>

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.Classes
@@ -25,7 +26,10 @@ namespace TempoIDE.Classes
                 if (!path.Exists)
                     continue;
 
-                using var reader = new StreamReader(path.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite));
+                using var file = path.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var buffer = new BufferedStream(file);
+                using var reader = new StreamReader(buffer);
+                
                 files[path.FullName] = reader.ReadToEnd();
             }
         }

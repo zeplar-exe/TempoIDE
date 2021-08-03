@@ -19,7 +19,7 @@ namespace TempoIDE.Classes
         public static EnvironmentCache Cache;
         
         public static EnvironmentFilterMode FilterMode;
-        public static FileInfo EnvironmentPath;
+        public static FileSystemInfo EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
         
 
@@ -35,9 +35,11 @@ namespace TempoIDE.Classes
         {
             if (FilterMode != EnvironmentFilterMode.Solution)
                 return;
+
+            var info = (FileInfo)EnvironmentPath;
             
-            ConsoleManager.RunCommand("dotnet", EnvironmentPath.DirectoryName, $"build {EnvironmentPath}");
-            ConsoleManager.RunCommand("dotnet", EnvironmentPath.DirectoryName, $"publish {EnvironmentPath}");
+            ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"build {EnvironmentPath}");
+            ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"publish {EnvironmentPath}");
         }
 
         public static void CreateSolution(DirectoryInfo path, string name)
@@ -56,22 +58,35 @@ namespace TempoIDE.Classes
             MainWindow.Editor.Tabs.CloseAll();
 
             Cache = new EnvironmentCache();
-            
+
             if (Directory.Exists(path))
             {
-                foreach (var file in new DirectoryInfo(path).EnumerateFileSystemInfos())
+                var info = new DirectoryInfo(path);
+                
+                foreach (var file in info.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
                     Cache.AddFile(new FileInfo(file.FullName));
+
+                EnvironmentPath = info;
             }
             else if (File.Exists(path))
             {
-                Cache.AddFile(new FileInfo(path));
+                var info = new FileInfo(path);
+
+                if (info.Extension == ".sln")
+                {
+                    mode = EnvironmentFilterMode.Solution;
+                    
+                    foreach (var file in info.Directory.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
+                        Cache.AddFile(new FileInfo(file.FullName));
+                }
+                else
+                {
+                    Cache.AddFile(new FileInfo(path));
+                }
+
+                EnvironmentPath = info;
             }
 
-            EnvironmentPath = new FileInfo(path);
-
-            if (EnvironmentPath.Extension == ".sln")
-                mode = EnvironmentFilterMode.Solution;
-            
             FilterMode = mode;
 
             LoadExplorer();
@@ -136,8 +151,6 @@ namespace TempoIDE.Classes
             
             switch (FilterMode)
             {
-                case EnvironmentFilterMode.None:
-                    break;
                 case EnvironmentFilterMode.Solution:
                     var solution = SolutionFile.Parse(EnvironmentPath.FullName);
                     var solutionDirectory = new FileInfo(EnvironmentPath.FullName).Directory;
@@ -168,12 +181,14 @@ namespace TempoIDE.Classes
                 case EnvironmentFilterMode.File:
                     if (EnvironmentPath.Extension == ".sln")
                         goto case EnvironmentFilterMode.Solution;
+
+                    var info = (FileInfo) EnvironmentPath;
                     
-                    directoryWatcher = new DirectoryWatcher(EnvironmentPath.Directory, EnvironmentPath.FullName);
+                    directoryWatcher = new DirectoryWatcher(info.Directory, info.FullName);
                     directoryWatcher.Changed += DirectoryChanged;
                     
-                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(EnvironmentPath.FullName));
-                    MainWindow.Editor.Tabs.Open(EnvironmentPath);
+                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
+                    MainWindow.Editor.Tabs.Open(info);
                     break;
             }
         }

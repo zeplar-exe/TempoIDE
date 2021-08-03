@@ -1,0 +1,50 @@
+<Window x:Class="TempoIDE.Windows.CreateSolutionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:controls="clr-namespace:TempoIDE.UserControls"
+        xmlns:windows="clr-namespace:TempoIDE.Windows"
+        mc:Ignorable="d"
+        Style="{StaticResource ModalWindowStyle}"
+        Title="CreateSolutionWindow"
+        Loaded="CreateSolutionWindow_OnLoaded">
+        
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30"/>
+    </WindowChrome.WindowChrome>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+                
+        <controls:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
+            
+            <controls:ExplorerView
+                Grid.Column="0"
+                x:Name="Explorer"
+                Background="{DynamicResource SecondaryBackgroundColor}"
+                BorderThickness="0"
+                SelectedItemChanged="Explorer_OnSelectedItemChanged">
+                
+                <controls:ExplorerViewItem Header="Empty Solution" IsSelected="True">
+                    <windows:CreateSolutionWindow.SectionTemplate>
+                        <ControlTemplate/>
+                    </windows:CreateSolutionWindow.SectionTemplate>
+                </controls:ExplorerViewItem>
+                
+                <controls:SettingsCategoryControl Header=".NET/.NET Core"/>
+            </controls:ExplorerView>
+        </Grid>
+    </Grid>
+</Window>

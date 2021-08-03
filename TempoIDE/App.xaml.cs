@@ -16,5 +16,10 @@ namespace TempoIDE
             
             //ThemeHelper.LoadTheme(Theme.Light);
         }
+        
+        public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
+        {
+            SystemCommands.CloseWindow(EnvironmentHelper.ActiveWindow);
+        }
     }
 }

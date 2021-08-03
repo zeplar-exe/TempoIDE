@@ -1,6 +1,7 @@
 using System.IO;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
+using TempoIDE.Windows;
 
 namespace TempoIDE.Classes.Commands
 {
@@ -10,12 +11,9 @@ namespace TempoIDE.Classes.Commands
 
         public override void Execute(object parameter)
         {
-            var dialog = new VistaFolderBrowserDialog();
-
-            if (dialog.ShowDialog().ToRealValue())
-            {
-                EnvironmentHelper.CreateSolution(new DirectoryInfo(dialog.SelectedPath), "solution");
-            }
+            var solutionWindow = new CreateSolutionWindow { Owner = EnvironmentHelper.MainWindow };
+            
+            solutionWindow.ShowDialog();
         }
     }
 }

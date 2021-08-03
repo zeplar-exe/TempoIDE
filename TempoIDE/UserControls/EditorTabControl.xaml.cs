@@ -67,13 +67,13 @@ namespace TempoIDE.UserControls
                 if (index == 0)
                 {
                     if (nextIndex < Files.Count)
-                        Open(Files[nextIndex].ToFile());
+                        Open(new FileInfo(Files[nextIndex]));
                     else
                         ContentDisplay.Child = null;
                 }
                 else
                 {
-                    Open(Files[lastIndex].ToFile());
+                    Open(new FileInfo(Files[lastIndex]));
                 }
             }
         }
@@ -81,7 +81,7 @@ namespace TempoIDE.UserControls
         public void CloseAll()
         {
             foreach (var item in Files.ToArray())
-                Close(item.ToFile());
+                Close(new FileInfo(item));
         }
 
         public void Refresh()
@@ -90,7 +90,7 @@ namespace TempoIDE.UserControls
 
             foreach (var path in Files.ToArray())
             {
-                var fileInfo = path.ToFile();
+                var fileInfo = new FileInfo(path);
 
                 if (!fileInfo.Exists)
                 {

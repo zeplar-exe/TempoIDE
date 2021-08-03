@@ -15,9 +15,17 @@ namespace TempoIDE.UserControls
                 return;
             
             AutoComplete.Disable();
+            
+            var newIndex = GetCaretIndexAtOffset(position);
+
+            if (TextArea.Characters.Count > newIndex && TextArea.Characters[newIndex].Value == ColoredLabel.NewLine)
+            {
+                MoveCaret(GetCaretOffsetAtIndex(newIndex - 1));
+                return;
+            }
 
             CaretOffset = position;
-            CaretIndex = GetCaretIndexAtOffset(position);
+            CaretIndex = newIndex;
             CaretRect = GetCaretRectAtPosition(position);
 
             TextArea.InvalidateVisual();

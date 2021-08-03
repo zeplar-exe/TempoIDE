@@ -10,11 +10,6 @@ namespace TempoIDE.Classes
 {
     public static class Extensions
     {
-        public static FileInfo ToFile(this string path)
-        {
-            return new FileInfo(path);
-        }
-        
         public static BitmapImage ToBitmapImage(this Bitmap bitmap)
         {         
             var ms = new MemoryStream();

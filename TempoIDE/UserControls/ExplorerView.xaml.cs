@@ -1,14 +1,19 @@
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
     public partial class ExplorerView : TreeView
     {
+        public Color SelectedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4563d9");
+        public Color UnfocusedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4a4d51");
+
         private readonly string[] explorerExtensions =
         {
             ".txt", ".cs"

@@ -1,18 +1,18 @@
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using TempoIDE.Classes;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Windows
 {
-    public partial class SettingsWindow : Window
+    public partial class CreateSolutionWindow : Window
     {
-        public SettingsWindow()
+        public CreateSolutionWindow()
         {
             InitializeComponent();
         }
         
-        private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
+        private void CreateSolutionWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             ContentDisplay.Template = GetSectionTemplate(Explorer.SelectedItem as UIElement);
         }

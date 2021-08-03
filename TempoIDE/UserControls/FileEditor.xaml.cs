@@ -111,10 +111,7 @@ namespace TempoIDE.UserControls
             TextEditor.TextArea.SetScheme(BoundFile?.Extension);
             
             UpdateText();
-            
-            TextEditor.Clear();
-            
-            TextEditor.AppendTextAtCaret(EnvironmentHelper.Cache.GetFile(BoundFile.FullName));
+
             TextEditor.IsReadOnly = file == null;
             
             TextEditor.TextArea.Scheme?.Highlight(TextEditor.TextArea);
@@ -165,6 +162,7 @@ namespace TempoIDE.UserControls
                     
             SkipTextChange(delegate
             {
+                TextEditor.Clear();
                 TextEditor.TextArea.Text = text;
             });
         }

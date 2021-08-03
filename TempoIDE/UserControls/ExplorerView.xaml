@@ -1,5 +1,19 @@
 <TreeView x:Class="TempoIDE.UserControls.ExplorerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             BorderThickness="0">
+             xmlns:local="clr-namespace:TempoIDE.UserControls"
+             BorderThickness="0"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <!--<TreeView.ItemContainerStyle>
+        <Style TargetType="{x:Type TreeViewItem}">
+            <Style.Resources>
+                <SolidColorBrush 
+                    x:Key="{x:Static SystemColors.HighlightBrushKey}"
+                    Color="{Binding Path=SelectedItemColor}"/>
+                <SolidColorBrush
+                    x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}"
+                    Color="{Binding Path=UnfocusedItemColor}"/>
+            </Style.Resources>
+        </Style>
+    </TreeView.ItemContainerStyle>-->
 </TreeView>
