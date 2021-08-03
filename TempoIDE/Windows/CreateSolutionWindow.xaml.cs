@@ -14,26 +14,27 @@ namespace TempoIDE.Windows
         
         private void CreateSolutionWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            ContentDisplay.Template = GetSectionTemplate(Explorer.SelectedItem as UIElement);
+            ContentDisplay.Template = GetProjectCreationTemplate(Explorer.SelectedItem as UIElement);
         }
-
-        public static readonly DependencyProperty SectionTemplateProperty = DependencyProperty.RegisterAttached(
-            "SectionTemplate",
+        
+        public static readonly DependencyProperty ProjectCreationTemplateProperty = DependencyProperty.RegisterAttached(
+            "ProjectCreationTemplate",
             typeof(ControlTemplate),
             typeof(ExplorerViewItem)
         );
-        public static void SetSectionTemplate(UIElement element, ControlTemplate value)
+        
+        public static void SetProjectCreationTemplate(UIElement element, ControlTemplate value)
         {
-            element.SetValue(SectionTemplateProperty, value);
+            element.SetValue(ProjectCreationTemplateProperty, value);
         }
-        public static ControlTemplate GetSectionTemplate(UIElement element)
+        public static ControlTemplate GetProjectCreationTemplate(UIElement element)
         {
-            return (ControlTemplate)element?.GetValue(SectionTemplateProperty);
+            return (ControlTemplate)element?.GetValue(ProjectCreationTemplateProperty);
         }
 
         private void Explorer_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            ContentDisplay.Template = GetSectionTemplate(e.NewValue as UIElement);
+            ContentDisplay.Template = GetProjectCreationTemplate(e.NewValue as UIElement);
         }
     }
 }

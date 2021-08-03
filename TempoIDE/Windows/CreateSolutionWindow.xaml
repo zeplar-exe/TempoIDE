@@ -38,12 +38,30 @@
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
                 <controls:ExplorerViewItem Header="Empty Solution" IsSelected="True">
-                    <windows:CreateSolutionWindow.SectionTemplate>
+                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
                         <ControlTemplate/>
-                    </windows:CreateSolutionWindow.SectionTemplate>
+                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
                 </controls:ExplorerViewItem>
                 
                 <controls:SettingsCategoryControl Header=".NET/.NET Core"/>
+                
+                <controls:ExplorerViewItem Header="Class Library">
+                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
+                        <ControlTemplate/>
+                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
+                </controls:ExplorerViewItem>
+                
+                <controls:ExplorerViewItem Header="Class Library">
+                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
+                        <ControlTemplate/>
+                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
+                </controls:ExplorerViewItem>
+                
+                <controls:ExplorerViewItem Header="Console Application">
+                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
+                        <ControlTemplate/>
+                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
+                </controls:ExplorerViewItem>
             </controls:ExplorerView>
         </Grid>
     </Grid>
