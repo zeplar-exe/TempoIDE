@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Windows.Xps.Serialization;
 
 namespace TempoIDE.Classes
 {

@@ -3,13 +3,33 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace TempoIDE.Classes
 {
     public static class Extensions
     {
+        public static T FindAncestorOfType<T>(this DependencyObject child) where T : DependencyObject
+        {
+            var currentParent = child;
+            
+            do
+            {
+                currentParent = VisualTreeHelper.GetParent(currentParent);
+                
+                var parent = currentParent as T;
+                
+                if (parent != null) 
+                    return parent;
+            }
+            while (currentParent != null);
+            
+            return null;
+        }
+        
         public static BitmapImage ToBitmapImage(this Bitmap bitmap)
         {         
             var ms = new MemoryStream();

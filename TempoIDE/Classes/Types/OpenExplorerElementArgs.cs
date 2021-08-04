@@ -12,6 +12,6 @@ namespace TempoIDE.Classes.Types
             Element = element;
         }
 
-        public ExplorerViewItem Element;
+        public readonly ExplorerViewItem Element;
     }
 }

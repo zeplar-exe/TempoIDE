@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 
 namespace TempoIDE.UserControls
@@ -20,7 +21,7 @@ namespace TempoIDE.UserControls
         public ExplorerFileItem(string path)
         {
             InitializeComponent();
-
+            
             FilePath = path;
         }
         

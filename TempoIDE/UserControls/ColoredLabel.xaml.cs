@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -49,54 +48,17 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
         
-        #region Events
+        public delegate void BeforeRenderDel(DrawingContext context);
+        public delegate void BeforeCharacterRenderDel(DrawingContext context, Rect rect, int index);
+        public delegate void AfterCharacterRenderDel(DrawingContext context, Rect rect, int index);
+        public delegate void AfterRenderDel(DrawingContext context);
         
-        public delegate void BeforeRender(DrawingContext context);
-        public delegate void BeforeCharacterRender(DrawingContext context, Rect rect, int index);
-        public delegate void AfterCharacterRender(DrawingContext context, Rect rect, int index);
-        public delegate void AfterRender(DrawingContext context);
-        
-        public BeforeRender OnBeforeRender
-        {
-            get => (BeforeRender)GetValue(OnBeforeRenderProperty);
-            set => SetValue(OnBeforeRenderProperty, value);
-        }
+        public event BeforeRenderDel OnBeforeRender;
+        public event BeforeCharacterRenderDel OnBeforeCharacterRender;
+        public event AfterCharacterRenderDel OnAfterCharacterRender;
+        public event AfterRenderDel OnAfterRender;
 
-        public static readonly DependencyProperty OnBeforeRenderProperty =
-            DependencyProperty.Register(nameof(OnBeforeRender), typeof(BeforeRender), typeof(ColoredLabel));
 
-        
-        public BeforeCharacterRender OnBeforeCharacterRender
-        {
-            get => (BeforeCharacterRender)GetValue(OnBeforeCharacterRenderProperty);
-            set => SetValue(OnBeforeCharacterRenderProperty, value);
-        }
-
-        public static readonly DependencyProperty OnBeforeCharacterRenderProperty =
-            DependencyProperty.Register(nameof(OnBeforeCharacterRender), typeof(BeforeCharacterRender), typeof(ColoredLabel));
-
-        public AfterCharacterRender OnAfterCharacterRender
-        {
-            get => (AfterCharacterRender)GetValue(OnAfterCharacterRenderProperty);
-            set => SetValue(OnAfterCharacterRenderProperty, value);
-        }
-
-        public static readonly DependencyProperty OnAfterCharacterRenderProperty =
-            DependencyProperty.Register(nameof(OnAfterCharacterRender), typeof(AfterCharacterRender), typeof(ColoredLabel));
-
-        
-        public AfterRender OnAfterRender
-        {
-            get => (AfterRender)GetValue(OnAfterRenderProperty);
-            set => SetValue(OnAfterRenderProperty, value);
-        }
-
-        public static readonly DependencyProperty OnAfterRenderProperty =
-            DependencyProperty.Register(nameof(OnAfterRender), typeof(AfterRender), typeof(ColoredLabel));
-        
-        #endregion
-        
-        
         private void ColoredLabel_OnLoaded(object sender, RoutedEventArgs e)
         {
             TextChanged += ColoredLabel_OnTextChanged;
@@ -137,7 +99,7 @@ namespace TempoIDE.UserControls
                 
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
 
-                character.Draw(drawingContext, charPos);
+                drawingContext.DrawText(character.FormattedText, charPos);
 
                 OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
 

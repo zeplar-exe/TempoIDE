@@ -1,4 +1,3 @@
-using System.IO;
 using Microsoft.Win32;
 
 namespace TempoIDE.Classes.Commands

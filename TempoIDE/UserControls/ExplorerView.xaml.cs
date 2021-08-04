@@ -1,10 +1,12 @@
 using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -14,9 +16,9 @@ namespace TempoIDE.UserControls
         public Color SelectedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4563d9");
         public Color UnfocusedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4a4d51");
 
-        private readonly string[] explorerExtensions =
+        public static string[] SupportedExtensions =
         {
-            ".txt", ".cs"
+            ".txt", ".cs", ".xml", ".xaml"
         };
         
         public event OpenFileEventHandler OpenItemEvent;
@@ -26,77 +28,57 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        public ExplorerViewItem AppendElement(ExplorerViewItem element, ExplorerViewItem parent = null)
+        public void AppendElement(ExplorerViewItem element)
         {
-            element.PreviewMouseDoubleClick += ExplorerViewItem_PreviewMouseDoubleClick;
-
-            if (parent == null)
-            {
-                Items.Add(element);
-            }
-            else
-            {
-                parent.Items.Add(element);
-            }
-
-            return element;
+            Items.Add(element);
         }
 
-        public void AppendDirectory(DirectoryInfo directory, ExplorerViewItem parent = null)
+        public async void AppendDirectory(DirectoryInfo directory)
         {
-            var worker = new BackgroundWorker
-            {
-                WorkerReportsProgress = true
-            };
-            
-            worker.DoWork += delegate { AppendDirectoryThread(directory, parent); };
+            ExplorerViewItem root = new ExplorerFileItem(directory.FullName);
 
-            worker.RunWorkerAsync();
-        }
-
-        private void AppendDirectoryThread(DirectoryInfo directory, ExplorerViewItem parent = null)
-        {
-            ExplorerViewItem root = parent;
-            
-            Dispatcher.InvokeAsync(delegate
+            Dispatcher.Invoke(delegate
             {
-                root ??= AppendElement(new ExplorerFileItem(directory.FullName), parent);
+                AppendElement(root);
             });
 
-            foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
+            await Task.Run(delegate
             {
-                if (Directory.Exists(filePath))
+                foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
                 {
-                    Dispatcher.InvokeAsync(delegate
+                    if (Directory.Exists(filePath))
                     {
-                        AppendDirectoryThread(
-                            new DirectoryInfo(filePath),
-                            AppendElement(new ExplorerFileItem(filePath), root)
-                        );
-                    });
-                }
-                
-                if (explorerExtensions.Contains(Path.GetExtension(filePath)))
-                {
-                    Dispatcher.InvokeAsync(delegate
+                        Dispatcher.Invoke(delegate
+                        {
+                            root.AppendDirectory(new DirectoryInfo(filePath), true);
+                        });
+                    }
+                    else if (SupportedExtensions.Contains(Path.GetExtension(filePath)))
                     {
-                        AppendElement(new ExplorerFileItem(filePath), root);
-                    });
+                        Dispatcher.Invoke(delegate
+                        {
+                            root.AppendElement(new ExplorerFileItem(filePath));
+                        });
+                    }
                 }
-                
-                Dispatcher.InvokeAsync(UpdateLayout);
-            }
+            });
         }
+        
+        public void Clear() => Items.Clear();
 
-        private void ExplorerViewItem_PreviewMouseDoubleClick(object sender, RoutedEventArgs e)
+        private void ExplorerView_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = true;
+            if (e.ClickCount != 2)
+                return;
+
+            var clicked = e.OriginalSource as UIElement;
             
-            var element = (ExplorerViewItem) sender;
-            
+            if (clicked is null)
+                return;
+
+            var element = clicked.FindAncestorOfType<ExplorerViewItem>();
+
             OpenItemEvent?.Invoke(this, new OpenExplorerElementArgs(element));
         }
-
-        public void Clear() => Items.Clear();
     }
 }

@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TempoIDE.Classes;
 
 namespace TempoIDE.UserControls
 {
@@ -57,6 +56,12 @@ namespace TempoIDE.UserControls
             var index = Files.IndexOf(file.FullName);
             var nextIndex = index + 1;
             var lastIndex = index - 1;
+            
+            var tab = TabsPanel.Children
+                .OfType<EditorTabItem>()
+                .First(t => t.BoundFile.FullName == file.FullName);
+            
+            tab.Editor.UpdateFile();
             
             Files.Remove(file.FullName);
             

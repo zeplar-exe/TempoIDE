@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -20,7 +19,11 @@ namespace TempoIDE.UserControls
 
             if (TextArea.Characters.Count > newIndex && TextArea.Characters[newIndex].Value == ColoredLabel.NewLine)
             {
-                MoveCaret(GetCaretOffsetAtIndex(newIndex - 1));
+                var newOffset = GetCaretOffsetAtIndex(newIndex - 1);
+                
+                if (VerifyCaretOffset(newOffset))
+                    MoveCaret(newOffset);
+                
                 return;
             }
 

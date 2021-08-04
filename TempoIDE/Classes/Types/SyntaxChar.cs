@@ -27,14 +27,6 @@ namespace TempoIDE.Classes.Types
             Size = new Size(FormattedText.WidthIncludingTrailingWhitespace, FormattedText.Height);
         }
 
-        public void Draw(DrawingContext context, Point point)
-        {
-            context.DrawText(
-                FormattedText,
-                point
-            );
-        }
-        
         public static explicit operator char(SyntaxChar syntaxChar) => syntaxChar.Value;
 
         public override string ToString()

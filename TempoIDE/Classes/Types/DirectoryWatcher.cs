@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TempoIDE.Classes
+namespace TempoIDE.Classes.Types
 {
     public class DirectoryWatcher
     {
@@ -18,7 +18,8 @@ namespace TempoIDE.Classes
             watcher.NotifyFilter = NotifyFilters.Attributes |
                                    NotifyFilters.Security |
                                    NotifyFilters.DirectoryName |
-                                   NotifyFilters.FileName;
+                                   NotifyFilters.FileName |
+                                   NotifyFilters.LastWrite;
 
             watcher.Changed += (sender, e) => Changed?.Invoke(sender, e);
             watcher.Created += (sender, e) => Changed?.Invoke(sender, e);

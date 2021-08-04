@@ -155,7 +155,7 @@ namespace TempoIDE.UserControls
                     
             BoundFile.Refresh();
             
-            var text = EnvironmentHelper.Cache.GetFile(BoundFile.FullName);
+            var text = EnvironmentHelper.Cache.GetFile(BoundFile);
 
             if (text == TextEditor.TextArea.Text)
                 return;
@@ -173,10 +173,11 @@ namespace TempoIDE.UserControls
                 return;
                     
             BoundFile.Refresh();
-            
+
             using var stream = new FileStream(BoundFile.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
             using var writer = new StreamWriter(stream);
             stream.SetLength(0);
+            
             writer.Write(TextEditor.TextArea.Text);
         }
         

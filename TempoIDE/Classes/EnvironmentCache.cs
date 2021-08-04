@@ -1,24 +1,23 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
-using TempoIDE.Classes.Types;
 
 namespace TempoIDE.Classes
 {
     public class EnvironmentCache
     {
-        private readonly Dictionary<string, string> files = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> fileData = new Dictionary<string, string>();
 
-        public string GetFile(string path)
+        public string GetFile(FileInfo file)
         {
-            return files.ContainsKey(path) ? files[path] : null;
+            return fileData.ContainsKey(file.FullName) ? fileData[file.FullName] : null;
         }
 
         public void AddFile(FileInfo path)
         {
             AddFile(new [] { path });
         }
-        
+
         public void AddFile(FileInfo[] paths)
         {
             foreach (var path in paths)
@@ -30,7 +29,7 @@ namespace TempoIDE.Classes
                 using var buffer = new BufferedStream(file);
                 using var reader = new StreamReader(buffer);
                 
-                files[path.FullName] = reader.ReadToEnd();
+                fileData[path.FullName] = reader.ReadToEnd();
             }
         }
 
@@ -43,8 +42,8 @@ namespace TempoIDE.Classes
         {
             foreach (var path in paths)
             {
-                if (files.ContainsKey(path.FullName))
-                    files.Remove(path.FullName);
+                if (fileData.ContainsKey(path.FullName))
+                    fileData.Remove(path.FullName);
             }
         }
     }

@@ -1,8 +1,11 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Microsoft.Build.Construction;
+using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;
 
@@ -10,7 +13,23 @@ namespace TempoIDE.Classes
 {
     public static class EnvironmentHelper
     {
-        public static MainWindow MainWindow => Application.Current.MainWindow as MainWindow;
+        public static MainWindow MainWindow
+        {
+            get
+            {
+                MainWindow window = null;
+
+                AppDispatcher.Invoke(delegate
+                {
+                    window = Application.Current.MainWindow as MainWindow;
+                });
+
+                return window;
+            }
+        }
+
+        public static Dispatcher AppDispatcher => Application.Current.Dispatcher;
+
         public static Window ActiveWindow => Application.Current
             .Windows
             .OfType<Window>()
@@ -53,7 +72,7 @@ namespace TempoIDE.Classes
             LoadEnvironment(solutionFile.FullName, EnvironmentFilterMode.Solution);
         }
         
-        public static void LoadEnvironment(string path, EnvironmentFilterMode mode)
+        public static async void LoadEnvironment(string path, EnvironmentFilterMode mode)
         {
             MainWindow.Editor.Tabs.CloseAll();
 
@@ -62,9 +81,12 @@ namespace TempoIDE.Classes
             if (Directory.Exists(path))
             {
                 var info = new DirectoryInfo(path);
-                
-                foreach (var file in info.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
-                    Cache.AddFile(new FileInfo(file.FullName));
+
+                await Task.Run(delegate
+                {
+                    foreach (var file in info.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
+                        Cache.AddFile(new FileInfo(file.FullName));
+                });
 
                 EnvironmentPath = info;
             }
@@ -75,9 +97,12 @@ namespace TempoIDE.Classes
                 if (info.Extension == ".sln")
                 {
                     mode = EnvironmentFilterMode.Solution;
-                    
-                    foreach (var file in info.Directory.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
-                        Cache.AddFile(new FileInfo(file.FullName));
+
+                    await Task.Run(delegate
+                    {
+                        foreach (var file in info.Directory.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
+                            Cache.AddFile(new FileInfo(file.FullName));
+                    });
                 }
                 else
                 {
@@ -122,6 +147,8 @@ namespace TempoIDE.Classes
                 case WatcherChangeTypes.Created:
                     Cache.AddFile(new FileInfo(e.FullPath));
                     
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
                     break;
                 case WatcherChangeTypes.Renamed:
                     var renamedArgs = (RenamedEventArgs) e;
@@ -129,26 +156,28 @@ namespace TempoIDE.Classes
                     Cache.RemoveFile(new FileInfo(renamedArgs.OldFullPath));
                     Cache.AddFile(new FileInfo(renamedArgs.FullPath));
                     
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
                     break;
                 case WatcherChangeTypes.Deleted:
                     Cache.RemoveFile(new FileInfo(e.FullPath));
                     
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
                     break;
                 case WatcherChangeTypes.Changed:
-                    Cache.RemoveFile(new FileInfo(e.FullPath));
                     Cache.AddFile(new FileInfo(e.FullPath));
                     
                     break;
             }
-
-            LoadExplorer();
-            MainWindow.Editor.Tabs.Refresh();
+            
+            AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
 
         private static void LoadExplorer()
         {
             MainWindow.Explorer.Clear();
-            
+                
             switch (FilterMode)
             {
                 case EnvironmentFilterMode.Solution:
@@ -161,9 +190,10 @@ namespace TempoIDE.Classes
                     foreach (var project in solution.ProjectsInOrder)
                     {
                         var file = new FileInfo(project.AbsolutePath);
-                        var projectItem = MainWindow.Explorer.AppendElement(new ExplorerFileItem(file.FullName), topLevel);
+                        var projectItem = new ExplorerFileItem(file.FullName);
                         
-                        MainWindow.Explorer.AppendDirectory(file.Directory, projectItem);
+                        topLevel.AppendElement(projectItem);
+                        projectItem.AppendDirectory(file.Directory, false);
                     }
 
                     directoryWatcher = new DirectoryWatcher(solutionDirectory);
@@ -171,7 +201,8 @@ namespace TempoIDE.Classes
                     
                     break;
                 case EnvironmentFilterMode.Directory:
-                    var directory = new DirectoryInfo(EnvironmentPath.FullName);
+                    var directory = (DirectoryInfo) EnvironmentPath;
+                    
                     MainWindow.Explorer.AppendDirectory(directory);
                     
                     directoryWatcher = new DirectoryWatcher(directory);

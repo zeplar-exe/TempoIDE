@@ -114,7 +114,7 @@ namespace TempoIDE.UserControls
         public void UpdateIndex(IntRange indices, SyntaxChar newCharacter)
         {
             foreach (int index in indices)
-                Characters[index] = newCharacter;
+                UpdateIndex(index, newCharacter);
         }
         
         public void UpdateIndex(int index, Brush color, Typeface typeface)
@@ -126,8 +126,7 @@ namespace TempoIDE.UserControls
         public void UpdateIndex(IntRange indices, Brush color, Typeface typeface)
         {
             foreach (int index in indices)
-                Characters[index] = new SyntaxChar(Characters[index].Value,
-                    new CharDrawInfo(FontSize, typeface, GetTextDpi(), color));
+                UpdateIndex(index, color, typeface);
         }
 
         public void RemoveIndex(int index)

@@ -6,7 +6,7 @@ using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
 {
-    public partial class SyntaxTextBox : UserControl, IInputElement
+    public partial class SyntaxTextBox
     {
         public Rect CaretRect { get; private set; }
         public IntVector CaretOffset;
@@ -104,6 +104,9 @@ namespace TempoIDE.UserControls
 
                 lineNo++;
             }
+            
+            if (indexCount == index)
+                return new IntVector(columnNo, lineNo);
             
             throw new Exception("Index must be valid.");
         }
