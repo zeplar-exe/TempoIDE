@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
@@ -26,7 +30,27 @@ namespace TempoIDE.Classes.SyntaxSchemes
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
+            
+            var tree = CSharpSyntaxTree.ParseText(text);
+            var root = tree.GetCompilationUnitRoot();
 
+            foreach (var usingDir in root.Usings)
+            {
+                var keywordSpan = new IntRange(usingDir.UsingKeyword.SpanStart, usingDir.UsingKeyword.Span.Length);
+
+                textBox.UpdateIndex(keywordSpan, Identifier, new Typeface("Verdana"));
+
+                var index = keywordSpan.End + 1;
+                foreach (var name in usingDir.Name.ChildNodes())
+                {
+                    var nameText = name.GetText();
+                    
+                    textBox.UpdateIndex(new IntRange(index, index + nameText.Length), Member, new Typeface("Verdana"));
+
+                    index += nameText.Length + 1;
+                }
+            }
+            
             for (var index = 0; index < text.Length; index++)
             {
                 var character = text[index];

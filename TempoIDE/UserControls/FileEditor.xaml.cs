@@ -157,14 +157,10 @@ namespace TempoIDE.UserControls
             
             var text = EnvironmentHelper.Cache.GetFile(BoundFile);
 
-            if (text == TextEditor.TextArea.Text)
+            if (text.Content == TextEditor.TextArea.Text)
                 return;
-                    
-            SkipTextChange(delegate
-            {
-                TextEditor.Clear();
-                TextEditor.TextArea.Text = text;
-            });
+
+            TextEditor.TextArea.Text = text.Content;
         }
 
         public override void UpdateFile()
@@ -178,14 +174,7 @@ namespace TempoIDE.UserControls
             using var writer = new StreamWriter(stream);
             stream.SetLength(0);
             
-            writer.Write(TextEditor.TextArea.Text);
-        }
-        
-        private void SkipTextChange(Action method)
-        {
-            skipTextChanged = true;
-            method.Invoke();
-            skipTextChanged = false;
+            writer.WriteAsync(TextEditor.TextArea.Text);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

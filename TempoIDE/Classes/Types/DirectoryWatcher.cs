@@ -9,7 +9,7 @@ namespace TempoIDE.Classes.Types
         private FileSystemWatcher watcher;
         private DirectoryInfo directory;
 
-        public DirectoryWatcher(DirectoryInfo directoryInfo, string filter = "")
+        public DirectoryWatcher(DirectoryInfo directoryInfo, string filter = "*")
         {
             directory = directoryInfo;
 
@@ -20,7 +20,7 @@ namespace TempoIDE.Classes.Types
                                    NotifyFilters.DirectoryName |
                                    NotifyFilters.FileName |
                                    NotifyFilters.LastWrite;
-
+            
             watcher.Changed += (sender, e) => Changed?.Invoke(sender, e);
             watcher.Created += (sender, e) => Changed?.Invoke(sender, e);
             watcher.Deleted += (sender, e) => Changed?.Invoke(sender, e);

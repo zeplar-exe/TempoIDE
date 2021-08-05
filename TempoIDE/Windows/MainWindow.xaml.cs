@@ -66,7 +66,7 @@ namespace TempoIDE.Windows
 
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
-            Editor.SelectedEditor?.UpdateFile();
+            Editor.SelectedEditor?.TextWriter();
         }
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenExplorerElementArgs e)

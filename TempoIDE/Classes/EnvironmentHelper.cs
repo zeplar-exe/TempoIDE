@@ -36,7 +36,7 @@ namespace TempoIDE.Classes
             .SingleOrDefault(x => x.IsActive);
 
         public static EnvironmentCache Cache;
-        
+
         public static EnvironmentFilterMode FilterMode;
         public static FileSystemInfo EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
@@ -214,8 +214,8 @@ namespace TempoIDE.Classes
                         goto case EnvironmentFilterMode.Solution;
 
                     var info = (FileInfo) EnvironmentPath;
-                    
-                    directoryWatcher = new DirectoryWatcher(info.Directory, info.FullName);
+
+                    directoryWatcher = new DirectoryWatcher(info.Directory, info.Name);
                     directoryWatcher.Changed += DirectoryChanged;
                     
                     MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
