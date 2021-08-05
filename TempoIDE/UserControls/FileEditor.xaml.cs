@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using TempoIDE.Classes;
+using Microsoft.Build;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -12,7 +13,6 @@ namespace TempoIDE.UserControls
         private Thread writerThread;
         
         private bool textChangedBeforeUpdate;
-        private bool skipTextChanged;
         
         private const int WriterCooldown = 2;
 
@@ -31,9 +31,6 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            if (skipTextChanged)
-                return;
-            
             textChangedBeforeUpdate = true;
         }
         
@@ -157,7 +154,7 @@ namespace TempoIDE.UserControls
             
             var text = EnvironmentHelper.Cache.GetFile(BoundFile);
 
-            if (text.Content == TextEditor.TextArea.Text)
+            if (text == null || text.Content == TextEditor.TextArea.Text)
                 return;
 
             TextEditor.TextArea.Text = text.Content;

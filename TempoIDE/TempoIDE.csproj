@@ -35,7 +35,11 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Build" Version="16.10.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0-1.final" />
+      <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
+      <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.10.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.10.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.10.0" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
       <PackageReference Include="WriteableBitmapEx" Version="1.6.7" />
     </ItemGroup>

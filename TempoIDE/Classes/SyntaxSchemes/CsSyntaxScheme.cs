@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.MSBuild;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
@@ -49,7 +51,9 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
                     index += nameText.Length + 1;
                 }
-            }
+            } // TODO: Just highlight everything for now
+            
+            return;
             
             for (var index = 0; index < text.Length; index++)
             {

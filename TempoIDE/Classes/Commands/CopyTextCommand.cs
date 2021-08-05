@@ -1,8 +1,10 @@
+using TempoIDE.Windows;
+
 namespace TempoIDE.Classes.Commands
 {
     public class CopyTextCommand : AppCommand
     {
-        public override bool CanExecute(object parameter) => EnvironmentHelper.IsCoreElementFocused();
+        public override bool CanExecute(object parameter) => MainWindow.IsCoreElementFocused();
 
         public override void Execute(object parameter)
         {

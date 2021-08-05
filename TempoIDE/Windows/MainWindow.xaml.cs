@@ -6,6 +6,7 @@ using System.Windows.Input;
 using TempoIDE.Classes;
 using TempoIDE.Classes.Commands;
 using TempoIDE.Classes.Types;
+using TempoIDE.Properties;
 using TempoIDE.UserControls;
 
 namespace TempoIDE.Windows
@@ -15,6 +16,14 @@ namespace TempoIDE.Windows
         public MainWindow()
         {
             InitializeComponent();
+        }
+        
+        public static bool IsCoreElementFocused()
+        {
+            if (EnvironmentHelper.MainWindow.Editor.SelectedEditor == null)
+                return false;
+
+            return EnvironmentHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null || EnvironmentHelper.MainWindow.Explorer.IsFocused;
         }
         
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
@@ -46,14 +55,14 @@ namespace TempoIDE.Windows
         {
             LoadKeybindings();
 
-            Properties.Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
+            Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
         }
 
         private void LoadKeybindings()
         {
             InputBindings.Clear();
             
-            var shortcuts = Properties.Shortcuts.Default;
+            var shortcuts = Shortcuts.Default;
 
             InputBindings.AddRange(new List<KeyBinding>
             {

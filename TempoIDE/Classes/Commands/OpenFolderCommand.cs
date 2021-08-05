@@ -12,7 +12,7 @@ namespace TempoIDE.Classes.Commands
             
             if (dialog.ShowDialog().ToRealValue())
             {
-                EnvironmentHelper.LoadEnvironment(dialog.SelectedPath, EnvironmentFilterMode.Directory);   
+                EnvironmentHelper.LoadEnvironment(dialog.SelectedPath);   
             }
         }
     }

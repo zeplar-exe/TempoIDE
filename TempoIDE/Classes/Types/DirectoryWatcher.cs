@@ -7,19 +7,17 @@ namespace TempoIDE.Classes.Types
         public event FileSystemEventHandler Changed;
         
         private FileSystemWatcher watcher;
-        private DirectoryInfo directory;
 
-        public DirectoryWatcher(DirectoryInfo directoryInfo, string filter = "*")
+        public DirectoryWatcher(DirectoryInfo directory, string filter = "*")
         {
-            directory = directoryInfo;
-
-            watcher = new FileSystemWatcher(directoryInfo.FullName);
+            watcher = new FileSystemWatcher(directory.FullName);
 
             watcher.NotifyFilter = NotifyFilters.Attributes |
                                    NotifyFilters.Security |
                                    NotifyFilters.DirectoryName |
                                    NotifyFilters.FileName |
-                                   NotifyFilters.LastWrite;
+                                   NotifyFilters.LastWrite | 
+                                   NotifyFilters.CreationTime;
             
             watcher.Changed += (sender, e) => Changed?.Invoke(sender, e);
             watcher.Created += (sender, e) => Changed?.Invoke(sender, e);
