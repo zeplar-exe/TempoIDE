@@ -67,7 +67,7 @@ namespace TempoIDE.UserControls
                         AutoCompletions.Selected?.Execute(this);
                     
                     UpdateAutoCompletion();
-
+                    
                     break;
                 }
                 case Key.Back:
@@ -181,7 +181,7 @@ namespace TempoIDE.UserControls
             if (range.Size > 0 && range.Contains(index))
             {
                 context.DrawRectangle(Brushes.DarkCyan, null, charRect);
-                // TODO: Very slow when selecting many characters
+                // OPTIMIZE: Very slow when selecting many characters
             }
         }
 

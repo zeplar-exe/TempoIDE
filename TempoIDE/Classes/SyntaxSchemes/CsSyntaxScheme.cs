@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Windows.Forms;
 using System.Windows.Media;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
@@ -20,16 +22,14 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public void Highlight(ColoredLabel textBox)
         {
-            var readStartIndex = new int?();
-            var word = "";
-
-            var xmlData = ResourceCache.IntellisenseCs;
-            var keywords = xmlData.Root.Element("keywords").Elements("kw");
-
             var text = textBox.Text;
 
             var tree = CSharpSyntaxTree.ParseText(text);
             var root = tree.GetCompilationUnitRoot();
+            
+            new KeywordColor(textBox).Visit(tree.GetRoot());
+            
+            return;
 
             foreach (var usingDir in root.Usings)
             {
@@ -46,55 +46,6 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
                     index += nameText.Length + 1;
                 }
-            } // TODO: Just highlight everything for now
-            
-            return;
-            
-            for (var index = 0; index < text.Length; index++)
-            {
-                var character = text[index];
-
-                textBox.UpdateIndex(index, Default, new Typeface("Verdana"));
-
-                if (char.IsNumber(character))
-                {
-                    if (readStartIndex != null)
-                        word += character;
-                    else
-                        textBox.UpdateIndex(index, Number, new Typeface("Verdana"));
-                }
-                else if (char.IsLetter(character))
-                {
-                    if (readStartIndex == null)
-                        readStartIndex = index;
-
-                    word += character;
-                }
-                else
-                {
-                    if (readStartIndex == null)
-                        continue;
-
-                    if (keywords.Any(kw => word == kw.Value))
-                        textBox.UpdateIndex(new IntRange(
-                                readStartIndex.ToRealValue(),
-                                readStartIndex.ToRealValue() + word.Length),
-                            Identifier, new Typeface("Verdana"));
-                    
-                    word = "";
-                    readStartIndex = null;
-                }
-            }
-
-            if (readStartIndex == null)
-                return;
-
-            if (keywords.Any(kw => word == kw.Value))
-            {
-                textBox.UpdateIndex(new IntRange(
-                        readStartIndex.ToRealValue(), 
-                        readStartIndex.ToRealValue() + word.Length), 
-                    Identifier, new Typeface("Verdana"));
             }
         }
 
@@ -102,11 +53,6 @@ namespace TempoIDE.Classes.SyntaxSchemes
         {
             var xmlData = ResourceCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
-            
-            var tree = CSharpSyntaxTree.ParseText(textBox.TextArea.Text);
-            var root = tree.GetCompilationUnitRoot();
-
-            // TODO: AutoComplete context
 
             var typingWord = textBox.GetTypingWord(true);
                  
@@ -118,6 +64,26 @@ namespace TempoIDE.Classes.SyntaxSchemes
                 .Where(kw => kw.StartsWith(typingWord) && kw != typingWord)
                 .Select(kw => new AutoCompletion(kw))
                 .ToArray();
+        }
+
+        private class KeywordColor : CSharpSyntaxWalker
+        {
+            private readonly ColoredLabel label;
+
+            public KeywordColor(ColoredLabel label)
+            {
+                this.label = label;
+            }
+
+            public override void VisitToken(SyntaxToken token)
+            {
+                if (token.IsContextualKeyword())
+                {
+                    var keywordSpan = new IntRange(token.SpanStart, token.Span.Length);
+
+                    label.UpdateIndex(keywordSpan, Brushes.Blue, new Typeface("Verdana"));
+                }
+            }
         }
     }
 }

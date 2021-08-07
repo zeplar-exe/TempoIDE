@@ -31,14 +31,15 @@ namespace TempoIDE.UserControls
                 AppendText(value);
             }
         }
-        
+
+        public int LineCount => GetLines().Length;
         
         public int LineHeight = 15;
         public new int FontSize = 14;
 
         public event RoutedEventHandler TextChanged;
 
-        public const char NewLine = '\n';
+        public const char NewLine = '\n'; // TODO: Does not work with foreign newlines like \r or \n\r
 
         internal ISyntaxScheme Scheme { get; private set; }
         internal readonly List<SyntaxChar> Characters = new List<SyntaxChar>();
@@ -67,8 +68,7 @@ namespace TempoIDE.UserControls
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
             Scheme?.Highlight(this);
-            InvalidateMeasure();//InvalidateVisual();
-            // TODO: Not 100% sure if this works correctly, needs further testing
+            InvalidateMeasure();
         }
         
         protected override Size MeasureOverride(Size constraint)
@@ -76,7 +76,7 @@ namespace TempoIDE.UserControls
             var longestLine = GetLines().OrderByDescending(line => line.Count).FirstOrDefault();
             var totalWidth = longestLine?.TotalWidth ?? 0;
             
-            return new Size(totalWidth, LineHeight * GetLineCount());
+            return new Size(totalWidth, LineHeight * LineCount);
         }
 
         protected override void OnRender(DrawingContext drawingContext)

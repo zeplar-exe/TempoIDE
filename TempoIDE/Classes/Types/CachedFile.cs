@@ -5,7 +5,6 @@ namespace TempoIDE.Classes.Types
 {
     public class CachedFile
     {
-        public ProjectId ProjectId;
         public readonly FileInfo File;
         public string Content { get; private set; }
 

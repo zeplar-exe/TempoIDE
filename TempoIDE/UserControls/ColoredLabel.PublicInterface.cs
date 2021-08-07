@@ -150,11 +150,6 @@ namespace TempoIDE.UserControls
         {
             return Characters[index];
         }
-        
-        public int GetLineCount()
-        {
-            return GetLines().Length;
-        }
 
         public SyntaxCharCollection[] GetLines(bool omitNewLines = false)
         {

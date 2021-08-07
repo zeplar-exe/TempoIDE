@@ -18,6 +18,7 @@ namespace TempoIDE.UserControls
 
             Focus();
             MoveCaret(GetCaretOffsetByClick(e));
+            AutoComplete.Disable();
 
             isSelecting = true;
             Select(new IntRange(CaretIndex, CaretIndex));
@@ -56,7 +57,7 @@ namespace TempoIDE.UserControls
             var line = Math.Clamp(
                 (int) Math.Floor(clickPos.Y / TextArea.LineHeight),
                 0,
-                TextArea.GetLineCount() - 1
+                TextArea.LineCount - 1
             );
 
             var column = 0;
@@ -64,27 +65,34 @@ namespace TempoIDE.UserControls
 
             if (clickPos.X > 0)
             {
-                foreach (var character in lines[line])
+                if (clickPos.X > lines[line].TotalWidth)
                 {
-                    totalWidth += character.Size.Width;
-                    column++;
+                    column = lines[line].Count;
+                }
+                else
+                {
+                    foreach (var character in lines[line])
+                    {
+                        totalWidth += character.Size.Width;
+                        column++;
 
-                    if (character.Value == ColoredLabel.NewLine)
-                        column--;
-                    
-                    if (clickPos.X > selectStartXPosition)
-                    {
-                        if (totalWidth > clickPos.X)
-                        {
-                            break;
-                        }
-                    }
-                    else
-                    {
-                        if (totalWidth > clickPos.X)
-                        {
+                        if (character.Value == ColoredLabel.NewLine)
                             column--;
-                            break;
+
+                        if (clickPos.X > selectStartXPosition)
+                        {
+                            if (totalWidth >= clickPos.X)
+                            {
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (totalWidth > clickPos.X)
+                            {
+                                column--;
+                                break;
+                            }
                         }
                     }
                 }

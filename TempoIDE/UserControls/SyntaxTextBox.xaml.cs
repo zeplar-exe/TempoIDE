@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using TempoIDE.Classes.Types;
@@ -115,18 +116,24 @@ namespace TempoIDE.UserControls
             var lines = TextArea.GetLines();
 
             // ReSharper disable once ReplaceWithSingleAssignment.True
-            var result = true;
 
             if (lines.Length <= offset.Y || offset.Y < 0)
-                result = false;
+            {
+                if (throwError)
+                    throw new Exception("Offset must be valid.");
+               
+                return false;
+            }
+            
+            if (lines[offset.Y].Count < offset.X)
+            {
+                if (throwError)
+                    throw new Exception("Offset must be valid.");
+                
+                return false;
+            }
 
-            if (result && lines[offset.Y].Count < offset.X)
-                result = false;
-
-            if (!result && throwError)
-                throw new Exception("Offset must be valid.");
-
-            return result;
+            return true;
         }
 
         private void CaretBlinkerThread()

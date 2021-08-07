@@ -35,14 +35,9 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.Build" Version="16.10.0" />
-      <PackageReference Include="Microsoft.Build.Framework" Version="16.10.0" />
       <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis" Version="3.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.10.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="3.10.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.10.0" />
-      <PackageReference Include="Microsoft.Windows.Compatibility" Version="5.0.2" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     </ItemGroup>
 
@@ -50,8 +45,6 @@
       <EmbeddedResource Remove="packages\**" />
       <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
       <None Remove="ProgramData\intellisense.cs.xml" />
-      <None Remove="ProgramData\app.commands.xml" />
-      <None Remove="Resources\Configs\explorer-context.xml" />
     </ItemGroup>
 
     <ItemGroup>
