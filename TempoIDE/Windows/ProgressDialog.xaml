@@ -10,25 +10,25 @@
         Title="ProgressDialog" Height="100" Width="300"
         WindowStartupLocation="CenterOwner">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="2*"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.3*"/>
-                <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            
-            <Border Grid.Column="0" BorderThickness="0">
-                <TextBlock VerticalAlignment="Center" TextAlignment="Center" Name="Header"/>    
-            </Border>
+        <Border Grid.Column="0" BorderThickness="0">
+            <TextBlock VerticalAlignment="Center" TextAlignment="Center" TextWrapping="Wrap" Name="Header"/>    
+        </Border>
+        
+        <Grid Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
             
             <ProgressBar
-                Grid.Column="2" 
+                Grid.Row="1"
                 Name="ProgressBar"
                 Minimum="0"
                 Maximum="100" 

@@ -1,12 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CodeAnalysis.MSBuild;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
@@ -25,14 +20,14 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public void Highlight(ColoredLabel textBox)
         {
-            int? readStartIndex = null;
+            var readStartIndex = new int?();
             var word = "";
 
             var xmlData = ResourceCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var text = textBox.Text;
-            
+
             var tree = CSharpSyntaxTree.ParseText(text);
             var root = tree.GetCompilationUnitRoot();
 

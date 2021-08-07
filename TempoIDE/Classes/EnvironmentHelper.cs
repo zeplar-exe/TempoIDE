@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using Microsoft.Build.Construction;
-using Microsoft.CodeAnalysis;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;
@@ -73,6 +70,7 @@ namespace TempoIDE.Classes
         
         public static void LoadEnvironment(string path)
         {
+            directoryWatcher?.Dispose();
             MainWindow.Editor.Tabs.CloseAll();
             
             Cache = new EnvironmentCache();
@@ -94,8 +92,8 @@ namespace TempoIDE.Classes
 
             progressDialog.Completed += delegate { progressDialog.Close(); };
 
-            progressDialog.Show();
             progressDialog.StartAsync();
+            progressDialog.ShowDialog();
         }
 
         private static async void CacheFilesInPath(string path)
@@ -135,41 +133,6 @@ namespace TempoIDE.Classes
                     Cache.AddFile(new FileInfo(path));
                 }
             }
-        }
-        
-        private static void DirectoryChanged(object sender, FileSystemEventArgs e)
-        {
-            switch (e.ChangeType)
-            {
-                case WatcherChangeTypes.Created:
-                    Cache.AddFile(new FileInfo(e.FullPath));
-
-                    AppDispatcher.Invoke(LoadExplorer);
-                    
-                    break;
-                case WatcherChangeTypes.Renamed:
-                    var renamedArgs = (RenamedEventArgs) e;
-                    
-                    Cache.RemoveFile(new FileInfo(renamedArgs.OldFullPath));
-                    Cache.AddFile(new FileInfo(renamedArgs.FullPath));
-                    
-                    AppDispatcher.Invoke(LoadExplorer);
-                    
-                    break;
-                case WatcherChangeTypes.Deleted:
-                    Cache.RemoveFile(new FileInfo(e.FullPath));
-
-                    AppDispatcher.Invoke(LoadExplorer);
-                    
-                    break;
-                case WatcherChangeTypes.Changed:
-                    Cache.AddFile(new FileInfo(e.FullPath));
-
-                    break;
-            }
-            
-            //TODO: Cache.UpdateModels();
-            AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
 
         private static void LoadExplorer()
@@ -220,6 +183,41 @@ namespace TempoIDE.Classes
                     MainWindow.Editor.Tabs.Open(info);
                     break;
             }
+        }
+        
+        private static void DirectoryChanged(object sender, FileSystemEventArgs e)
+        {
+            switch (e.ChangeType)
+            {
+                case WatcherChangeTypes.Created:
+                    Cache.AddFile(new FileInfo(e.FullPath));
+
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
+                    break;
+                case WatcherChangeTypes.Renamed:
+                    var renamedArgs = (RenamedEventArgs) e;
+                    
+                    Cache.RemoveFile(new FileInfo(renamedArgs.OldFullPath));
+                    Cache.AddFile(new FileInfo(renamedArgs.FullPath));
+                    
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
+                    break;
+                case WatcherChangeTypes.Deleted:
+                    Cache.RemoveFile(new FileInfo(e.FullPath));
+
+                    AppDispatcher.Invoke(LoadExplorer);
+                    
+                    break;
+                case WatcherChangeTypes.Changed:
+                    Cache.AddFile(new FileInfo(e.FullPath));
+
+                    break;
+            }
+            
+            Cache.UpdateModels();
+            AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
     }
 

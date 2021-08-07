@@ -99,6 +99,8 @@ namespace TempoIDE.UserControls
             SetScheme(
                 schemeExtension == null ? null : SyntaxSchemeFactory.GetColorSchemeByExtension(schemeExtension)
             );
+            
+            Scheme.Highlight(this);
         }
         
         public void SetScheme(ISyntaxScheme scheme)

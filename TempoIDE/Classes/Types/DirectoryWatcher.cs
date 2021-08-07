@@ -1,8 +1,9 @@
+using System;
 using System.IO;
 
 namespace TempoIDE.Classes.Types
 {
-    public class DirectoryWatcher
+    public class DirectoryWatcher : IDisposable
     {
         public event FileSystemEventHandler Changed;
         
@@ -27,6 +28,11 @@ namespace TempoIDE.Classes.Types
             watcher.Filter = filter;
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
+        }
+
+        public void Dispose()
+        {
+            watcher.Dispose();
         }
     }
 }

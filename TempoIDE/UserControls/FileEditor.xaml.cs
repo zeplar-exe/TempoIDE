@@ -3,7 +3,6 @@ using System.IO;
 using System.Threading;
 using System.Windows;
 using TempoIDE.Classes;
-using Microsoft.Build;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -101,17 +100,15 @@ namespace TempoIDE.UserControls
 
         public override void Update(FileInfo file)
         {
-            if (file != null && !file.Exists)
+            if (!file?.Exists ?? false)
                 return;
 
             BoundFile = file;
-            TextEditor.TextArea.SetScheme(BoundFile?.Extension);
-            
+
             UpdateText();
 
             TextEditor.IsReadOnly = file == null;
-            
-            TextEditor.TextArea.Scheme?.Highlight(TextEditor.TextArea);
+            TextEditor.TextArea.SetScheme(BoundFile?.Extension);
         }
 
         private void TextWriterThread()
@@ -122,12 +119,11 @@ namespace TempoIDE.UserControls
                 {
                     Thread.Sleep(WriterCooldown * 1000);
                 }
-                catch (ThreadInterruptedException)
+                catch (ThreadInterruptedException _) { }
+                finally
                 {
-                    return;
+                    Dispatcher.Invoke(TextWriter);;
                 }
-
-                Dispatcher.Invoke(TextWriter);
             }
         }
         
@@ -158,6 +154,7 @@ namespace TempoIDE.UserControls
                 return;
 
             TextEditor.TextArea.Text = text.Content;
+            textChangedBeforeUpdate = false;
         }
 
         public override void UpdateFile()
