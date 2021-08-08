@@ -16,15 +16,14 @@ namespace TempoIDE.UserControls
             AutoComplete.Disable();
             
             var newIndex = GetCaretIndexAtOffset(position);
+            var caretCharacter = newIndex - 1;
 
-            if (TextArea.Characters.Count > newIndex && TextArea.Characters[newIndex].Value == ColoredLabel.NewLine)
+            if (VerifyIndex(caretCharacter))
             {
-                var newOffset = GetCaretOffsetAtIndex(newIndex - 1);
-                
-                if (VerifyCaretOffset(newOffset))
-                    MoveCaret(newOffset);
-                
-                return;
+                if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
+                {
+                    position = new IntVector(0, position.Y);
+                }
             }
 
             CaretOffset = position;
@@ -48,7 +47,7 @@ namespace TempoIDE.UserControls
 
         public Rect GetCaretRectAtPosition(IntVector position)
         {
-            var rect = new Rect(0, 0, CaretRect.Width, CaretRect.Height);
+            var rect = new Rect(0, 0, CaretWidth, CaretRect.Height);
 
             var line = TextArea.GetLines()[position.Y];
             
@@ -63,27 +62,21 @@ namespace TempoIDE.UserControls
         }
 
         #region AppendText
-        
-        public void AppendTextAtCaret(string text)
-        {
-            foreach (var character in text)
-                CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
-        }
 
         public void AppendTextAtCaret(char character)
         {
             CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
         }
 
-        public void AppendTextAtCaret(SyntaxChar character)
-        {
-            CaretAppendWrapper(character);
-        }
-        
         public void AppendTextAtCaret(IEnumerable<char> characters)
         {
             foreach (var character in characters)
                 CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
+        }
+        
+        public void AppendTextAtCaret(SyntaxChar character)
+        {
+            CaretAppendWrapper(character);
         }
 
         public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
@@ -101,10 +94,7 @@ namespace TempoIDE.UserControls
 
         private void CaretAppendWrapper(SyntaxChar character)
         {
-            if (CaretIndex >= TextArea.Characters.Count)
-                TextArea.AppendText(character);
-            else
-                TextArea.AppendText(character, CaretIndex);
+            TextArea.AppendText(character, CaretIndex);
 
             MoveCaret(character.Value == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
@@ -135,6 +125,8 @@ namespace TempoIDE.UserControls
             if (CaretIndex == 0)
                 return;
 
+            char lastRemovedCharacter = new char();
+
             for (; count > 0; count--)
             {
                 var character = TextArea.Characters[CaretIndex - 1];
@@ -150,9 +142,12 @@ namespace TempoIDE.UserControls
                 {
                     MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
                 }
+
+                lastRemovedCharacter = character.Value;
             }
             
-            UpdateAutoCompletion();
+            if (string.IsNullOrWhiteSpace(lastRemovedCharacter.ToString()))
+                UpdateAutoCompletion();
         }
         
         public void Frontspace(int count)

@@ -11,11 +11,12 @@ namespace TempoIDE.UserControls
         public Rect CaretRect { get; private set; }
         public IntVector CaretOffset;
         public int CaretIndex { get; private set; }
-        
+        public float CaretWidth { get; set; } = 1;
+
         public IntRange SelectionRange = new IntRange(0, 0);
 
-        public int TabSize = 4;
-        public bool IsReadOnly;
+        public int TabSize { get; set; } = 4;
+        public bool IsReadOnly { get; set; }
 
         public event RoutedEventHandler TextChanged;
 
@@ -26,8 +27,6 @@ namespace TempoIDE.UserControls
         private bool caretVisible;
 
         private bool isSelecting;
-        
-        public AutoCompletionSelection AutoCompletions;
 
         public SyntaxTextBox()
         {
@@ -36,10 +35,7 @@ namespace TempoIDE.UserControls
         
         private void SyntaxTextBox_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Focusable = true;
-            IsTabStop = true;
-
-            CaretRect = new Rect(0, 0, 1, TextArea.LineHeight);
+            CaretRect = new Rect(0, 0, CaretWidth, TextArea.LineHeight);
         }
 
         #region Private Interface
@@ -50,10 +46,8 @@ namespace TempoIDE.UserControls
 
             if (newCompletions != null && newCompletions.Length != 0)
             {
-                AutoCompletions = new AutoCompletionSelection(newCompletions);
-
                 AutoComplete.Enable();
-                AutoComplete.Update(AutoCompletions.Choices);
+                AutoComplete.Update(new AutoCompletionSelection(newCompletions));
 
                 AutoComplete.Translate.X = CaretRect.Right;
                 AutoComplete.Translate.Y = CaretRect.Bottom;
@@ -68,7 +62,8 @@ namespace TempoIDE.UserControls
 
         private int GetCaretIndexAtOffset(IntVector offset)
         {
-            VerifyCaretOffset(offset, true);
+            if (!VerifyCaretOffset(offset))
+                return -1;
 
             var totalIndex = 0;
             var lines = TextArea.GetLines();
@@ -111,25 +106,25 @@ namespace TempoIDE.UserControls
             throw new Exception("Index must be valid.");
         }
 
-        private bool VerifyCaretOffset(IntVector offset, bool throwError = false)
+        private bool VerifyIndex(int index)
         {
-            var lines = TextArea.GetLines();
+            return index >= 0 && index < TextArea.Characters.Count;
+        }
 
-            // ReSharper disable once ReplaceWithSingleAssignment.True
+        private bool VerifyCaretOffset(IntVector offset)
+        {
+            if (offset.X < 0 || offset.Y < 0)
+                return false;
+            
+            var lines = TextArea.GetLines();
 
             if (lines.Length <= offset.Y || offset.Y < 0)
             {
-                if (throwError)
-                    throw new Exception("Offset must be valid.");
-               
                 return false;
             }
             
             if (lines[offset.Y].Count < offset.X)
             {
-                if (throwError)
-                    throw new Exception("Offset must be valid.");
-                
                 return false;
             }
 

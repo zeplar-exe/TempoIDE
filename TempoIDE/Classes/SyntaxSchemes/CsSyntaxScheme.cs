@@ -22,31 +22,13 @@ namespace TempoIDE.Classes.SyntaxSchemes
 
         public void Highlight(ColoredLabel textBox)
         {
+            textBox.UpdateIndex(new IntRange(0, textBox.Characters.Count), Default, new Typeface("Verdana"));
+            
             var text = textBox.Text;
-
             var tree = CSharpSyntaxTree.ParseText(text);
-            var root = tree.GetCompilationUnitRoot();
-            
+
             new KeywordColor(textBox).Visit(tree.GetRoot());
-            
-            return;
-
-            foreach (var usingDir in root.Usings)
-            {
-                var keywordSpan = new IntRange(usingDir.UsingKeyword.SpanStart, usingDir.UsingKeyword.Span.Length);
-
-                textBox.UpdateIndex(keywordSpan, Identifier, new Typeface("Verdana"));
-
-                var index = keywordSpan.End + 1;
-                foreach (var name in usingDir.Name.ChildNodes())
-                {
-                    var nameText = name.GetText();
-                    
-                    textBox.UpdateIndex(new IntRange(index, index + nameText.Length), Member, new Typeface("Verdana"));
-
-                    index += nameText.Length + 1;
-                }
-            }
+            Console.WriteLine("---");
         }
 
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
@@ -60,9 +42,8 @@ namespace TempoIDE.Classes.SyntaxSchemes
                 return null;
             
             return keywords
-                .Select(kw => kw.Value)
-                .Where(kw => kw.StartsWith(typingWord) && kw != typingWord)
-                .Select(kw => new AutoCompletion(kw))
+                .Where(kw => kw.Value.StartsWith(typingWord) && kw.Value != typingWord)
+                .Select(kw => new AutoCompletion(kw.Value))
                 .ToArray();
         }
 
@@ -70,18 +51,20 @@ namespace TempoIDE.Classes.SyntaxSchemes
         {
             private readonly ColoredLabel label;
 
-            public KeywordColor(ColoredLabel label)
+            public KeywordColor(ColoredLabel label) : base(SyntaxWalkerDepth.Token)
             {
                 this.label = label;
             }
 
             public override void VisitToken(SyntaxToken token)
             {
-                if (token.IsContextualKeyword())
+                Console.WriteLine(token.Kind());
+                if (token.IsKeyword())
                 {
-                    var keywordSpan = new IntRange(token.SpanStart, token.Span.Length);
+                    var scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
+                    var keywordSpan = new IntRange(token.SpanStart, token.Span.End);
 
-                    label.UpdateIndex(keywordSpan, Brushes.Blue, new Typeface("Verdana"));
+                    label.UpdateIndex(keywordSpan, scheme.Identifier, new Typeface("Verdana"));
                 }
             }
         }

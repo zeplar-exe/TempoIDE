@@ -8,22 +8,9 @@ namespace TempoIDE.UserControls
 {
     public partial class ColoredLabel
     {
-        public void AppendText(string text, int index = -1)
-        {
-            if (index < 0)
-            {
-                index = Characters.Count;
-            }
-            
-            foreach (var character in text)
-                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
-            
-            TextChanged?.Invoke(this, default);
-        }
-        
         public void AppendText(IEnumerable<char> text, int index = -1)
         {
-            if (index < 0)
+            if (index == -1)
             {
                 index = Characters.Count;
             }
@@ -36,7 +23,7 @@ namespace TempoIDE.UserControls
         
         public void AppendText(char character, int index = -1)
         {
-            if (index < 0)
+            if (index == -1)
             {
                 index = Characters.Count;
             }
@@ -48,7 +35,7 @@ namespace TempoIDE.UserControls
 
         public void AppendText(SyntaxChar character, int index = -1)
         {
-            if (index < 0)
+            if (index == -1)
             {
                 index = Characters.Count;
             }
@@ -60,7 +47,7 @@ namespace TempoIDE.UserControls
 
         public void AppendText(IEnumerable<SyntaxChar> syntaxChars, int index = -1)
         {
-            if (index < 0)
+            if (index == -1)
             {
                 index = Characters.Count;
             }

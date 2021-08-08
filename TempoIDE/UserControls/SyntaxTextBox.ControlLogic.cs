@@ -25,7 +25,7 @@ namespace TempoIDE.UserControls
             caretThread?.Interrupt();
             caretVisible = false;
 
-            if (AutoCompletions != null) AutoCompletions.Index = 0;
+            AutoComplete.Disable();
 
             TextArea.InvalidateVisual();
         }
@@ -61,10 +61,10 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (AutoCompletions == null)
+                    if (!AutoComplete.Enabled)
                         AppendTextAtCaret(ColoredLabel.NewLine);
                     else
-                        AutoCompletions.Selected?.Execute(this);
+                        AutoComplete.Selected?.Execute(this);
                     
                     UpdateAutoCompletion();
                     
@@ -93,7 +93,7 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    if (AutoCompletions == null)
+                    if (!AutoComplete.Enabled)
                     {
                         var mod = CaretOffset.X % 4;
 
@@ -103,7 +103,7 @@ namespace TempoIDE.UserControls
                     }
                     else
                     {
-                        AutoCompletions.Selected?.Execute(this);
+                        AutoComplete.Selected?.Execute(this);
                     }
 
                     UpdateAutoCompletion();
@@ -120,9 +120,8 @@ namespace TempoIDE.UserControls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(-1, 0);
-
-                    if (VerifyCaretOffset(newPosition))
-                        MoveCaret(newPosition);
+                    
+                    MoveCaret(newPosition);
 
                     break;
                 }
@@ -131,9 +130,8 @@ namespace TempoIDE.UserControls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(1, 0);
-
-                    if (VerifyCaretOffset(newPosition))
-                        MoveCaret(newPosition);
+                    
+                    MoveCaret(newPosition);
 
                     break;
                 }
@@ -143,12 +141,11 @@ namespace TempoIDE.UserControls
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, -1);
 
-                    if (AutoCompletions != null)
+                    if (AutoComplete.Enabled)
                     {
-                        AutoCompletions.Index--;
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Backward);
                     }
-                    else if (VerifyCaretOffset(newPosition))
+                    else
                         MoveCaret(newPosition);
 
                     break;
@@ -158,14 +155,11 @@ namespace TempoIDE.UserControls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     var newPosition = CaretOffset + new IntVector(0, 1);
-
-                    if (AutoCompletions != null)
-                    {
-                        AutoCompletions.Index++;
+                    
+                    if (AutoComplete.Enabled)
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Forward);
-                    }
-                    else if (VerifyCaretOffset(newPosition))
-                        MoveCaret(newPosition);
+                    
+                    MoveCaret(newPosition);
 
                     break;
                 }
