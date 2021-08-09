@@ -9,8 +9,8 @@ namespace TempoIDE.Classes.Types
 {
     public class EnvironmentCache
     {
-        public Dictionary<ProjectId, CachedCompilation> Compilations = new Dictionary<ProjectId, CachedCompilation>();
-        private readonly Dictionary<string, CachedFile> fileData = new Dictionary<string, CachedFile>();
+        public Dictionary<ProjectId, CachedCompilation> Compilations = new();
+        private readonly Dictionary<string, CachedFile> fileData = new();
         
         public void UpdateModels()
         {

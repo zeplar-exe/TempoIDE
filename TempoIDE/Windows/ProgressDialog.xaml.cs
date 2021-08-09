@@ -7,7 +7,7 @@ namespace TempoIDE.Windows
 {
     public partial class ProgressDialog : Window
     {
-        public Queue<ProgressTask> Tasks = new Queue<ProgressTask>();
+        public Queue<ProgressTask> Tasks = new();
 
         private double ProgressIncrement => 100d / Tasks.Count;
 

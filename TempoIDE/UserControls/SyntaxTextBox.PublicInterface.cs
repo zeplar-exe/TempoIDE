@@ -65,24 +65,40 @@ namespace TempoIDE.UserControls
 
         public void AppendTextAtCaret(char character)
         {
-            CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
+            TextArea.AppendText(new SyntaxChar(character, GetDefaultDrawInfo()), CaretIndex);
         }
 
         public void AppendTextAtCaret(IEnumerable<char> characters)
         {
             foreach (var character in characters)
-                CaretAppendWrapper(new SyntaxChar(character, GetDefaultDrawInfo()));
+            {
+                TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, GetDefaultDrawInfo()));
+
+                MoveCaret(character == ColoredLabel.NewLine ?
+                    new IntVector(0, CaretOffset.Y + 1) : 
+                    new IntVector(CaretOffset.X + 1, CaretOffset.Y));
+            }
+            
+            TextArea.InvalidateTextChanged();
         }
         
         public void AppendTextAtCaret(SyntaxChar character)
         {
-            CaretAppendWrapper(character);
+            TextArea.AppendText(character, CaretIndex);
         }
 
         public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
         {
             foreach (var character in syntaxChars)
-                CaretAppendWrapper(character);
+            {
+                TextArea.Characters.Insert(CaretIndex, character);
+
+                MoveCaret(character.Value == ColoredLabel.NewLine ?
+                    new IntVector(0, CaretOffset.Y + 1) : 
+                    new IntVector(CaretOffset.X + 1, CaretOffset.Y));
+            }
+            
+            TextArea.InvalidateTextChanged();
         }
         
         public double GetDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
@@ -92,15 +108,6 @@ namespace TempoIDE.UserControls
             return new CharDrawInfo(TextArea.FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
         }
 
-        private void CaretAppendWrapper(SyntaxChar character)
-        {
-            TextArea.AppendText(character, CaretIndex);
-
-            MoveCaret(character.Value == ColoredLabel.NewLine ?
-                new IntVector(0, CaretOffset.Y + 1) : 
-                new IntVector(CaretOffset.X + 1, CaretOffset.Y));
-        }
-        
         #endregion
 
         public void Backspace(int count)

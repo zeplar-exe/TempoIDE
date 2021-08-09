@@ -34,15 +34,15 @@ namespace TempoIDE.UserControls
 
         public int LineCount => GetLines().Length;
         
-        public int LineHeight = 15;
-        public new int FontSize = 14;
+        public int LineHeight { get; set; } = 15;
+        public new int FontSize { get; set; } = 14;
 
         public event RoutedEventHandler TextChanged;
 
         public const char NewLine = '\n'; // TODO: Does not work with foreign newlines like \r or \n\r
 
         internal ISyntaxScheme Scheme { get; private set; }
-        internal readonly List<SyntaxChar> Characters = new List<SyntaxChar>();
+        internal readonly List<SyntaxChar> Characters = new();
 
         public ColoredLabel()
         {
@@ -94,6 +94,20 @@ namespace TempoIDE.UserControls
             {
                 var charPos = new Point(lineWidth, line * LineHeight);
                 var charSize = character.Size;
+
+                var renderRect = new Rect(
+                    RenderTransformOrigin.X, 
+                    RenderTransformOrigin.Y,
+                    Math.Abs(RenderTransformOrigin.X * 2),
+                    Math.Abs(RenderTransformOrigin.Y * 2));
+                
+                var topLeftDiff = new Point(charPos.X - renderRect.TopLeft.X, charPos.Y - renderRect.TopLeft.Y);
+                var bottomRightDiff = new Point(charPos.X - renderRect.BottomRight.X, charPos.Y - renderRect.BottomRight.Y);
+
+                if (topLeftDiff.X < 0 || topLeftDiff.Y < 0 || bottomRightDiff.X > Width || bottomRightDiff.Y > Width)
+                {
+                    return;
+                }
                 
                 var charRect = new Rect(charPos, charSize);
                 

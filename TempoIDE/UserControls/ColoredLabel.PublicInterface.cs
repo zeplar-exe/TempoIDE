@@ -9,19 +9,6 @@ namespace TempoIDE.UserControls
 {
     public partial class ColoredLabel
     {
-        public void AppendText(IEnumerable<char> text, int index = -1)
-        {
-            if (index == -1)
-            {
-                index = Characters.Count;
-            }
-            
-            foreach (var character in text)
-                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
-            
-            TextChanged?.Invoke(this, default);
-        }
-        
         public void AppendText(char character, int index = -1)
         {
             if (index == -1)
@@ -33,6 +20,19 @@ namespace TempoIDE.UserControls
 
             TextChanged?.Invoke(this, default);
         }
+        
+        public void AppendText(IEnumerable<char> text, int index = -1)
+        {
+            if (index == -1)
+            {
+                index = Characters.Count;
+            }
+            
+            foreach (var character in text)
+                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
+            
+            InvalidateTextChanged();
+        }
 
         public void AppendText(SyntaxChar character, int index = -1)
         {
@@ -43,7 +43,7 @@ namespace TempoIDE.UserControls
             
             AppendCharacter(character, index);
             
-            TextChanged?.Invoke(this, default);
+            InvalidateTextChanged();
         }
 
         public void AppendText(IEnumerable<SyntaxChar> syntaxChars, int index = -1)
@@ -56,6 +56,11 @@ namespace TempoIDE.UserControls
             foreach (var character in syntaxChars)
                 AppendCharacter(character, index++);
             
+            InvalidateTextChanged();
+        }
+
+        public void InvalidateTextChanged()
+        {
             TextChanged?.Invoke(this, default);
         }
         
@@ -153,7 +158,7 @@ namespace TempoIDE.UserControls
 
         public SyntaxCharCollection[] GetLines(bool omitNewLines = false)
         {
-            var lines = new List<SyntaxCharCollection> { new SyntaxCharCollection() };
+            var lines = new List<SyntaxCharCollection> { new() };
             var currentIndex = 0;
 
             foreach (var character in Characters)

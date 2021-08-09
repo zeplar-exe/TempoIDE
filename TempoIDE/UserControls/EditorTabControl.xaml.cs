@@ -10,7 +10,7 @@ namespace TempoIDE.UserControls
     {
         public EditorTabItem SelectedItem { get; private set; }
         
-        public ObservableCollection<string> Files { get; } = new ObservableCollection<string>(); 
+        public ObservableCollection<string> Files { get; } = new(); 
         
         public EditorTabControl()
         {

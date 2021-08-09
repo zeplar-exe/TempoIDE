@@ -66,10 +66,10 @@ namespace TempoIDE.Windows
 
             InputBindings.AddRange(new List<KeyBinding>
             {
-                new KeyBinding(new CopyTextCommand(), shortcuts.Copy.ToGesture()),
-                new KeyBinding(new PasteTextCommand(), shortcuts.Paste.ToGesture()),
-                new KeyBinding(new CutTextCommand(), shortcuts.Cut.ToGesture()),
-                new KeyBinding(new SelectAllTextCommand(), shortcuts.SelectAll.ToGesture())
+                new(new CopyTextCommand(), shortcuts.Copy.ToGesture()),
+                new(new PasteTextCommand(), shortcuts.Paste.ToGesture()),
+                new(new CutTextCommand(), shortcuts.Cut.ToGesture()),
+                new(new SelectAllTextCommand(), shortcuts.SelectAll.ToGesture())
             });
         }
 

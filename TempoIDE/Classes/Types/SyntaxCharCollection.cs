@@ -5,7 +5,7 @@ namespace TempoIDE.Classes.Types
 {
     public class SyntaxCharCollection : IReadOnlyCollection<SyntaxChar>
     {
-        private List<SyntaxChar> items = new List<SyntaxChar>();
+        private List<SyntaxChar> items = new();
 
         public int Count => items.Count;
         public bool IsReadOnly => false;

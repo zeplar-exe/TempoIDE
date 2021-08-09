@@ -13,7 +13,7 @@ namespace TempoIDE.UserControls
         public int CaretIndex { get; private set; }
         public float CaretWidth { get; set; } = 1;
 
-        public IntRange SelectionRange = new IntRange(0, 0);
+        public IntRange SelectionRange = new(0, 0);
 
         public int TabSize { get; set; } = 4;
         public bool IsReadOnly { get; set; }

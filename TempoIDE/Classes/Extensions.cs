@@ -113,7 +113,7 @@ namespace TempoIDE.Classes
             if (n < min)
                 return min;
 
-            return min;
+            return n;
         }
         
         public static float Clamp(float n, float min, float max)
