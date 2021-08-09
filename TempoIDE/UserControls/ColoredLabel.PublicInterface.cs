@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using TempoIDE.Classes.SyntaxSchemes;
@@ -60,6 +61,18 @@ namespace TempoIDE.UserControls
         
         public DpiScale GetDpi() => VisualTreeHelper.GetDpi(this);
         public double GetTextDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
+        
+        public string GetCharactersFromIndex(int index, int places)
+        {
+            var range = new IntRange(index, index + places).Arrange();
+            var characters = new StringBuilder();
+            
+            foreach (int n in range)
+                if (n >= 0 && n < Characters.Count)
+                    characters.Append(Characters[n].Value);
+
+            return characters.ToString();
+        }
 
         private CharDrawInfo GetDefaultDrawInfo()
         {

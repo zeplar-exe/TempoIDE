@@ -60,7 +60,7 @@ namespace TempoIDE.UserControls
             }
         }
 
-        private int GetCaretIndexAtOffset(IntVector offset)
+        private int GetIndexAtOffset(IntVector offset)
         {
             if (!VerifyCaretOffset(offset))
                 return -1;
@@ -78,7 +78,7 @@ namespace TempoIDE.UserControls
             return totalIndex;
         }
 
-        private IntVector GetCaretOffsetAtIndex(int index)
+        private IntVector GetOffsetAtIndex(int index)
         {
             var lines = TextArea.GetLines();
 

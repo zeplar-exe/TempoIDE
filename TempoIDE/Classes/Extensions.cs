@@ -58,16 +58,6 @@ namespace TempoIDE.Classes
             }
             
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
-        } 
-        
-        public static TCollectionType LastIndex<TCollectionType>(this IList<TCollectionType> collection)
-        {
-            if (collection.Count == 0)
-            {
-                throw new IndexOutOfRangeException($"Collection {collection} is empty.");
-            }
-            
-            return collection[^1];
         }
 
         public static T ToRealValue<T>(this T? nullable) where T : struct
@@ -107,18 +97,45 @@ namespace TempoIDE.Classes
             return new KeyGesture(gestureKey, gestureModifiers);
         }
 
-        public static string FromGesture(this KeyGesture value)
+        public static string[] Split(this string str, string separator)
         {
-            var gesture = value;
-            var text = $"{gesture.Key.ToString()}";
-            
-            foreach (var name in gesture.Modifiers.ToString().Split(", "))
-            {
-                if (Enum.TryParse(name, out ModifierKeys modifier))
-                    text += "+" + name;
-            }
-            
-            return text;
+            return str.Split(new[] { separator }, StringSplitOptions.None);
+        }
+    }
+
+    public static class MathExt
+    {
+        public static int Clamp(int n, int min, int max)
+        {
+            if (n > max)
+                return max;
+
+            if (n < min)
+                return min;
+
+            return min;
+        }
+        
+        public static float Clamp(float n, float min, float max)
+        {
+            if (n > max)
+                return max;
+
+            if (n < min)
+                return min;
+
+            return min;
+        }
+        
+        public static double Clamp(double n, double min, double max)
+        {
+            if (n > max)
+                return max;
+
+            if (n < min)
+                return min;
+
+            return min;
         }
     }
 }

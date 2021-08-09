@@ -1,6 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -54,7 +55,7 @@ namespace TempoIDE.UserControls
             var clickPos = mouse.GetPosition(this);
             var lines = TextArea.GetLines();
 
-            var line = Math.Clamp(
+            var line = MathExt.Clamp(
                 (int) Math.Floor(clickPos.Y / TextArea.LineHeight),
                 0,
                 TextArea.LineCount - 1
@@ -98,7 +99,7 @@ namespace TempoIDE.UserControls
                 }
             }
             
-            column = Math.Clamp(column, 0, int.MaxValue);
+            column = MathExt.Clamp(column, 0, int.MaxValue);
             
             return new IntVector(column, line);
         }

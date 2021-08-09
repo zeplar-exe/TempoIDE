@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
 namespace TempoIDE.UserControls
@@ -72,7 +73,7 @@ namespace TempoIDE.UserControls
                     AutoCompletions.Index--;
             }
 
-            SelectedIndex = Math.Clamp(newIndex, 0, Items.Count);
+            SelectedIndex = MathExt.Clamp(newIndex, 0, Items.Count);
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 
 namespace TempoIDE.Classes.Types
 {
@@ -17,18 +18,17 @@ namespace TempoIDE.Classes.Types
             
             if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
             {
-                // TODO: Figure out how to use MSBuild without mscorlib fucking up
-                // var workspace = MSBuildWorkspace.Create();
-                // var solution = workspace.OpenSolutionAsync(EnvironmentHelper.EnvironmentPath.FullName).Result;
-                //
-                // foreach (var project in solution.Projects)
-                // {
-                //     try
-                //     {
-                //         Compilations[project.Id] = new CachedCompilation(project);
-                //     }
-                //     catch (ArgumentException e) { /* Project is invalid */  }
-                // }
+                var workspace = MSBuildWorkspace.Create();
+                var solution = workspace.OpenSolutionAsync(EnvironmentHelper.EnvironmentPath.FullName).Result;
+                
+                foreach (var project in solution.Projects)
+                {
+                    try
+                    {
+                        Compilations[project.Id] = new CachedCompilation(project);
+                    }
+                    catch (ArgumentException e) { /* Project is invalid */  }
+                }
             }
         }
 

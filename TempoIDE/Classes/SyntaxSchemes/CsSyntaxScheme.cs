@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
 
@@ -28,7 +29,6 @@ namespace TempoIDE.Classes.SyntaxSchemes
             var tree = CSharpSyntaxTree.ParseText(text);
 
             new KeywordColor(textBox).Visit(tree.GetRoot());
-            Console.WriteLine("---");
         }
 
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
@@ -50,18 +50,39 @@ namespace TempoIDE.Classes.SyntaxSchemes
         private class KeywordColor : CSharpSyntaxWalker
         {
             private readonly ColoredLabel label;
+            private readonly IProgrammingLanguageSyntaxScheme scheme;
 
             public KeywordColor(ColoredLabel label) : base(SyntaxWalkerDepth.Token)
             {
                 this.label = label;
+                scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
+            }
+
+            public override void VisitClassDeclaration(ClassDeclarationSyntax node)
+            {
+                var nameSpan = new IntRange(node.Identifier.SpanStart, node.Identifier.Span.End);
+                
+                label.UpdateIndex(nameSpan, scheme.Type, new Typeface("Verdana"));
+            }
+
+            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
+            {
+                var nameSpan = new IntRange(node.Identifier.SpanStart, node.Identifier.Span.End);
+                
+                label.UpdateIndex(nameSpan, scheme.Method, new Typeface("Verdana"));
+            }
+            
+            public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
+            {
+                var nameSpan = new IntRange(node.SpanStart, node.Span.End);
+
+                label.UpdateIndex(nameSpan, scheme.Member, new Typeface("Verdana"));
             }
 
             public override void VisitToken(SyntaxToken token)
             {
-                Console.WriteLine(token.Kind());
                 if (token.IsKeyword())
                 {
-                    var scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
                     var keywordSpan = new IntRange(token.SpanStart, token.Span.End);
 
                     label.UpdateIndex(keywordSpan, scheme.Identifier, new Typeface("Verdana"));

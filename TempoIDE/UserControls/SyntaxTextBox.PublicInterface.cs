@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
@@ -15,15 +16,14 @@ namespace TempoIDE.UserControls
             
             AutoComplete.Disable();
             
-            var newIndex = GetCaretIndexAtOffset(position);
+            var newIndex = GetIndexAtOffset(position);
             var caretCharacter = newIndex - 1;
 
             if (VerifyIndex(caretCharacter))
             {
                 if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
-                {
-                    position = new IntVector(0, position.Y);
-                }
+                    if (position.X > 0)
+                        position = new IntVector(position.X - 1, position.Y);
             }
 
             CaretOffset = position;
@@ -112,7 +112,7 @@ namespace TempoIDE.UserControls
 
             if (range.Size > 0)
             {
-                MoveCaret(GetCaretOffsetAtIndex(range.Start));
+                MoveCaret(GetOffsetAtIndex(range.Start));
                 
                 TextArea.RemoveIndex(range);
                 ClearSelection();
@@ -154,7 +154,7 @@ namespace TempoIDE.UserControls
         {
             if (SelectionRange.Size > 0)
             {
-                MoveCaret(GetCaretOffsetAtIndex(SelectionRange.Start));
+                MoveCaret(GetOffsetAtIndex(SelectionRange.Start));
                 
                 TextArea.RemoveIndex(SelectionRange);
                 ClearSelection();
@@ -179,18 +179,6 @@ namespace TempoIDE.UserControls
             MoveCaret(new IntVector(0, 0));
         }
 
-        public string GetCharactersFromIndex(int index, int places)
-        {
-            var range = new IntRange(index, index + places).Arrange();
-            var characters = new StringBuilder();
-            
-            foreach (int n in range)
-                if (n >= 0 && n < TextArea.Characters.Count)
-                    characters.Append(TextArea.Characters[n].Value);
-
-            return characters.ToString();
-        }
-        
         public string GetSelectedText()
         {
             if (SelectionRange.Size == 0)

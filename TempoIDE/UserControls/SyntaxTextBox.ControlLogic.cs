@@ -74,7 +74,7 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
 
-                    var preceding = GetCharactersFromIndex(CaretIndex, -TabSize);
+                    var preceding = TextArea.GetCharactersFromIndex(CaretIndex, -TabSize);
                     
                     if (string.IsNullOrWhiteSpace(preceding) && preceding != null)
                         Backspace(preceding.Length);
@@ -99,7 +99,10 @@ namespace TempoIDE.UserControls
 
                         mod = mod == 0 ? TabSize : Math.Abs(mod - TabSize);
 
-                        AppendTextAtCaret(string.Concat(Enumerable.Repeat(" ", mod)));
+                        if (!string.IsNullOrWhiteSpace(TextArea.GetCharactersFromIndex(CaretIndex, mod)))
+                            mod = TabSize;
+                            
+                        AppendTextAtCaret(new string(' ', mod));
                     }
                     else
                     {

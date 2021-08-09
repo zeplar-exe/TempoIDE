@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace TempoIDE.Classes.Types
 {
-    public class SyntaxCharCollection : ICollection<SyntaxChar>
+    public class SyntaxCharCollection : IReadOnlyCollection<SyntaxChar>
     {
         private List<SyntaxChar> items = new List<SyntaxChar>();
 
@@ -12,12 +12,8 @@ namespace TempoIDE.Classes.Types
         
         public double TotalWidth;
 
-        public SyntaxChar this[int index]
-        {
-            get => items[index];
-            set => items[index] = value;
-        }
-        
+        public SyntaxChar this[int index] => items[index];
+
         public void Add(SyntaxChar item)
         {
             TotalWidth += item.Size.Width;

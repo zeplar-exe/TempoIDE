@@ -15,6 +15,7 @@ namespace TempoIDE.Classes.Types
         {
             textBox.AppendTextAtCaret(Value.ReplaceFirst(textBox.GetTypingWord(true), ""));
             
+            textBox.ClearSelection();
             textBox.AutoComplete.Disable();
         }
     }

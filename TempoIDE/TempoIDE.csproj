@@ -3,7 +3,8 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <UseWPF>true</UseWPF>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net48</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -38,6 +39,7 @@
       <PackageReference Include="Microsoft.Build.Tasks.Core" Version="16.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis" Version="3.10.0" />
       <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.10.0" />
+      <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.10.0" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     </ItemGroup>
 
