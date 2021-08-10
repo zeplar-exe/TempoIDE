@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using System.Threading;
 using System.Windows;
 using TempoIDE.Classes;
@@ -12,6 +13,8 @@ namespace TempoIDE.UserControls
         private Thread writerThread;
         
         private bool textChangedBeforeUpdate;
+
+        private Encoding encoding;
         
         private const int WriterCooldown = 2;
 
@@ -40,7 +43,9 @@ namespace TempoIDE.UserControls
             if (string.IsNullOrEmpty(text)) 
                 return false;
             
-            Clipboard.SetText(text, TextDataFormat.UnicodeText);
+            Console.WriteLine(text);
+            
+            Clipboard.SetText(text, TextDataFormat.Text);
                 
             return true;
 
@@ -55,12 +60,12 @@ namespace TempoIDE.UserControls
             
             if (TextEditor.GetSelectedText() == string.Empty)
             {
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
+                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.Text));   
             }
             else
             {
                 TextEditor.Backspace(0);
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));
+                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.Text));
             }
             
             return true;
@@ -69,11 +74,11 @@ namespace TempoIDE.UserControls
         public override bool TryCut()
         {
             var text = TextEditor.GetSelectedText();
-            
+
             if (string.IsNullOrEmpty(text)) 
                 return false;
             
-            Clipboard.SetText(text, TextDataFormat.UnicodeText);
+            Clipboard.SetText(text, TextDataFormat.Text);
             TextEditor.Backspace(0);
         
             return true;
@@ -104,6 +109,10 @@ namespace TempoIDE.UserControls
                 return;
 
             BoundFile = file;
+
+            var cached = EnvironmentHelper.Cache.GetFile(BoundFile);
+
+            encoding = cached?.Encoding ?? Encoding.ASCII;
 
             UpdateText();
 
@@ -157,18 +166,19 @@ namespace TempoIDE.UserControls
             textChangedBeforeUpdate = false;
         }
 
-        public override void UpdateFile()
+        public override async void UpdateFile()
         {
             if (BoundFile == null) 
                 return;
                     
             BoundFile.Refresh();
-
-            using var stream = new FileStream(BoundFile.FullName, FileMode.Open, FileAccess.Write, FileShare.ReadWrite);
-            using var writer = new StreamWriter(stream);
-            stream.SetLength(0);
             
-            writer.WriteAsync(TextEditor.TextArea.Text);
+            using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            stream.Seek(0, SeekOrigin.End);
+
+            var text = TextEditor.TextArea.Text;
+            
+            await stream.WriteAsync(encoding.GetBytes(text), 0, text.Length);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

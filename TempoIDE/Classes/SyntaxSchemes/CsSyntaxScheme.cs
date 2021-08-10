@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -7,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoIDE.Classes.Types;
 using TempoIDE.UserControls;
+using FlowDirection = System.Windows.FlowDirection;
 
 namespace TempoIDE.Classes.SyntaxSchemes
 {
@@ -21,26 +23,25 @@ namespace TempoIDE.Classes.SyntaxSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(ColoredLabel textBox)
+        public void Highlight(ColoredLabel label)
         {
-            textBox.UpdateIndex(new IntRange(0, textBox.Characters.Count), Default, new Typeface("Verdana"));
+            label.UpdateIndex(new IntRange(0, label.Characters.Count), Default, new Typeface("Verdana"));
             
-            var text = textBox.Text;
-            var tree = CSharpSyntaxTree.ParseText(text);
+            var tree = CSharpSyntaxTree.ParseText(label.Text);
+            
+            new KeywordColor(label).Visit(tree.GetRoot());
+        } // TODO: Use EnvironmentCache compilations
 
-            new KeywordColor(textBox).Visit(tree.GetRoot());
-        }
-
-        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
         {
             var xmlData = ResourceCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
-            var typingWord = textBox.GetTypingWord(true);
+            var typingWord = label.GetTypingWord(true);
                  
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
-            
+
             return keywords
                 .Where(kw => kw.Value.StartsWith(typingWord) && kw.Value != typingWord)
                 .Select(kw => new AutoCompletion(kw.Value))
@@ -51,14 +52,15 @@ namespace TempoIDE.Classes.SyntaxSchemes
         {
             private readonly ColoredLabel label;
             private readonly IProgrammingLanguageSyntaxScheme scheme;
+            private FormattedText formatted;
 
             public KeywordColor(ColoredLabel label) : base(SyntaxWalkerDepth.Token)
             {
                 this.label = label;
                 scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
             }
-
-            public override void VisitClassDeclaration(ClassDeclarationSyntax node)
+// TODO: This, then move onto inspections
+            /*public override void VisitClassDeclaration(ClassDeclarationSyntax node)
             {
                 var nameSpan = new IntRange(node.Identifier.SpanStart, node.Identifier.Span.End);
                 
@@ -77,7 +79,7 @@ namespace TempoIDE.Classes.SyntaxSchemes
                 var nameSpan = new IntRange(node.SpanStart, node.Span.End);
 
                 label.UpdateIndex(nameSpan, scheme.Member, new Typeface("Verdana"));
-            }
+            }*/
 
             public override void VisitToken(SyntaxToken token)
             {

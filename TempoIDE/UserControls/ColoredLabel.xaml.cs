@@ -95,20 +95,6 @@ namespace TempoIDE.UserControls
                 var charPos = new Point(lineWidth, line * LineHeight);
                 var charSize = character.Size;
 
-                var renderRect = new Rect(
-                    RenderTransformOrigin.X, 
-                    RenderTransformOrigin.Y,
-                    Math.Abs(RenderTransformOrigin.X * 2),
-                    Math.Abs(RenderTransformOrigin.Y * 2));
-                
-                var topLeftDiff = new Point(charPos.X - renderRect.TopLeft.X, charPos.Y - renderRect.TopLeft.Y);
-                var bottomRightDiff = new Point(charPos.X - renderRect.BottomRight.X, charPos.Y - renderRect.BottomRight.Y);
-
-                if (topLeftDiff.X < 0 || topLeftDiff.Y < 0 || bottomRightDiff.X > Width || bottomRightDiff.Y > Width)
-                {
-                    return;
-                }
-                
                 var charRect = new Rect(charPos, charSize);
                 
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);

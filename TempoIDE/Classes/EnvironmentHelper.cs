@@ -216,7 +216,7 @@ namespace TempoIDE.Classes
                     break;
             }
             
-            Cache.UpdateModels();
+            //TODO: Cache.UpdateModels(); causes build overlap
             AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
     }

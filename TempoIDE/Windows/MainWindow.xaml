@@ -7,7 +7,6 @@
         xmlns:local="clr-namespace:TempoIDE.UserControls"
         xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
         mc:Ignorable="d"
-        Style="{StaticResource {x:Type Window}}"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">

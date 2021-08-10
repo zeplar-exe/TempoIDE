@@ -22,9 +22,9 @@ namespace TempoIDE.Classes.SyntaxSchemes
     {
         public Brush Default { get; }
 
-        public void Highlight(ColoredLabel textBox);
+        public void Highlight(ColoredLabel label);
         
-        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox);
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label);
     }
 
     public interface IProgrammingLanguageSyntaxScheme : ISyntaxScheme

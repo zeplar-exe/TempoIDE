@@ -62,7 +62,7 @@ namespace TempoIDE.UserControls
 
         private int GetIndexAtOffset(IntVector offset)
         {
-            if (!VerifyCaretOffset(offset))
+            if (!VerifyOffset(offset))
                 return -1;
 
             var totalIndex = 0;
@@ -111,7 +111,7 @@ namespace TempoIDE.UserControls
             return index >= 0 && index < TextArea.Characters.Count;
         }
 
-        private bool VerifyCaretOffset(IntVector offset)
+        private bool VerifyOffset(IntVector offset)
         {
             if (offset.X < 0 || offset.Y < 0)
                 return false;

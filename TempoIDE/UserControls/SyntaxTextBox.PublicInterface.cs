@@ -9,9 +9,9 @@ namespace TempoIDE.UserControls
 {
     public partial class SyntaxTextBox
     {
-        public void MoveCaret(IntVector position)
+        public void MoveCaret(IntVector position, bool verifyNewline = false)
         {
-            if (!VerifyCaretOffset(position))
+            if (!VerifyOffset(position))
                 return;
             
             AutoComplete.Disable();
@@ -19,11 +19,12 @@ namespace TempoIDE.UserControls
             var newIndex = GetIndexAtOffset(position);
             var caretCharacter = newIndex - 1;
 
-            if (VerifyIndex(caretCharacter))
+            if (verifyNewline && VerifyIndex(caretCharacter))
             {
-                if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
-                    if (position.X > 0)
-                        position = new IntVector(position.X - 1, position.Y);
+                var nextLine = new IntVector(0, position.Y + 1);
+
+                if (VerifyOffset(nextLine))
+                    position = nextLine;
             }
 
             CaretOffset = position;
@@ -66,6 +67,10 @@ namespace TempoIDE.UserControls
         public void AppendTextAtCaret(char character)
         {
             TextArea.AppendText(new SyntaxChar(character, GetDefaultDrawInfo()), CaretIndex);
+            
+            MoveCaret(character == ColoredLabel.NewLine ?
+                new IntVector(0, CaretOffset.Y + 1) : 
+                new IntVector(CaretOffset.X + 1, CaretOffset.Y));
         }
 
         public void AppendTextAtCaret(IEnumerable<char> characters)
@@ -85,6 +90,10 @@ namespace TempoIDE.UserControls
         public void AppendTextAtCaret(SyntaxChar character)
         {
             TextArea.AppendText(character, CaretIndex);
+            
+            MoveCaret(character.Value == ColoredLabel.NewLine ?
+                new IntVector(0, CaretOffset.Y + 1) : 
+                new IntVector(CaretOffset.X + 1, CaretOffset.Y));
         }
 
         public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
@@ -132,7 +141,7 @@ namespace TempoIDE.UserControls
             if (CaretIndex == 0)
                 return;
 
-            char lastRemovedCharacter = new char();
+            var lastRemovedCharacter = new char();
 
             for (; count > 0; count--)
             {

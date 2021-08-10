@@ -8,12 +8,12 @@ namespace TempoIDE.Classes.SyntaxSchemes
     {
         public Brush Default => Brushes.White;
 
-        public void Highlight(ColoredLabel textBox)
+        public void Highlight(ColoredLabel label)
         {
             
         }
         
-        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox textBox)
+        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
         {
             return null;
         }

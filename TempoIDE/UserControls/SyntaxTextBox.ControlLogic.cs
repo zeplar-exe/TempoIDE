@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -33,7 +34,10 @@ namespace TempoIDE.UserControls
         private void SyntaxTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             overrideCaretVisibility = true;
-
+            
+            if (!VerifyOffset(CaretOffset))
+                MoveCaret(GetOffsetAtIndex(TextArea.Characters.Count));
+            
             TextChanged?.Invoke(sender, e);
         }
 
@@ -122,9 +126,8 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
-                    var newPosition = CaretOffset + new IntVector(-1, 0);
-                    
-                    MoveCaret(newPosition);
+
+                    MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y), true);
 
                     break;
                 }
@@ -132,24 +135,20 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
-                    var newPosition = CaretOffset + new IntVector(1, 0);
                     
-                    MoveCaret(newPosition);
-
+                    MoveCaret(new IntVector(CaretOffset.X + 1, CaretOffset.Y), true);
+                    
                     break;
                 }
                 case Key.Up:
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
-                    var newPosition = CaretOffset + new IntVector(0, -1);
 
                     if (AutoComplete.Enabled)
-                    {
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Backward);
-                    }
                     else
-                        MoveCaret(newPosition);
+                        MoveCaret(new IntVector(CaretOffset.X, CaretOffset.Y - 1));
 
                     break;
                 }
@@ -157,12 +156,11 @@ namespace TempoIDE.UserControls
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
-                    var newPosition = CaretOffset + new IntVector(0, 1);
-                    
+
                     if (AutoComplete.Enabled)
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Forward);
-                    
-                    MoveCaret(newPosition);
+                    else
+                        MoveCaret(new IntVector(CaretOffset.X, CaretOffset.Y + 1));
 
                     break;
                 }
