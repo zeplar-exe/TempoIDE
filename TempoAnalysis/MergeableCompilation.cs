@@ -8,15 +8,21 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace TempoAnalysis
 {
-    public class MergedCompilation
+    public class MergeableCompilation
     {
         public readonly bool Success;
 
-        public readonly CompilationNamespace GlobalNamespace;
+        public CompilationNamespace GlobalNamespace;
 
         public readonly FileInfo Info;
 
-        public MergedCompilation(FileInfo file, params FileInfo[] references)
+        public MergeableCompilation(CompilationNamespace ns)
+        {
+            GlobalNamespace = ns;
+            Success = true;
+        }
+        
+        public MergeableCompilation(FileInfo file, params FileInfo[] references)
         {
             Info = file;
             Info.Refresh();
@@ -108,9 +114,41 @@ namespace TempoAnalysis
             return compMethod;
         }
 
-        public MergedCompilation Merge(params MergedCompilation[] other)
+        public MergeableCompilation Merge(params MergeableCompilation[] others)
         {
-            throw new NotImplementedException();
+            if (others.Length == 0)
+                return this;
+            
+            CompilationNamespace compNamespace;
+
+            if (others.All(c => c.GlobalNamespace.Name == GlobalNamespace.Name))
+            {
+                compNamespace = GlobalNamespace;
+
+                foreach (var comp in others)
+                {
+                    compNamespace.Types.AddRange(comp.GlobalNamespace.Types);
+                    
+                    foreach (var ns in others)
+                    {
+                        if (compNamespace.Namespaces.All(n => !n.TryGetNamespace(ns.GlobalNamespace.Name, out _)))
+                            compNamespace.Namespaces.Add(ns.GlobalNamespace);
+                    } // TODO: Cover every case
+                }
+            }
+            else
+            {
+                compNamespace = new CompilationNamespace("Root");
+                
+                compNamespace.Namespaces.Add(GlobalNamespace);
+                
+                foreach (var comp in others)
+                {
+                    compNamespace.Namespaces.Add(comp.GlobalNamespace);
+                }
+            }
+
+            return new MergeableCompilation(compNamespace);
         }
     }
 }

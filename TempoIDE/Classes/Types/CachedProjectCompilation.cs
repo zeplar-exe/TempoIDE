@@ -11,7 +11,7 @@ namespace TempoIDE.Classes.Types
     {
         public readonly ProjectInSolution Project;
         
-        public MergedCompilation Compilation;
+        public MergeableCompilation Compilation;
 
         public CachedProjectCompilation(ProjectInSolution project)
         {
@@ -22,12 +22,9 @@ namespace TempoIDE.Classes.Types
 
         public void Update()
         {
-            var analysis = CSharpAnalysis.CreateAsync(Project.AbsolutePath, AnalysisType.Project).Result;
+            var analysis = CSharpAnalysisWrapper.CreateAsync(Project.AbsolutePath, AnalysisType.Project).Result;
 
-            if (analysis.Compilations.Count == 0)
-                return;
-
-            Compilation = analysis.Compilations.First().Merge(analysis.Compilations.Skip(1).ToArray());
+            Compilation = analysis.Compilations.FirstOrDefault()?.Merge(analysis.Compilations.Skip(1).ToArray());
         }
     }
 }
