@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoExplorer", "TempoExplo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoAnalysis", "TempoAnalysis\TempoAnalysis.csproj", "{375D1954-393F-4C4D-A8E5-5542EAE806D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpInterpreter", "SharpInterpreter\SharpInterpreter.csproj", "{83774627-DC23-457F-8E45-415ECA4E8C5B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83774627-DC23-457F-8E45-415ECA4E8C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83774627-DC23-457F-8E45-415ECA4E8C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83774627-DC23-457F-8E45-415ECA4E8C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83774627-DC23-457F-8E45-415ECA4E8C5B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
