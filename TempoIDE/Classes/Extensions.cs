@@ -97,11 +97,6 @@ namespace TempoIDE.Classes
             return new KeyGesture(gestureKey, gestureModifiers);
         }
 
-        public static string[] Split(this string str, string separator)
-        {
-            return str.Split(new[] { separator }, StringSplitOptions.None);
-        }
-        
         public static byte[] ReadAllBytes(this BinaryReader reader)
         {
             const int bufferSize = 4096;
@@ -113,43 +108,14 @@ namespace TempoIDE.Classes
                     ms.Write(buffer, 0, count);
                 return ms.ToArray();
             }
-    
-        }
-    }
-
-    public static class MathExt
-    {
-        public static int Clamp(int n, int min, int max)
-        {
-            if (n > max)
-                return max;
-
-            if (n < min)
-                return min;
-
-            return n;
         }
         
-        public static float Clamp(float n, float min, float max)
+        public static double Safe(this double d)
         {
-            if (n > max)
-                return max;
+            if (double.IsNaN(d))
+                return 0;
 
-            if (n < min)
-                return min;
-
-            return min;
-        }
-        
-        public static double Clamp(double n, double min, double max)
-        {
-            if (n > max)
-                return max;
-
-            if (n < min)
-                return min;
-
-            return min;
+            return d;
         }
     }
 }

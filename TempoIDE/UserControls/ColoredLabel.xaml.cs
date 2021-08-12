@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -32,6 +33,8 @@ namespace TempoIDE.UserControls
                 AppendText(value);
             }
         }
+
+        public Rect CullingRange = Rect.Empty;
 
         public int LineCount => GetLines().Length;
         
@@ -89,6 +92,11 @@ namespace TempoIDE.UserControls
             var lineWidth = 0d;
             var index = 0;
             
+            Console.WriteLine(CullingRange.Top / 1.5);
+            Console.WriteLine(CullingRange.Bottom / 1.5);
+            Console.WriteLine(CullingRange.Left / 1.5);
+            Console.WriteLine(CullingRange.Right / 1.5);
+
             OnBeforeRender?.Invoke(drawingContext);
             
             foreach (var character in Characters)
@@ -97,11 +105,19 @@ namespace TempoIDE.UserControls
                 var charSize = character.Size;
 
                 var charRect = new Rect(charPos, charSize);
-                
+
+                if (CullingRange != Rect.Empty)
+                {
+                    // Left and Right are always 0 for some reason
+                    if (charPos.Y < CullingRange.Top)
+                        continue;
+                    if (charPos.Y > CullingRange.Bottom)
+                        return;
+                }
+
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 drawingContext.DrawText(character.FormattedText, charPos);
-                // OPTIMIZE: Performs poorly with large documents
 
                 OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
 

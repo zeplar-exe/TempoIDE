@@ -15,7 +15,7 @@
              MouseLeave="SyntaxTextBox_OnMouseLeave">
     
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <userControls:ColoredLabel 
+        <userControls:ColoredLabel
             x:Name="TextArea"
             OnAfterRender="TextArea_OnAfterRender"
             OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"

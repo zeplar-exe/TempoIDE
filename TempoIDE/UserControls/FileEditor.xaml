@@ -16,7 +16,12 @@
         </Style>
     </local:Editor.Resources>
     
-    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer
+        Name="ScrollView"
+        VerticalScrollBarVisibility="Auto" 
+        HorizontalScrollBarVisibility="Auto"
+        ScrollChanged="ScrollView_OnScrollChanged">
+        
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="70"/>

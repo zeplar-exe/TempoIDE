@@ -3,6 +3,8 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 using TempoIDE.Classes;
 using TempoIDE.Classes.Types;
 
@@ -29,13 +31,30 @@ namespace TempoIDE.UserControls
         {
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
+            
+            UpdateCullingRange();
+        }
+        
+        private void ScrollView_OnScrollChanged(object sender, RoutedEventArgs e)
+        {
+            UpdateCullingRange();
+        }
+
+        private void UpdateCullingRange()
+        {
+            TextEditor.TextArea.CullingRange = new Rect(
+                0,
+                0,
+                ScrollView.HorizontalOffset.Safe() + TextEditor.ActualWidth.Safe(),
+                ScrollView.VerticalOffset.Safe() + TextEditor.ActualHeight.Safe()
+            );
         }
 
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             textChangedBeforeUpdate = true;
         }
-        
+
         public override bool TryCopy()
         {
             var text = TextEditor.GetSelectedText();

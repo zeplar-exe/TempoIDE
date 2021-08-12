@@ -8,7 +8,7 @@ namespace TempoIDE.Classes.Types
         public int Index
         {
             get => index;
-            set => index = MathExt.Clamp(value, 0, Choices.Length - 1);
+            set => index = Math.Clamp(value, 0, Choices.Length - 1);
         }
         public AutoCompletion Selected => Choices.Length > 0 ? Choices[Index] : null;
 

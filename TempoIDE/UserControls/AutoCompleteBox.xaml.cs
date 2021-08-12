@@ -73,7 +73,7 @@ namespace TempoIDE.UserControls
                     AutoCompletions.Index--;
             }
 
-            SelectedIndex = MathExt.Clamp(newIndex, 0, Items.Count);
+            SelectedIndex = Math.Clamp(newIndex, 0, Items.Count);
         }
     }
 }
