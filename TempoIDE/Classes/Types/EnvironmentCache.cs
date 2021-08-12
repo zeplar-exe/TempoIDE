@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Microsoft.Build.Construction;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.MSBuild;
+using TempoAnalysis;
 
 namespace TempoIDE.Classes.Types
 {
     public class EnvironmentCache
     {
-        public Dictionary<ProjectId, CachedCompilation> Compilations = new();
+        public Dictionary<string, CachedProjectCompilation> Compilations = new();
         private readonly Dictionary<string, CachedFile> fileData = new();
         
         public void UpdateModels()
@@ -18,17 +19,10 @@ namespace TempoIDE.Classes.Types
             
             if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
             {
-                var workspace = MSBuildWorkspace.Create();
-                var solution = workspace.OpenSolutionAsync(EnvironmentHelper.EnvironmentPath.FullName).Result;
+                var solution = SolutionFile.Parse(EnvironmentHelper.EnvironmentPath.FullName);
                 
-                foreach (var project in solution.Projects)
-                {
-                    try
-                    {
-                        Compilations[project.Id] = new CachedCompilation(project);
-                    }
-                    catch (ArgumentException e) { /* Project is invalid */  }
-                }
+                foreach (var project in solution.ProjectsInOrder)
+                    Compilations[project.ProjectGuid] = new CachedProjectCompilation(project);
             }
         }
 

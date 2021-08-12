@@ -5,8 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoExplorer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="Select a file" Height="350" Width="525"
+        Background="DimGray">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30"/> 
+    </WindowChrome.WindowChrome>
+    
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.3*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.15*"/>
+        </Grid.RowDefinitions>
+            
+        <Border Grid.Row="0">
+            <Grid>
+                <TextBlock Text="{Binding
+                    Path=Title, 
+                    RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"/>
+                
+                
+            </Grid>
+        </Border>
         
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="0, 1, 0, 1">
+            <Grid>
+                
+            </Grid>
+        </Border>
+        
+        <Border Grid.Row="2">
+            <Grid>
+                
+            </Grid>
+        </Border>
     </Grid>
 </Window>

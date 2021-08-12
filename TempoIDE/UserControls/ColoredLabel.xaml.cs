@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -100,6 +101,7 @@ namespace TempoIDE.UserControls
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 drawingContext.DrawText(character.FormattedText, charPos);
+                // OPTIMIZE: Performs poorly with large documents
 
                 OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
 

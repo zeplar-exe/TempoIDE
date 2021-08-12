@@ -51,6 +51,10 @@
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
         </ApplicationDefinition>
+        <Compile Include="FilterExtension.cs" />
+        <Compile Include="Test.xaml.cs">
+          <DependentUpon>Test.xaml</DependentUpon>
+        </Compile>
         <Page Include="FileExplorer.xaml">
             <Generator>MSBuild:Compile</Generator>
             <SubType>Designer</SubType>
@@ -63,6 +67,7 @@
             <DependentUpon>FileExplorer.xaml</DependentUpon>
             <SubType>Code</SubType>
         </Compile>
+        <Page Include="Test.xaml" />
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Properties\AssemblyInfo.cs">
