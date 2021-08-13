@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -8,6 +11,9 @@ using System.Windows.Media;
 using TempoControls.CompletionProviders;
 using TempoControls.Core.Types;
 using TempoControls.SyntaxSchemes;
+using Brushes = System.Windows.Media.Brushes;
+using Point = System.Windows.Point;
+using Size = System.Windows.Size;
 
 namespace TempoControls.Controls
 {
@@ -71,7 +77,6 @@ namespace TempoControls.Controls
         
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            Scheme?.Highlight(this);
             InvalidateMeasure();
         }
         
@@ -88,14 +93,17 @@ namespace TempoControls.Controls
             base.OnRender(drawingContext);
             
             OnBeforeRender?.Invoke(drawingContext);
-            
-            var line = 0;
 
-            var lineWidth = 0d;
+            var startIndex = -1;
             var index = 0;
+            var line = 0;
+            var lineWidth = 0d;
 
-            foreach (var character in Characters)
+            var text = "";
+
+            for (; index < Characters.Count; index++)
             {
+                var character = Characters[index];
                 var charPos = new Point(lineWidth, line * LineHeight);
                 var charSize = character.Size;
 
@@ -107,17 +115,19 @@ namespace TempoControls.Controls
                     if (charPos.Y < CullingRange.Top)
                         continue;
                     if (charPos.Y > CullingRange.Bottom)
-                        return;
+                        break;
                 }
 
+                if (startIndex == -1)
+                    startIndex = index;
+
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
-
-                drawingContext.DrawText(character.FormattedText, charPos);
-
+                
+                text += character.Value;
+                
                 OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 lineWidth += charSize.Width;
-                index++;
 
                 if (character.Value == NewLine)
                 {
@@ -125,6 +135,22 @@ namespace TempoControls.Controls
                     lineWidth = 0d;
                 }
             }
+            
+            var formatted = new FormattedText(
+                text, 
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                new Typeface("Verdana"),
+                FontSize, Brushes.White, 
+                GetTextDpi());
+
+            if (startIndex == -1)
+                startIndex = 0;
+
+            formatted.LineHeight = LineHeight;
+            Scheme.Highlight(this, new HighlightInfo(formatted, new IntRange(startIndex, index)));
+
+            drawingContext.DrawText(formatted, new Point(0, 0));
 
             OnAfterRender?.Invoke(drawingContext);
         }

@@ -125,7 +125,7 @@ namespace TempoControls.Controls
                     e.Handled = true;
                     overrideCaretVisibility = true;
 
-                    MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y), true);
+                    MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
 
                     break;
                 }
@@ -134,7 +134,7 @@ namespace TempoControls.Controls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     
-                    MoveCaret(new IntVector(CaretOffset.X + 1, CaretOffset.Y), true);
+                    MoveCaret(new IntVector(CaretOffset.X + 1, CaretOffset.Y));
                     
                     break;
                 }

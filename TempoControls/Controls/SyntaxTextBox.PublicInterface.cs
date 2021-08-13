@@ -9,7 +9,7 @@ namespace TempoControls.Controls
 {
     public partial class SyntaxTextBox
     {
-        public void MoveCaret(IntVector position, bool verifyNewline = false)
+        public void MoveCaret(IntVector position)
         {
             if (!VerifyOffset(position))
                 return;
@@ -19,12 +19,17 @@ namespace TempoControls.Controls
             var newIndex = GetIndexAtOffset(position);
             var caretCharacter = newIndex - 1;
 
-            if (verifyNewline && VerifyIndex(caretCharacter))
+            if (VerifyIndex(caretCharacter))
             {
-                var nextLine = new IntVector(0, position.Y + 1);
+                if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
+                {
+                    var newPos = GetOffsetAtIndex(caretCharacter);
+                    
+                    if (newPos.Y != position.Y)
+                        return;
 
-                if (VerifyOffset(nextLine))
-                    position = nextLine;
+                    position = new IntVector(position.X - 1, position.Y);
+                }
             }
 
             CaretOffset = position;
@@ -66,7 +71,7 @@ namespace TempoControls.Controls
 
         public void AppendTextAtCaret(char character)
         {
-            TextArea.AppendText(new SyntaxChar(character, GetDefaultDrawInfo()), CaretIndex);
+            TextArea.AppendText(new SyntaxChar(character, TextArea.GetDefaultDrawInfo()), CaretIndex);
             
             MoveCaret(character == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
@@ -77,13 +82,13 @@ namespace TempoControls.Controls
         {
             if (characters.ToString() == Environment.NewLine)
             {
-                TextArea.Characters.Insert(CaretIndex, new SyntaxChar('\0', GetDefaultDrawInfo()));
+                TextArea.Characters.Insert(CaretIndex, new SyntaxChar('\0', TextArea.GetDefaultDrawInfo()));
             }
             else
             {
                 foreach (var character in characters)
                 {
-                    TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, GetDefaultDrawInfo()));
+                    TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, TextArea.GetDefaultDrawInfo()));
 
                     MoveCaret(character == ColoredLabel.NewLine ?
                         new IntVector(0, CaretOffset.Y + 1) : 
@@ -118,11 +123,6 @@ namespace TempoControls.Controls
         }
         
         public double GetDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
-
-        private CharDrawInfo GetDefaultDrawInfo()
-        {
-            return new CharDrawInfo(TextArea.FontSize, new Typeface("Verdana"), GetDpi(), Brushes.White);
-        }
 
         #endregion
 

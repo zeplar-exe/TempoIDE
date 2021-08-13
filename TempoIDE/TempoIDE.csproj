@@ -35,7 +35,6 @@
 
     <ItemGroup>
       <EmbeddedResource Remove="packages\**" />
-      <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
       <None Remove="ProgramData\intellisense.cs.xml" />
       <EmbeddedResource Update="Properties\Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
@@ -81,6 +80,10 @@
     <ItemGroup>
       <ProjectReference Include="..\TempoAnalysis\TempoAnalysis.csproj" />
       <ProjectReference Include="..\TempoControls\TempoControls.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources\Configs" />
     </ItemGroup>
 
 </Project>

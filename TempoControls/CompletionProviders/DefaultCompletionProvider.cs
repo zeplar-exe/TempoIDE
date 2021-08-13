@@ -7,7 +7,7 @@ namespace TempoControls.CompletionProviders
     {
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
         {
-            throw new System.NotImplementedException();
+            return null;
         }
     }
 }

@@ -89,9 +89,12 @@ namespace TempoControls.Controls
             return characters.ToString();
         }
 
-        private CharDrawInfo GetDefaultDrawInfo()
+        internal CharDrawInfo GetDefaultDrawInfo()
         {
-            return new CharDrawInfo(FontSize, new Typeface("Verdana"), GetTextDpi(), Brushes.White);
+            return new CharDrawInfo(
+                FontSize,
+                new Typeface("Verdana"),
+                GetTextDpi());
         }
 
         private void AppendCharacter(SyntaxChar character, int index)
@@ -120,29 +123,6 @@ namespace TempoControls.Controls
         public void SetCompletionProvider(string providerExtension)
         {
             CompletionProvider = CompletionProviderFactory.FromExtension(providerExtension);
-        }
-
-        public void UpdateIndex(int index, SyntaxChar newCharacter)
-        {
-            Characters[index] = newCharacter;
-        }
-        
-        public void UpdateIndex(IntRange indices, SyntaxChar newCharacter)
-        {
-            foreach (int index in indices)
-                UpdateIndex(index, newCharacter);
-        }
-        
-        public void UpdateIndex(int index, Brush color, Typeface typeface)
-        {
-            Characters[index] = new SyntaxChar(Characters[index].Value,
-                new CharDrawInfo(FontSize, typeface, GetTextDpi(), color));
-        }
-        
-        public void UpdateIndex(IntRange indices, Brush color, Typeface typeface)
-        {
-            foreach (int index in indices)
-                UpdateIndex(index, color, typeface);
         }
 
         public void RemoveIndex(int index)

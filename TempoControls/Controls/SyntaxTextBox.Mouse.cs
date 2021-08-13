@@ -97,9 +97,10 @@ namespace TempoControls.Controls
                     }
                 }
             }
-            
-            column = Math.Clamp(column, 0, int.MaxValue);
-            
+
+            if (column < 0)
+                column = 0;
+
             return new IntVector(column, line);
         }
     }

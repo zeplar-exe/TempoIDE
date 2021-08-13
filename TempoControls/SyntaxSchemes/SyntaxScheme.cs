@@ -21,7 +21,7 @@ namespace TempoControls.SyntaxSchemes
     {
         public Brush Default { get; }
 
-        public void Highlight(ColoredLabel label);
+        public void Highlight(ColoredLabel label, HighlightInfo info);
     }
 
     public interface IProgrammingLanguageSyntaxScheme : ISyntaxScheme

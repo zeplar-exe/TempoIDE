@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -17,24 +19,30 @@ namespace TempoControls.SyntaxSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(ColoredLabel label)
+        public void Highlight(ColoredLabel label, HighlightInfo info)
         {
-            label.UpdateIndex(new IntRange(0, label.Characters.Count), Default, new Typeface("Verdana"));
+            var tree = CSharpSyntaxTree.ParseText(
+                string.Concat(
+                    label.Characters
+                        .Skip(info.Range.Start)
+                        .Take(info.Range.Size)
+                        .Select(c => c.Value)
+                    )
+                );
             
-            var tree = CSharpSyntaxTree.ParseText(label.Text);
-            
-            new KeywordColor(label).Visit(tree.GetRoot());
-        } // TODO: Use EnvironmentCache compilations
+            new KeywordColor(label, info).Visit(tree.GetRoot());
+        }
 
         private class KeywordColor : CSharpSyntaxWalker
         {
             private readonly ColoredLabel label;
+            private readonly HighlightInfo info;
             private readonly IProgrammingLanguageSyntaxScheme scheme;
-            private FormattedText formatted;
 
-            public KeywordColor(ColoredLabel label) : base(SyntaxWalkerDepth.Token)
+            public KeywordColor(ColoredLabel label, HighlightInfo info) : base(SyntaxWalkerDepth.Token)
             {
                 this.label = label;
+                this.info = info;
                 scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
             }
 // TODO: This, then move onto inspections
@@ -63,9 +71,10 @@ namespace TempoControls.SyntaxSchemes
             {
                 if (token.IsKeyword())
                 {
-                    var keywordSpan = new IntRange(token.SpanStart, token.Span.End);
-
-                    label.UpdateIndex(keywordSpan, scheme.Identifier, new Typeface("Verdana"));
+                    info.ProcessedText.SetForegroundBrush(
+                        scheme.Identifier, 
+                        info.Range.Start + token.SpanStart, 
+                        token.Span.Length);
                 }
             }
         }
