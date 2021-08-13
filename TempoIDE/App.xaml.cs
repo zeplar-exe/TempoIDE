@@ -1,5 +1,5 @@
 ﻿using System.Windows;
-using TempoIDE.Classes;
+using TempoIDE.Core.Static;
 
 namespace TempoIDE
 {

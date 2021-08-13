@@ -3,10 +3,8 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using TempoIDE.Classes;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.Static;
+using TempoIDE.Core.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -136,7 +134,9 @@ namespace TempoIDE.UserControls
             UpdateText();
 
             TextEditor.IsReadOnly = file == null;
+            
             TextEditor.TextArea.SetScheme(BoundFile?.Extension);
+            TextEditor.TextArea.SetCompletionProvider(BoundFile?.Extension);
         }
 
         private void TextWriterThread()

@@ -1,0 +1,13 @@
+<ListBox x:Class="TempoControls.Controls.AutoCompleteBox"
+         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Height="200" Width="150"
+             Style="{StaticResource AutoCompleteBoxStyle}"
+             HorizontalAlignment="Left"
+             SelectionMode="Single">
+    <ListBox.RenderTransform>
+        <TransformGroup>
+            <TranslateTransform x:Name="Translate"/>
+        </TransformGroup>
+    </ListBox.RenderTransform>
+</ListBox>

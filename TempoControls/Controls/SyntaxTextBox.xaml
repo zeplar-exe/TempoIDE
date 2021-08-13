@@ -1,0 +1,31 @@
+<UserControl x:Class="TempoControls.Controls.SyntaxTextBox"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:tempoControls="clr-namespace:TempoControls"
+             xmlns:controls="clr-namespace:TempoControls.Controls"
+             Focusable="True"
+             IsTabStop="True"
+             Loaded="SyntaxTextBox_OnLoaded"
+             PreviewMouseLeftButtonDown="SyntaxTextBox_OnPreviewMouseLeftButtonDown"
+             PreviewMouseMove="SyntaxTextBox_OnPreviewMouseMove"
+             PreviewMouseLeftButtonUp="SyntaxTextBox_OnPreviewMouseLeftButtonUp"
+             GotFocus="SyntaxTextBox_OnGotFocus"
+             LostFocus="SyntaxTextBox_OnLostFocus"
+             TextInput="SyntaxTextBox_OnTextInput"
+             KeyDown="SyntaxTextBox_OnKeyDown"
+             MouseLeave="SyntaxTextBox_OnMouseLeave">
+    
+    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <controls:ColoredLabel
+            x:Name="TextArea"
+            OnAfterRender="TextArea_OnAfterRender"
+            OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"
+            TextChanged="SyntaxTextBox_OnTextChanged"/>
+        
+        <controls:AutoCompleteBox
+            x:Name="AutoComplete"
+            Visibility="Collapsed" 
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top"/>
+    </Grid>
+</UserControl>

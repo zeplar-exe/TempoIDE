@@ -8,7 +8,7 @@
         Title="Select a file" Height="350" Width="525"
         Background="DimGray">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="30"/> 
+        <WindowChrome CaptionHeight="30"/>
     </WindowChrome.WindowChrome>
     
     <Grid>

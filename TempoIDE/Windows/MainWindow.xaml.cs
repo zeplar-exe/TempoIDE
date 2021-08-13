@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using TempoIDE.Classes;
-using TempoIDE.Classes.Commands;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.Commands;
+using TempoIDE.Core.Static;
+using TempoIDE.Core.Types.EventArgs;
 using TempoIDE.Properties;
 using TempoIDE.UserControls;
 

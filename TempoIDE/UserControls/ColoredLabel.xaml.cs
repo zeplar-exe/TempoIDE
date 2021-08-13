@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TempoIDE.Classes.SyntaxSchemes;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.CompletionProviders;
+using TempoIDE.Core.SyntaxSchemes;
+using TempoIDE.Core.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -46,6 +45,7 @@ namespace TempoIDE.UserControls
         public const char NewLine = '\n'; // TODO: Does not work with foreign newlines like \r or \n\r
 
         internal ISyntaxScheme Scheme { get; private set; }
+        internal ICompletionProvider CompletionProvider { get; private set; }
         internal readonly List<SyntaxChar> Characters = new();
 
         public ColoredLabel()
@@ -87,18 +87,13 @@ namespace TempoIDE.UserControls
         {
             base.OnRender(drawingContext);
             
+            OnBeforeRender?.Invoke(drawingContext);
+            
             var line = 0;
 
             var lineWidth = 0d;
             var index = 0;
-            
-            Console.WriteLine(CullingRange.Top / 1.5);
-            Console.WriteLine(CullingRange.Bottom / 1.5);
-            Console.WriteLine(CullingRange.Left / 1.5);
-            Console.WriteLine(CullingRange.Right / 1.5);
 
-            OnBeforeRender?.Invoke(drawingContext);
-            
             foreach (var character in Characters)
             {
                 var charPos = new Point(lineWidth, line * LineHeight);
@@ -123,14 +118,14 @@ namespace TempoIDE.UserControls
 
                 lineWidth += charSize.Width;
                 index++;
-                
+
                 if (character.Value == NewLine)
                 {
                     line++;
                     lineWidth = 0d;
                 }
             }
-            
+
             OnAfterRender?.Invoke(drawingContext);
         }
         

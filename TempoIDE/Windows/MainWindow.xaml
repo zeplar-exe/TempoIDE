@@ -5,7 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
-        xmlns:commands="clr-namespace:TempoIDE.Classes.Commands"
+        xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Background="{DynamicResource PrimaryBackgroundColor}"

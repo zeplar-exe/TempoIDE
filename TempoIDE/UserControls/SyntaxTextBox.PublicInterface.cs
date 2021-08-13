@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -75,15 +75,22 @@ namespace TempoIDE.UserControls
 
         public void AppendTextAtCaret(IEnumerable<char> characters)
         {
-            foreach (var character in characters)
+            if (characters.ToString() == Environment.NewLine)
             {
-                TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, GetDefaultDrawInfo()));
-
-                MoveCaret(character == ColoredLabel.NewLine ?
-                    new IntVector(0, CaretOffset.Y + 1) : 
-                    new IntVector(CaretOffset.X + 1, CaretOffset.Y));
+                TextArea.Characters.Insert(CaretIndex, new SyntaxChar('\0', GetDefaultDrawInfo()));
             }
-            
+            else
+            {
+                foreach (var character in characters)
+                {
+                    TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, GetDefaultDrawInfo()));
+
+                    MoveCaret(character == ColoredLabel.NewLine ?
+                        new IntVector(0, CaretOffset.Y + 1) : 
+                        new IntVector(CaretOffset.X + 1, CaretOffset.Y));
+                }
+            }
+
             TextArea.InvalidateTextChanged();
         }
         

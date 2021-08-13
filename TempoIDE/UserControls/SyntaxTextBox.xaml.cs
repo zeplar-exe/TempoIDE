@@ -1,8 +1,7 @@
 using System;
-using System.Linq;
 using System.Threading;
 using System.Windows;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -42,7 +41,7 @@ namespace TempoIDE.UserControls
         
         private void UpdateAutoCompletion()
         {
-            var newCompletions = TextArea.Scheme?.GetAutoCompletions(this);
+            var newCompletions = TextArea.CompletionProvider?.GetAutoCompletions(this);
 
             if (newCompletions != null && newCompletions.Length != 0)
             {

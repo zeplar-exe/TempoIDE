@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using TempoIDE.Classes.SyntaxSchemes;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.CompletionProviders;
+using TempoIDE.Core.SyntaxSchemes;
+using TempoIDE.Core.Types;
+using TempoIDE.Core.Types.Collections;
 
 namespace TempoIDE.UserControls
 {
@@ -27,10 +30,17 @@ namespace TempoIDE.UserControls
             {
                 index = Characters.Count;
             }
-            
-            foreach (var character in text)
-                AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
-            
+
+            if (text.ToString() == Environment.NewLine)
+            {
+                AppendCharacter(new SyntaxChar('\0', GetDefaultDrawInfo()), index);
+            }
+            else
+            {
+                foreach (var character in text)
+                    AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
+            }
+
             InvalidateTextChanged();
         }
 
@@ -99,18 +109,17 @@ namespace TempoIDE.UserControls
             TextChanged?.Invoke(this, default);
         }
         
+        
+        public void SetScheme(ISyntaxScheme scheme) => Scheme = scheme;
         public void SetScheme(string schemeExtension)
         {
-            SetScheme(
-                schemeExtension == null ? null : SyntaxSchemeFactory.GetColorSchemeByExtension(schemeExtension)
-            );
-            
-            Scheme.Highlight(this);
+            Scheme = SyntaxSchemeFactory.FromExtension(schemeExtension);
         }
-        
-        public void SetScheme(ISyntaxScheme scheme)
+
+        public void SetCompletionProvider(ICompletionProvider provider) => CompletionProvider = provider;
+        public void SetCompletionProvider(string providerExtension)
         {
-            Scheme = scheme;
+            CompletionProvider = CompletionProviderFactory.FromExtension(providerExtension);
         }
 
         public void UpdateIndex(int index, SyntaxChar newCharacter)

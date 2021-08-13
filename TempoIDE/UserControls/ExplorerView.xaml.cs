@@ -5,8 +5,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using TempoIDE.Classes;
-using TempoIDE.Classes.Types;
+using TempoIDE.Core.Static;
+using TempoIDE.Core.Types.EventArgs;
 
 namespace TempoIDE.UserControls
 {
