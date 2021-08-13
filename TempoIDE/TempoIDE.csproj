@@ -16,21 +16,14 @@
       <Compile Update="UserControls\EditorControl.FileHandling.cs">
         <DependentUpon>EditorControl.xaml</DependentUpon>
       </Compile>
-      <Compile Update="UserControls\SyntaxTextBox.ControlLogic.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="UserControls\SyntaxTextBox.PublicInterface.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
       <Compile Remove="packages\**" />
-      <Compile Update="UserControls\ColoredLabel.PublicInterface.cs">
-        <DependentUpon>ColoredLabel.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="UserControls\SyntaxTextBox.Mouse.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
       <Compile Update="UserControls\EditorTabItem.xaml.cs">
         <DependentUpon>EditorTabItem.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
     </ItemGroup>
 
@@ -44,6 +37,10 @@
       <EmbeddedResource Remove="packages\**" />
       <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
       <None Remove="ProgramData\intellisense.cs.xml" />
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
@@ -83,6 +80,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TempoAnalysis\TempoAnalysis.csproj" />
+      <ProjectReference Include="..\TempoControls\TempoControls.csproj" />
     </ItemGroup>
 
 </Project>

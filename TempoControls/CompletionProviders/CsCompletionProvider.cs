@@ -9,7 +9,7 @@ namespace TempoControls.CompletionProviders
     {
         public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
         {
-            var xmlData = ResourceCache.IntellisenseCs;
+            var xmlData = IntellisenseCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");
 
             var typingWord = label.GetTypingWord(true);

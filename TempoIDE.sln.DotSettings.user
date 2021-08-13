@@ -3,8 +3,14 @@
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/ActualSeverity/@EntryValue">INFO</s:String>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoCompiler_002FCs_002FTestResources/@EntryIndexedValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoControls_002FResources/@EntryIndexedValue">True</s:Boolean>
+	
+	
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoIDE_002FProgramData_002FProgramFiles/@EntryIndexedValue">True</s:Boolean>
-	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoIDE_002FProperties_002FResources/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=TempoIDE_002FProperties_002FResources/@EntryIndexedValue">False</s:Boolean>
+	
+	
+	
 	
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>

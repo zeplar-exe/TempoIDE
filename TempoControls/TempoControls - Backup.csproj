@@ -15,6 +15,9 @@
 
     <ItemGroup>
       <EmbeddedResource Include="Resources\Configs\intellisense-cs.xml" />
+      <EmbeddedResource Include="Resources\Icons\cs-icon.png" />
+      <EmbeddedResource Include="Resources\Icons\png-icon.png" />
+      <EmbeddedResource Include="Resources\Icons\xml-icon.png" />
       <EmbeddedResource Update="Resources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>

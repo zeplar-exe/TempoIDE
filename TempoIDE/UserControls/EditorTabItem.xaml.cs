@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TempoControls.Core.Static;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls
@@ -18,7 +19,7 @@ namespace TempoIDE.UserControls
             set
             {
                 boundFile = value;
-                Icon.Source = ResourceCache.ImageFromExtension(BoundFile?.Extension);
+                Icon.Source = IconCache.ImageFromExtension(BoundFile?.Extension);
             }
         }
 

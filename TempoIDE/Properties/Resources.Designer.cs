@@ -22,7 +22,7 @@ namespace TempoIDE.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace TempoIDE.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("TempoIDE.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace TempoIDE.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace TempoIDE.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CsIcon {
+        internal static System.Drawing.Bitmap CsIcon {
             get {
                 object obj = ResourceManager.GetObject("CsIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -71,42 +71,9 @@ namespace TempoIDE.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;root&gt;
-        ///    &lt;keywords&gt;
-        ///        &lt;kw&gt;abstract&lt;/kw&gt;
-        ///        &lt;kw&gt;as&lt;/kw&gt;
-        ///        &lt;kw&gt;base&lt;/kw&gt;
-        ///        &lt;kw&gt;bool&lt;/kw&gt;
-        ///        &lt;kw&gt;break&lt;/kw&gt;
-        ///        &lt;kw&gt;by&lt;/kw&gt;
-        ///
-        ///        &lt;kw&gt;byte&lt;/kw&gt;
-        ///        &lt;kw&gt;case&lt;/kw&gt;
-        ///        &lt;kw&gt;catch&lt;/kw&gt;
-        ///        &lt;kw&gt;char&lt;/kw&gt;
-        ///        &lt;kw&gt;checked&lt;/kw&gt;
-        ///        &lt;kw&gt;class&lt;/kw&gt;
-        ///
-        ///        &lt;kw&gt;const&lt;/kw&gt;
-        ///        &lt;kw&gt;continue&lt;/kw&gt;
-        ///        &lt;kw&gt;decimal&lt;/kw&gt;
-        ///        &lt;kw&gt;default&lt;/kw&gt;
-        ///        &lt;kw&gt;delegate&lt;/kw&gt;
-        ///        &lt;kw&gt;do&lt;/kw&gt;
-        ///        
-        ///        &lt;kw&gt;double&lt;/kw&gt;
-        ///        &lt;kw&gt;desc [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string IntellisenseCs {
-            get {
-                return ResourceManager.GetString("IntellisenseCs", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap PngIcon {
+        internal static System.Drawing.Bitmap PngIcon {
             get {
                 object obj = ResourceManager.GetObject("PngIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -116,7 +83,7 @@ namespace TempoIDE.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap XmlIcon {
+        internal static System.Drawing.Bitmap XmlIcon {
             get {
                 object obj = ResourceManager.GetObject("XmlIcon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

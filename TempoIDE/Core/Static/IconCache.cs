@@ -1,12 +1,10 @@
 using System.Windows.Media.Imaging;
-using System.Xml.Linq;
+using TempoIDE.Properties;
 
-namespace TempoControls.Core.Static
+namespace TempoIDE.Core.Static
 {
-    public static class ResourceCache
+    public static class IconCache
     {
-        public static XDocument IntellisenseCs => XDocument.Parse(Resources.IntellisenseCs);
-        
         public static BitmapImage CsIcon => Resources.CsIcon.ToBitmapImage();
         public static BitmapImage PngIcon => Resources.PngIcon.ToBitmapImage();
         public static BitmapImage XmlIcon => Resources.XmlIcon.ToBitmapImage();

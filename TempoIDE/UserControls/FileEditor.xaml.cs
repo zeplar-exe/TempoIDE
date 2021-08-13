@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using TempoControls.Core.Types;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types;
 
@@ -59,9 +60,7 @@ namespace TempoIDE.UserControls
             
             if (string.IsNullOrEmpty(text)) 
                 return false;
-            
-            Console.WriteLine(text);
-            
+
             Clipboard.SetText(text, TextDataFormat.Text);
                 
             return true;
