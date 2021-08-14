@@ -7,7 +7,7 @@ namespace TempoControls.SyntaxSchemes
     {
         public Brush Default => Brushes.White;
 
-        public void Highlight(ColoredLabel label, HighlightInfo info)
+        public void Highlight(ColoredLabel label, FormattedText processedText)
         {
             
         }

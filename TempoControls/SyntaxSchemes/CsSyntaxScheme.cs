@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoControls.Controls;
 using TempoControls.Core.Types;
 
@@ -19,61 +20,46 @@ namespace TempoControls.SyntaxSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(ColoredLabel label, HighlightInfo info)
+        public void Highlight(ColoredLabel label, FormattedText processedText)
         {
             var tree = CSharpSyntaxTree.ParseText(
                 string.Concat(
                     label.Characters
-                        .Skip(info.Range.Start)
-                        .Take(info.Range.Size)
                         .Select(c => c.Value)
                     )
                 );
             
-            new KeywordColor(label, info).Visit(tree.GetRoot());
+            new KeywordColor(label, processedText).Visit(tree.GetRoot());
         }
 
         private class KeywordColor : CSharpSyntaxWalker
         {
             private readonly ColoredLabel label;
-            private readonly HighlightInfo info;
+            private readonly FormattedText processedText;
             private readonly IProgrammingLanguageSyntaxScheme scheme;
 
-            public KeywordColor(ColoredLabel label, HighlightInfo info) : base(SyntaxWalkerDepth.Token)
+            public KeywordColor(ColoredLabel label, FormattedText processedText) : base(SyntaxWalkerDepth.Token)
             {
                 this.label = label;
-                this.info = info;
+                this.processedText = processedText;
                 scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
             }
-// TODO: This, then move onto inspections
-            /*public override void VisitClassDeclaration(ClassDeclarationSyntax node)
-            {
-                var nameSpan = new IntRange(node.Identifier.SpanStart, node.Identifier.Span.End);
-                
-                label.UpdateIndex(nameSpan, scheme.Type, new Typeface("Verdana"));
-            }
 
-            public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
-            {
-                var nameSpan = new IntRange(node.Identifier.SpanStart, node.Identifier.Span.End);
-                
-                label.UpdateIndex(nameSpan, scheme.Method, new Typeface("Verdana"));
-            }
-            
             public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-            {
-                var nameSpan = new IntRange(node.SpanStart, node.Span.End);
-
-                label.UpdateIndex(nameSpan, scheme.Member, new Typeface("Verdana"));
-            }*/
+            { // TODO: Implement compiler
+                processedText.SetForegroundBrush(
+                    scheme.Member, 
+                    node.Name.SpanStart, 
+                    node.Name.Span.Length);
+            }
 
             public override void VisitToken(SyntaxToken token)
             {
                 if (token.IsKeyword())
                 {
-                    info.ProcessedText.SetForegroundBrush(
+                    processedText.SetForegroundBrush(
                         scheme.Identifier, 
-                        info.Range.Start + token.SpanStart, 
+                        token.SpanStart, 
                         token.Span.Length);
                 }
             }

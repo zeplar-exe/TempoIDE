@@ -38,9 +38,7 @@ namespace TempoControls.Controls
                 AppendText(value);
             }
         }
-
-        public Rect CullingRange = Rect.Empty;
-
+        
         public int LineCount => GetLines().Length;
         
         public int LineHeight { get; set; } = 15;
@@ -93,8 +91,7 @@ namespace TempoControls.Controls
             base.OnRender(drawingContext);
             
             OnBeforeRender?.Invoke(drawingContext);
-
-            var startIndex = -1;
+            
             var index = 0;
             var line = 0;
             var lineWidth = 0d;
@@ -108,18 +105,6 @@ namespace TempoControls.Controls
                 var charSize = character.Size;
 
                 var charRect = new Rect(charPos, charSize);
-
-                if (CullingRange != Rect.Empty)
-                {
-                    // Left and Right are always 0 for some reason
-                    if (charPos.Y < CullingRange.Top)
-                        continue;
-                    if (charPos.Y > CullingRange.Bottom)
-                        break;
-                }
-
-                if (startIndex == -1)
-                    startIndex = index;
 
                 OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
                 
@@ -144,11 +129,9 @@ namespace TempoControls.Controls
                 FontSize, Brushes.White, 
                 GetTextDpi());
 
-            if (startIndex == -1)
-                startIndex = 0;
-
             formatted.LineHeight = LineHeight;
-            Scheme.Highlight(this, new HighlightInfo(formatted, new IntRange(startIndex, index)));
+            
+            Scheme.Highlight(this, formatted);
 
             drawingContext.DrawText(formatted, new Point(0, 0));
 

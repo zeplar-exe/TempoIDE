@@ -25,28 +25,11 @@ namespace TempoIDE.UserControls
         {
             InitializeComponent();
         }
-        
+
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
-            
-            UpdateCullingRange();
-        }
-        
-        private void ScrollView_OnScrollChanged(object sender, RoutedEventArgs e)
-        {
-            UpdateCullingRange();
-        }
-
-        private void UpdateCullingRange()
-        {
-            TextEditor.TextArea.CullingRange = new Rect(
-                0,
-                0,
-                ScrollView.HorizontalOffset.Safe() + TextEditor.ActualWidth.Safe(),
-                ScrollView.VerticalOffset.Safe() + TextEditor.ActualHeight.Safe()
-            );
         }
 
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)

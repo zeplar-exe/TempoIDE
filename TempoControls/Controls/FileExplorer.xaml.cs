@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using TempoControls.Core.Types;
 
-namespace TempoExplorer
+namespace TempoControls.Controls
 {
     public partial class FileExplorer
     {

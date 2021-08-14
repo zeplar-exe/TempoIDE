@@ -20,8 +20,7 @@
     <ScrollViewer
         Name="ScrollView"
         VerticalScrollBarVisibility="Auto" 
-        HorizontalScrollBarVisibility="Auto"
-        ScrollChanged="ScrollView_OnScrollChanged">
+        HorizontalScrollBarVisibility="Auto">
         
         <Grid>
             <Grid.ColumnDefinitions>

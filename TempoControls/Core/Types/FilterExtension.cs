@@ -1,4 +1,4 @@
-namespace TempoExplorer
+namespace TempoControls.Core.Types
 {
     public class FilterExtension
     {
