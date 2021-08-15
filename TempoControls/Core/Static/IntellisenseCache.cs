@@ -1,4 +1,3 @@
-using System.Windows.Media.Imaging;
 using System.Xml.Linq;
 using TempoControls.Properties;
 

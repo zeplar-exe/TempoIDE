@@ -1,13 +1,11 @@
-using System;
 using System.Linq;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using TempoControls.Controls;
-using TempoControls.Core.Types;
+using TempoControls;
 
-namespace TempoControls.SyntaxSchemes
+namespace TempoIDE.SyntaxSchemes
 {
     public class CsSyntaxScheme : IProgrammingLanguageSyntaxScheme
     {
@@ -22,13 +20,8 @@ namespace TempoControls.SyntaxSchemes
 
         public void Highlight(ColoredLabel label, FormattedText processedText)
         {
-            var tree = CSharpSyntaxTree.ParseText(
-                string.Concat(
-                    label.Characters
-                        .Select(c => c.Value)
-                    )
-                );
-            
+            var tree = CSharpSyntaxTree.ParseText(label.Text); // TODO: Handle stuff here
+
             new KeywordColor(label, processedText).Visit(tree.GetRoot());
         }
 
@@ -46,7 +39,7 @@ namespace TempoControls.SyntaxSchemes
             }
 
             public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-            { // TODO: Implement compiler
+            {
                 processedText.SetForegroundBrush(
                     scheme.Member, 
                     node.Name.SpanStart, 

@@ -3,9 +3,9 @@ using System.Windows;
 using System.Windows.Input;
 using TempoControls.Core.Types;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
-    public partial class SyntaxTextBox
+    public partial class ColoredTextBox
     {
         private double selectStartXPosition;
 

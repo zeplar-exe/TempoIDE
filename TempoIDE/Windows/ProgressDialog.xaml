@@ -6,8 +6,7 @@
         xmlns:local="clr-namespace:TempoIDE.Windows"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
-        ResizeMode="NoResize"
-        Title="ProgressDialog" Height="100" Width="300"
+        Title="ProgressDialog" Height="60" Width="270"
         WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.ColumnDefinitions>

@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
@@ -35,6 +36,7 @@ namespace TempoIDE.Core.Static
             .SingleOrDefault(x => x.IsActive);
 
         public static EnvironmentCache Cache;
+        public static Encoding GlobalEncoding = Encoding.UTF8;
 
         public static EnvironmentMode Mode;
         public static FileSystemInfo EnvironmentPath;
@@ -92,7 +94,6 @@ namespace TempoIDE.Core.Static
             progressDialog.Completed += delegate { progressDialog.Close(); };
 
             progressDialog.StartAsync();
-            progressDialog.ShowDialog();
         }
 
         private static async void CacheFilesInPath(string path)
@@ -215,7 +216,7 @@ namespace TempoIDE.Core.Static
                     break;
             }
             
-            //TODO: Cache.UpdateModels(); causes build overlap
+            Cache.UpdateModels();
             AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
     }

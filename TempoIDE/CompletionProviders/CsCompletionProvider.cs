@@ -1,13 +1,13 @@
 using System.Linq;
-using TempoControls.Controls;
+using TempoControls;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 
-namespace TempoControls.CompletionProviders
+namespace TempoIDE.CompletionProviders
 {
     public class CsCompletionProvider : ICompletionProvider
     {
-        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
+        public AutoCompletion[] GetAutoCompletions(ColoredTextBox label)
         {
             var xmlData = IntellisenseCache.IntellisenseCs;
             var keywords = xmlData.Root.Element("keywords").Elements("kw");

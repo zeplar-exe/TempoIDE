@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using TempoControls.Core.Static;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls
@@ -33,15 +32,20 @@ namespace TempoIDE.UserControls
             InitializeComponent();
         }
 
-        private void EditorTabItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        public void Select()
         {
             IsSelected = true;
-            Selected?.Invoke(this, new EventArgs());
+            Selected?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void EditorTabItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            Select();
         }
 
         private void Close_OnClick(object sender, RoutedEventArgs e)
         {
-            Closed?.Invoke(this, new EventArgs());
+            Closed?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -1,11 +1,11 @@
-using TempoControls.Controls;
+using TempoControls;
 using TempoControls.Core.Types;
 
-namespace TempoControls.CompletionProviders
+namespace TempoIDE.CompletionProviders
 {
     public class DefaultCompletionProvider : ICompletionProvider
     {
-        public AutoCompletion[] GetAutoCompletions(SyntaxTextBox label)
+        public AutoCompletion[] GetAutoCompletions(ColoredTextBox label)
         {
             return null;
         }

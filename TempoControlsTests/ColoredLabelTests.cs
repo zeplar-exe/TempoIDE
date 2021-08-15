@@ -1,5 +1,6 @@
 using System.Threading;
 using NUnit.Framework;
+using TempoControls;
 using TempoControls.Controls;
 
 namespace TempoControlsTests

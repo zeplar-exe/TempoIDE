@@ -6,9 +6,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TempoControls.Core.Types;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
-    public partial class SyntaxTextBox
+    public partial class ColoredTextBox
     {
         private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
@@ -174,7 +174,6 @@ namespace TempoControls.Controls
             if (range.Size > 0 && range.Contains(index))
             {
                 context.DrawRectangle(Brushes.DarkCyan, null, charRect);
-                // OPTIMIZE: Very slow when selecting many characters
             }
         }
 

@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
-    public partial class SyntaxTextBox
+    public partial class ColoredTextBox
     {
         public void MoveCaret(IntVector position)
         {

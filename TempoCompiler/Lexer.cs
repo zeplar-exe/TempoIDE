@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace TempoCompiler
+﻿namespace TempoCompiler
 {
     public class Lexer
     {
-        
+        // TODO: Work on this to allow easy access to file elements
     }
 
     public enum TokenKind

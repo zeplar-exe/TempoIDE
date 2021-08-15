@@ -1,7 +1,7 @@
 using System.Windows.Media;
-using TempoControls.Controls;
+using TempoControls;
 
-namespace TempoControls.SyntaxSchemes
+namespace TempoIDE.SyntaxSchemes
 {
     public class DefaultSyntaxScheme : ISyntaxScheme
     {

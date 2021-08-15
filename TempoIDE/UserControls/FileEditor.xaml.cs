@@ -1,11 +1,10 @@
-using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Media;
 using TempoControls.Core.Types;
 using TempoIDE.Core.Static;
-using TempoIDE.Core.Types;
 
 namespace TempoIDE.UserControls
 {
@@ -15,8 +14,6 @@ namespace TempoIDE.UserControls
         
         private bool textChangedBeforeUpdate;
 
-        private Encoding encoding;
-        
         private const int WriterCooldown = 2;
 
         public override bool IsFocused => TextEditor.IsFocused;
@@ -31,7 +28,7 @@ namespace TempoIDE.UserControls
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         }
-
+        
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             textChangedBeforeUpdate = true;
@@ -109,16 +106,15 @@ namespace TempoIDE.UserControls
 
             BoundFile = file;
 
-            var cached = EnvironmentHelper.Cache.GetFile(BoundFile);
-
-            encoding = cached?.Encoding ?? Encoding.ASCII;
-
             UpdateText();
 
             TextEditor.IsReadOnly = file == null;
             
-            TextEditor.TextArea.SetScheme(BoundFile?.Extension);
-            TextEditor.TextArea.SetCompletionProvider(BoundFile?.Extension);
+            TextEditor.TextArea.SetScheme(
+                ColoredLabelAssociator.SchemeFromExtension(BoundFile?.Extension));
+            
+            TextEditor.TextArea.SetCompletionProvider(
+                ColoredLabelAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
         }
 
         private void TextWriterThread()
@@ -173,13 +169,13 @@ namespace TempoIDE.UserControls
                 return;
                     
             BoundFile.Refresh();
-            
-            using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+
+            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
 
             var text = TextEditor.TextArea.Text;
             
-            await stream.WriteAsync(encoding.GetBytes(text), 0, text.Length);
+            await stream.WriteAsync(EnvironmentHelper.GlobalEncoding.GetBytes(text), 0, text.Length);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

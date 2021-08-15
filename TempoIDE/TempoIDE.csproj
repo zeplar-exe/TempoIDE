@@ -28,6 +28,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="ByteSize" Version="2.0.0" />
       <PackageReference Include="Microsoft.Build" Version="16.10.0" />
       <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
@@ -44,7 +45,6 @@
 
     <ItemGroup>
       <None Remove="packages\**" />
-      <Compile Remove="ExplorerTest\stuff.cs" />
     </ItemGroup>
 
     <ItemGroup>

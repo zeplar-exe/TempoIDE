@@ -3,9 +3,9 @@ using System.Threading;
 using System.Windows;
 using TempoControls.Core.Types;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
-    public partial class SyntaxTextBox
+    public partial class ColoredTextBox
     {
         public Rect CaretRect { get; private set; }
         public IntVector CaretOffset;
@@ -27,7 +27,7 @@ namespace TempoControls.Controls
 
         private bool isSelecting;
 
-        public SyntaxTextBox()
+        public ColoredTextBox()
         {
             InitializeComponent();
         }
@@ -63,7 +63,7 @@ namespace TempoControls.Controls
         {
             if (!VerifyOffset(offset))
                 return -1;
-
+            
             var totalIndex = 0;
             var lines = TextArea.GetLines();
 

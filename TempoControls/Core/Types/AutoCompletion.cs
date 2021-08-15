@@ -12,7 +12,7 @@ namespace TempoControls.Core.Types
             Value = value;
         }
 
-        public virtual void Execute(SyntaxTextBox textBox)
+        public virtual void Execute(ColoredTextBox textBox)
         {
             textBox.AppendTextAtCaret(Value.ReplaceFirst(textBox.GetTypingWord(true), ""));
             

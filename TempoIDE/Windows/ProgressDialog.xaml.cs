@@ -1,13 +1,15 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using TempoIDE.Core.Static;
 
 namespace TempoIDE.Windows
 {
     public partial class ProgressDialog : Window
     {
-        public Queue<ProgressTask> Tasks = new();
+        public readonly Queue<ProgressTask> Tasks = new();
 
         private double ProgressIncrement => 100d / Tasks.Count;
 
@@ -20,6 +22,8 @@ namespace TempoIDE.Windows
 
         public async void StartAsync()
         {
+            Dispatcher.Invoke(Show);
+           
             foreach (var task in Tasks)
             {
                 Header.Text = task.Header;

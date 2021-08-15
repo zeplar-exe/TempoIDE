@@ -1,21 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using TempoControls.CompletionProviders;
 using TempoControls.Core.Types;
-using TempoControls.SyntaxSchemes;
 using Brushes = System.Windows.Media.Brushes;
 using Point = System.Windows.Point;
 using Size = System.Windows.Size;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
     public partial class ColoredLabel : UserControl
     {
@@ -48,8 +44,8 @@ namespace TempoControls.Controls
 
         public const char NewLine = '\n'; // TODO: Does not work with foreign newlines like \r or \n\r
 
-        internal ISyntaxScheme Scheme { get; private set; }
-        internal ICompletionProvider CompletionProvider { get; private set; }
+        public ISyntaxScheme Scheme { get; private set; }
+        public ICompletionProvider CompletionProvider { get; private set; }
         internal readonly List<SyntaxChar> Characters = new();
 
         public ColoredLabel()
@@ -57,15 +53,15 @@ namespace TempoControls.Controls
             InitializeComponent();
         }
         
-        public delegate void BeforeRenderDel(DrawingContext context);
-        public delegate void BeforeCharacterRenderDel(DrawingContext context, Rect rect, int index);
-        public delegate void AfterCharacterRenderDel(DrawingContext context, Rect rect, int index);
-        public delegate void AfterRenderDel(DrawingContext context);
+        public delegate void BeforeRenderHandler(DrawingContext context);
+        public delegate void BeforeCharacterRenderHandler(DrawingContext context, Rect rect, int index);
+        public delegate void AfterCharacterRenderHandler(DrawingContext context, Rect rect, int index);
+        public delegate void AfterRenderHandler(DrawingContext context);
         
-        public event BeforeRenderDel OnBeforeRender;
-        public event BeforeCharacterRenderDel OnBeforeCharacterRender;
-        public event AfterCharacterRenderDel OnAfterCharacterRender;
-        public event AfterRenderDel OnAfterRender;
+        public event BeforeRenderHandler BeforeRender;
+        public event BeforeCharacterRenderHandler BeforeCharacterRender;
+        public event AfterCharacterRenderHandler AfterCharacterRender;
+        public event AfterRenderHandler AfterRender;
 
 
         private void ColoredLabel_OnLoaded(object sender, RoutedEventArgs e)
@@ -90,7 +86,7 @@ namespace TempoControls.Controls
         {
             base.OnRender(drawingContext);
             
-            OnBeforeRender?.Invoke(drawingContext);
+            BeforeRender?.Invoke(drawingContext);
             
             var index = 0;
             var line = 0;
@@ -106,11 +102,11 @@ namespace TempoControls.Controls
 
                 var charRect = new Rect(charPos, charSize);
 
-                OnBeforeCharacterRender?.Invoke(drawingContext, charRect, index);
+                BeforeCharacterRender?.Invoke(drawingContext, charRect, index);
                 
                 text += character.Value;
                 
-                OnAfterCharacterRender?.Invoke(drawingContext, charRect, index);
+                AfterCharacterRender?.Invoke(drawingContext, charRect, index);
 
                 lineWidth += charSize.Width;
 
@@ -135,7 +131,7 @@ namespace TempoControls.Controls
 
             drawingContext.DrawText(formatted, new Point(0, 0));
 
-            OnAfterRender?.Invoke(drawingContext);
+            AfterRender?.Invoke(drawingContext);
         }
         
         

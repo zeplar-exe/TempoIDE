@@ -26,27 +26,24 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Controls\SyntaxTextBox.ControlLogic.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Controls\SyntaxTextBox.Mouse.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Controls\SyntaxTextBox.PublicInterface.cs">
-        <DependentUpon>SyntaxTextBox.xaml</DependentUpon>
-      </Compile>
       <Compile Update="Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
-      <Compile Update="Controls\ColoredLabel.PublicInterface.cs">
-        <DependentUpon>ColoredLabel.xaml</DependentUpon>
-      </Compile>
       <Compile Update="Properties\Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="ColoredTextBox.ControlLogic.cs">
+        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="ColoredTextBox.Mouse.cs">
+        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="ColoredTextBox.PublicInterface.cs">
+        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
       </Compile>
     </ItemGroup>
 

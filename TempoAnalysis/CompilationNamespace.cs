@@ -1,17 +1,18 @@
+using System;
 using System.Collections.Generic;
 
 namespace TempoAnalysis
 {
     public class CompilationNamespace
     {
-        public string Name;
+        public readonly string Name;
 
         public readonly List<CompilationNamespaceType> Types = new();
         public readonly List<CompilationNamespace> Namespaces = new();
 
         public CompilationNamespace(string name)
         {
-            Name = name;
+            Name = name; // TODO: Work on navigation
         }
 
         public bool TryGetNamespace(string name, out CompilationNamespace result)
@@ -51,10 +52,11 @@ namespace TempoAnalysis
 
         public IEnumerable<CompilationNamespace> EnumerateTree()
         {
-            foreach (var comp in Namespaces)
+            for (var iteration = 0; iteration < Namespaces.Count; iteration++)
             {
+                var comp = Namespaces[iteration];
                 yield return comp;
-                
+
                 foreach (var nestedComp in comp.EnumerateTree())
                     yield return nestedComp;
             }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
@@ -91,6 +92,8 @@ namespace TempoIDE.UserControls
 
         public void Refresh()
         {
+            var selectedFile = SelectedItem?.BoundFile;
+            
             TabsPanel.Children.Clear();
 
             foreach (var path in Files.ToArray())
@@ -112,21 +115,43 @@ namespace TempoIDE.UserControls
                 };
                 
                 tab.Editor.Update(fileInfo);
-                tab.Selected += delegate { Open(tab.BoundFile); };
-                tab.MouseMove += delegate
-                {
-                    if (!tab.IsSelected) 
-                        tab.Background = HoveredTabColor;
-                };
-                tab.MouseLeave += delegate
-                {
-                    if (!tab.IsSelected) 
-                        tab.Background = UnselectedTabColor;
-                };
-                tab.Closed += delegate { Close(tab.BoundFile);};
+                
+                tab.Selected += OnTabSelected;
+                tab.MouseMove += OnTabMouseMove;
+                tab.MouseLeave += OnTabMouseLeave;
+                tab.Closed += OnTabClosed;
 
                 TabsPanel.Children.Add(tab);
+                
+                if (selectedFile?.FullName == tab.BoundFile.FullName)
+                    tab.Select();
             }
+        }
+
+        private void OnTabSelected(object sender, EventArgs e)
+        {
+            Open(((EditorTabItem)sender).BoundFile);
+        }
+
+        private void OnTabMouseMove(object sender, EventArgs e)
+        {
+            var tab = (EditorTabItem)sender;
+            
+            if (!tab.IsSelected) 
+                tab.Background = HoveredTabColor;
+        }
+
+        private void OnTabMouseLeave(object sender, EventArgs e)
+        {
+            var tab = (EditorTabItem)sender;
+            
+            if (!tab.IsSelected) 
+                tab.Background = UnselectedTabColor;
+        }
+
+        private void OnTabClosed(object sender, EventArgs e)
+        {
+            Close(((EditorTabItem)sender).BoundFile);
         }
 
         public Editor GetFocusedEditor()

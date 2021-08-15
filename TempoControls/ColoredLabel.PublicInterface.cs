@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
-using TempoControls.CompletionProviders;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
-using TempoControls.SyntaxSchemes;
 
-namespace TempoControls.Controls
+namespace TempoControls
 {
     public partial class ColoredLabel
     {
@@ -114,16 +112,8 @@ namespace TempoControls.Controls
         
         
         public void SetScheme(ISyntaxScheme scheme) => Scheme = scheme;
-        public void SetScheme(string schemeExtension)
-        {
-            Scheme = SyntaxSchemeFactory.FromExtension(schemeExtension);
-        }
 
         public void SetCompletionProvider(ICompletionProvider provider) => CompletionProvider = provider;
-        public void SetCompletionProvider(string providerExtension)
-        {
-            CompletionProvider = CompletionProviderFactory.FromExtension(providerExtension);
-        }
 
         public void RemoveIndex(int index)
         {

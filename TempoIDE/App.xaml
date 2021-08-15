@@ -21,7 +21,7 @@
             </Style>
             
             <Style x:Key="ModalWindowStyle" TargetType="Window" BasedOn="{StaticResource {x:Type Window}}">
-                <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+                <Setter Property="ResizeMode" Value="NoResize"/>
                 <Setter Property="Height" Value="550"/>
                 <Setter Property="Width" Value="800"/>
             </Style>

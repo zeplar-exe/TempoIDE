@@ -1,4 +1,4 @@
-<UserControl x:Class="TempoControls.Controls.SyntaxTextBox"
+<UserControl x:Class="TempoControls.ColoredTextBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:tempoControls="clr-namespace:TempoControls"
@@ -16,11 +16,11 @@
              MouseLeave="SyntaxTextBox_OnMouseLeave">
     
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <controls:ColoredLabel
+        <tempoControls:ColoredLabel
             x:Name="TextArea"
             x:FieldModifier="public"
-            OnAfterRender="TextArea_OnAfterRender"
-            OnBeforeCharacterRender="TextArea_OnBeforeCharacterRender"
+            AfterRender="TextArea_OnAfterRender"
+            BeforeCharacterRender="TextArea_OnBeforeCharacterRender"
             TextChanged="SyntaxTextBox_OnTextChanged"/>
         
         <controls:AutoCompleteBox
