@@ -109,7 +109,7 @@ namespace TempoIDE.UserControls
             UpdateText();
 
             TextEditor.IsReadOnly = file == null;
-            
+
             TextEditor.TextArea.SetScheme(
                 ColoredLabelAssociator.SchemeFromExtension(BoundFile?.Extension));
             

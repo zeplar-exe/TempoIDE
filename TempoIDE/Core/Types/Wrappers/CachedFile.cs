@@ -28,24 +28,25 @@ namespace TempoIDE.Core.Types.Wrappers
             if (!FileInfo.Exists)
                 return;
 
-            await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-            await using var buffer = new BufferedStream(file);
-            using var reader = new BinaryReader(buffer);
-
-            var bom = new byte[4];
-            reader.Read(bom, 0, 4);
-
-            await Task.Run(delegate
+            try
             {
-                try
+
+                await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                await using var buffer = new BufferedStream(file);
+                using var reader = new BinaryReader(buffer);
+
+                var bom = new byte[4];
+                reader.Read(bom, 0, 4);
+
+                await Task.Run(delegate
                 {
                     Content = Encoding.UTF8.GetString(bom.Concat(reader.ReadAllBytes()).ToArray());
-                }
-                catch (OutOfMemoryException)
-                {
-                    ErrorDialogHelper.FileOutOfMemoryException(FileInfo);
-                }
-            });
+                });
+            }
+            catch (OutOfMemoryException)
+            {
+                ErrorDialogHelper.FileOutOfMemoryException(FileInfo);
+            }
         }
     }
 }

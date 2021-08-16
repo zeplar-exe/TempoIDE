@@ -12,9 +12,12 @@ namespace TempoIDE.Core.Static
         {
             EnvironmentHelper.AppDispatcher.Invoke(delegate 
             {
-                var fileSize = ByteSize.FromBits(file.Length).GigaBytes.ToString(CultureInfo.CurrentCulture);
+                var fileSize = ByteSize.FromBits(file.Length).ToString();
+                var message = $"TempoIDE ran out of memory trying to process this file ({fileSize}).";
                 
-                ErrorDialog.ShowError($"TempoIDE ran out of memory and this file is too large to process ({fileSize}).");
+                var dialog = new UserDialog(message, UserResult.Ok);
+
+                dialog.ShowDialog();
             });
         }
     }

@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -11,6 +13,11 @@ namespace TempoIDE.Core.Static
 {
     public static class Extensions
     {
+        public static IEnumerable<Enum> EnumerateFlags(this Enum input)
+        {
+            return Enum.GetValues(input.GetType()).Cast<Enum>().Where(input.HasFlag);
+        }
+        
         public static T FindAncestorOfType<T>(this DependencyObject child) where T : DependencyObject
         {
             var currentParent = child;

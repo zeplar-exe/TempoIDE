@@ -1,11 +1,9 @@
-using System.Linq;
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoControls;
 
-namespace TempoIDE.SyntaxSchemes
+namespace TempoIDE.Core.SyntaxSchemes
 {
     public class CsSyntaxScheme : IProgrammingLanguageSyntaxScheme
     {
@@ -22,29 +20,19 @@ namespace TempoIDE.SyntaxSchemes
         {
             var tree = CSharpSyntaxTree.ParseText(label.Text); // TODO: Handle stuff here
 
-            new KeywordColor(label, processedText).Visit(tree.GetRoot());
+            new KeywordColor(this, processedText).Visit(tree.GetRoot());
         }
 
         private class KeywordColor : CSharpSyntaxWalker
         {
-            private readonly ColoredLabel label;
             private readonly FormattedText processedText;
             private readonly IProgrammingLanguageSyntaxScheme scheme;
 
-            public KeywordColor(ColoredLabel label, FormattedText processedText) : base(SyntaxWalkerDepth.Token)
+            public KeywordColor(IProgrammingLanguageSyntaxScheme scheme, FormattedText processedText) : base(SyntaxWalkerDepth.Token)
             {
-                this.label = label;
                 this.processedText = processedText;
-                scheme = (IProgrammingLanguageSyntaxScheme)label.Scheme;
-            }
-
-            public override void VisitMemberAccessExpression(MemberAccessExpressionSyntax node)
-            {
-                processedText.SetForegroundBrush(
-                    scheme.Member, 
-                    node.Name.SpanStart, 
-                    node.Name.Span.Length);
-            }
+                this.scheme = scheme;
+            } // TODO: Highlighting, THEN inspections
 
             public override void VisitToken(SyntaxToken token)
             {

@@ -10,7 +10,9 @@
         Unknown = 0,
         
         Identifier,
+        ConstModifier,
         ReservedIdentifierModifier,
+        BuiltinType,
 
         Numeric,
         NumericModifier,
@@ -32,30 +34,71 @@
         PrivateModifier,
         InternalModifier,
         ProtectedModifier,
-        
+
+        OverrideModifier,
+        SealedModifier,
+        ReadonlyModifier,
+        ExternModifier,
         AbstractModifier,
         VirtualModifier,
         AsyncModifier,
         StaticModifier,
+        UnsafeModifier,
+        VolatileModifier,
         
-        NamespaceKeyword,
+        FixedKeyword,
+        StackAllocKeyword,
         
+        ThisLiteral,
+        TrueLiteral,
+        FalseLiteral,
+        NullLiteral,
+
         NewKeyword,
         AsKeyword,
-        CaseKeyword,
+        IsKeyword,
+        
+        SizeofKeyword,
+        TypeofKeyword,
+        
+        NamespaceKeyword,
         ClassKeyword,
-        DefaultKeyword,
+        StructKeyword,
+        EnumKeyword,
         DelegateKeyword,
+        
+        OperatorKeyword,
+        
+        InKeyword,
+        OutKeyword,
+        RefKeyword,
 
         ForKeyword,
         ForeachKeyword,
         WhileKeyword,
         DoKeyword,
+        
         ContinueKeyword,
+        BreakKeyword,
+        ReturnKeyword,
         
         IfKeyword,
         ElseKeyword,
         
+        SwitchKeyword,
+        CaseKeyword,
+        GotoKeyword,
+        
+        DefaultKeyword,
+        BaseKeyword,
+        
+        ThrowKeyword,
+        CatchKeyword,
+        FinallyKeyword,
+        UsingKeyword,
+        
+        UncheckedKeyword,
+        CheckedKeyword,
 
         Period, Comma, Colon, Semicolon,
         LeftBrace, RightBrace, 

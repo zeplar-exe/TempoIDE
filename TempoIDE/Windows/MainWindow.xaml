@@ -22,8 +22,7 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <!-- Topbar -->
+        
         <local:TopbarControl Grid.Row="0">
             <local:TopbarControl.Template>
                 <ControlTemplate>
