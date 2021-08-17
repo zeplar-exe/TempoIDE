@@ -21,10 +21,12 @@ namespace TempoIDE.Windows
             typeof(ControlTemplate),
             typeof(ExplorerViewItem)
         );
+        
         public static void SetSectionTemplate(UIElement element, ControlTemplate value)
         {
             element.SetValue(SectionTemplateProperty, value);
         }
+        
         public static ControlTemplate GetSectionTemplate(UIElement element)
         {
             return (ControlTemplate)element?.GetValue(SectionTemplateProperty);

@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using TempoControls.Core.Types;
 
 namespace TempoControls
@@ -9,13 +10,26 @@ namespace TempoControls
     {
         public Rect CaretRect { get; private set; }
         public IntVector CaretOffset;
-        public int CaretIndex { get; private set; }
+        public int CaretIndex => GetIndexAtOffset(CaretOffset);
         public float CaretWidth { get; set; } = 1;
 
         public IntRange SelectionRange = new(0, 0);
 
         public int TabSize { get; set; } = 4;
-        public bool IsReadOnly { get; set; }
+
+        private bool isReadOnly;
+        public bool IsReadOnly
+        {
+            get => isReadOnly;
+            set
+            {
+                isReadOnly = value;
+                Focusable = !value;
+
+                if (!value && IsFocused)
+                    Keyboard.ClearFocus();
+            }
+        }
 
         public event RoutedEventHandler TextChanged;
 
@@ -32,7 +46,7 @@ namespace TempoControls
             InitializeComponent();
         }
         
-        private void SyntaxTextBox_OnLoaded(object sender, RoutedEventArgs e)
+        private void ColoredTextBox_OnLoaded(object sender, RoutedEventArgs e)
         {
             CaretRect = new Rect(0, 0, CaretWidth, TextArea.LineHeight);
         }
@@ -142,9 +156,9 @@ namespace TempoControls
                 {
                     return;
                 }
-
+                
                 Dispatcher.Invoke(delegate { caretVisible = !caretVisible; });
-                Dispatcher.Invoke(TextArea.InvalidateVisual);
+                Dispatcher.Invoke(TextArea.InvalidateVisual);   
             }
         }
         

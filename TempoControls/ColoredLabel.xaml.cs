@@ -133,28 +133,5 @@ namespace TempoControls
 
             AfterRender?.Invoke(drawingContext);
         }
-        
-        
-        private GlyphRun CreateGlyphRun(string text, Point origin)
-        {
-            var glyphTypeface = new GlyphTypeface(new Uri("file:///C:\\WINDOWS\\FONTS\\ARIAL.TTF"));
-
-            var glyphIndices = new ushort[text.Length];
-            var advanceWidths = new double[text.Length];
-
-            for (var index = 0; index < text.Length; index++)
-            {
-                var glyphIndex = (ushort)(text[index] - 29);
-                glyphIndices[index] = glyphIndex;
-                advanceWidths[index] = glyphTypeface.AdvanceWidths[glyphIndex] * FontSize;
-            }
-            
-            return new GlyphRun(
-                glyphTypeface, 0, false, 
-                FontSize, glyphIndices, origin, advanceWidths, 
-                null, null, null,
-                null, null, null
-            );
-        }
     }
 }

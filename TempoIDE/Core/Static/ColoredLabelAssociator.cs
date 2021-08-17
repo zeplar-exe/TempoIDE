@@ -8,24 +8,20 @@ namespace TempoIDE.Core.Static
     {
         public static ISyntaxScheme SchemeFromExtension(string extension)
         {
-            switch (extension.Replace(".", string.Empty))
+            return extension.Replace(".", string.Empty) switch
             {
-                case "cs":
-                    return new CsSyntaxScheme();
-                default:
-                    return new DefaultSyntaxScheme();
-            }
+                "cs" => new CsSyntaxScheme(),
+                _ => new DefaultSyntaxScheme()
+            };
         }
         
         public static ICompletionProvider CompletionProviderFromExtension(string extension)
         {
-            switch (extension.Replace(".", string.Empty))
+            return extension.Replace(".", string.Empty) switch
             {
-                case "cs":
-                    return new CsCompletionProvider();
-                default:
-                    return new DefaultCompletionProvider();
-            }
+                "cs" => new CsCompletionProvider(),
+                _ => new DefaultCompletionProvider()
+            };
         }
     }
 }

@@ -193,6 +193,7 @@ namespace TempoIDE.Core.Static
                     Cache.AddFile(new FileInfo(e.FullPath));
 
                     AppDispatcher.Invoke(LoadExplorer);
+                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Renamed:
@@ -202,12 +203,14 @@ namespace TempoIDE.Core.Static
                     Cache.AddFile(new FileInfo(renamedArgs.FullPath));
                     
                     AppDispatcher.Invoke(LoadExplorer);
+                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Deleted:
                     Cache.RemoveFile(new FileInfo(e.FullPath));
 
                     AppDispatcher.Invoke(LoadExplorer);
+                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Changed:
@@ -217,7 +220,6 @@ namespace TempoIDE.Core.Static
             }
             
             Cache.UpdateModels();
-            AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
         }
     }
 

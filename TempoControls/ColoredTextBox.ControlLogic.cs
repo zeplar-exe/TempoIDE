@@ -10,7 +10,7 @@ namespace TempoControls
 {
     public partial class ColoredTextBox
     {
-        private void SyntaxTextBox_OnGotFocus(object sender, RoutedEventArgs e)
+        private void ColoredTextBox_OnGotFocus(object sender, RoutedEventArgs e)
         {
             if (IsReadOnly)
                 return;
@@ -19,7 +19,7 @@ namespace TempoControls
             caretThread.Start();
         }
 
-        private void SyntaxTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        private void ColoredTextBox_OnLostFocus(object sender, RoutedEventArgs e)
         {
             caretThread?.Interrupt();
             caretVisible = false;
@@ -39,7 +39,7 @@ namespace TempoControls
             TextChanged?.Invoke(sender, e);
         }
 
-        private void SyntaxTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
+        private void ColoredTextBox_OnTextInput(object sender, TextCompositionEventArgs e)
         {
             if (IsReadOnly)
                 return;
@@ -50,7 +50,7 @@ namespace TempoControls
             UpdateAutoCompletion();
         }
         
-        private void SyntaxTextBox_OnKeyDown(object sender, KeyEventArgs e)
+        private void ColoredTextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (IsReadOnly)
                 return;
@@ -63,10 +63,10 @@ namespace TempoControls
                 {
                     e.Handled = true;
 
-                    if (!AutoComplete.Enabled)
-                        AppendTextAtCaret(ColoredLabel.NewLine);
-                    else
+                    if (AutoComplete.Enabled)
                         AutoComplete.Selected?.Execute(this);
+                    else
+                        AppendTextAtCaret(ColoredLabel.NewLine);
                     
                     UpdateAutoCompletion();
                     

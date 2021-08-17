@@ -49,10 +49,17 @@ namespace TempoIDE.Core.Types
         {
             if (file.Exists)
             {
-                if (fileData.TryGetValue(file.FullName, out var cached))
-                    cached.Update();
-                else
-                    fileData.Add(file.FullName, new CachedFile(file));
+                try
+                {
+                    if (fileData.TryGetValue(file.FullName, out var cached))
+                        cached.Update();
+                    else
+                        fileData.Add(file.FullName, new CachedFile(file));
+                }
+                catch (IOException)
+                {
+                    fileData.Remove(file.FullName);
+                }
             }
         }
 

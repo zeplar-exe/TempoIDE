@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TempoControls.Core.Types.Collections
 {
@@ -68,6 +69,11 @@ namespace TempoControls.Core.Types.Collections
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            return string.Concat(items.Select(i => i.Value));
         }
     }
 }

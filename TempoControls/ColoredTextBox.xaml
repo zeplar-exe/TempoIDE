@@ -5,15 +5,16 @@
              xmlns:controls="clr-namespace:TempoControls.Controls"
              Focusable="True"
              IsTabStop="True"
-             Loaded="SyntaxTextBox_OnLoaded"
-             PreviewMouseLeftButtonDown="SyntaxTextBox_OnPreviewMouseLeftButtonDown"
-             PreviewMouseMove="SyntaxTextBox_OnPreviewMouseMove"
-             PreviewMouseLeftButtonUp="SyntaxTextBox_OnPreviewMouseLeftButtonUp"
-             GotFocus="SyntaxTextBox_OnGotFocus"
-             LostFocus="SyntaxTextBox_OnLostFocus"
-             TextInput="SyntaxTextBox_OnTextInput"
-             KeyDown="SyntaxTextBox_OnKeyDown"
-             MouseLeave="SyntaxTextBox_OnMouseLeave">
+             Loaded="ColoredTextBox_OnLoaded"
+             PreviewMouseLeftButtonDown="ColoredTextBox_OnPreviewMouseLeftButtonDown"
+             PreviewMouseMove="ColoredTextBox_OnPreviewMouseMove"
+             PreviewMouseLeftButtonUp="ColoredTextBox_OnPreviewMouseLeftButtonUp"
+             GotFocus="ColoredTextBox_OnGotFocus"
+             LostFocus="ColoredTextBox_OnLostFocus"
+             TextInput="ColoredTextBox_OnTextInput"
+             KeyDown="ColoredTextBox_OnKeyDown"
+             MouseEnter="ColoredTextBox_OnMouseEnter"
+             MouseLeave="ColoredTextBox_OnMouseLeave">
     
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <tempoControls:ColoredLabel

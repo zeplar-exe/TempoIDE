@@ -45,6 +45,9 @@
       <Compile Update="ColoredTextBox.PublicInterface.cs">
         <DependentUpon>ColoredTextBox.xaml</DependentUpon>
       </Compile>
+      <Compile Update="ColoredLabel.PublicInterface.cs">
+        <DependentUpon>ColoredLabel.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
 </Project>

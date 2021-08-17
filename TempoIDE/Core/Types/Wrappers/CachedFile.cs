@@ -30,7 +30,6 @@ namespace TempoIDE.Core.Types.Wrappers
 
             try
             {
-
                 await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 await using var buffer = new BufferedStream(file);
                 using var reader = new BinaryReader(buffer);
@@ -45,7 +44,14 @@ namespace TempoIDE.Core.Types.Wrappers
             }
             catch (OutOfMemoryException)
             {
-                ErrorDialogHelper.FileOutOfMemoryException(FileInfo);
+                var fileSize = ByteSize.FromBits(FileInfo.Length).ToString();
+                    
+                var details = new StringBuilder();
+                details.AppendLine($@"File: {FileInfo.DirectoryName}\{FileInfo.Name}");
+                details.AppendLine($"File size: {fileSize}");
+                    
+                ApplicationHelper.ThrowErrorCode(ApplicationErrorCode.TI_FILE_NOMEM, details.ToString());
+                throw;
             }
         }
     }

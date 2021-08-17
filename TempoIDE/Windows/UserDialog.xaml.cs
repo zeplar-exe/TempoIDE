@@ -12,16 +12,15 @@ namespace TempoIDE.Windows
         public static readonly DependencyProperty BoundResult = DependencyProperty.RegisterAttached(
             "BoundResult",
             typeof(UserResult),
-            typeof(Button),
-            null
+            typeof(Button)
         );
 
-        private static void SetBoundResult(UIElement element, UserResult value)
+        public static void SetBoundResult(UIElement element, UserResult value)
         {
             element.SetValue(BoundResult, value);
         }
 
-        private static UserResult GetBoundResult(UIElement element)
+        public static UserResult GetBoundResult(UIElement element)
         {
             return (UserResult)element.GetValue(BoundResult);
         }

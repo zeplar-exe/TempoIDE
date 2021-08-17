@@ -1,108 +1,36 @@
-﻿namespace TempoCompiler
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
+namespace TempoCompiler
 {
-    public class Lexer
+    public static class Lexer
     {
-        // TODO: Work on this to allow easy access to file elements
-    }
+        public readonly struct LexerTokenDefinition
+        {
+            public readonly LexerTokenType Type;
+            public readonly Regex Regex;
+            public readonly int Precedence;
 
-    public enum TokenKind
-    {
-        Unknown = 0,
-        
-        Identifier,
-        ConstModifier,
-        ReservedIdentifierModifier,
-        BuiltinType,
+            public LexerTokenDefinition(LexerTokenType type, string regex, int precedence)
+            {
+                Type = type;
+                Regex = new Regex(regex);
+                Precedence = precedence;
+            }
 
-        Numeric,
-        NumericModifier,
-        
-        Character,
-        String,
-        VerbatimStringModifier,
-        InterpolationStringModifier,
-        
-        
-        PlusOperator, MinusOperator, MultiplyOperator, DivideOperator, ExponentOperator, ModuloOperator,
-        OrOperator, AndOperator, BitwiseOrOperator, BitwiseAndOperator,
-        EqualsOperator, DoesNotEqualOperator, NotOperator,
-        LessThanOperator, LessThanOrEqualToOperator, MoreThanOperatorOperator, MoreThanOrEqualToOperator,
-        NullCoalesceOperator, NullCoalesceAssignmentOperator, TernaryOperator,
-        
-        
-        PublicModifier,
-        PrivateModifier,
-        InternalModifier,
-        ProtectedModifier,
+            public LexerTokenDefinition(LexerTokenType type, Regex regex, int precedence)
+            {
+                Type = type;
+                Regex = regex;
+                Precedence = precedence;
+            }
+        }
 
-        OverrideModifier,
-        SealedModifier,
-        ReadonlyModifier,
-        ExternModifier,
-        AbstractModifier,
-        VirtualModifier,
-        AsyncModifier,
-        StaticModifier,
-        UnsafeModifier,
-        VolatileModifier,
-        
-        FixedKeyword,
-        StackAllocKeyword,
-        
-        ThisLiteral,
-        TrueLiteral,
-        FalseLiteral,
-        NullLiteral,
+        public readonly struct LexerToken
+        {
 
-        NewKeyword,
-        AsKeyword,
-        IsKeyword,
-        
-        SizeofKeyword,
-        TypeofKeyword,
-        
-        NamespaceKeyword,
-        ClassKeyword,
-        StructKeyword,
-        EnumKeyword,
-        DelegateKeyword,
-        
-        OperatorKeyword,
-        
-        InKeyword,
-        OutKeyword,
-        RefKeyword,
-
-        ForKeyword,
-        ForeachKeyword,
-        WhileKeyword,
-        DoKeyword,
-        
-        ContinueKeyword,
-        BreakKeyword,
-        ReturnKeyword,
-        
-        IfKeyword,
-        ElseKeyword,
-        
-        SwitchKeyword,
-        CaseKeyword,
-        GotoKeyword,
-        
-        DefaultKeyword,
-        BaseKeyword,
-        
-        ThrowKeyword,
-        CatchKeyword,
-        FinallyKeyword,
-        UsingKeyword,
-        
-        UncheckedKeyword,
-        CheckedKeyword,
-
-        Period, Comma, Colon, Semicolon,
-        LeftBrace, RightBrace, 
-        LeftBracket, RightBracket, 
-        LeftParenthesis, RightParenthesis
+        }
     }
 }

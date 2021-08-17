@@ -1,6 +1,7 @@
 using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using TempoControls;
 
 namespace TempoIDE.Core.SyntaxSchemes
@@ -42,6 +43,24 @@ namespace TempoIDE.Core.SyntaxSchemes
                         scheme.Identifier, 
                         token.SpanStart, 
                         token.Span.Length);
+                }
+            }
+
+            public override void VisitLiteralExpression(LiteralExpressionSyntax node)
+            {
+                if (node.IsKind(SyntaxKind.StringLiteralExpression))
+                {
+                    processedText.SetForegroundBrush(
+                        scheme.String, 
+                        node.SpanStart, 
+                        node.Span.Length);
+                }
+                else if (node.IsKind(SyntaxKind.NumericLiteralExpression))
+                {
+                    processedText.SetForegroundBrush(
+                        scheme.Number, 
+                        node.SpanStart, 
+                        node.Span.Length);
                 }
             }
         }

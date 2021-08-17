@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -36,12 +37,12 @@ namespace TempoIDE.UserControls
 
         public override bool TryCopy()
         {
-            var text = TextEditor.GetSelectedText();
+            var text = TextEditor.GetSelectedText().ToString();
             
             if (string.IsNullOrEmpty(text)) 
                 return false;
 
-            Clipboard.SetText(text, TextDataFormat.Text);
+            Clipboard.SetText(text, TextDataFormat.UnicodeText);
                 
             return true;
 
@@ -54,14 +55,14 @@ namespace TempoIDE.UserControls
             if (string.IsNullOrEmpty(text))
                 return false;
             
-            if (TextEditor.GetSelectedText() == string.Empty)
+            if (TextEditor.GetSelectedText().Count == 0)
             {
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.Text));   
+                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
             }
             else
             {
                 TextEditor.Backspace(0);
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.Text));
+                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));
             }
             
             return true;
@@ -69,12 +70,12 @@ namespace TempoIDE.UserControls
 
         public override bool TryCut()
         {
-            var text = TextEditor.GetSelectedText();
+            var text = TextEditor.GetSelectedText().ToString();
 
             if (string.IsNullOrEmpty(text)) 
                 return false;
             
-            Clipboard.SetText(text, TextDataFormat.Text);
+            Clipboard.SetText(text, TextDataFormat.UnicodeText);
             TextEditor.Backspace(0);
         
             return true;
@@ -87,17 +88,7 @@ namespace TempoIDE.UserControls
             return true;
         }
 
-        public override void Refresh()
-        {
-            TextEditor.Clear();
-
-            var text = BoundFile == null
-                ? string.Empty
-                : new StreamReader(BoundFile.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite)).ReadToEnd();
-            
-            TextEditor.AppendTextAtCaret(text);
-            TextEditor.IsReadOnly = BoundFile == null;
-        }
+        public override void Refresh() => UpdateText();
 
         public override void Update(FileInfo file)
         {
@@ -125,7 +116,10 @@ namespace TempoIDE.UserControls
                 {
                     Thread.Sleep(WriterCooldown * 1000);
                 }
-                catch (ThreadInterruptedException _) { }
+                catch (ThreadInterruptedException)
+                {
+                    return;
+                }
                 finally
                 {
                     Dispatcher.Invoke(TextWriter);;
@@ -174,7 +168,7 @@ namespace TempoIDE.UserControls
             stream.Seek(0, SeekOrigin.End);
 
             var text = TextEditor.TextArea.Text;
-            
+           
             await stream.WriteAsync(EnvironmentHelper.GlobalEncoding.GetBytes(text), 0, text.Length);
         }
 

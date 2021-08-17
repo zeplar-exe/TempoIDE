@@ -9,18 +9,18 @@ namespace TempoIDE.Core.Static
     [SuppressUnmanagedCodeSecurity]
     public static class ConsoleManager
     {
-        private const string Kernel32_DllName = "kernel32.dll";
+        private const string Kernel32DllName = "kernel32.dll";
 
-        [DllImport(Kernel32_DllName)]
+        [DllImport(Kernel32DllName)]
         private static extern bool AllocConsole();
 
-        [DllImport(Kernel32_DllName)]
+        [DllImport(Kernel32DllName)]
         private static extern bool FreeConsole();
 
-        [DllImport(Kernel32_DllName)]
+        [DllImport(Kernel32DllName)]
         private static extern IntPtr GetConsoleWindow();
 
-        [DllImport(Kernel32_DllName)]
+        [DllImport(Kernel32DllName)]
         private static extern int GetConsoleOutputCP();
 
         public static bool HasConsole => GetConsoleWindow() != IntPtr.Zero;

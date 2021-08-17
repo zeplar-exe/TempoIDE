@@ -9,14 +9,15 @@ namespace TempoControls
     {
         private double selectStartXPosition;
 
-        private void SyntaxTextBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ColoredTextBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (IsReadOnly)
                 return;
-
+            
             selectStartXPosition = e.GetPosition(this).X;
 
             Focus();
+            
             MoveCaret(GetCaretOffsetByClick(e));
             AutoComplete.Disable();
 
@@ -24,29 +25,36 @@ namespace TempoControls
             Select(new IntRange(CaretIndex, CaretIndex));
         }
 
-        private void SyntaxTextBox_OnPreviewMouseLeftButtonUp(object sender, RoutedEventArgs e)
+        private void ColoredTextBox_OnPreviewMouseLeftButtonUp(object sender, RoutedEventArgs e)
         {
             isSelecting = false;
         }
         
-        private void SyntaxTextBox_OnMouseLeave(object sender, MouseEventArgs e)
+        private void ColoredTextBox_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            if (isSelecting)
-            {
-                MoveCaret(GetCaretOffsetByClick(e));
-                Select(new IntRange(SelectionRange.Start, CaretIndex));
-            }
+            if (e.LeftButton != MouseButtonState.Pressed)
+                return;
             
-            isSelecting = false;
+            UpdateSelection(e);
+        }
+        
+        private void ColoredTextBox_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            UpdateSelection(e);
         }
 
-        private void SyntaxTextBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
+        private void ColoredTextBox_OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
-            if (isSelecting)
-            {
-                MoveCaret(GetCaretOffsetByClick(e));
-                Select(new IntRange(SelectionRange.Start, CaretIndex));
-            }
+            UpdateSelection(e);
+        }
+
+        private void UpdateSelection(MouseEventArgs e)
+        {
+            if (!isSelecting)
+                return;
+            
+            MoveCaret(GetCaretOffsetByClick(e));
+            Select(new IntRange(SelectionRange.Start, CaretIndex));
         }
 
         private IntVector GetCaretOffsetByClick(MouseEventArgs mouse)

@@ -25,6 +25,9 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
+      <Compile Update="Core\Static\ApplicationErrorCode.cs">
+        <DependentUpon>ApplicationHelper.cs</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

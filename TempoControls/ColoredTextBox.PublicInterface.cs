@@ -4,6 +4,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
+using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {
@@ -14,12 +15,14 @@ namespace TempoControls
             if (!VerifyOffset(position))
                 return;
             
+            // TODO: Why in the living fuck is this causing a loss of focus
+            
             AutoComplete.Disable();
             
             var newIndex = GetIndexAtOffset(position);
             var caretCharacter = newIndex - 1;
 
-            if (VerifyIndex(caretCharacter))
+            if (position.X > 0 && VerifyIndex(caretCharacter))
             {
                 if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
                 {
@@ -33,7 +36,6 @@ namespace TempoControls
             }
 
             CaretOffset = position;
-            CaretIndex = newIndex;
             CaretRect = GetCaretRectAtPosition(position);
 
             TextArea.InvalidateVisual();
@@ -202,17 +204,17 @@ namespace TempoControls
             MoveCaret(new IntVector(0, 0));
         }
 
-        public string GetSelectedText()
+        public SyntaxCharCollection GetSelectedText()
         {
+            var collection = new SyntaxCharCollection();
+            
             if (SelectionRange.Size == 0)
-                return string.Empty;
-
-            var builder = new StringBuilder();
+                return collection;
 
             foreach (int index in SelectionRange.Arrange())
-                builder.Append(TextArea.GetCharacterAtIndex(index).Value);
+                collection.Add(TextArea.GetCharacterAtIndex(index));
 
-            return builder.ToString();
+            return collection;
         }
 
         public string GetTypingWord(bool includeNumbers = false)
