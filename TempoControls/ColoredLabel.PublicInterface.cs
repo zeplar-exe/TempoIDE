@@ -17,9 +17,9 @@ namespace TempoControls
                 index = Characters.Count;
             }
             
-            AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index);
+            AppendCharacter(new SyntaxChar(character, DefaultDrawInfo), index);
 
-            TextChanged?.Invoke(this, default);
+            InvalidateTextChanged();
         }
         
         public void AppendText(IEnumerable<char> text, int index = -1)
@@ -31,12 +31,12 @@ namespace TempoControls
 
             if (text.ToString() == Environment.NewLine)
             {
-                AppendCharacter(new SyntaxChar('\0', GetDefaultDrawInfo()), index);
+                AppendCharacter(new SyntaxChar('\0', DefaultDrawInfo), index);
             }
             else
             {
                 foreach (var character in text)
-                    AppendCharacter(new SyntaxChar(character, GetDefaultDrawInfo()), index++);
+                    AppendCharacter(new SyntaxChar(character, DefaultDrawInfo), index++);
             }
 
             InvalidateTextChanged();
@@ -66,14 +66,23 @@ namespace TempoControls
             
             InvalidateTextChanged();
         }
+        
+        internal DrawInfo DefaultDrawInfo => new(FontSize, Typeface, TextDpi);
+
+        private void AppendCharacter(SyntaxChar character, int index)
+        {
+            if (index >= Characters.Count)
+                Characters.Add(character);
+            else
+                Characters.Insert(index, character);
+        }
 
         public void InvalidateTextChanged()
         {
             TextChanged?.Invoke(this, default);
         }
         
-        public DpiScale GetDpi() => VisualTreeHelper.GetDpi(this);
-        public double GetTextDpi() => VisualTreeHelper.GetDpi(this).PixelsPerDip;
+        public double TextDpi => VisualTreeHelper.GetDpi(this).PixelsPerDip;
         
         public string GetCharactersFromIndex(int index, int places)
         {
@@ -87,22 +96,6 @@ namespace TempoControls
             return characters.ToString();
         }
 
-        internal CharDrawInfo GetDefaultDrawInfo()
-        {
-            return new CharDrawInfo(
-                FontSize,
-                new Typeface("Verdana"),
-                GetTextDpi());
-        }
-
-        private void AppendCharacter(SyntaxChar character, int index)
-        {
-            if (index >= Characters.Count)
-                Characters.Add(character);
-            else
-                Characters.Insert(index, character);
-        }
-        
         public void Clear()
         {
             Characters.Clear();

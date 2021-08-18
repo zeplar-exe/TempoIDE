@@ -140,7 +140,7 @@ namespace TempoControls
             {
                 return false;
             }
-
+            
             return true;
         }
 

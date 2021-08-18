@@ -49,10 +49,6 @@
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
-            <Style x:Key="AutoCompleteBoxStyle" TargetType="ListBox">
-                <Setter Property="Background" Value="#4d4747"/>
-            </Style>
-            
             <Style TargetType="{x:Type Button}">
                 <Setter Property="Foreground" Value="{DynamicResource BaseTextColor}"/>
             </Style>

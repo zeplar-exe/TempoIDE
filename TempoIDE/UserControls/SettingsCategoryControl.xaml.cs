@@ -5,20 +5,21 @@ namespace TempoIDE.UserControls
 {
     public partial class SettingsCategoryControl : ItemsControl
     {
-        public string Header
+        public string HeaderText
         {
-            get => (string) GetValue(HeaderProperty);
-            set => SetValue(HeaderProperty, value);
+            get => (string) GetValue(HeaderTextProperty);
+            set => SetValue(HeaderTextProperty, value);
         }
 
-        public static readonly DependencyProperty HeaderProperty =
+        public static readonly DependencyProperty HeaderTextProperty =
             DependencyProperty.Register(
-                "Header", typeof(string),
+                "HeaderText", typeof(string),
                 typeof(SettingsCategoryControl)
             );
         
         public SettingsCategoryControl()
         {
+            DataContext = this;
             InitializeComponent();
         }
     }

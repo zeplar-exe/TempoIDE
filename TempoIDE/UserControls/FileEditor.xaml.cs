@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
+using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls
@@ -26,13 +26,20 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
+            TextEditor.TextArea.AfterHighlight += TextEditor_OnAfterHighlight;
+            
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         }
-        
+
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             textChangedBeforeUpdate = true;
+        }
+
+        private void TextEditor_OnAfterHighlight(SyntaxCharCollection syntaxCharCollection)
+        {
+            // TODO: THIS HOLY SHIT FINALLY
         }
 
         public override bool TryCopy()
@@ -169,7 +176,7 @@ namespace TempoIDE.UserControls
 
             var text = TextEditor.TextArea.Text;
            
-            await stream.WriteAsync(EnvironmentHelper.GlobalEncoding.GetBytes(text), 0, text.Length);
+            await stream.WriteAsync(ApplicationHelper.GlobalEncoding.GetBytes(text), 0, text.Length);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

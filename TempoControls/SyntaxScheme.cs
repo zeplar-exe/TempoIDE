@@ -1,4 +1,5 @@
 using System.Windows.Media;
+using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {
@@ -6,7 +7,7 @@ namespace TempoControls
     {
         public Brush Default { get; }
 
-        public void Highlight(ColoredLabel label, FormattedText processed);
+        public void Highlight(ColoredLabel label, SyntaxCharCollection characters);
     }
 
     public interface IProgrammingLanguageSyntaxScheme : ISyntaxScheme

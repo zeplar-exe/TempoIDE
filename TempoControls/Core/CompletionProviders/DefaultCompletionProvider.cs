@@ -1,7 +1,6 @@
-using TempoControls;
 using TempoControls.Core.Types;
 
-namespace TempoIDE.Core.CompletionProviders
+namespace TempoControls.Core.CompletionProviders
 {
     public class DefaultCompletionProvider : ICompletionProvider
     {

@@ -36,7 +36,6 @@ namespace TempoIDE.Core.Static
             .SingleOrDefault(x => x.IsActive);
 
         public static EnvironmentCache Cache;
-        public static Encoding GlobalEncoding = Encoding.UTF8;
 
         public static EnvironmentMode Mode;
         public static FileSystemInfo EnvironmentPath;

@@ -50,7 +50,7 @@
                             </ControlTemplate.Resources>
                             
                             <Grid>
-                                <local:SettingsCategoryControl Header="Theme">
+                                <local:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
                                         ItemsSource="{Binding Source={StaticResource ThemeData}}"

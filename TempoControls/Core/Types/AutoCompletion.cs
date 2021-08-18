@@ -1,4 +1,3 @@
-using TempoControls.Controls;
 using TempoControls.Core.Static;
 
 namespace TempoControls.Core.Types

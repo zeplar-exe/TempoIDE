@@ -43,7 +43,7 @@
                     </windows:CreateSolutionWindow.ProjectCreationTemplate>
                 </controls:ExplorerViewItem>
                 
-                <controls:SettingsCategoryControl Header=".NET/.NET Core"/>
+                <controls:SettingsCategoryControl HeaderText=".NET/.NET Core"/>
                 
                 <controls:ExplorerViewItem Header="Class Library">
                     <windows:CreateSolutionWindow.ProjectCreationTemplate>

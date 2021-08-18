@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using ByteSizeLib;
 using TempoIDE.Core.Static;
-using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Types.Wrappers
 {
@@ -32,15 +31,13 @@ namespace TempoIDE.Core.Types.Wrappers
             {
                 await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 await using var buffer = new BufferedStream(file);
-                using var reader = new BinaryReader(buffer);
+                using var reader = new StreamReader(buffer);
 
-                var bom = new byte[4];
-                reader.Read(bom, 0, 4);
-
-                await Task.Run(delegate
-                {
-                    Content = Encoding.UTF8.GetString(bom.Concat(reader.ReadAllBytes()).ToArray());
-                });
+                Content = await reader.ReadToEndAsync();
+            }
+            catch (AccessViolationException)
+            {
+                // TODO: Dialog
             }
             catch (OutOfMemoryException)
             {

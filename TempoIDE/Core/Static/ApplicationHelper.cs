@@ -5,6 +5,8 @@ namespace TempoIDE.Core.Static
 {
     public static class ApplicationHelper
     {
+        public static Encoding GlobalEncoding = Encoding.UTF8;
+        
         public static void ThrowErrorCode(ApplicationErrorCode code, string details)
         {
             var message = new StringBuilder();

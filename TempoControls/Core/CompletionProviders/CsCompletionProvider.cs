@@ -1,9 +1,8 @@
 using System.Linq;
-using TempoControls;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 
-namespace TempoIDE.Core.CompletionProviders
+namespace TempoControls.Core.CompletionProviders
 {
     public class CsCompletionProvider : ICompletionProvider
     {

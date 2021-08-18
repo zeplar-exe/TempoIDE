@@ -22,9 +22,7 @@
             <userControls:TopbarControl.Template>
                 <ControlTemplate>
                     <TextBlock 
-                        Text="{Binding
-                            Path=Title, 
-                            RelativeSource={RelativeSource FindAncestor, AncestorType=Window}}"
+                        Text="{Binding Path=Title}"
                         FontSize="15"/>
                 </ControlTemplate>
             </userControls:TopbarControl.Template>

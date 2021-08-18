@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace TempoControls.Core.Types.Collections
 {
     public class SyntaxCharCollection : ICollection<SyntaxChar>
     {
-        private List<SyntaxChar> items = new();
+        private readonly List<SyntaxChar> items = new();
 
         public int Count => items.Count;
         public bool IsReadOnly => false;
@@ -16,11 +17,7 @@ namespace TempoControls.Core.Types.Collections
         public SyntaxChar this[int index]
         {
             get => items[index];
-            set
-            {
-                TotalWidth -= items[index].Size.Width;
-                items[index] = value;
-            }
+            set => Insert(index, value);
         }
 
         public void Add(SyntaxChar item)
@@ -44,6 +41,15 @@ namespace TempoControls.Core.Types.Collections
             return items.Remove(item);
         }
 
+        public void RemoveAt(int index)
+        {
+            var item = items[index];
+
+            TotalWidth -= item.Size.Width;
+
+            items.RemoveAt(index);
+        }
+
         public void Clear()
         {
             TotalWidth = 0;
@@ -59,6 +65,14 @@ namespace TempoControls.Core.Types.Collections
         public void CopyTo(SyntaxChar[] array, int arrayIndex)
         {
             items.CopyTo(array, arrayIndex);
+        }
+
+        internal void UpdateRangeForeground(IntRange range, Brush foreground)
+        {
+            foreach (int index in range)
+            {
+                items[index].Foreground = foreground;
+            }
         }
         
         public IEnumerator<SyntaxChar> GetEnumerator()

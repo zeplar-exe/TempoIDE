@@ -21,7 +21,7 @@
             x:Name="TextArea"
             x:FieldModifier="public"
             AfterRender="TextArea_OnAfterRender"
-            BeforeCharacterRender="TextArea_OnBeforeCharacterRender"
+            BeforeCharacterRead="TextArea_OnBeforeCharacterRender"
             TextChanged="SyntaxTextBox_OnTextChanged"/>
         
         <controls:AutoCompleteBox

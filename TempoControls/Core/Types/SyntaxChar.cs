@@ -4,12 +4,14 @@ using System.Windows.Media;
 
 namespace TempoControls.Core.Types
 {
-    public readonly struct SyntaxChar
+    public class SyntaxChar
     {
         public readonly char Value;
         public readonly Size Size;
 
-        public SyntaxChar(char value, CharDrawInfo info)
+        internal Brush Foreground = Brushes.White;
+
+        public SyntaxChar(char value, DrawInfo info)
         {
             Value = value;
 

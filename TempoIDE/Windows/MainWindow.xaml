@@ -37,6 +37,7 @@
                         
                         <Menu
                             Grid.Column="0" 
+                            DataContext="{StaticResource Shortcuts}"
                             Background="Transparent" 
                             Foreground="{DynamicResource BaseTextColor}">
                             
@@ -73,7 +74,7 @@
                             <MenuItem Header="Edit" Background="Transparent">
                                 <MenuItem 
                                     Header="Copy"
-                                    InputGestureText="{Binding Path=Copy, Source={StaticResource Shortcuts}}">
+                                    InputGestureText="{Binding Path=Copy}">
                                     
                                     <MenuItem.Command>
                                         <commands:CopyTextCommand/>
@@ -82,7 +83,7 @@
                                 
                                 <MenuItem
                                     Header="Paste"
-                                    InputGestureText="{Binding Path=Paste, Source={StaticResource Shortcuts}}">
+                                    InputGestureText="{Binding Path=Paste}">
                                     
                                     <MenuItem.Command>
                                         <commands:PasteTextCommand/>
@@ -91,7 +92,7 @@
                                 
                                 <MenuItem
                                     Header="Cut"
-                                    InputGestureText="{Binding Path=Cut, Source={StaticResource Shortcuts}}">
+                                    InputGestureText="{Binding Path=Cut}">
                                     
                                     <MenuItem.Command>
                                         <commands:CutTextCommand/>

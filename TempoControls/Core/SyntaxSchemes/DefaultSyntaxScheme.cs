@@ -1,13 +1,13 @@
 using System.Windows.Media;
-using TempoControls;
+using TempoControls.Core.Types.Collections;
 
-namespace TempoIDE.Core.SyntaxSchemes
+namespace TempoControls.Core.SyntaxSchemes
 {
     public class DefaultSyntaxScheme : ISyntaxScheme
     {
         public Brush Default => Brushes.White;
 
-        public void Highlight(ColoredLabel label, FormattedText processedText)
+        public void Highlight(ColoredLabel label, SyntaxCharCollection processedText)
         {
             
         }

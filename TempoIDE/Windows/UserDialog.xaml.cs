@@ -27,6 +27,7 @@ namespace TempoIDE.Windows
         
         public UserDialog(string message, UserResult options)
         {
+            DataContext = this;
             InitializeComponent();
 
             TextDisplay.Text = message;

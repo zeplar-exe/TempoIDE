@@ -11,6 +11,8 @@ namespace TempoIDE.UserControls
         
         public ExplorerViewItem()
         {
+            DataContext = this;
+            
             InitializeComponent();
         }
 

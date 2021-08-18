@@ -2,9 +2,10 @@ using System.Windows.Media;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using TempoControls;
+using TempoControls.Core.Types;
+using TempoControls.Core.Types.Collections;
 
-namespace TempoIDE.Core.SyntaxSchemes
+namespace TempoControls.Core.SyntaxSchemes
 {
     public class CsSyntaxScheme : IProgrammingLanguageSyntaxScheme
     {
@@ -17,32 +18,31 @@ namespace TempoIDE.Core.SyntaxSchemes
         public Brush Method => Brushes.LightGreen;
         public Brush Member => Brushes.CadetBlue;
 
-        public void Highlight(ColoredLabel label, FormattedText processedText)
+        public void Highlight(ColoredLabel label, SyntaxCharCollection characters)
         {
-            var tree = CSharpSyntaxTree.ParseText(label.Text); // TODO: Handle stuff here
+            var tree = CSharpSyntaxTree.ParseText(label.Text);
 
-            new KeywordColor(this, processedText).Visit(tree.GetRoot());
+            new KeywordColor(this, characters).Visit(tree.GetRoot());
         }
 
         private class KeywordColor : CSharpSyntaxWalker
         {
-            private readonly FormattedText processedText;
+            private readonly SyntaxCharCollection text;
             private readonly IProgrammingLanguageSyntaxScheme scheme;
 
-            public KeywordColor(IProgrammingLanguageSyntaxScheme scheme, FormattedText processedText) : base(SyntaxWalkerDepth.Token)
+            public KeywordColor(IProgrammingLanguageSyntaxScheme scheme, SyntaxCharCollection text) : base(SyntaxWalkerDepth.Token)
             {
-                this.processedText = processedText;
+                this.text = text;
                 this.scheme = scheme;
-            } // TODO: Highlighting, THEN inspections
+            }
 
             public override void VisitToken(SyntaxToken token)
             {
                 if (token.IsKeyword())
                 {
-                    processedText.SetForegroundBrush(
-                        scheme.Identifier, 
-                        token.SpanStart, 
-                        token.Span.Length);
+                    text.UpdateRangeForeground(
+                        new IntRange(token.SpanStart, token.Span.End),
+                        scheme.Identifier);
                 }
             }
 
@@ -50,17 +50,15 @@ namespace TempoIDE.Core.SyntaxSchemes
             {
                 if (node.IsKind(SyntaxKind.StringLiteralExpression))
                 {
-                    processedText.SetForegroundBrush(
-                        scheme.String, 
-                        node.SpanStart, 
-                        node.Span.Length);
+                    text.UpdateRangeForeground(
+                        new IntRange(node.SpanStart, node.Span.End),
+                        scheme.String);
                 }
                 else if (node.IsKind(SyntaxKind.NumericLiteralExpression))
                 {
-                    processedText.SetForegroundBrush(
-                        scheme.Number, 
-                        node.SpanStart, 
-                        node.Span.Length);
+                    text.UpdateRangeForeground(
+                        new IntRange(node.SpanStart, node.Span.End),
+                        scheme.Number);
                 }
             }
         }

@@ -11,7 +11,7 @@ namespace TempoAnalysis
         public readonly bool Success;
 
         public CompilationNamespace GlobalNamespace;
-
+// TODO: Make a wrapper for roslyn analysis on files
         public readonly FileInfo Info;
 
         public MergeableCompilation(CompilationNamespace ns)

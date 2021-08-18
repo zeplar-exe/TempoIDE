@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
@@ -73,7 +72,7 @@ namespace TempoControls
 
         public void AppendTextAtCaret(char character)
         {
-            TextArea.AppendText(new SyntaxChar(character, TextArea.GetDefaultDrawInfo()), CaretIndex);
+            TextArea.AppendText(new SyntaxChar(character, TextArea.DefaultDrawInfo), CaretIndex);
             
             MoveCaret(character == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
@@ -82,20 +81,13 @@ namespace TempoControls
 
         public void AppendTextAtCaret(IEnumerable<char> characters)
         {
-            if (characters.ToString() == Environment.NewLine)
+            foreach (var character in characters)
             {
-                TextArea.Characters.Insert(CaretIndex, new SyntaxChar('\0', TextArea.GetDefaultDrawInfo()));
-            }
-            else
-            {
-                foreach (var character in characters)
-                {
-                    TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, TextArea.GetDefaultDrawInfo()));
+                TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, TextArea.DefaultDrawInfo));
 
-                    MoveCaret(character == ColoredLabel.NewLine ?
-                        new IntVector(0, CaretOffset.Y + 1) : 
-                        new IntVector(CaretOffset.X + 1, CaretOffset.Y));
-                }
+                MoveCaret(character == ColoredLabel.NewLine ?
+                    new IntVector(0, CaretOffset.Y + 1) : 
+                    new IntVector(CaretOffset.X + 1, CaretOffset.Y));
             }
 
             TextArea.InvalidateTextChanged();
@@ -155,6 +147,7 @@ namespace TempoControls
             for (; count > 0; count--)
             {
                 var character = TextArea.Characters[CaretIndex - 1];
+                // TODO: For whatever stupid reason, backspace will randomly delete an irrelevant character
                 
                 TextArea.RemoveIndex(CaretIndex - 1);
                 

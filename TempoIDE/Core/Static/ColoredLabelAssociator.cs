@@ -1,6 +1,6 @@
 using TempoControls;
-using TempoIDE.Core.CompletionProviders;
-using TempoIDE.Core.SyntaxSchemes;
+using TempoControls.Core.CompletionProviders;
+using TempoControls.Core.SyntaxSchemes;
 
 namespace TempoIDE.Core.Static
 {

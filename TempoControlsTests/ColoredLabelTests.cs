@@ -1,11 +1,10 @@
 using System.Threading;
 using NUnit.Framework;
 using TempoControls;
-using TempoControls.Controls;
 
 namespace TempoControlsTests
 {
-    [TestFixture, Apartment(ApartmentState.STA)]
+    [TestFixture]
     public class ColoredLabelTests
     {
         [TestFixture, Apartment(ApartmentState.STA)]
