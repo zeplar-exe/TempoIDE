@@ -1,8 +1,6 @@
-using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using System.Windows.Media;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;

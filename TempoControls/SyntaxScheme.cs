@@ -6,7 +6,7 @@ namespace TempoControls
     public interface ISyntaxScheme
     {
         public Brush Default { get; }
-
+        
         public void Highlight(ColoredLabel label, SyntaxCharCollection characters);
     }
 

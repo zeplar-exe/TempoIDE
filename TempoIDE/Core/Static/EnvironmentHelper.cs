@@ -1,10 +1,9 @@
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Microsoft.Build.Construction;
+using TempoAnalysis.MsBuildAnalysis;
 using TempoIDE.Core.Types;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;
@@ -140,20 +139,33 @@ namespace TempoIDE.Core.Static
                 
             switch (Mode)
             {
+                case EnvironmentMode.File:
+                    if (EnvironmentPath.Extension == ".sln")
+                        goto case EnvironmentMode.Solution;
+
+                    var info = (FileInfo) EnvironmentPath;
+
+                    directoryWatcher = new DirectoryWatcher(info.Directory, info.Name);
+                    directoryWatcher.Changed += DirectoryChanged;
+                    
+                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
+                    MainWindow.Editor.Tabs.Open(info);
+                    
+                    break;
                 case EnvironmentMode.Solution:
-                    var solution = SolutionFile.Parse(EnvironmentPath.FullName);
+                    var solution = new CsSolutionFile(EnvironmentPath.FullName);
                     var solutionDirectory = new FileInfo(EnvironmentPath.FullName).Directory;
                     var topLevel = new ExplorerFileItem(EnvironmentPath.FullName) { IsExpanded = true };
                     
                     MainWindow.Explorer.AppendElement(topLevel);
                     
-                    foreach (var project in solution.ProjectsInOrder)
+                    foreach (var project in solution.Projects)
                     {
-                        var file = new FileInfo(project.AbsolutePath);
-                        var projectItem = new ExplorerFileItem(file.FullName);
+                        var projectFile = new FileInfo(project.FilePath);
+                        var projectItem = new ExplorerFileItem(projectFile.FullName);
                         
                         topLevel.AppendElement(projectItem);
-                        projectItem.AppendDirectory(file.Directory, false);
+                        projectItem.AppendDirectory(projectFile.Directory, false);
                     }
 
                     directoryWatcher = new DirectoryWatcher(solutionDirectory);
@@ -168,18 +180,6 @@ namespace TempoIDE.Core.Static
                     directoryWatcher = new DirectoryWatcher(directory);
                     directoryWatcher.Changed += DirectoryChanged;
                     
-                    break;
-                case EnvironmentMode.File:
-                    if (EnvironmentPath.Extension == ".sln")
-                        goto case EnvironmentMode.Solution;
-
-                    var info = (FileInfo) EnvironmentPath;
-
-                    directoryWatcher = new DirectoryWatcher(info.Directory, info.Name);
-                    directoryWatcher.Changed += DirectoryChanged;
-                    
-                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
-                    MainWindow.Editor.Tabs.Open(info);
                     break;
             }
         }

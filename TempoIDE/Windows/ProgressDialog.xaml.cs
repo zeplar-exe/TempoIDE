@@ -8,10 +8,9 @@ namespace TempoIDE.Windows
     public partial class ProgressDialog : Window
     {
         public readonly Queue<ProgressTask> Tasks = new();
-
         private double ProgressIncrement => 100d / Tasks.Count;
 
-        public event EventHandler Completed; 
+        public event EventHandler Completed;
 
         public ProgressDialog()
         {
@@ -32,7 +31,7 @@ namespace TempoIDE.Windows
                     ProgressBar.Value += ProgressIncrement;
                 });
             }
-            
+
             Completed?.Invoke(this, EventArgs.Empty);
         }
     }
