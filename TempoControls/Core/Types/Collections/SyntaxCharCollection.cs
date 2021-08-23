@@ -20,6 +20,18 @@ namespace TempoControls.Core.Types.Collections
             set => Insert(index, value);
         }
 
+        public static SyntaxCharCollection FromString(string text, DrawInfo drawInfo)
+        {
+            var collection = new SyntaxCharCollection();
+
+            foreach (var character in text)
+            {
+                collection.Add(new SyntaxChar(character, drawInfo));
+            }
+
+            return collection;
+        }
+
         public void Add(SyntaxChar item)
         {
             TotalWidth += item.Size.Width;

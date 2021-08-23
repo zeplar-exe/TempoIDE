@@ -1,6 +1,7 @@
 using System.IO;
 using System.Threading;
 using System.Windows;
+using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;
@@ -42,7 +43,7 @@ namespace TempoIDE.UserControls
 
         public override bool TryCopy()
         {
-            var text = TextEditor.GetSelectedText().ToString();
+            var text = TextEditor.GetSelectedText();
             
             if (string.IsNullOrEmpty(text)) 
                 return false;
@@ -60,7 +61,7 @@ namespace TempoIDE.UserControls
             if (string.IsNullOrEmpty(text))
                 return false;
             
-            if (TextEditor.GetSelectedText().Count == 0)
+            if (TextEditor.GetSelectedText().Length == 0)
             {
                 TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
             }
@@ -75,7 +76,7 @@ namespace TempoIDE.UserControls
 
         public override bool TryCut()
         {
-            var text = TextEditor.GetSelectedText().ToString();
+            var text = TextEditor.GetSelectedText();
 
             if (string.IsNullOrEmpty(text)) 
                 return false;
@@ -88,7 +89,7 @@ namespace TempoIDE.UserControls
         
         public override bool TrySelectAll()
         {
-            TextEditor.Select(new IntRange(0, TextEditor.TextArea.Text.Length));
+            TextEditor.Select(new IntRange(0, TextEditor.TextArea.TextBuilder.Length));
             
             return true;
         }
@@ -158,7 +159,7 @@ namespace TempoIDE.UserControls
             if (text == null || text.Content == TextEditor.TextArea.Text)
                 return;
 
-            TextEditor.TextArea.Text = text.Content;
+            TextEditor.TextArea.TextBuilder.SetString(text.Content);
             textChangedBeforeUpdate = false;
         }
 
@@ -174,7 +175,11 @@ namespace TempoIDE.UserControls
 
             var text = TextEditor.TextArea.Text;
            
-            await stream.WriteAsync(ApplicationHelper.GlobalEncoding.GetBytes(text), 0, text.Length);
+            await stream.WriteAsync(
+                ApplicationHelper.GlobalEncoding.GetBytes(
+                    text), 
+                    0, 
+                    text.Length);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

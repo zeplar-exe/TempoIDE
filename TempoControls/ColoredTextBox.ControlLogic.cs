@@ -5,6 +5,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoControls.Core.Types;
+using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {
@@ -34,7 +35,7 @@ namespace TempoControls
             overrideCaretVisibility = true;
             
             if (!VerifyOffset(CaretOffset))
-                MoveCaret(GetOffsetAtIndex(TextArea.Characters.Count));
+                MoveCaret(GetOffsetAtIndex(TextArea.TextBuilder.Length));
             
             TextChanged?.Invoke(sender, e);
         }
@@ -175,6 +176,43 @@ namespace TempoControls
             {
                 context.DrawRectangle(Brushes.DarkCyan, null, charRect);
             }
+        }
+        
+        private void TextArea_OnAfterHighlight(SyntaxCharCollection characters)
+        {
+            var rect = new Rect(0, 0, CaretWidth, TextArea.LineHeight);
+            var lineCount = 0;
+            var columnIndex = 0;
+            var line = new SyntaxCharCollection();
+
+            foreach (var character in characters)
+            {
+                if (lineCount > CaretOffset.Y)
+                    break;
+
+                if (character.Value == ColoredLabel.NewLine)
+                {
+                    lineCount++;
+                }
+                else if (lineCount == CaretOffset.Y)
+                {
+                    columnIndex++;
+
+                    if (columnIndex > CaretOffset.X)
+                        break;
+                    
+                    line.Add(character);
+                }
+            }
+            
+            for (var columnNo = 0; columnNo < CaretOffset.X; columnNo++)
+            {
+                rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
+            }
+            
+            rect = Rect.Offset(rect, 0, TextArea.LineHeight * CaretOffset.Y);
+
+            CaretRect = rect;
         }
 
         private void TextArea_OnAfterRender(DrawingContext context)

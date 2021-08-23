@@ -83,7 +83,7 @@ namespace TempoControls
 
             for (var lineNo = 0; lineNo < offset.Y; lineNo++)
             {
-                totalIndex += lines[lineNo].Count;
+                totalIndex += lines[lineNo].Length;
             }
             
             totalIndex += offset.X;
@@ -121,7 +121,7 @@ namespace TempoControls
 
         private bool VerifyIndex(int index)
         {
-            return index >= 0 && index < TextArea.Characters.Count;
+            return index >= 0 && index < TextArea.TextBuilder.Length;
         }
 
         private bool VerifyOffset(IntVector offset)
@@ -136,7 +136,7 @@ namespace TempoControls
                 return false;
             }
             
-            if (lines[offset.Y].Count < offset.X)
+            if (lines[offset.Y].Length < offset.X)
             {
                 return false;
             }

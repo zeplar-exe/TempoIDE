@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using TempoControls.Core.Types;
+using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {
@@ -73,13 +74,15 @@ namespace TempoControls
 
             if (clickPos.X > 0)
             {
-                if (clickPos.X > lines[line].TotalWidth)
+                var collection = SyntaxCharCollection.FromString(lines[line], TextArea.DefaultDrawInfo);
+                
+                if (clickPos.X > collection.TotalWidth)
                 {
-                    column = lines[line].Count;
+                    column = collection.Count;
                 }
                 else
                 {
-                    foreach (var character in lines[line])
+                    foreach (var character in collection)
                     {
                         totalWidth += character.Size.Width;
                         column++;

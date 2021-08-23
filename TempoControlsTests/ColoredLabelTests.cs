@@ -53,7 +53,7 @@ namespace TempoControlsTests
             {
                 var label = new ColoredLabel();
                 
-                label.AppendText("Text");
+                label.AppendText("TextBuilder");
                 label.Clear();
                 
                 Assert.True(label.Text == string.Empty);

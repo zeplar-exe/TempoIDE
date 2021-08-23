@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
@@ -22,7 +23,7 @@ namespace TempoControls
 
             if (position.X > 0 && VerifyIndex(caretCharacter))
             {
-                if (TextArea.Characters[caretCharacter].Value == ColoredLabel.NewLine)
+                if (TextArea.TextBuilder[caretCharacter] == ColoredLabel.NewLine)
                 {
                     var newPos = GetOffsetAtIndex(caretCharacter);
                     
@@ -34,7 +35,6 @@ namespace TempoControls
             }
 
             CaretOffset = position;
-            CaretRect = GetCaretRectAtPosition(position);
 
             TextArea.InvalidateVisual();
         }
@@ -51,27 +51,11 @@ namespace TempoControls
             Select(new IntRange(CaretIndex, CaretIndex));
         }
 
-        public Rect GetCaretRectAtPosition(IntVector position)
-        {
-            var rect = new Rect(0, 0, CaretWidth, CaretRect.Height);
-
-            var line = TextArea.GetLines()[position.Y];
-            
-            for (var columnNo = 0; columnNo < position.X; columnNo++)
-            {
-                rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
-            }
-            
-            rect = Rect.Offset(rect, 0, TextArea.LineHeight * position.Y);
-            
-            return rect;
-        }
-
         #region AppendText
 
         public void AppendTextAtCaret(char character)
         {
-            TextArea.AppendText(new SyntaxChar(character, TextArea.DefaultDrawInfo), CaretIndex);
+            TextArea.AppendText(character, CaretIndex);
             
             MoveCaret(character == ColoredLabel.NewLine ?
                 new IntVector(0, CaretOffset.Y + 1) : 
@@ -82,8 +66,8 @@ namespace TempoControls
         {
             foreach (var character in characters)
             {
-                TextArea.Characters.Insert(CaretIndex, new SyntaxChar(character, TextArea.DefaultDrawInfo));
-
+                TextArea.TextBuilder.Insert(CaretIndex, character.ToString());
+                
                 MoveCaret(character == ColoredLabel.NewLine ?
                     new IntVector(0, CaretOffset.Y + 1) : 
                     new IntVector(CaretOffset.X + 1, CaretOffset.Y));
@@ -91,21 +75,12 @@ namespace TempoControls
 
             TextArea.InvalidateTextChanged();
         }
-        
-        public void AppendTextAtCaret(SyntaxChar character)
-        {
-            TextArea.AppendText(character, CaretIndex);
-            
-            MoveCaret(character.Value == ColoredLabel.NewLine ?
-                new IntVector(0, CaretOffset.Y + 1) : 
-                new IntVector(CaretOffset.X + 1, CaretOffset.Y));
-        }
 
         public void AppendTextAtCaret(IEnumerable<SyntaxChar> syntaxChars)
         {
             foreach (var character in syntaxChars)
             {
-                TextArea.Characters.Insert(CaretIndex, character);
+                TextArea.TextBuilder.Insert(CaretIndex, character);
 
                 MoveCaret(character.Value == ColoredLabel.NewLine ?
                     new IntVector(0, CaretOffset.Y + 1) : 
@@ -121,7 +96,7 @@ namespace TempoControls
 
         public void Backspace(int count)
         {
-            if (TextArea.Characters.Count == 0)
+            if (TextArea.TextBuilder.Length == 0)
                 return;
 
             var range = SelectionRange.Arrange();
@@ -145,22 +120,22 @@ namespace TempoControls
 
             for (; count > 0; count--)
             {
-                var character = TextArea.Characters[CaretIndex - 1];
+                var character = TextArea.TextBuilder[CaretIndex - 1];
                 // TODO: For whatever stupid reason, backspace will randomly delete an irrelevant character
                 
                 TextArea.RemoveIndex(CaretIndex - 1);
                 
-                if (character.Value == ColoredLabel.NewLine)
+                if (character == ColoredLabel.NewLine)
                 {
                     var lines = TextArea.GetLines();
-                    MoveCaret(new IntVector(lines[CaretOffset.Y - 1].Count, CaretOffset.Y - 1));
+                    MoveCaret(new IntVector(lines[CaretOffset.Y - 1].Length, CaretOffset.Y - 1));
                 }
                 else
                 {
                     MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
                 }
 
-                lastRemovedCharacter = character.Value;
+                lastRemovedCharacter = character;
             }
             
             if (string.IsNullOrWhiteSpace(lastRemovedCharacter.ToString()))
@@ -181,7 +156,7 @@ namespace TempoControls
                 return;
             }
             
-            if (CaretIndex == TextArea.Characters.Count)
+            if (CaretIndex == TextArea.TextBuilder.Length)
                 return;
 
             TextArea.RemoveIndex(new IntRange(CaretIndex, CaretIndex + count));
@@ -196,17 +171,17 @@ namespace TempoControls
             MoveCaret(new IntVector(0, 0));
         }
 
-        public SyntaxCharCollection GetSelectedText()
+        public string GetSelectedText()
         {
-            var collection = new SyntaxCharCollection();
+            var text = new StringBuilder();
             
             if (SelectionRange.Size == 0)
-                return collection;
+                return string.Empty;
 
             foreach (int index in SelectionRange.Arrange())
-                collection.Add(TextArea.GetCharacterAtIndex(index));
+                text.Append(TextArea.TextBuilder[index]);
 
-            return collection;
+            return text.ToString();
         }
 
         public string GetTypingWord(bool includeNumbers = false)
@@ -216,13 +191,13 @@ namespace TempoControls
             
             for (; index >= 0; index--)
             {
-                var selected = TextArea.Characters[index];
+                var selected = TextArea.TextBuilder[index];
 
-                if (char.IsLetter(selected.Value))
+                if (char.IsLetter(selected))
                 {
                     word = word.Insert(0, selected.ToString());
                 }
-                else if (includeNumbers && char.IsNumber(selected.Value))
+                else if (includeNumbers && char.IsNumber(selected))
                 {
                     word = word.Insert(0, selected.ToString());
                 }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
+using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 
@@ -13,67 +14,35 @@ namespace TempoControls
         {
             if (index == -1)
             {
-                index = Characters.Count;
-            }
-            
-            AppendCharacter(new SyntaxChar(character, DefaultDrawInfo), index);
-
-            InvalidateTextChanged();
-        }
-        
-        public void AppendText(IEnumerable<char> text, int index = -1)
-        {
-            if (index == -1)
-            {
-                index = Characters.Count;
-            }
-
-            if (text.ToString() == Environment.NewLine)
-            {
-                AppendCharacter(new SyntaxChar('\0', DefaultDrawInfo), index);
-            }
-            else
-            {
-                foreach (var character in text)
-                    AppendCharacter(new SyntaxChar(character, DefaultDrawInfo), index++);
-            }
-
-            InvalidateTextChanged();
-        }
-
-        public void AppendText(SyntaxChar character, int index = -1)
-        {
-            if (index == -1)
-            {
-                index = Characters.Count;
+                index = TextBuilder.Length;
             }
             
             AppendCharacter(character, index);
-            
-            InvalidateTextChanged();
-        }
 
-        public void AppendText(IEnumerable<SyntaxChar> syntaxChars, int index = -1)
-        {
-            if (index == -1)
-            {
-                index = Characters.Count;
-            }
-            
-            foreach (var character in syntaxChars)
-                AppendCharacter(character, index++);
-            
             InvalidateTextChanged();
         }
         
+        public void AppendText(IEnumerable<char> characters, int index = -1)
+        {
+            if (index == -1)
+            {
+                index = TextBuilder.Length;
+            }
+            
+            foreach (var character in characters)
+                AppendCharacter(character, index++);
+
+            InvalidateTextChanged();
+        }
+
         internal DrawInfo DefaultDrawInfo => new(FontSize, Typeface, TextDpi);
 
-        private void AppendCharacter(SyntaxChar character, int index)
+        private void AppendCharacter(char character, int index)
         {
-            if (index >= Characters.Count)
-                Characters.Add(character);
+            if (index >= TextBuilder.Length)
+                TextBuilder.Append(character);
             else
-                Characters.Insert(index, character);
+                TextBuilder.Insert(index, character.ToString());
         }
 
         public void InvalidateTextChanged()
@@ -89,16 +58,16 @@ namespace TempoControls
             var characters = new StringBuilder();
             
             foreach (int n in range)
-                if (n >= 0 && n < Characters.Count)
-                    characters.Append(Characters[n].Value);
+                if (n >= 0 && n < TextBuilder.Length)
+                    characters.Append(TextBuilder[n]);
 
             return characters.ToString();
         }
 
         public void Clear()
         {
-            Characters.Clear();
-
+            TextBuilder.SetString(string.Empty);
+            
             TextChanged?.Invoke(this, default);
         }
         
@@ -109,43 +78,37 @@ namespace TempoControls
 
         public void RemoveIndex(int index)
         {
-            Characters.RemoveAt(index);
+            TextBuilder.Remove(index, 1);
             
             TextChanged?.Invoke(this, default);
         }
         
         public void RemoveIndex(IntRange indices)
         {
-            foreach (int index in indices)
-                Characters.RemoveAt(indices.Start);
+            TextBuilder.Remove(indices.Start, indices.Size);
             
             TextChanged?.Invoke(this, default);
         }
 
-        public SyntaxChar GetCharacterAtIndex(int index)
+        public string[] GetLines(bool omitNewLines = false)
         {
-            return Characters[index];
-        }
-
-        public SyntaxCharCollection[] GetLines(bool omitNewLines = false)
-        {
-            var lines = new List<SyntaxCharCollection> { new() };
+            var lines = new List<string> { "" };
             var currentIndex = 0;
 
-            foreach (var character in Characters)
+            foreach (var character in TextBuilder.ToString())
             {
-                if (character.Value == NewLine)
+                if (character == NewLine)
                 {
                     if (!omitNewLines)
-                        lines[currentIndex].Add(character);
+                        lines[currentIndex] += character;
                     
                     currentIndex++;
 
-                    lines.Add(new SyntaxCharCollection());
+                    lines.Add(string.Empty);
                 }
                 else
                 {
-                    lines[currentIndex].Add(character);
+                    lines[currentIndex] += character;
                 }
             }
             

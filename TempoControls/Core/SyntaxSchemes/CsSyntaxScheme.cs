@@ -20,7 +20,7 @@ namespace TempoControls.Core.SyntaxSchemes
 
         public void Highlight(ColoredLabel label, SyntaxCharCollection characters)
         {
-            var tree = CSharpSyntaxTree.ParseText(label.Text);
+            var tree = CSharpSyntaxTree.ParseText(label.TextBuilder.ToString());
 
             new KeywordColor(this, characters).Visit(tree.GetRoot());
         }

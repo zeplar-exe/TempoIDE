@@ -15,27 +15,10 @@ namespace TempoControls
 {
     public partial class ColoredLabel : UserControl
     {
-        public string Text
-        {
-            get
-            {
-                var stringBuilder = new StringBuilder();
-                
-                foreach (var character in Characters)
-                {
-                    stringBuilder.Append(character.Value);
-                }
-
-                return stringBuilder.ToString();
-            }
-            set
-            {
-                Clear();
-                AppendText(value);
-            }
-        }
+        public string Text => TextBuilder.ToString();
+        public readonly StringBuilder TextBuilder = new();
         
-        public int LineCount => Characters.Count(c => c.Value == NewLine) + 1;
+        public int LineCount => TextBuilder.ToString().Count(c => c == NewLine) + 1;
         
         public int LineHeight { get; set; } = 15;
         public Typeface Typeface { get; set; } = new Typeface("Verdana");
@@ -43,11 +26,10 @@ namespace TempoControls
 
         public event RoutedEventHandler TextChanged;
 
-        public const char NewLine = '\n'; // TODO: Does not work with foreign newlines like \r or \n\r
+        public const char NewLine = '\n';
 
         public ISyntaxScheme Scheme { get; private set; }
         public ICompletionProvider CompletionProvider { get; private set; }
-        internal readonly SyntaxCharCollection Characters = new();
 
         public ColoredLabel()
         {
@@ -79,8 +61,8 @@ namespace TempoControls
         
         protected override Size MeasureOverride(Size constraint)
         {
-            var longestLine = GetLines().OrderByDescending(line => line.Count).FirstOrDefault();
-            var totalWidth = longestLine?.TotalWidth ?? 0;
+            var longestLine = GetLines().OrderByDescending(line => line.Length).FirstOrDefault();
+            var totalWidth = CreateFormattedText(longestLine).WidthIncludingTrailingWhitespace;
             
             return new Size(totalWidth, LineHeight * LineCount);
         }
@@ -91,27 +73,23 @@ namespace TempoControls
             
             base.OnRender(drawingContext);
 
-            Characters.UpdateRangeForeground(new IntRange(0, Characters.Count), Brushes.White);
-            Scheme.Highlight(this, Characters);
-            
-            AfterHighlight?.Invoke(Characters);
-            
             var index = 0;
             var lineCount = 0;
             var lineWidth = 0d;
             
+            var characters = new SyntaxCharCollection();
             var lines = new List<SyntaxCharCollection> { new() };
 
-            for (; index < Characters.Count; index++)
+            for (; index < TextBuilder.Length; index++)
             {
-                var character = Characters[index];
+                var character = new SyntaxChar(TextBuilder[index], DefaultDrawInfo);
                 var charPos = new Point(lineWidth, lineCount * LineHeight);
                 var charSize = character.Size;
-
                 var charRect = new Rect(charPos, charSize);
 
                 BeforeCharacterRead?.Invoke(drawingContext, charRect, index);
                 
+                characters.Add(character);
                 lines[lineCount].Add(character);
 
                 AfterCharacterRead?.Invoke(drawingContext, charRect, index);
@@ -126,21 +104,14 @@ namespace TempoControls
                     lines.Add(new SyntaxCharCollection());
                 }
             }
+            
+            Scheme.Highlight(this, characters);
+            AfterHighlight?.Invoke(characters);
 
             for (var lineIndex = 0; lineIndex < lines.Count; lineIndex++)
             {
                 var line = lines[lineIndex];
-                var formatted = new FormattedText(
-                    line.ToString(),
-                    CultureInfo.CurrentCulture,
-                    FlowDirection.LeftToRight,
-                    Typeface,
-                    FontSize,
-                    Brushes.White,
-                    TextDpi)
-                {
-                    LineHeight = LineHeight
-                };
+                var formatted = CreateFormattedText(line.ToString());
 
                 for (var i = 0; i < line.Count; i++)
                 {
@@ -152,6 +123,21 @@ namespace TempoControls
             }
             
             AfterRender?.Invoke(drawingContext);
+        }
+
+        internal FormattedText CreateFormattedText(string text)
+        {
+            return new FormattedText(
+                text,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                Typeface,
+                FontSize,
+                Brushes.White,
+                TextDpi)
+            {
+                LineHeight = LineHeight
+            };
         }
     }
 }

@@ -19,7 +19,7 @@ namespace TempoControlsTests
 
                 textBox.AppendTextAtCaret(text);
                 
-                Assert.True(textBox.TextArea.Text == text);
+                Assert.True(textBox.TextArea.TextBuilder.ToString() == text);
             }
 
             [Test]

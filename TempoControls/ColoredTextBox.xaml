@@ -21,6 +21,7 @@
             x:Name="TextArea"
             x:FieldModifier="public"
             AfterRender="TextArea_OnAfterRender"
+            AfterHighlight="TextArea_OnAfterHighlight"
             BeforeCharacterRead="TextArea_OnBeforeCharacterRender"
             TextChanged="SyntaxTextBox_OnTextChanged"/>
         
