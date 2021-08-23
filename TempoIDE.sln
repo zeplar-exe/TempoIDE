@@ -2,8 +2,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoIDE", "TempoIDE\TempoIDE.csproj", "{669B4658-B1F4-4240-9DFA-6E7BD2AE9353}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoAnalysis", "TempoAnalysis\TempoAnalysis.csproj", "{375D1954-393F-4C4D-A8E5-5542EAE806D2}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoControls", "TempoControls\TempoControls.csproj", "{CA418233-665F-467B-9CD2-CDC7369080C3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoCompiler", "TempoCompiler\TempoCompiler.csproj", "{31AB258D-506E-4B48-BA22-86FE740A63AB}"
@@ -20,10 +18,6 @@ Global
 		{669B4658-B1F4-4240-9DFA-6E7BD2AE9353}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{669B4658-B1F4-4240-9DFA-6E7BD2AE9353}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{669B4658-B1F4-4240-9DFA-6E7BD2AE9353}.Release|Any CPU.Build.0 = Release|Any CPU
-		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{375D1954-393F-4C4D-A8E5-5542EAE806D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA418233-665F-467B-9CD2-CDC7369080C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA418233-665F-467B-9CD2-CDC7369080C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA418233-665F-467B-9CD2-CDC7369080C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
