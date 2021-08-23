@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using TempoAnalysis.MsBuildAnalysis;
+using JammaNalysis.MsBuildAnalysis;
 using TempoIDE.Core.Types;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;

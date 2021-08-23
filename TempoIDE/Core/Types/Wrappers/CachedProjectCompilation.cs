@@ -1,5 +1,5 @@
+using JammaNalysis.Compilation;
 using Microsoft.Build.Construction;
-using TempoAnalysis;
 
 namespace TempoIDE.Core.Types.Wrappers
 {
@@ -18,7 +18,7 @@ namespace TempoIDE.Core.Types.Wrappers
 
         public void Update()
         {
-            var analysis = CSharpAnalysisWrapper.CreateAsync(Project.AbsolutePath, AnalysisType.Project).Result;
+            var analysis = CSharpAnalysisWrapper.Create(Project.AbsolutePath, AnalysisType.Project);
 
             Compilation = analysis.Compilation;
         }
