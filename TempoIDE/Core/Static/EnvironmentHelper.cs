@@ -163,7 +163,7 @@ namespace TempoIDE.Core.Static
                     {
                         var projectFile = new FileInfo(project.FilePath);
                         var projectItem = new ExplorerFileItem(projectFile.FullName);
-                        
+
                         topLevel.AppendElement(projectItem);
                         projectItem.AppendDirectory(projectFile.Directory, false);
                     }

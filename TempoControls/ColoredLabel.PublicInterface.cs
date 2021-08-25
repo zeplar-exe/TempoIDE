@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
-using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {

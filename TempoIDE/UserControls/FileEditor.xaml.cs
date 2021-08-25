@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -38,7 +39,7 @@ namespace TempoIDE.UserControls
 
         private void TextEditor_OnAfterHighlight(SyntaxCharCollection syntaxCharCollection)
         {
-            // TODO: THIS HOLY SHIT FINALLY
+            var file = EnvironmentHelper.Cache.GetFile(BoundFile);
         }
 
         public override bool TryCopy()
@@ -170,16 +171,18 @@ namespace TempoIDE.UserControls
                     
             BoundFile.Refresh();
 
-            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.Read);
+            await using var writer = new BinaryWriter(stream);
             stream.Seek(0, SeekOrigin.End);
 
             var text = TextEditor.TextArea.Text;
-           
-            await stream.WriteAsync(
-                ApplicationHelper.GlobalEncoding.GetBytes(
-                    text), 
-                    0, 
-                    text.Length);
+
+            foreach (var line in TextEditor.TextArea.GetLines())
+            {
+                await stream.WriteAsync(
+                    ApplicationHelper.GlobalEncoding.GetBytes(text + Environment.NewLine), 
+                    0, line.Length);
+            }
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

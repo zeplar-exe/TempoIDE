@@ -1,9 +1,5 @@
 using System;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Text;
-using System.Windows.Media.Imaging;
 
 namespace TempoControls.Core.Static
 {

@@ -1,15 +1,15 @@
 using JammaNalysis.Compilation;
-using Microsoft.Build.Construction;
+using JammaNalysis.MsBuildAnalysis;
 
 namespace TempoIDE.Core.Types.Wrappers
 {
     public class CachedProjectCompilation
     {
-        public readonly ProjectInSolution Project;
+        public readonly CsProjectFile Project;
         
         public MergeableCompilation Compilation;
 
-        public CachedProjectCompilation(ProjectInSolution project)
+        public CachedProjectCompilation(CsProjectFile project)
         {
             Project = project;
             
@@ -18,8 +18,8 @@ namespace TempoIDE.Core.Types.Wrappers
 
         public void Update()
         {
-            var analysis = CSharpAnalysisWrapper.Create(Project.AbsolutePath, AnalysisType.Project);
-
+            var analysis = CSharpAnalysisWrapper.Create(Project.FilePath, AnalysisType.Project);
+            
             Compilation = analysis.Compilation;
         }
     }

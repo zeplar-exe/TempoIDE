@@ -56,6 +56,7 @@ namespace TempoControls
         
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
+            TextBuilder.Replace("\r", ""); // Remove \r to prevent incompatibilities
             InvalidateMeasure();
         }
         

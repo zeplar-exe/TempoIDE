@@ -1,7 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
-using Microsoft.Build.Construction;
+using JammaNalysis.MsBuildAnalysis;
 using Microsoft.Extensions.Caching.Memory;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.Wrappers;
@@ -10,39 +9,46 @@ namespace TempoIDE.Core.Types
 {
     public class EnvironmentCache
     {
-        public MemoryCache Compilations;
-        private readonly Dictionary<string, CachedFile> fileData = new();
+        public MemoryCache ProjectCompilations;
+        public MemoryCache FileData;
+
+        private static MemoryCacheOptions DefaultCacheOptions => new()
+        {
+            ExpirationScanFrequency = new TimeSpan(0, 0, 5, 0),
+            SizeLimit = 0x5555555555,
+            CompactionPercentage = 0.75
+        };
 
         public EnvironmentCache()
         {
-            RefreshCache();
+            ClearCache();
         }
         
         public void UpdateModels()
         {
             if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
             {
-                RefreshCache();
+                ClearCache();
                 
-                var solution = SolutionFile.Parse(EnvironmentHelper.EnvironmentPath.FullName);
+                var solution = new CsSolutionFile(EnvironmentHelper.EnvironmentPath.FullName);
                 
-                foreach (var project in solution.ProjectsInOrder)
-                    Compilations.Set(project.ProjectGuid, new CachedProjectCompilation(project));
+                foreach (var project in solution.Projects)
+                    ProjectCompilations.Set(project.FilePath, new CachedProjectCompilation(project));
             }
         }
 
-        private void RefreshCache()
+        private void ClearCache()
         {
-            Compilations?.Dispose();
-            Compilations = new MemoryCache(new MemoryCacheOptions
-            {
-                ExpirationScanFrequency = new TimeSpan(0, 5, 0, 0)
-            });
+            ProjectCompilations?.Dispose();
+            ProjectCompilations = new MemoryCache(DefaultCacheOptions);
+            
+            FileData?.Dispose();
+            FileData = new MemoryCache(DefaultCacheOptions);
         }
 
         public CachedFile GetFile(FileInfo file)
         {
-            return fileData.TryGetValue(file.FullName, out var cached) ? cached : null;
+            return FileData.GetOrCreate(file.FullName, _ => new CachedFile(file));
         }
 
         public void AddFile(FileInfo file)
@@ -51,22 +57,21 @@ namespace TempoIDE.Core.Types
             {
                 try
                 {
-                    if (fileData.TryGetValue(file.FullName, out var cached))
-                        cached.Update();
+                    if (FileData.TryGetValue(file.FullName, out var cached))
+                        ((CachedFile)cached).Update();
                     else
-                        fileData.Add(file.FullName, new CachedFile(file));
+                        FileData.Set(file.FullName, new CachedFile(file));
                 }
                 catch (IOException)
                 {
-                    fileData.Remove(file.FullName);
+                    FileData.Remove(file.FullName);
                 }
             }
         }
 
         public void RemoveFile(FileInfo file)
         {
-            if (fileData.ContainsKey(file.FullName))
-                fileData.Remove(file.FullName);
+            FileData.Remove(file.FullName);
         }
     }
 }

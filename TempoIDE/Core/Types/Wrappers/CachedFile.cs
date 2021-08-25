@@ -27,7 +27,7 @@ namespace TempoIDE.Core.Types.Wrappers
 
             try
             {
-                await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
                 await using var buffer = new BufferedStream(file);
                 using var reader = new StreamReader(buffer);
 

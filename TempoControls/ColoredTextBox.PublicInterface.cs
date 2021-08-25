@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
-using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.Types;
-using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
 {
@@ -13,8 +11,6 @@ namespace TempoControls
         {
             if (!VerifyOffset(position))
                 return;
-            
-            // TODO: Why in the living fuck is this causing a loss of focus
             
             AutoComplete.Disable();
             
@@ -121,7 +117,6 @@ namespace TempoControls
             for (; count > 0; count--)
             {
                 var character = TextArea.TextBuilder[CaretIndex - 1];
-                // TODO: For whatever stupid reason, backspace will randomly delete an irrelevant character
                 
                 TextArea.RemoveIndex(CaretIndex - 1);
                 
