@@ -15,7 +15,7 @@ namespace TempoIDE.Core.Types
         private static MemoryCacheOptions DefaultCacheOptions => new()
         {
             ExpirationScanFrequency = new TimeSpan(0, 0, 5, 0),
-            SizeLimit = 0x5555555555,
+            SizeLimit = 10000000024, // In bits, 1.25 gigabytes
             CompactionPercentage = 0.75
         };
 
@@ -48,7 +48,13 @@ namespace TempoIDE.Core.Types
 
         public CachedFile GetFile(FileInfo file)
         {
-            return FileData.GetOrCreate(file.FullName, _ => new CachedFile(file));
+            return FileData.GetOrCreate(file.FullName, entry =>
+            {
+                var cached = new CachedFile(file);
+                entry.Size = cached.FileInfo.Length * 8;
+                
+                return cached;
+            });
         }
 
         public void AddFile(FileInfo file)
@@ -58,9 +64,16 @@ namespace TempoIDE.Core.Types
                 try
                 {
                     if (FileData.TryGetValue(file.FullName, out var cached))
+                    {
                         ((CachedFile)cached).Update();
+                    }
                     else
-                        FileData.Set(file.FullName, new CachedFile(file));
+                    {
+                        var newCached = new CachedFile(file);
+                        var size = newCached.FileInfo.Length * 8; // Bytes to bits
+                        
+                        FileData.Set(file.FullName, newCached, new MemoryCacheEntryOptions().SetSize(size));
+                    }
                 }
                 catch (IOException)
                 {

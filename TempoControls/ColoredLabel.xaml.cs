@@ -126,7 +126,7 @@ namespace TempoControls
             AfterRender?.Invoke(drawingContext);
         }
 
-        internal FormattedText CreateFormattedText(string text)
+        private FormattedText CreateFormattedText(string text)
         {
             return new FormattedText(
                 text,

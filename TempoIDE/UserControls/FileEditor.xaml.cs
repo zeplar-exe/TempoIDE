@@ -171,12 +171,11 @@ namespace TempoIDE.UserControls
                     
             BoundFile.Refresh();
 
-            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.Read);
-            await using var writer = new BinaryWriter(stream);
+            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
 
             var text = TextEditor.TextArea.Text;
-
+            
             foreach (var line in TextEditor.TextArea.GetLines())
             {
                 await stream.WriteAsync(
