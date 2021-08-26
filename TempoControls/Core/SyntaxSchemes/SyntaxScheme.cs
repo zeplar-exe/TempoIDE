@@ -1,13 +1,23 @@
 using System.Windows.Media;
 using TempoControls.Core.Types.Collections;
 
-namespace TempoControls
+namespace TempoControls.Core.SyntaxSchemes
 {
     public interface ISyntaxScheme
     {
         public Brush Default { get; }
         
         public void Highlight(ColoredLabel label, SyntaxCharCollection characters);
+    }
+    
+    public class DefaultSyntaxScheme : ISyntaxScheme
+    {
+        public Brush Default => Brushes.White;
+
+        public void Highlight(ColoredLabel label, SyntaxCharCollection processedText)
+        {
+            
+        }
     }
 
     public interface IProgrammingLanguageSyntaxScheme : ISyntaxScheme

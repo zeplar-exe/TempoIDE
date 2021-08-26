@@ -5,6 +5,8 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TempoControls.Core.CompletionProviders;
+using TempoControls.Core.SyntaxSchemes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using Brushes = System.Windows.Media.Brushes;

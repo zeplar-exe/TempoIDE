@@ -1,10 +1,11 @@
 using TempoControls;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
+using TempoIDE.Core.Inspection;
 
 namespace TempoIDE.Core.Static
 {
-    public static class ColoredLabelAssociator
+    public static class ExtensionAssociator
     {
         public static ISyntaxScheme SchemeFromExtension(string extension)
         {
@@ -21,6 +22,15 @@ namespace TempoIDE.Core.Static
             {
                 "cs" => new CsCompletionProvider(),
                 _ => new DefaultCompletionProvider()
+            };
+        }
+
+        public static IInspector InspectorFromExtension(string extension)
+        {
+            return extension.Replace(".", string.Empty) switch
+            {
+                "cs" => new CsInspector(),
+                _ => new DefaultInspector()
             };
         }
     }

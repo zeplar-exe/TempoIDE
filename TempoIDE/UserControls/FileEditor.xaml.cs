@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
+using Microsoft.Extensions.Caching.Memory;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
@@ -37,9 +38,18 @@ namespace TempoIDE.UserControls
             textChangedBeforeUpdate = true;
         }
 
-        private void TextEditor_OnAfterHighlight(SyntaxCharCollection syntaxCharCollection)
+        private void TextEditor_OnAfterHighlight(SyntaxCharCollection charCollection)
         {
-            var file = EnvironmentHelper.Cache.GetFile(BoundFile);
+            var inspector = ExtensionAssociator.InspectorFromExtension(BoundFile?.Extension);
+            var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
+            
+            if (inspector == null)
+                return;
+
+            if (project == null)
+                return;
+
+            inspector.Inspect(charCollection, project.Compilation);
         }
 
         public override bool TryCopy()
@@ -109,10 +119,10 @@ namespace TempoIDE.UserControls
             TextEditor.IsReadOnly = file == null;
 
             TextEditor.TextArea.SetScheme(
-                ColoredLabelAssociator.SchemeFromExtension(BoundFile?.Extension));
+                ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
             
             TextEditor.TextArea.SetCompletionProvider(
-                ColoredLabelAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
+                ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
         }
 
         private void TextWriterThread()

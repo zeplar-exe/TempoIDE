@@ -6,7 +6,6 @@ namespace TempoIDE.Core.Types.Wrappers
     public class CachedProjectCompilation
     {
         public readonly CsProjectFile Project;
-        
         public MergeableCompilation Compilation;
 
         public CachedProjectCompilation(CsProjectFile project)

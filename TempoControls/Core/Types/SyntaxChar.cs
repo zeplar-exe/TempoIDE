@@ -9,7 +9,9 @@ namespace TempoControls.Core.Types
         public readonly char Value;
         public readonly Size Size;
 
-        internal Brush Foreground = Brushes.White;
+        public Brush Foreground = Brushes.White;
+        public Brush UnderlineColor = Brushes.Transparent;
+        public UnderlineType UnderlineType = UnderlineType.Straight;
 
         public SyntaxChar(char value, DrawInfo info)
         {
@@ -34,5 +36,11 @@ namespace TempoControls.Core.Types
         {
             return Value.ToString();
         }
+    }
+
+    public enum UnderlineType
+    {
+        Straight,
+        Squiggly
     }
 }

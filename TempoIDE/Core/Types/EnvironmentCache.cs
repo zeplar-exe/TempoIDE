@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using JammaNalysis.MsBuildAnalysis;
 using Microsoft.Extensions.Caching.Memory;
@@ -12,10 +13,12 @@ namespace TempoIDE.Core.Types
         public MemoryCache ProjectCompilations;
         public MemoryCache FileData;
 
+        public List<string> CompilationKeys = new();
+        public List<string> FileKeys = new();
+
         private static MemoryCacheOptions DefaultCacheOptions => new()
         {
             ExpirationScanFrequency = new TimeSpan(0, 0, 5, 0),
-            SizeLimit = 10000000024, // In bits, 1.25 gigabytes
             CompactionPercentage = 0.75
         };
 
@@ -29,11 +32,15 @@ namespace TempoIDE.Core.Types
             if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
             {
                 ClearCache();
+                CompilationKeys.Clear();
                 
                 var solution = new CsSolutionFile(EnvironmentHelper.EnvironmentPath.FullName);
-                
+
                 foreach (var project in solution.Projects)
+                {
                     ProjectCompilations.Set(project.FilePath, new CachedProjectCompilation(project));
+                    CompilationKeys.Add(project.FilePath);
+                }
             }
         }
 
@@ -48,13 +55,7 @@ namespace TempoIDE.Core.Types
 
         public CachedFile GetFile(FileInfo file)
         {
-            return FileData.GetOrCreate(file.FullName, entry =>
-            {
-                var cached = new CachedFile(file);
-                entry.Size = cached.FileInfo.Length * 8;
-                
-                return cached;
-            });
+            return FileData.GetOrCreate(file.FullName, _ => new CachedFile(file));
         }
 
         public void AddFile(FileInfo file)
@@ -69,10 +70,8 @@ namespace TempoIDE.Core.Types
                     }
                     else
                     {
-                        var newCached = new CachedFile(file);
-                        var size = newCached.FileInfo.Length * 8; // Bytes to bits
-                        
-                        FileData.Set(file.FullName, newCached, new MemoryCacheEntryOptions().SetSize(size));
+                        FileData.Set(file.FullName, new CachedFile(file));
+                        FileKeys.Add(file.FullName);
                     }
                 }
                 catch (IOException)
@@ -85,6 +84,7 @@ namespace TempoIDE.Core.Types
         public void RemoveFile(FileInfo file)
         {
             FileData.Remove(file.FullName);
+            FileKeys.Remove(file.FullName);
         }
     }
 }

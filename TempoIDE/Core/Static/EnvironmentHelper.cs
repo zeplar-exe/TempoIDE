@@ -3,8 +3,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using JammaNalysis.Compilation;
 using JammaNalysis.MsBuildAnalysis;
+using Microsoft.Extensions.Caching.Memory;
 using TempoIDE.Core.Types;
+using TempoIDE.Core.Types.Wrappers;
 using TempoIDE.UserControls;
 using TempoIDE.Windows;
 
@@ -65,6 +68,19 @@ namespace TempoIDE.Core.Static
         public static void CreateProject(DirectoryInfo directory, string name)
         {
             // TODO: This
+        }
+        
+        public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
+        {
+            foreach (var projectFilePath in Cache.CompilationKeys)
+            {
+                var compilation = (CachedProjectCompilation)Cache.ProjectCompilations.Get(projectFilePath);
+
+                if (compilation.Project.FileSystem.Any(projectFile => projectFile.Info.FullName == file.FullName))
+                    return compilation;
+            }
+
+            return null;
         }
         
         public static void LoadEnvironment(string path)

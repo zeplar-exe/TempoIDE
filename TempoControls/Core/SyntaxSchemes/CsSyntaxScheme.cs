@@ -40,7 +40,7 @@ namespace TempoControls.Core.SyntaxSchemes
             {
                 if (token.IsKeyword())
                 {
-                    text.UpdateRangeForeground(
+                    text.UpdateForeground(
                         new IntRange(token.SpanStart, token.Span.End),
                         scheme.Identifier);
                 }
@@ -50,13 +50,13 @@ namespace TempoControls.Core.SyntaxSchemes
             {
                 if (node.IsKind(SyntaxKind.StringLiteralExpression))
                 {
-                    text.UpdateRangeForeground(
+                    text.UpdateForeground(
                         new IntRange(node.SpanStart, node.Span.End),
                         scheme.String);
                 }
                 else if (node.IsKind(SyntaxKind.NumericLiteralExpression))
                 {
-                    text.UpdateRangeForeground(
+                    text.UpdateForeground(
                         new IntRange(node.SpanStart, node.Span.End),
                         scheme.Number);
                 }
