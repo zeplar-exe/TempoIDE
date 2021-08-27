@@ -1,4 +1,3 @@
-using TempoControls;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
 using TempoIDE.Core.Inspection;
@@ -24,7 +23,7 @@ namespace TempoIDE.Core.Static
                 _ => new DefaultCompletionProvider()
             };
         }
-
+        
         public static IInspector InspectorFromExtension(string extension)
         {
             return extension.Replace(".", string.Empty) switch

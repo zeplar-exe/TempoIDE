@@ -39,15 +39,11 @@
                 </Grid>
                 
                 <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Hidden">
-                    <StackPanel Name="FilePanel">
-                        
-                    </StackPanel>
+                    <StackPanel Name="FilePanel" />
                 </ScrollViewer>
             </Grid>
         </Border>
         
-        <Grid Grid.Row="2">
-            
-        </Grid>
+        <Grid Grid.Row="2" />
     </Grid>
 </Window>

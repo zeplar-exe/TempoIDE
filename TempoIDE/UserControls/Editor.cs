@@ -28,7 +28,7 @@ namespace TempoIDE.UserControls
             switch (extension.Replace(".", ""))
             {
                 default:
-                    return new FileEditor();
+                    return new TextEditor();
             }
         }
     }

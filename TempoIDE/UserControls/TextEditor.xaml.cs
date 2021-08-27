@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Windows;
-using Microsoft.Extensions.Caching.Memory;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
@@ -10,7 +9,7 @@ using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls
 {
-    public partial class FileEditor : Editor
+    public partial class TextEditor : Editor
     {
         private Thread writerThread;
         
@@ -18,17 +17,17 @@ namespace TempoIDE.UserControls
 
         private const int WriterCooldown = 2;
 
-        public override bool IsFocused => TextEditor.IsFocused;
+        public override bool IsFocused => TextBox.IsFocused;
 
-        public FileEditor()
+        public TextEditor()
         {
             InitializeComponent();
+            
+            TextBox.TextArea.AfterHighlight += TextEditor_OnAfterHighlight;
         }
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            TextEditor.TextArea.AfterHighlight += TextEditor_OnAfterHighlight;
-            
             writerThread = new Thread(TextWriterThread);
             writerThread.Start();
         }
@@ -42,19 +41,13 @@ namespace TempoIDE.UserControls
         {
             var inspector = ExtensionAssociator.InspectorFromExtension(BoundFile?.Extension);
             var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
-            
-            if (inspector == null)
-                return;
 
-            if (project == null)
-                return;
-
-            inspector.Inspect(charCollection, project.Compilation);
+            inspector.Inspect(charCollection, project?.Compilation);
         }
 
         public override bool TryCopy()
         {
-            var text = TextEditor.GetSelectedText();
+            var text = TextBox.GetSelectedText();
             
             if (string.IsNullOrEmpty(text)) 
                 return false;
@@ -72,14 +65,14 @@ namespace TempoIDE.UserControls
             if (string.IsNullOrEmpty(text))
                 return false;
             
-            if (TextEditor.GetSelectedText().Length == 0)
+            if (TextBox.GetSelectedText().Length == 0)
             {
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
+                TextBox.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));   
             }
             else
             {
-                TextEditor.Backspace(0);
-                TextEditor.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));
+                TextBox.Backspace(0);
+                TextBox.AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));
             }
             
             return true;
@@ -87,20 +80,20 @@ namespace TempoIDE.UserControls
 
         public override bool TryCut()
         {
-            var text = TextEditor.GetSelectedText();
+            var text = TextBox.GetSelectedText();
 
             if (string.IsNullOrEmpty(text)) 
                 return false;
             
             Clipboard.SetText(text, TextDataFormat.UnicodeText);
-            TextEditor.Backspace(0);
+            TextBox.Backspace(0);
         
             return true;
         }
         
         public override bool TrySelectAll()
         {
-            TextEditor.Select(new IntRange(0, TextEditor.TextArea.TextBuilder.Length));
+            TextBox.Select(new IntRange(0, TextBox.TextArea.TextBuilder.Length));
             
             return true;
         }
@@ -116,12 +109,12 @@ namespace TempoIDE.UserControls
 
             UpdateText();
 
-            TextEditor.IsReadOnly = file == null;
+            TextBox.IsReadOnly = file == null;
 
-            TextEditor.TextArea.SetScheme(
+            TextBox.TextArea.SetScheme(
                 ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
             
-            TextEditor.TextArea.SetCompletionProvider(
+            TextBox.TextArea.SetCompletionProvider(
                 ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
         }
 
@@ -167,10 +160,10 @@ namespace TempoIDE.UserControls
             
             var text = EnvironmentHelper.Cache.GetFile(BoundFile);
 
-            if (text == null || text.Content == TextEditor.TextArea.Text)
+            if (text == null || text.Content == TextBox.TextArea.Text)
                 return;
 
-            TextEditor.TextArea.TextBuilder.SetString(text.Content);
+            TextBox.TextArea.TextBuilder.SetString(text.Content);
             textChangedBeforeUpdate = false;
         }
 
@@ -184,9 +177,9 @@ namespace TempoIDE.UserControls
             await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
             stream.Seek(0, SeekOrigin.End);
 
-            var text = TextEditor.TextArea.Text;
+            var text = TextBox.TextArea.Text;
             
-            foreach (var line in TextEditor.TextArea.GetLines())
+            foreach (var line in TextBox.TextArea.GetLines())
             {
                 await stream.WriteAsync(
                     ApplicationHelper.GlobalEncoding.GetBytes(text + Environment.NewLine), 
@@ -196,7 +189,7 @@ namespace TempoIDE.UserControls
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            TextEditor.Focus();
+            TextBox.Focus();
         }
     }
 }

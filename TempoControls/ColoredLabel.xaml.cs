@@ -42,12 +42,15 @@ namespace TempoControls
         public delegate void BeforeCharacterReadHandler(DrawingContext context, Rect rect, int index);
         public delegate void AfterCharacterReadHandler(DrawingContext context, Rect rect, int index);
         public delegate void AfterHighlightHandler(SyntaxCharCollection formattedText);
+
+        public delegate void AfterLineCalculationHandler(IColoredLabelLine[] lines);
         public delegate void AfterRenderHandler(DrawingContext context);
         
         public event BeforeRenderHandler BeforeRender;
         public event BeforeCharacterReadHandler BeforeCharacterRead;
         public event AfterCharacterReadHandler AfterCharacterRead;
         public event AfterHighlightHandler AfterHighlight;
+        public event AfterLineCalculationHandler AfterLineCalculation;
         public event AfterRenderHandler AfterRender;
 
 
@@ -65,9 +68,19 @@ namespace TempoControls
         protected override Size MeasureOverride(Size constraint)
         {
             var longestLine = GetLines().OrderByDescending(line => line.Length).FirstOrDefault();
-            var totalWidth = CreateFormattedText(longestLine).WidthIncludingTrailingWhitespace;
+            var formatted = new FormattedText(
+                longestLine,
+                CultureInfo.CurrentCulture,
+                FlowDirection.LeftToRight,
+                Typeface,
+                FontSize,
+                Brushes.White,
+                TextDpi)
+            {
+                LineHeight = LineHeight
+            };
             
-            return new Size(totalWidth, LineHeight * LineCount);
+            return new Size(formatted.WidthIncludingTrailingWhitespace, LineHeight * LineCount);
         }
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -111,36 +124,17 @@ namespace TempoControls
             Scheme.Highlight(this, characters);
             AfterHighlight?.Invoke(characters);
 
+            var renderLines = new IColoredLabelLine[lines.Count];
+
             for (var lineIndex = 0; lineIndex < lines.Count; lineIndex++)
-            {
-                var line = lines[lineIndex];
-                var formatted = CreateFormattedText(line.ToString());
+                renderLines[lineIndex] = new ColoredTextLine(lines[lineIndex], DefaultDrawInfo);
 
-                for (var i = 0; i < line.Count; i++)
-                {
-                    var syntaxChar = line[i];
-                    formatted.SetForegroundBrush(syntaxChar.Foreground, i, 1);
-                }
-
-                new ColoredTextLine(formatted).Draw(drawingContext, new Point(0, lineIndex * LineHeight));
-            }
+            AfterLineCalculation?.Invoke(renderLines);
             
-            AfterRender?.Invoke(drawingContext);
-        }
+            for (var lineIndex = 0; lineIndex < renderLines.Length; lineIndex++)
+                renderLines[lineIndex].Draw(drawingContext, new Point(0, lineIndex * LineHeight));
 
-        private FormattedText CreateFormattedText(string text)
-        {
-            return new FormattedText(
-                text,
-                CultureInfo.CurrentCulture,
-                FlowDirection.LeftToRight,
-                Typeface,
-                FontSize,
-                Brushes.White,
-                TextDpi)
-            {
-                LineHeight = LineHeight
-            };
+            AfterRender?.Invoke(drawingContext);
         }
     }
 }

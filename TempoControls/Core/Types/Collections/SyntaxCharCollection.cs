@@ -79,7 +79,7 @@ namespace TempoControls.Core.Types.Collections
             items.CopyTo(array, arrayIndex);
         }
 
-        internal void UpdateForeground(IntRange range, Brush foreground)
+        public void UpdateForeground(IntRange range, Brush foreground)
         {
             foreach (int index in range)
             {
@@ -87,7 +87,7 @@ namespace TempoControls.Core.Types.Collections
             }
         }
         
-        internal void UpdateUnderline(IntRange range, Brush color)
+        public void UpdateUnderline(IntRange range, Brush color)
         {
             foreach (int index in range)
             {
@@ -95,7 +95,7 @@ namespace TempoControls.Core.Types.Collections
             }
         }
         
-        internal void UpdateUnderlineType(IntRange range, UnderlineType type)
+        public void UpdateUnderlineType(IntRange range, UnderlineType type)
         {
             foreach (int index in range)
             {

@@ -1,7 +1,6 @@
 <TreeView x:Class="TempoIDE.UserControls.ExplorerView"
           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-          xmlns:local="clr-namespace:TempoIDE.UserControls"
           BorderThickness="0"
           PreviewMouseLeftButtonDown="ExplorerView_OnPreviewMouseLeftButtonDown">
 </TreeView>

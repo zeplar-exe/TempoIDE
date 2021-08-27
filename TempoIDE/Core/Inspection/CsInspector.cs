@@ -1,4 +1,3 @@
-using System;
 using JammaNalysis.Compilation;
 using TempoControls.Core.Types.Collections;
 
@@ -8,7 +7,7 @@ namespace TempoIDE.Core.Inspection
     {
         public void Inspect(SyntaxCharCollection characters, MergeableCompilation compilation)
         {
-            Console.WriteLine("Inspection successful");
+            
         }
     }
 }

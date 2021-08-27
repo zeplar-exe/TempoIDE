@@ -35,7 +35,7 @@ namespace TempoControls
             InvalidateTextChanged();
         }
 
-        internal DrawInfo DefaultDrawInfo => new(FontSize, Typeface, TextDpi);
+        internal DrawInfo DefaultDrawInfo => new(FontSize, Typeface, TextDpi, LineHeight);
 
         private void AppendCharacter(char character, int index)
         {

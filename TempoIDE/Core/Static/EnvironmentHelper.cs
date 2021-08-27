@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using JammaNalysis.Compilation;
 using JammaNalysis.MsBuildAnalysis;
 using Microsoft.Extensions.Caching.Memory;
 using TempoIDE.Core.Types;
