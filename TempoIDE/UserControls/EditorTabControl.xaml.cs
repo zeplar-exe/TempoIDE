@@ -62,7 +62,8 @@ namespace TempoIDE.UserControls
                 .OfType<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
             
-            tab.Editor.UpdateFile();
+            if (tab.Editor is FileEditor fileEditor)
+                fileEditor.UpdateFile();
             
             Files.Remove(file.FullName);
             
@@ -106,16 +107,17 @@ namespace TempoIDE.UserControls
                     continue;
                 }
 
+                var editor = new TextFileEditor();
+                editor.Update(fileInfo);
+
                 var tab = new EditorTabItem
                 {
                     Header = { Text = fileInfo.Name },
-                    Editor = Editor.FromExtension(fileInfo.Extension),
+                    Editor = editor,
                     BoundFile = fileInfo,
                     Background = UnselectedTabColor
                 };
-                
-                tab.Editor.Update(fileInfo);
-                
+
                 tab.Selected += OnTabSelected;
                 tab.MouseMove += OnTabMouseMove;
                 tab.MouseLeave += OnTabMouseLeave;

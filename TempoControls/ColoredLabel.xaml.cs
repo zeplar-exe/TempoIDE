@@ -20,7 +20,7 @@ namespace TempoControls
         public string Text => TextBuilder.ToString();
         public readonly StringBuilder TextBuilder = new();
         
-        public int LineCount => TextBuilder.ToString().Count(c => c == NewLine) + 1;
+        public int LineCount => TextBuilder.ToString().Count(c => c == LineBreak) + 1;
         
         public int LineHeight { get; set; } = 15;
         public Typeface Typeface { get; set; } = new Typeface("Verdana");
@@ -28,7 +28,7 @@ namespace TempoControls
 
         public event RoutedEventHandler TextChanged;
 
-        public const char NewLine = '\n';
+        public const char LineBreak = '\n';
 
         public ISyntaxScheme Scheme { get; private set; }
         public ICompletionProvider CompletionProvider { get; private set; }
@@ -43,7 +43,7 @@ namespace TempoControls
         public delegate void AfterCharacterReadHandler(DrawingContext context, Rect rect, int index);
         public delegate void AfterHighlightHandler(SyntaxCharCollection formattedText);
 
-        public delegate void AfterLineCalculationHandler(IColoredLabelLine[] lines);
+        public delegate void AfterLineCalculationHandler(List<IColoredLabelLine> lines);
         public delegate void AfterRenderHandler(DrawingContext context);
         
         public event BeforeRenderHandler BeforeRender;
@@ -112,7 +112,7 @@ namespace TempoControls
 
                 lineWidth += charSize.Width;
 
-                if (character.Value == NewLine)
+                if (character.Value == LineBreak)
                 {
                     lineCount++;
                     lineWidth = 0d;
@@ -124,14 +124,14 @@ namespace TempoControls
             Scheme.Highlight(this, characters);
             AfterHighlight?.Invoke(characters);
 
-            var renderLines = new IColoredLabelLine[lines.Count];
+            var renderLines = new List<IColoredLabelLine>(lines.Count);
 
             for (var lineIndex = 0; lineIndex < lines.Count; lineIndex++)
-                renderLines[lineIndex] = new ColoredTextLine(lines[lineIndex], DefaultDrawInfo);
+                renderLines.Add(new ColoredTextLine(lines[lineIndex], DefaultDrawInfo));
 
             AfterLineCalculation?.Invoke(renderLines);
             
-            for (var lineIndex = 0; lineIndex < renderLines.Length; lineIndex++)
+            for (var lineIndex = 0; lineIndex < renderLines.Count; lineIndex++)
                 renderLines[lineIndex].Draw(drawingContext, new Point(0, lineIndex * LineHeight));
 
             AfterRender?.Invoke(drawingContext);

@@ -67,7 +67,7 @@ namespace TempoControls
                     if (AutoComplete.Enabled)
                         AutoComplete.Selected?.Execute(this);
                     else
-                        AppendTextAtCaret(ColoredLabel.NewLine);
+                        AppendTextAtCaret(ColoredLabel.LineBreak);
                     
                     UpdateAutoCompletion();
                     
@@ -190,7 +190,7 @@ namespace TempoControls
                 if (lineCount > CaretOffset.Y)
                     break;
 
-                if (character.Value == ColoredLabel.NewLine)
+                if (character.Value == ColoredLabel.LineBreak)
                 {
                     lineCount++;
                 }

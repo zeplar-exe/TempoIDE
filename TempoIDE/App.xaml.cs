@@ -12,8 +12,6 @@ namespace TempoIDE
             #if !DEBUG
             ConsoleManager.Hide();
             #endif
-            
-            //ThemeHelper.LoadTheme(Theme.Light);
         }
         
         public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)

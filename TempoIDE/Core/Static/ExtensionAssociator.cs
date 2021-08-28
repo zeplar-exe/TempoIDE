@@ -24,12 +24,12 @@ namespace TempoIDE.Core.Static
             };
         }
         
-        public static IInspector InspectorFromExtension(string extension)
+        public static IFileInspector InspectorFromExtension(string extension)
         {
             return extension.Replace(".", string.Empty) switch
             {
-                "cs" => new CsInspector(),
-                _ => new DefaultInspector()
+                "cs" => new CsFileInspector(),
+                _ => new DefaultFileInspector()
             };
         }
     }

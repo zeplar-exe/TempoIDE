@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using TempoControls.Core.Static;
@@ -9,7 +10,7 @@ using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls
 {
-    public partial class TextEditor : Editor
+    public partial class TextFileEditor : FileEditor
     {
         private Thread writerThread;
         
@@ -19,7 +20,7 @@ namespace TempoIDE.UserControls
 
         public override bool IsFocused => TextBox.IsFocused;
 
-        public TextEditor()
+        public TextFileEditor()
         {
             InitializeComponent();
             
@@ -98,7 +99,7 @@ namespace TempoIDE.UserControls
             return true;
         }
 
-        public override void Refresh() => UpdateText();
+        public override void Refresh() => UpdateVisual();
 
         public override void Update(FileInfo file)
         {
@@ -107,7 +108,7 @@ namespace TempoIDE.UserControls
 
             BoundFile = file;
 
-            UpdateText();
+            UpdateVisual();
 
             TextBox.IsReadOnly = file == null;
 
@@ -145,25 +146,25 @@ namespace TempoIDE.UserControls
             }
             else
             {
-                UpdateText();
+                UpdateVisual();
             }
 
             textChangedBeforeUpdate = false;
         }
 
-        public override void UpdateText()
+        public override void UpdateVisual()
         {
             if (BoundFile == null) 
                 return;
                     
             BoundFile.Refresh();
             
-            var text = EnvironmentHelper.Cache.GetFile(BoundFile);
+            var file = EnvironmentHelper.Cache.GetFile(BoundFile);
 
-            if (text == null || text.Content == TextBox.TextArea.Text)
+            if (file == null || file.Content == TextBox.TextArea.Text)
                 return;
 
-            TextBox.TextArea.TextBuilder.SetString(text.Content);
+            TextBox.TextArea.TextBuilder.SetString(file.Content);
             textChangedBeforeUpdate = false;
         }
 
@@ -175,15 +176,18 @@ namespace TempoIDE.UserControls
             BoundFile.Refresh();
 
             await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            await using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding);
             stream.Seek(0, SeekOrigin.End);
 
-            var text = TextBox.TextArea.Text;
+            var lines = TextBox.TextArea.Text.Split(Environment.NewLine);
+            var last = lines.Last();
             
-            foreach (var line in TextBox.TextArea.GetLines())
+            foreach (var line in lines)
             {
-                await stream.WriteAsync(
-                    ApplicationHelper.GlobalEncoding.GetBytes(text + Environment.NewLine), 
-                    0, line.Length);
+                await writer.WriteAsync(line);
+
+                if (line != last && line.Length > 1)
+                    await writer.WriteAsync(Environment.NewLine);
             }
         }
 

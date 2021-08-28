@@ -87,7 +87,7 @@ namespace TempoControls
                         totalWidth += character.Size.Width;
                         column++;
 
-                        if (character.Value == ColoredLabel.NewLine)
+                        if (character.Value == ColoredLabel.LineBreak)
                             column--;
 
                         if (clickPos.X > selectStartXPosition)

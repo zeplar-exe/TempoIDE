@@ -78,6 +78,10 @@ namespace TempoIDE.Core.Types
                 {
                     FileData.Remove(file.FullName);
                 }
+                catch (ObjectDisposedException)
+                {
+                    // This exception occurs infrequently and I don't know how to fix it
+                }
             }
         }
 

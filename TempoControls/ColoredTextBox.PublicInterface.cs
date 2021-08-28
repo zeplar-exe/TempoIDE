@@ -19,7 +19,7 @@ namespace TempoControls
 
             if (position.X > 0 && VerifyIndex(caretCharacter))
             {
-                if (TextArea.TextBuilder[caretCharacter] == ColoredLabel.NewLine)
+                if (TextArea.TextBuilder[caretCharacter] == ColoredLabel.LineBreak)
                 {
                     var newPos = GetOffsetAtIndex(caretCharacter);
                     
@@ -53,7 +53,7 @@ namespace TempoControls
         {
             TextArea.AppendText(character, CaretIndex);
             
-            MoveCaret(character == ColoredLabel.NewLine ?
+            MoveCaret(character == ColoredLabel.LineBreak ?
                 new IntVector(0, CaretOffset.Y + 1) : 
                 new IntVector(CaretOffset.X + 1, CaretOffset.Y));
         }
@@ -64,7 +64,7 @@ namespace TempoControls
             {
                 TextArea.TextBuilder.Insert(CaretIndex, character.ToString());
                 
-                MoveCaret(character == ColoredLabel.NewLine ?
+                MoveCaret(character == ColoredLabel.LineBreak ?
                     new IntVector(0, CaretOffset.Y + 1) : 
                     new IntVector(CaretOffset.X + 1, CaretOffset.Y));
             }
@@ -78,7 +78,7 @@ namespace TempoControls
             {
                 TextArea.TextBuilder.Insert(CaretIndex, character);
 
-                MoveCaret(character.Value == ColoredLabel.NewLine ?
+                MoveCaret(character.Value == ColoredLabel.LineBreak ?
                     new IntVector(0, CaretOffset.Y + 1) : 
                     new IntVector(CaretOffset.X + 1, CaretOffset.Y));
             }
@@ -120,7 +120,7 @@ namespace TempoControls
                 
                 TextArea.RemoveIndex(CaretIndex - 1);
                 
-                if (character == ColoredLabel.NewLine)
+                if (character == ColoredLabel.LineBreak)
                 {
                     var lines = TextArea.GetLines();
                     MoveCaret(new IntVector(lines[CaretOffset.Y - 1].Length, CaretOffset.Y - 1));

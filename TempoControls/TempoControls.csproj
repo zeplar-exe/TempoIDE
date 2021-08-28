@@ -50,4 +50,10 @@
       </Compile>
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="JammaNalysis, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+        <HintPath>..\..\..\Jammo\JammaNalysis\JammaNalysis\bin\Release\netcoreapp3.1\JammaNalysis.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>

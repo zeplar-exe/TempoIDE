@@ -3,7 +3,12 @@ using TempoControls.Core.Types.Collections;
 
 namespace TempoIDE.Core.Inspection
 {
-    public class CsInspector : IInspector
+    public interface IFileInspector
+    {
+        public void Inspect(SyntaxCharCollection characters, MergeableCompilation compilation);
+    }
+
+    public class DefaultFileInspector : IFileInspector
     {
         public void Inspect(SyntaxCharCollection characters, MergeableCompilation compilation)
         {

@@ -38,29 +38,29 @@
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
                 <controls:ExplorerViewItem Header="Empty Solution" IsSelected="True">
-                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
+                    <windows:CreateSolutionWindow.CreationTemplate>
                         <ControlTemplate/>
-                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
+                    </windows:CreateSolutionWindow.CreationTemplate>
                 </controls:ExplorerViewItem>
                 
-                <controls:SettingsCategoryControl HeaderText=".NET/.NET Core"/>
+                <controls:ExplorerViewItem Header=".NET Core" IsExpanded="True">
+                    <controls:ExplorerViewItem Header="Class Library">
+                        <windows:CreateSolutionWindow.CreationTemplate>
+                            <ControlTemplate/>
+                        </windows:CreateSolutionWindow.CreationTemplate>
+                    </controls:ExplorerViewItem>
                 
-                <controls:ExplorerViewItem Header="Class Library">
-                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
-                        <ControlTemplate/>
-                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
-                </controls:ExplorerViewItem>
+                    <controls:ExplorerViewItem Header="Class Library">
+                        <windows:CreateSolutionWindow.CreationTemplate>
+                            <ControlTemplate/>
+                        </windows:CreateSolutionWindow.CreationTemplate>
+                    </controls:ExplorerViewItem>
                 
-                <controls:ExplorerViewItem Header="Class Library">
-                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
-                        <ControlTemplate/>
-                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
-                </controls:ExplorerViewItem>
-                
-                <controls:ExplorerViewItem Header="Console Application">
-                    <windows:CreateSolutionWindow.ProjectCreationTemplate>
-                        <ControlTemplate/>
-                    </windows:CreateSolutionWindow.ProjectCreationTemplate>
+                    <controls:ExplorerViewItem Header="Console Application">
+                        <windows:CreateSolutionWindow.CreationTemplate>
+                            <ControlTemplate/>
+                        </windows:CreateSolutionWindow.CreationTemplate>
+                    </controls:ExplorerViewItem>
                 </controls:ExplorerViewItem>
             </controls:ExplorerView>
         </Grid>

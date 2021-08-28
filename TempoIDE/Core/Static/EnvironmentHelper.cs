@@ -71,6 +71,9 @@ namespace TempoIDE.Core.Static
         
         public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
         {
+            if (Mode != EnvironmentMode.Solution)
+                return null;
+            
             foreach (var projectFilePath in Cache.CompilationKeys)
             {
                 var compilation = (CachedProjectCompilation)Cache.ProjectCompilations.Get(projectFilePath);
@@ -120,8 +123,8 @@ namespace TempoIDE.Core.Static
 
                 await Task.Run(delegate
                 {
-                    foreach (var file in info.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
-                        Cache.AddFile(new FileInfo(file.FullName));
+                    foreach (var file in info.EnumerateFiles("*", SearchOption.AllDirectories))
+                        Cache.AddFile(file);
                 });
             }
             else if (File.Exists(path))
@@ -137,8 +140,8 @@ namespace TempoIDE.Core.Static
 
                     await Task.Run(delegate
                     {
-                        foreach (var file in info.Directory.EnumerateFileSystemInfos("*", SearchOption.AllDirectories))
-                            Cache.AddFile(new FileInfo(file.FullName));
+                        foreach (var file in info.Directory.EnumerateFiles("*", SearchOption.AllDirectories))
+                            Cache.AddFile(file);
                     });
                 }
                 else

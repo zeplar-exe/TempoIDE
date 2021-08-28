@@ -97,7 +97,7 @@ namespace TempoControls
 
             foreach (var character in TextBuilder.ToString())
             {
-                if (character == NewLine)
+                if (character == LineBreak)
                 {
                     if (!omitNewLines)
                         lines[currentIndex] += character;
