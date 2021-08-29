@@ -7,7 +7,7 @@ using JammaNalysis.MsBuildAnalysis;
 using Microsoft.Extensions.Caching.Memory;
 using TempoIDE.Core.Types;
 using TempoIDE.Core.Types.Wrappers;
-using TempoIDE.UserControls;
+using TempoIDE.UserControls.Panels;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Static

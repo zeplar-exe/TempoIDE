@@ -1,8 +1,6 @@
-using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Editors
 {
     public partial class SourceViewer : Editor
     {

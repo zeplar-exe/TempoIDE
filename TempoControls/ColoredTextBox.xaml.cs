@@ -8,6 +8,8 @@ namespace TempoControls
 {
     public partial class ColoredTextBox
     {
+        public string Text => TextArea.Text;
+        
         public Rect CaretRect { get; private set; }
         public IntVector CaretOffset;
         public int CaretIndex => GetIndexAtOffset(CaretOffset);
@@ -31,6 +33,7 @@ namespace TempoControls
             }
         }
 
+        public event KeyEventHandler HandledKeyPress;
         public event RoutedEventHandler TextChanged;
 
         private static readonly int CaretBlinkFrequencyMs = 500;

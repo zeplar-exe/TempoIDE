@@ -166,6 +166,8 @@ namespace TempoControls
                 
                 #endregion
             }
+            
+            HandledKeyPress?.Invoke(this, e);
         }
 
         private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)

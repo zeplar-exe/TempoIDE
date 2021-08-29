@@ -4,8 +4,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoIDE.Core.Static;
+using TempoIDE.UserControls.Editors;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Panels
 {
     public partial class EditorTabItem : UserControl
     {

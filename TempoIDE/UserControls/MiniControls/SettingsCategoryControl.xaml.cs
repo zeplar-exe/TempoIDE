@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.MiniControls
 {
     public partial class SettingsCategoryControl : ItemsControl
     {

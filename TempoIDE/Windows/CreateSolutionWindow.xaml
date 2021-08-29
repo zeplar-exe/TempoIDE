@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:controls="clr-namespace:TempoIDE.UserControls"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
+        xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
+        xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"
@@ -20,7 +22,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
                 
-        <controls:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
+        <minis:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
         
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -30,39 +32,49 @@
             
             <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
             
-            <controls:ExplorerView
+            <panels:ExplorerView
                 Grid.Column="0"
                 x:Name="Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
-                <controls:ExplorerViewItem Header="Empty Solution" IsSelected="True">
+                <panels:ExplorerViewItem Header="Empty Solution" IsSelected="True">
                     <windows:CreateSolutionWindow.CreationTemplate>
-                        <ControlTemplate/>
+                        <ControlTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="30"/>
+                                </Grid.RowDefinitions>
+                                
+                                <minis:TitledTextBox Grid.Row="1" Header="New solution"/>
+                            </Grid>
+                        </ControlTemplate>
                     </windows:CreateSolutionWindow.CreationTemplate>
-                </controls:ExplorerViewItem>
+                </panels:ExplorerViewItem>
                 
-                <controls:ExplorerViewItem Header=".NET Core" IsExpanded="True">
-                    <controls:ExplorerViewItem Header="Class Library">
+                <panels:ExplorerViewItem Header=".NET Core" IsExpanded="True">
+                    <panels:ExplorerViewItem Header="Class Library">
                         <windows:CreateSolutionWindow.CreationTemplate>
                             <ControlTemplate/>
                         </windows:CreateSolutionWindow.CreationTemplate>
-                    </controls:ExplorerViewItem>
+                    </panels:ExplorerViewItem>
                 
-                    <controls:ExplorerViewItem Header="Class Library">
+                    <panels:ExplorerViewItem Header="Class Library">
                         <windows:CreateSolutionWindow.CreationTemplate>
                             <ControlTemplate/>
                         </windows:CreateSolutionWindow.CreationTemplate>
-                    </controls:ExplorerViewItem>
+                    </panels:ExplorerViewItem>
                 
-                    <controls:ExplorerViewItem Header="Console Application">
+                    <panels:ExplorerViewItem Header="Console Application">
                         <windows:CreateSolutionWindow.CreationTemplate>
                             <ControlTemplate/>
                         </windows:CreateSolutionWindow.CreationTemplate>
-                    </controls:ExplorerViewItem>
-                </controls:ExplorerViewItem>
-            </controls:ExplorerView>
+                    </panels:ExplorerViewItem>
+                </panels:ExplorerViewItem>
+            </panels:ExplorerView>
         </Grid>
     </Grid>
 </Window>

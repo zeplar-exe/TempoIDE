@@ -6,6 +6,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TempoIDE.UserControls"
         xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
+        xmlns:tempoControls="clr-namespace:TempoControls;assembly=TempoControls"
+        xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
+        xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Background="{DynamicResource PrimaryBackgroundColor}"
@@ -23,8 +26,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <local:TopbarControl Grid.Row="0">
-            <local:TopbarControl.Template>
+        <miniControls:TopbarControl Grid.Row="0">
+            <miniControls:TopbarControl.Template>
                 <ControlTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -58,13 +61,13 @@
                                     </MenuItem>
                                 </MenuItem>
                                 
-                                <local:MenuSeparator/>
+                                <miniControls:MenuSeparator/>
                                 
                                 <MenuItem Header="Settings">
                                     <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
                                 </MenuItem>
                                 
-                                <local:MenuSeparator/>
+                                <miniControls:MenuSeparator/>
                                 
                                 <MenuItem Header="Exit">
                                     <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
@@ -133,8 +136,8 @@
                             Click="CloseWindow"/>
                     </Grid>
                 </ControlTemplate>
-            </local:TopbarControl.Template>
-        </local:TopbarControl>
+            </miniControls:TopbarControl.Template>
+        </miniControls:TopbarControl>
         
         <!-- Topbar... 2? -->
         <Border
@@ -150,7 +153,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <local:ExplorerView
+            <panels:ExplorerView
                 Grid.Column="0"
                 x:Name="Explorer" 
                 GotFocus="Explorer_OnGotFocus" 
@@ -168,8 +171,9 @@
                 BorderThickness="10,0"
                 BorderBrush="Transparent"/>
             
-            <local:EditorControl 
+            <panels:EditorControl 
                 Grid.Column="2" 
+                Visibility="Collapsed"
                 x:Name="Editor"
                 GotFocus="Editor_OnGotFocus"/>
         </Grid>

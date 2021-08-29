@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoControls", "TempoContr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoControlsTests", "TempoControlsTests\TempoControlsTests.csproj", "{CE7E66D2-5CE1-4C00-AF2C-54BBEEE7B85C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoSourceGen", "TempoSourceGen\TempoSourceGen.csproj", "{3A5C9931-BAD5-4D1E-A2C8-A847DD4F4AFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{CE7E66D2-5CE1-4C00-AF2C-54BBEEE7B85C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE7E66D2-5CE1-4C00-AF2C-54BBEEE7B85C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE7E66D2-5CE1-4C00-AF2C-54BBEEE7B85C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A5C9931-BAD5-4D1E-A2C8-A847DD4F4AFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A5C9931-BAD5-4D1E-A2C8-A847DD4F4AFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A5C9931-BAD5-4D1E-A2C8-A847DD4F4AFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A5C9931-BAD5-4D1E-A2C8-A847DD4F4AFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

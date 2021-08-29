@@ -7,6 +7,8 @@
         xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:classes="clr-namespace:TempoIDE.Core.Static"
+        xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
+        xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
@@ -21,7 +23,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <local:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
+        <miniControls:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
         
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -31,14 +33,14 @@
             
             <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
             
-            <local:ExplorerView
+            <panels:ExplorerView
                 Grid.Column="0"
                 x:Name="Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
-                <local:ExplorerViewItem Header="Appearance/Behavior" IsSelected="True">
+                <panels:ExplorerViewItem Header="Appearance/Behavior" IsSelected="True">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate>
                             <ControlTemplate.Resources>
@@ -50,29 +52,29 @@
                             </ControlTemplate.Resources>
                             
                             <Grid>
-                                <local:SettingsCategoryControl HeaderText="Theme">
+                                <miniControls:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
                                         ItemsSource="{Binding Source={StaticResource ThemeData}}"
                                         ItemContainerStyle="{StaticResource TextStyle}"/>
-                                </local:SettingsCategoryControl>
+                                </miniControls:SettingsCategoryControl>
                             </Grid>
                         </ControlTemplate>
                     </windows:SettingsWindow.SectionTemplate>
-                </local:ExplorerViewItem>
+                </panels:ExplorerViewItem>
                 
-                <local:ExplorerViewItem Header="Performance">
+                <panels:ExplorerViewItem Header="Performance">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
-                </local:ExplorerViewItem>
+                </panels:ExplorerViewItem>
                 
-                <local:ExplorerViewItem Header="Keybinds">
+                <panels:ExplorerViewItem Header="Keybinds">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
-                </local:ExplorerViewItem>
-            </local:ExplorerView>
+                </panels:ExplorerViewItem>
+            </panels:ExplorerView>
         </Grid>
     </Grid>
 </Window>

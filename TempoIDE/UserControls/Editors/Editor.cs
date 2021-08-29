@@ -1,7 +1,7 @@
 using System.IO;
 using System.Windows.Controls;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Editors
 {
     public abstract class Editor : UserControl
     {

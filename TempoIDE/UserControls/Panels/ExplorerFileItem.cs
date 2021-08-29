@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Panels
 {
     public class ExplorerFileItem : ExplorerViewItem
     {

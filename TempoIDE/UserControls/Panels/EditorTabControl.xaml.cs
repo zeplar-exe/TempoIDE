@@ -4,8 +4,9 @@ using System.IO;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Media;
+using TempoIDE.UserControls.Editors;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Panels
 {
     public partial class EditorTabControl : UserControl
     {

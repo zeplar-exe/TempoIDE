@@ -62,7 +62,7 @@ namespace TempoControls
         private void ColoredLabel_OnTextChanged(object sender, RoutedEventArgs e)
         {
             TextBuilder.Replace("\r", ""); // Remove \r to prevent incompatibilities
-            InvalidateMeasure();
+            Dispatcher.Invoke(InvalidateMeasure);
         }
         
         protected override Size MeasureOverride(Size constraint)
@@ -121,7 +121,7 @@ namespace TempoControls
                 }
             }
             
-            Scheme.Highlight(this, characters);
+            Scheme?.Highlight(this, characters);
             AfterHighlight?.Invoke(characters);
 
             var renderLines = new List<IColoredLabelLine>(lines.Count);

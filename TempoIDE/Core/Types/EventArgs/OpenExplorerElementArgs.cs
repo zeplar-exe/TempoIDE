@@ -1,5 +1,5 @@
 using System.Windows;
-using TempoIDE.UserControls;
+using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Core.Types.EventArgs
 {

@@ -1,6 +1,7 @@
 using System.Windows.Input;
+using TempoIDE.UserControls.Editors;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Panels
 {
     public partial class EditorControl
     {

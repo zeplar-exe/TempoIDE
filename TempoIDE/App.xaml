@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:locals="clr-namespace:TempoIDE.UserControls"
              xmlns:properties="clr-namespace:TempoIDE.Properties"
+             xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
+             xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
              StartupUri="Windows/MainWindow.xaml"
              Startup="App_OnStartup"
               >
@@ -37,15 +39,15 @@
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type locals:ExplorerViewItem}" BasedOn="{StaticResource TextStyle}">
+            <Style TargetType="{x:Type panels:ExplorerViewItem}" BasedOn="{StaticResource TextStyle}">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type locals:ExplorerFileItem}" BasedOn="{StaticResource TextStyle}">
+            <Style TargetType="{x:Type panels:ExplorerFileItem}" BasedOn="{StaticResource TextStyle}">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type locals:ExplorerView}">
+            <Style TargetType="{x:Type panels:ExplorerView}">
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
@@ -65,7 +67,7 @@
                 <ListBoxItem Background="Transparent" />
             </DataTemplate>
             
-            <ControlTemplate x:Key="CloseButton" TargetType="locals:TopbarControl">
+            <ControlTemplate x:Key="CloseButton" TargetType="miniControls:TopbarControl">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

@@ -1,11 +1,8 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
-using JammaNalysis.Compilation;
-using JammaNalysis.CsFileAnalysis;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using TempoIDE.UserControls;
+using TempoIDE.UserControls.Editors;
 
 namespace TempoIDE.Core.Static
 {

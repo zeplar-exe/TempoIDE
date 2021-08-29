@@ -8,7 +8,7 @@ using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Editors
 {
     public partial class TextFileEditor : FileEditor
     {

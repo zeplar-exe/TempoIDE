@@ -1,6 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
-using TempoIDE.UserControls;
+using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows
 {

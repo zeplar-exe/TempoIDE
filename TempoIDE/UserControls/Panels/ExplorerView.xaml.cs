@@ -8,12 +8,12 @@ using System.Windows.Media;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.EventArgs;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.Panels
 {
     public partial class ExplorerView : TreeView
     {
-        public Color SelectedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4563d9");
-        public Color UnfocusedItemColor { get; set; } = (Color)ColorConverter.ConvertFromString("#4a4d51");
+        public Color SelectedItemColor { get; set; } = Brushes.Blue.Color;
+        public Color UnfocusedItemColor { get; set; } = Brushes.CadetBlue.Color;
 
         public static string[] SupportedExtensions =
         {
@@ -24,6 +24,8 @@ namespace TempoIDE.UserControls
 
         public ExplorerView()
         {
+            DataContext = this;
+            
             InitializeComponent();
         }
 
@@ -70,7 +72,7 @@ namespace TempoIDE.UserControls
             if (e.ClickCount != 2)
                 return;
 
-            var clicked = e.OriginalSource as UIElement;
+            var clicked = (UIElement)e.OriginalSource;
             
             if (clicked is null)
                 return;

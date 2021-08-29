@@ -5,6 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:local="clr-namespace:TempoIDE.Windows"
         xmlns:userControls="clr-namespace:TempoIDE.UserControls"
+        xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
         mc:Ignorable="d"
         Title="Error" Height="180" Width="350"
         Style="{StaticResource ModalWindowStyle}"
@@ -18,16 +19,16 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         
-        <userControls:TopbarControl Grid.Row="0">
-            <userControls:TopbarControl.Template>
+        <miniControls:TopbarControl Grid.Row="0">
+            <miniControls:TopbarControl.Template>
                 <ControlTemplate>
                     <TextBlock 
                         Text="{Binding Path=Title}"
                         FontSize="15"/>
                 </ControlTemplate>
-            </userControls:TopbarControl.Template>
+            </miniControls:TopbarControl.Template>
             
-        </userControls:TopbarControl>
+        </miniControls:TopbarControl>
         
         <TextBlock Grid.Row="2" Name="TextDisplay" FontSize="17" TextWrapping="Wrap"/>
         

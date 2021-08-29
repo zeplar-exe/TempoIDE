@@ -7,7 +7,8 @@ using TempoIDE.Core.Commands;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.EventArgs;
 using TempoIDE.Properties;
-using TempoIDE.UserControls;
+using TempoIDE.UserControls.Editors;
+using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows
 {

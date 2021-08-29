@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace TempoIDE.UserControls
+namespace TempoIDE.UserControls.MiniControls
 {
     public partial class MenuSeparator : MenuItem
     {
