@@ -24,16 +24,16 @@ namespace TempoIDE.Core.Types
 
         public EnvironmentCache()
         {
-            ClearCache();
+            Clear();
         }
         
         public void UpdateModels()
         {
             if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
             {
-                ClearCache();
+                Clear();
                 CompilationKeys.Clear();
-                
+
                 var solution = new CsSolutionFile(EnvironmentHelper.EnvironmentPath.FullName);
 
                 foreach (var project in solution.Projects)
@@ -44,7 +44,7 @@ namespace TempoIDE.Core.Types
             }
         }
 
-        private void ClearCache()
+        public void Clear()
         {
             ProjectCompilations?.Dispose();
             ProjectCompilations = new MemoryCache(DefaultCacheOptions);

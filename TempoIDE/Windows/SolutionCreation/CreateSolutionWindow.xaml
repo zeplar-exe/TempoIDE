@@ -1,12 +1,13 @@
-<Window x:Class="TempoIDE.Windows.CreateSolutionWindow"
+<Window x:Class="TempoIDE.Windows.SolutionCreation.CreateSolutionWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:controls="clr-namespace:TempoIDE.UserControls"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
+        xmlns:fields="clr-namespace:TempoIDE.UserControls.InputFields"
+        xmlns:slnCreation="clr-namespace:TempoIDE.Windows.SolutionCreation"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"
@@ -22,15 +23,26 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
                 
-        <minis:TopbarControl Grid.Row="0" Template="{StaticResource CloseButton}"/>
+        <minis:TopbarControl Grid.Row="0" Template="{StaticResource TopbarCloseButton}"/>
         
         <Grid Grid.Row="1">
+            <Grid.CommandBindings>
+                <CommandBinding 
+                    Command="{x:Static slnCreation:CreateSolutionWindow.CreateRoutedCommand}"
+                    Executed="ExecuteCreateCommand"
+                    CanExecute="CanExecuteCreateCommand"/>
+                
+                <CommandBinding 
+                    Command="{x:Static slnCreation:CreateSolutionWindow.CancelRoutedCommand}"
+                    Executed="ExecuteCancelCommand"/>
+            </Grid.CommandBindings>
+            
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
+            <Border Grid.Column="1" BorderThickness="0" x:Name="ContentDisplay"/>
             
             <panels:ExplorerView
                 Grid.Column="0"
@@ -40,38 +52,22 @@
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
                 <panels:ExplorerViewItem Header="Empty Solution" IsSelected="True">
-                    <windows:CreateSolutionWindow.CreationTemplate>
-                        <ControlTemplate>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="30"/>
-                                </Grid.RowDefinitions>
-                                
-                                <minis:TitledTextBox Grid.Row="1" Header="New solution"/>
-                            </Grid>
-                        </ControlTemplate>
-                    </windows:CreateSolutionWindow.CreationTemplate>
+                    <slnCreation:CreateSolutionWindow.CreationControl>
+                        <slnCreation:EmptySolution/>
+                    </slnCreation:CreateSolutionWindow.CreationControl>
                 </panels:ExplorerViewItem>
                 
                 <panels:ExplorerViewItem Header=".NET Core" IsExpanded="True">
                     <panels:ExplorerViewItem Header="Class Library">
-                        <windows:CreateSolutionWindow.CreationTemplate>
-                            <ControlTemplate/>
-                        </windows:CreateSolutionWindow.CreationTemplate>
+                        
                     </panels:ExplorerViewItem>
                 
                     <panels:ExplorerViewItem Header="Class Library">
-                        <windows:CreateSolutionWindow.CreationTemplate>
-                            <ControlTemplate/>
-                        </windows:CreateSolutionWindow.CreationTemplate>
+                        
                     </panels:ExplorerViewItem>
                 
                     <panels:ExplorerViewItem Header="Console Application">
-                        <windows:CreateSolutionWindow.CreationTemplate>
-                            <ControlTemplate/>
-                        </windows:CreateSolutionWindow.CreationTemplate>
+                        
                     </panels:ExplorerViewItem>
                 </panels:ExplorerViewItem>
             </panels:ExplorerView>

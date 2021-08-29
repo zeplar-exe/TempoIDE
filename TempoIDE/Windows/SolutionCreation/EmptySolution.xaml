@@ -1,0 +1,63 @@
+<local:SolutionCreationPanel x:Class="TempoIDE.Windows.SolutionCreation.EmptySolution"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:TempoIDE.Windows.SolutionCreation"
+             xmlns:fields="clr-namespace:TempoIDE.UserControls.InputFields"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="3"/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="5"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Label 
+                Grid.Row="0" 
+                Content="Empty solution" 
+                FontWeight="Bold"/>
+            
+            <StackPanel Grid.Row="2">
+                <StackPanel.Resources>
+                    <Style TargetType="fields:StringField">
+                        <Setter Property="Margin" Value="0,0,0,5"/>
+                    </Style>
+                </StackPanel.Resources>
+                
+                <fields:StringField x:Name="SlnName" FieldTitle="Solution name" TextChanged="SlnName_OnTextChanged"/>
+                <fields:StringField x:Name="Location" FieldTitle="Location" TextChanged="Location_OnTextChanged"/>
+            </StackPanel>
+        </Grid>
+        
+        <Separator Grid.Row="1"/>
+        
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="60"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            
+            <Button 
+                Grid.Column="1" 
+                Content="Create" 
+                Style="{StaticResource CreateButtonStyle}"
+                Command="{x:Static local:CreateSolutionWindow.CreateRoutedCommand}"/>
+            <Button
+                Grid.Column="3"
+                Content="Cancel" 
+                Style="{StaticResource CancelButtonStyle}"
+                Command="{x:Static local:CreateSolutionWindow.CancelRoutedCommand}"/>
+        </Grid>
+    </Grid>
+</local:SolutionCreationPanel>

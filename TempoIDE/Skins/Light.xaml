@@ -8,4 +8,6 @@
     <SolidColorBrush x:Key="BaseTextColor" Color="#2a2b2b"/>
     <SolidColorBrush x:Key="TextBoxBackgroundColor" Color="#e0dcdc"/>
     <SolidColorBrush x:Key="SeparatorColor" Color="#828282"/>
+    <SolidColorBrush x:Key="AcceptButtonColor" Color="ForestGreen"/>
+    <SolidColorBrush x:Key="DeclineButtonColor" Color="DimGray"/>
 </ResourceDictionary>

@@ -19,7 +19,6 @@ namespace TempoIDE.UserControls.MiniControls
         
         public SettingsCategoryControl()
         {
-            DataContext = this;
             InitializeComponent();
         }
     }

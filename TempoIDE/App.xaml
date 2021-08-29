@@ -1,7 +1,6 @@
 ﻿<Application x:Class="TempoIDE.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:locals="clr-namespace:TempoIDE.UserControls"
              xmlns:properties="clr-namespace:TempoIDE.Properties"
              xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
              xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
@@ -63,11 +62,29 @@
                 <Setter Property="Background" Value="{DynamicResource ToolbarBackgroundColor}"/>
             </Style>
             
+            
+            <Style 
+                x:Key="CreateButtonStyle"
+                TargetType="Button"
+                BasedOn="{StaticResource {x:Type Button}}">
+                    
+                <Setter Property="Background" Value="{StaticResource AcceptButtonColor}"/>
+            </Style>
+                
+            <Style
+                x:Key="CancelButtonStyle"
+                TargetType="Button"
+                BasedOn="{StaticResource {x:Type Button}}">
+                    
+                <Setter Property="Background" Value="{StaticResource DeclineButtonColor}"/>
+            </Style>
+            
+            
             <DataTemplate x:Key="AutoCompleteItemTemplate">
                 <ListBoxItem Background="Transparent" />
             </DataTemplate>
             
-            <ControlTemplate x:Key="CloseButton" TargetType="miniControls:TopbarControl">
+            <ControlTemplate x:Key="TopbarCloseButton" TargetType="miniControls:TopbarControl">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

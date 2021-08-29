@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -67,6 +68,16 @@ namespace TempoIDE.Core.Static
         public static void CreateProject(DirectoryInfo directory, string name)
         {
             // TODO: This
+        }
+        
+        public static void CloseEnvironment()
+        {
+            Mode = EnvironmentMode.None;
+            
+            Cache.Clear();
+
+            AppDispatcher.Invoke(MainWindow.Editor.Tabs.CloseAll);
+            AppDispatcher.Invoke(LoadExplorer);
         }
         
         public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
@@ -204,6 +215,10 @@ namespace TempoIDE.Core.Static
         
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)
         {
+            if (Mode == EnvironmentMode.Solution)
+                if (!File.Exists(EnvironmentPath.FullName))
+                    CloseEnvironment();
+            
             switch (e.ChangeType)
             {
                 case WatcherChangeTypes.Created:
@@ -235,7 +250,7 @@ namespace TempoIDE.Core.Static
 
                     break;
             }
-            
+
             Cache.UpdateModels();
         }
     }
