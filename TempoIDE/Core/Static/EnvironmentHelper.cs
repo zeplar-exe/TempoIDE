@@ -54,9 +54,9 @@ namespace TempoIDE.Core.Static
             ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"publish {EnvironmentPath}");
         }
 
-        public static void CreateSolution(DirectoryInfo directory, string name)
+        public static void CreateSolution(DirectoryInfo directory, string name, string template = "sln")
         {
-            ConsoleManager.RunCommand("dotnet", directory.FullName, $"new sln --force --name {name}");
+            CreateTemplate(directory, name, template);
             // Implicitly creates .sln file
             
             var solutionFile = directory
@@ -65,9 +65,14 @@ namespace TempoIDE.Core.Static
             LoadEnvironment(solutionFile.FullName);
         }
 
-        public static void CreateProject(DirectoryInfo directory, string name)
+        public static void CreateProject(DirectoryInfo directory, string name, string template)
         {
-            // TODO: This
+            CreateTemplate(directory, name, template);
+        }
+
+        private static void CreateTemplate(DirectoryInfo directory, string name, string template)
+        {
+            ConsoleManager.RunCommand("dotnet", directory.FullName, $"new {template} --force --name {name}");
         }
         
         public static void CloseEnvironment()

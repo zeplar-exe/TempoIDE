@@ -2,6 +2,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TempoIDE.Core.Commands;
 using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows.SolutionCreation
@@ -12,11 +13,18 @@ namespace TempoIDE.Windows.SolutionCreation
         {
             InitializeComponent();
         }
-        
-        private void CreateSolutionWindow_OnLoaded(object sender, RoutedEventArgs e)
+
+        public UserControl SelectedControl
         {
-            SetDisplayFromControl(Explorer.SelectedItem as UIElement);
+            get => (UserControl)GetValue(SelectedControlProperty);
+            set => SetValue(SelectedControlProperty, value);
         }
+
+        public static readonly DependencyProperty SelectedControlProperty =
+            DependencyProperty.Register(
+                "SelectedControl", typeof(UserControl),
+                typeof(CreateSolutionWindow)
+            );
         
         public static readonly DependencyProperty CreationControlProperty = DependencyProperty.RegisterAttached(
             "CreationControl",
@@ -35,12 +43,7 @@ namespace TempoIDE.Windows.SolutionCreation
 
         private void Explorer_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            SetDisplayFromControl(e.NewValue as UIElement);
-        }
-
-        private void SetDisplayFromControl(UIElement element)
-        {
-            ContentDisplay.Child = GetCreationControl(element);
+            SelectedControl = GetCreationControl(e.NewValue as UIElement);
         }
 
         public static readonly RoutedCommandExt CreateRoutedCommand = new();
@@ -48,19 +51,24 @@ namespace TempoIDE.Windows.SolutionCreation
 
         private void ExecuteCreateCommand(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
         {
-            ((SolutionCreationPanel)ContentDisplay.Child).Create();
+            ((SolutionCreationPanel)SelectedControl).Create();
             
             Close();
         }
 
         private void CanExecuteCreateCommand(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = ((SolutionCreationPanel)ContentDisplay.Child).CanCreate();
+            e.CanExecute = (SelectedControl as SolutionCreationPanel)?.CanCreate() ?? false;
         }
         
         private void ExecuteCancelCommand(object sender, ExecutedRoutedEventArgs e)
         {
             Close();
+        }
+
+        private void CreateSolutionWindow_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            SelectedControl = GetCreationControl(Explorer?.SelectedItem as UIElement);
         }
     }
 }

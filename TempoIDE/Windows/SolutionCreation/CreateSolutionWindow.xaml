@@ -3,14 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
-        xmlns:fields="clr-namespace:TempoIDE.UserControls.InputFields"
         xmlns:slnCreation="clr-namespace:TempoIDE.Windows.SolutionCreation"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="CreateSolutionWindow_OnLoaded">
         
     <WindowChrome.WindowChrome>
@@ -42,7 +41,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <Border Grid.Column="1" BorderThickness="0" x:Name="ContentDisplay"/>
+            <UserControl Grid.Column="1" Content="{Binding SelectedControl.Content}"/>
             
             <panels:ExplorerView
                 Grid.Column="0"
@@ -58,17 +57,19 @@
                 </panels:ExplorerViewItem>
                 
                 <panels:ExplorerViewItem Header=".NET Core" IsExpanded="True">
-                    <panels:ExplorerViewItem Header="Class Library">
-                        
-                    </panels:ExplorerViewItem>
+                    <panels:ExplorerViewItem Header="Class Library" />
+
+                    <panels:ExplorerViewItem Header="Class Library" />
+
+                    <panels:ExplorerViewItem Header="Console Application" />
+                </panels:ExplorerViewItem>
                 
-                    <panels:ExplorerViewItem Header="Class Library">
-                        
-                    </panels:ExplorerViewItem>
-                
-                    <panels:ExplorerViewItem Header="Console Application">
-                        
-                    </panels:ExplorerViewItem>
+                <panels:ExplorerViewItem Header=".NET Framework" IsExpanded="True">
+                    <panels:ExplorerViewItem Header="Class Library" />
+
+                    <panels:ExplorerViewItem Header="Class Library" />
+
+                    <panels:ExplorerViewItem Header="Console Application" />
                 </panels:ExplorerViewItem>
             </panels:ExplorerView>
         </Grid>

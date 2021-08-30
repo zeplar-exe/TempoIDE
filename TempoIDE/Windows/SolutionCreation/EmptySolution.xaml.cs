@@ -22,15 +22,5 @@ namespace TempoIDE.Windows.SolutionCreation
         {
             return ValidateSolutionName(SlnName) && ValidateSolutionLocation(SlnName, Location);
         }
-
-        private void SlnName_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CreateSolutionWindow.CreateRoutedCommand.RaiseCanExecuteChanged();
-        }
-
-        private void Location_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            CreateSolutionWindow.CreateRoutedCommand.RaiseCanExecuteChanged();
-        }
     }
 }
