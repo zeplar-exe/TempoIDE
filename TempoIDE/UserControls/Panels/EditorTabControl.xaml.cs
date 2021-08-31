@@ -38,14 +38,10 @@ namespace TempoIDE.UserControls.Panels
                 .OfType<EditorTabItem>()
                 .First(t => t.BoundFile.FullName == file.FullName);
             
-            tab.Background = SelectedTabColor;
             tab.IsSelected = true;
 
             if (SelectedItem != null)
-            {
                 SelectedItem.IsSelected = false;
-                SelectedItem.Background = UnselectedTabColor;
-            }
 
             SelectedItem = tab;
             ContentDisplay.Child = tab.Editor;

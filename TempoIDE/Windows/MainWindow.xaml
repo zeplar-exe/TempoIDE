@@ -170,8 +170,7 @@
                 BorderBrush="Transparent"/>
             
             <panels:EditorControl 
-                Grid.Column="2" 
-                Visibility="Collapsed"
+                Grid.Column="2"
                 x:Name="Editor"
                 GotFocus="Editor_OnGotFocus"/>
         </Grid>

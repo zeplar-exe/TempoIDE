@@ -7,7 +7,11 @@ namespace TempoIDE.UserControls.InputFields
 {
     public partial class StringField : InputField
     {
-        public event TextChangedEventHandler TextChanged;
+        public event TextChangedEventHandler TextChanged
+        {
+            add => Input.TextChanged += value;
+            remove => Input.TextChanged -= value;
+        }
         
         public int TextFontSize
         {
@@ -40,11 +44,6 @@ namespace TempoIDE.UserControls.InputFields
         public StringField()
         {
             InitializeComponent();
-        }
-
-        private void Input_OnTextChanged(object sender, TextChangedEventArgs e)
-        {
-            TextChanged?.Invoke(sender, e);
         }
     }
 }

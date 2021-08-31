@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,8 +25,6 @@ namespace TempoIDE.UserControls.Panels
 
         public ExplorerView()
         {
-            DataContext = this;
-            
             InitializeComponent();
         }
 

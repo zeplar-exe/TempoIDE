@@ -15,7 +15,7 @@ namespace TempoIDE.Windows.SolutionCreation
 
         public override void Create()
         {
-            EnvironmentHelper.CreateSolution(new DirectoryInfo(Location.Input.Text), SlnName.Input.Text);
+            EnvironmentHelper.CreateSolution(new DirectoryInfo(Location.Value), SlnName.Value);
         }
 
         public override bool CanCreate()

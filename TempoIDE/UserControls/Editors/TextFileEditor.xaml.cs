@@ -105,7 +105,7 @@ namespace TempoIDE.UserControls.Editors
         {
             if (!file?.Exists ?? false)
                 return;
-
+            
             BoundFile = file;
 
             UpdateVisual();

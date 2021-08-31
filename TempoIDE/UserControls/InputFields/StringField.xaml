@@ -28,7 +28,6 @@
             FontSize="{Binding TextFontSize}"
             Style="{Binding TextBoxStyle}"
             Foreground="{DynamicResource BaseTextColor}"
-            Background="{DynamicResource TextBoxBackgroundColor}"
-            TextChanged="Input_OnTextChanged"/>
+            Background="{DynamicResource TextBoxBackgroundColor}"/>
     </Grid>
 </local:InputField>

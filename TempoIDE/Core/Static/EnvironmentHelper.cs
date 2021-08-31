@@ -38,6 +38,7 @@ namespace TempoIDE.Core.Static
             .SingleOrDefault(x => x.IsActive);
 
         public static EnvironmentCache Cache;
+        public static CsSolutionFile Solution;
 
         public static EnvironmentMode Mode;
         public static FileSystemInfo EnvironmentPath;
@@ -94,7 +95,7 @@ namespace TempoIDE.Core.Static
             {
                 var compilation = (CachedProjectCompilation)Cache.ProjectCompilations.Get(projectFilePath);
 
-                if (compilation.Project.FileSystem.Any(projectFile => projectFile.Info.FullName == file.FullName))
+                if (compilation.Project.FileSystem.EnumerateTree().Any(projectFile => projectFile.Info.FullName == file.FullName))
                     return compilation;
             }
 
@@ -152,12 +153,18 @@ namespace TempoIDE.Core.Static
 
                 if (info.Extension == ".sln")
                 {
+                    Solution = new CsSolutionFile(info.FullName);
                     Mode = EnvironmentMode.Solution;
 
                     await Task.Run(delegate
                     {
-                        foreach (var file in info.Directory.EnumerateFiles("*", SearchOption.AllDirectories))
-                            Cache.AddFile(file);
+                        foreach (var project in Solution.Projects)
+                        {
+                            foreach (var file in project.FileSystem.EnumerateTree().OfType<ProjectFile>())
+                            {
+                                Cache.AddFile((FileInfo)file.Info);
+                            }
+                        }
                     });
                 }
                 else
@@ -187,13 +194,12 @@ namespace TempoIDE.Core.Static
                     
                     break;
                 case EnvironmentMode.Solution:
-                    var solution = new CsSolutionFile(EnvironmentPath.FullName);
                     var solutionDirectory = new FileInfo(EnvironmentPath.FullName).Directory;
                     var topLevel = new ExplorerFileItem(EnvironmentPath.FullName) { IsExpanded = true };
                     
                     MainWindow.Explorer.AppendElement(topLevel);
                     
-                    foreach (var project in solution.Projects)
+                    foreach (var project in Solution.Projects)
                     {
                         var projectFile = new FileInfo(project.FilePath);
                         var projectItem = new ExplorerFileItem(projectFile.FullName);
