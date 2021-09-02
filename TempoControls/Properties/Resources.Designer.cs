@@ -59,38 +59,5 @@ namespace TempoControls.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;root&gt;
-        ///    &lt;keywords&gt;
-        ///        &lt;kw&gt;abstract&lt;/kw&gt;
-        ///        &lt;kw&gt;as&lt;/kw&gt;
-        ///        &lt;kw&gt;base&lt;/kw&gt;
-        ///        &lt;kw&gt;bool&lt;/kw&gt;
-        ///        &lt;kw&gt;break&lt;/kw&gt;
-        ///        &lt;kw&gt;by&lt;/kw&gt;
-        ///
-        ///        &lt;kw&gt;byte&lt;/kw&gt;
-        ///        &lt;kw&gt;case&lt;/kw&gt;
-        ///        &lt;kw&gt;catch&lt;/kw&gt;
-        ///        &lt;kw&gt;char&lt;/kw&gt;
-        ///        &lt;kw&gt;checked&lt;/kw&gt;
-        ///        &lt;kw&gt;class&lt;/kw&gt;
-        ///
-        ///        &lt;kw&gt;const&lt;/kw&gt;
-        ///        &lt;kw&gt;continue&lt;/kw&gt;
-        ///        &lt;kw&gt;decimal&lt;/kw&gt;
-        ///        &lt;kw&gt;default&lt;/kw&gt;
-        ///        &lt;kw&gt;delegate&lt;/kw&gt;
-        ///        &lt;kw&gt;do&lt;/kw&gt;
-        ///        
-        ///        &lt;kw&gt;double&lt;/kw&gt;
-        ///        &lt;kw&gt;desc [rest of string was truncated]&quot;;.
-        /// </summary>
-        internal static string CsIntellisense {
-            get {
-                return ResourceManager.GetString("CsIntellisense", resourceCulture);
-            }
-        }
     }
 }

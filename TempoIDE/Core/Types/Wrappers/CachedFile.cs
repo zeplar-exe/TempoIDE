@@ -35,18 +35,21 @@ namespace TempoIDE.Core.Types.Wrappers
             }
             catch (AccessViolationException)
             {
-                // TODO: Dialog
+                var details = 
+                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}" +
+                    $"Security: {FileInfo.GetAccessControl().AccessRightType}";
+                    
+                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_FILE_NO_ACCESS, details);
             }
             catch (OutOfMemoryException)
             {
                 var fileSize = ByteSize.FromBits(FileInfo.Length).ToString();
+
+                var details = 
+                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}" +
+                    $"File size: {fileSize}";
                     
-                var details = new StringBuilder();
-                details.AppendLine($@"File: {FileInfo.DirectoryName}\{FileInfo.Name}");
-                details.AppendLine($"File size: {fileSize}");
-                    
-                ApplicationHelper.ThrowErrorCode(ApplicationErrorCode.TI_FILE_NOMEM, details.ToString());
-                throw;
+                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_FILE_NOMEM, details);
             }
         }
     }

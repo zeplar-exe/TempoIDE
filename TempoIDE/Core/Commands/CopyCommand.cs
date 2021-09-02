@@ -3,7 +3,7 @@ using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Commands
 {
-    public class PasteTextCommand : AppCommand
+    public class CopyCommand : AppCommand
     {
         public override bool CanExecute(object parameter) => MainWindow.IsCoreElementFocused();
 
@@ -11,7 +11,7 @@ namespace TempoIDE.Core.Commands
         {
             var window = EnvironmentHelper.MainWindow;
             
-            window.Editor.SelectedEditor.TryPaste();
+            window.Editor.SelectedEditor.TryCopy();
         }
     }
 }

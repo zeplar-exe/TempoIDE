@@ -25,7 +25,7 @@ namespace TempoControls.Core.SyntaxSchemes
         public Brush Number { get; }
         public Brush String { get; }
         public Brush Comment { get; }
-        public Brush Identifier { get; }
+        public Brush Keyword { get; }
         public Brush Type { get; }
         public Brush Method { get; }
         public Brush Member { get; }

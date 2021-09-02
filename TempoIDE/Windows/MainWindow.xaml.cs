@@ -9,6 +9,7 @@ using TempoIDE.Core.Types.EventArgs;
 using TempoIDE.Properties;
 using TempoIDE.UserControls.Editors;
 using TempoIDE.UserControls.Panels;
+using TempoIDE.UserControls.SidebarControl;
 
 namespace TempoIDE.Windows
 {
@@ -64,13 +65,13 @@ namespace TempoIDE.Windows
             InputBindings.Clear();
             
             var shortcuts = Shortcuts.Default;
-
+            
             InputBindings.AddRange(new List<KeyBinding>
             {
-                new(new CopyTextCommand(), shortcuts.Copy.ToGesture()),
-                new(new PasteTextCommand(), shortcuts.Paste.ToGesture()),
-                new(new CutTextCommand(), shortcuts.Cut.ToGesture()),
-                new(new SelectAllTextCommand(), shortcuts.SelectAll.ToGesture())
+                new(new CopyCommand(), shortcuts.Copy.ToGesture()),
+                new(new PasteCommand(), shortcuts.Paste.ToGesture()),
+                new(new CutCommand(), shortcuts.Cut.ToGesture()),
+                new(new SelectAllCommand(), shortcuts.SelectAll.ToGesture())
             });
         }
 

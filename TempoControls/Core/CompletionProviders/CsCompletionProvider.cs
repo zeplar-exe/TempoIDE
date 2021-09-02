@@ -1,4 +1,5 @@
 using System.Linq;
+using Jammo.CsAnalysis.Helpers;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types;
 
@@ -8,17 +9,14 @@ namespace TempoControls.Core.CompletionProviders
     {
         public AutoCompletion[] GetAutoCompletions(ColoredTextBox label)
         {
-            var xmlData = IntellisenseCache.IntellisenseCs;
-            var keywords = xmlData.Root.Element("keywords").Elements("kw");
-
             var typingWord = label.GetTypingWord(true);
                  
             if (string.IsNullOrWhiteSpace(typingWord))
                 return null;
 
-            return keywords
-                .Where(kw => kw.Value.StartsWith(typingWord) && kw.Value != typingWord)
-                .Select(kw => new AutoCompletion(kw.Value))
+            return CompletionHelper.MatchKeywordsByPartial(typingWord)
+                .Where(kw => kw != typingWord)
+                .Select(kw => new AutoCompletion(kw))
                 .ToArray();
         }
     }

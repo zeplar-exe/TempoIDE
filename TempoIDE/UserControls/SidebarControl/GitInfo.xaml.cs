@@ -1,10 +1,12 @@
+using System;
+using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using LibGit2Sharp;
+using TempoIDE.Core.Static;
 
-namespace TempoIDE.UserControls.SidebarControls
+namespace TempoIDE.UserControls.SidebarControl
 {
-    public partial class GitInfo : SidebarControl
+    public partial class GitInfo : SidebarItem
     {
         public IQueryableCommitLog Commits
         {
@@ -38,8 +40,9 @@ namespace TempoIDE.UserControls.SidebarControls
         public static GitInfo LoadRepository(string path)
         {
             using var repository = new Repository(path);
-            
-            return new GitInfo { Commits = repository.Commits };
+        
+            // TODO: Repository iteration causes AccessViolationException
+            return new GitInfo();
         }
     }
 }

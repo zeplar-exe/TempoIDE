@@ -5,8 +5,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
-        xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
+        xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
+        xmlns:sidebar="clr-namespace:TempoIDE.UserControls.SidebarControl"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Background="{DynamicResource PrimaryBackgroundColor}"
@@ -24,8 +25,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <miniControls:TopbarControl Grid.Row="0">
-            <miniControls:TopbarControl.Template>
+        <minis:TopbarControl Grid.Row="0">
+            <minis:TopbarControl.Template>
                 <ControlTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -59,13 +60,13 @@
                                     </MenuItem>
                                 </MenuItem>
                                 
-                                <miniControls:MenuSeparator/>
+                                <minis:MenuSeparator/>
                                 
                                 <MenuItem Header="Settings">
                                     <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
                                 </MenuItem>
                                 
-                                <miniControls:MenuSeparator/>
+                                <minis:MenuSeparator/>
                                 
                                 <MenuItem Header="Exit">
                                     <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
@@ -78,7 +79,7 @@
                                     InputGestureText="{Binding Path=Copy}">
                                     
                                     <MenuItem.Command>
-                                        <commands:CopyTextCommand/>
+                                        <commands:CopyCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                                 
@@ -87,7 +88,7 @@
                                     InputGestureText="{Binding Path=Paste}">
                                     
                                     <MenuItem.Command>
-                                        <commands:PasteTextCommand/>
+                                        <commands:PasteCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                                 
@@ -96,7 +97,7 @@
                                     InputGestureText="{Binding Path=Cut}">
                                     
                                     <MenuItem.Command>
-                                        <commands:CutTextCommand/>
+                                        <commands:CutCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                             </MenuItem>
@@ -134,8 +135,8 @@
                             Click="CloseWindow"/>
                     </Grid>
                 </ControlTemplate>
-            </miniControls:TopbarControl.Template>
-        </miniControls:TopbarControl>
+            </minis:TopbarControl.Template>
+        </minis:TopbarControl>
         
         <!-- Topbar... 2? -->
         <Border
@@ -146,33 +147,44 @@
         
         <Grid Grid.Row="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="20" Width="170"/>
-                <ColumnDefinition Width="3"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
-            <panels:ExplorerView
-                Grid.Column="0"
-                x:Name="Explorer" 
-                GotFocus="Explorer_OnGotFocus" 
-                OpenItemEvent="ExplorerPanel_OnOpenFileEvent"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-            <GridSplitter 
-                Background="{DynamicResource PrimaryBorderColor}"
-                Grid.Column="1" 
-                VerticalAlignment="Stretch"
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="20" Width="170"/>
+                    <ColumnDefinition Width="3"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 
-                ResizeDirection="Columns"
-                ResizeBehavior="PreviousAndNext"
-                
-                Margin="-10,0"
-                BorderThickness="10,0"
-                BorderBrush="Transparent"/>
+                <panels:ExplorerView
+                    Grid.Column="0"
+                    x:Name="Explorer" 
+                    GotFocus="Explorer_OnGotFocus" 
+                    OpenItemEvent="ExplorerPanel_OnOpenFileEvent"/>
+
+                <GridSplitter 
+                    Background="{DynamicResource PrimaryBorderColor}"
+                    Grid.Column="1" 
+                    VerticalAlignment="Stretch"
+                    ResizeDirection="Columns"
+                    ResizeBehavior="PreviousAndNext"
+                    Margin="-10,0"
+                    BorderThickness="10,0"
+                    BorderBrush="Transparent"/>
             
-            <panels:EditorControl 
-                Grid.Column="2"
-                x:Name="Editor"
-                GotFocus="Editor_OnGotFocus"/>
+                <panels:EditorControl 
+                    Grid.Column="2"
+                    x:Name="Editor"
+                    GotFocus="Editor_OnGotFocus"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
