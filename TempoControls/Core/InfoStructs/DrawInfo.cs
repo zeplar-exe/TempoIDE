@@ -1,6 +1,6 @@
 using System.Windows.Media;
 
-namespace TempoControls.Core.Types
+namespace TempoControls.Core.InfoStructs
 {
     public readonly struct DrawInfo
     {

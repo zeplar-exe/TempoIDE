@@ -1,7 +1,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
-using TempoControls.Core.Types;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types.Collections;
 
 namespace TempoControls

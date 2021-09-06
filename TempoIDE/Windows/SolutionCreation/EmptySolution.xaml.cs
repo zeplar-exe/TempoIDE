@@ -1,7 +1,4 @@
-using System;
 using System.IO;
-using System.Windows.Controls;
-using System.Windows.Input;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.Windows.SolutionCreation

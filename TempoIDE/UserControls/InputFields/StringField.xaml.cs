@@ -1,7 +1,5 @@
 using System.Windows.Controls;
 using System.Windows;
-using System.Windows.Input;
-using TempoIDE.UserControls.MiniControls;
 
 namespace TempoIDE.UserControls.InputFields
 {

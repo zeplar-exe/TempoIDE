@@ -22,7 +22,7 @@
             x:FieldModifier="public"
             AfterRender="TextArea_OnAfterRender"
             AfterHighlight="TextArea_OnAfterHighlight"
-            BeforeCharacterRead="TextArea_OnBeforeCharacterRender"
+            BeforeCharacterRead="TextArea_OnBeforeCharacterRead"
             TextChanged="SyntaxTextBox_OnTextChanged"/>
         
         <controls:AutoCompleteBox

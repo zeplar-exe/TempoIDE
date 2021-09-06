@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using TempoControls.Core.InfoStructs;
+using TempoControls.Core.IntTypes;
 
 namespace TempoControls.Core.Types.Collections
 {

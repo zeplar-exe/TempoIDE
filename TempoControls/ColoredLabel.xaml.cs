@@ -22,9 +22,9 @@ namespace TempoControls
         
         public int LineCount => TextBuilder.ToString().Count(c => c == LineBreak) + 1;
         
-        public int LineHeight { get; set; } = 15;
-        public Typeface Typeface { get; set; } = new Typeface("Verdana");
-        public new int FontSize { get; set; } = 14;
+        public int LineHeight { get; set; } = 17;
+        public Typeface Typeface { get; set; } = new("Verdana");
+        public new int FontSize { get; set; } = 15;
 
         public event RoutedEventHandler TextChanged;
 
@@ -37,10 +37,9 @@ namespace TempoControls
         {
             InitializeComponent();
         }
-        
         public delegate void BeforeRenderHandler(DrawingContext context);
-        public delegate void BeforeCharacterReadHandler(DrawingContext context, Rect rect, int index);
-        public delegate void AfterCharacterReadHandler(DrawingContext context, Rect rect, int index);
+        public delegate void BeforeCharacterReadHandler(DrawingContext context, SyntaxChar character, Rect rect, int index);
+        public delegate void AfterCharacterReadHandler(DrawingContext context, SyntaxChar character, Rect rect, int index);
         public delegate void AfterHighlightHandler(SyntaxCharCollection formattedText);
 
         public delegate void AfterLineCalculationHandler(List<IColoredLabelLine> lines);
@@ -102,13 +101,13 @@ namespace TempoControls
                 var charPos = new Point(lineWidth, lineCount * LineHeight);
                 var charSize = character.Size;
                 var charRect = new Rect(charPos, charSize);
-
-                BeforeCharacterRead?.Invoke(drawingContext, charRect, index);
                 
+                BeforeCharacterRead?.Invoke(drawingContext, character, charRect, index);
+
                 characters.Add(character);
                 lines[lineCount].Add(character);
 
-                AfterCharacterRead?.Invoke(drawingContext, charRect, index);
+                AfterCharacterRead?.Invoke(drawingContext, character, charRect, index);
 
                 lineWidth += charSize.Width;
 
@@ -126,8 +125,8 @@ namespace TempoControls
 
             var renderLines = new List<IColoredLabelLine>(lines.Count);
 
-            for (var lineIndex = 0; lineIndex < lines.Count; lineIndex++)
-                renderLines.Add(new ColoredTextLine(lines[lineIndex], DefaultDrawInfo));
+            foreach (var line in lines)
+                renderLines.Add(new ColoredTextLine(line, DefaultDrawInfo));
 
             AfterLineCalculation?.Invoke(renderLines);
             

@@ -9,7 +9,6 @@ using TempoIDE.Core.Types.EventArgs;
 using TempoIDE.Properties;
 using TempoIDE.UserControls.Editors;
 using TempoIDE.UserControls.Panels;
-using TempoIDE.UserControls.SidebarControl;
 
 namespace TempoIDE.Windows
 {

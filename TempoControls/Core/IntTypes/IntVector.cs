@@ -1,4 +1,4 @@
-namespace TempoControls.Core.Types
+namespace TempoControls.Core.IntTypes
 {
     public struct IntVector
     {

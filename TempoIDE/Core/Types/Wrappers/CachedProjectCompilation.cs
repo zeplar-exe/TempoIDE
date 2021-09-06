@@ -1,14 +1,15 @@
-using JammaNalysis.Compilation;
-using JammaNalysis.MsBuildAnalysis;
+using Jammo.CsAnalysis.Compilation;
+using Jammo.CsAnalysis.MsBuildAnalysis;
+using TempoIDE.Core.Static;
 
 namespace TempoIDE.Core.Types.Wrappers
 {
     public class CachedProjectCompilation
     {
-        public readonly CsProjectFile Project;
-        public MergeableCompilation Compilation;
+        public readonly JProjectFile Project;
+        public CompilationWrapper Compilation;
 
-        public CachedProjectCompilation(CsProjectFile project)
+        public CachedProjectCompilation(JProjectFile project)
         {
             Project = project;
             
@@ -17,9 +18,11 @@ namespace TempoIDE.Core.Types.Wrappers
 
         public void Update()
         {
-            var analysis = CSharpAnalysisWrapper.Create(Project.FilePath, AnalysisType.Project);
+            var analysis = CSharpFileAnalysisWrapper.Create(Project.FileInfo.FullName, AnalysisType.Project);
+            Compilation = analysis.CompilationWrapper;
             
-            Compilation = analysis.Compilation;
+            Compilation.WithInspector(ExtensionAssociator.CodeInspectorFromExtension(".cs"));
+            Compilation.GenerateCompilation();
         }
     }
 }

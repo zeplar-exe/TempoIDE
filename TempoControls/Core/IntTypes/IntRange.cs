@@ -1,6 +1,6 @@
 using System.Collections;
 
-namespace TempoControls.Core.Types
+namespace TempoControls.Core.IntTypes
 {
     public readonly struct IntRange : IEnumerable
     {

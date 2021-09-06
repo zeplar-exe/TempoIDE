@@ -1,11 +1,9 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using JammaNalysis.MsBuildAnalysis;
-using Microsoft.Extensions.Caching.Memory;
+using Jammo.CsAnalysis.MsBuildAnalysis;
 using TempoIDE.Core.Types;
 using TempoIDE.Core.Types.Wrappers;
 using TempoIDE.UserControls.Panels;
@@ -38,7 +36,7 @@ namespace TempoIDE.Core.Static
             .SingleOrDefault(x => x.IsActive);
 
         public static EnvironmentCache Cache;
-        public static CsSolutionFile Solution;
+        public static JSolutionFile Solution;
 
         public static EnvironmentMode Mode;
         public static FileSystemInfo EnvironmentPath;
@@ -91,10 +89,8 @@ namespace TempoIDE.Core.Static
             if (Mode != EnvironmentMode.Solution)
                 return null;
             
-            foreach (var projectFilePath in Cache.CompilationKeys)
+            foreach (var compilation in Cache.ProjectCompilations.Values)
             {
-                var compilation = (CachedProjectCompilation)Cache.ProjectCompilations.Get(projectFilePath);
-
                 if (compilation.Project.FileSystem.EnumerateTree().Any(projectFile => projectFile.Info.FullName == file.FullName))
                     return compilation;
             }
@@ -153,12 +149,12 @@ namespace TempoIDE.Core.Static
 
                 if (info.Extension == ".sln")
                 {
-                    Solution = new CsSolutionFile(info.FullName);
+                    Solution = new JSolutionFile(info.FullName);
                     Mode = EnvironmentMode.Solution;
 
                     await Task.Run(delegate
                     {
-                        foreach (var project in Solution.Projects)
+                        foreach (var project in Solution.ProjectFiles)
                         {
                             foreach (var file in project.FileSystem.EnumerateTree().OfType<ProjectFile>())
                             {
@@ -199,9 +195,9 @@ namespace TempoIDE.Core.Static
                     
                     MainWindow.Explorer.AppendElement(topLevel);
                     
-                    foreach (var project in Solution.Projects)
+                    foreach (var project in Solution.ProjectFiles)
                     {
-                        var projectFile = new FileInfo(project.FilePath);
+                        var projectFile = new FileInfo(project.FileInfo.FullName);
                         var projectItem = new ExplorerFileItem(projectFile.FullName);
 
                         topLevel.AppendElement(projectItem);
@@ -257,11 +253,14 @@ namespace TempoIDE.Core.Static
                     
                     break;
                 case WatcherChangeTypes.Changed:
-                    Cache.AddFile(new FileInfo(e.FullPath));
-
+                    var info = new FileInfo(e.FullPath);
+                    
+                    Cache.AddFile(info);
+                    GetProjectOfFile(info).Update();
+                    
                     break;
             }
-
+            
             Cache.UpdateModels();
         }
     }

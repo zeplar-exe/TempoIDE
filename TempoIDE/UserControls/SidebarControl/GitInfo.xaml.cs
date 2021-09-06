@@ -1,8 +1,5 @@
-using System;
-using System.IO;
 using System.Windows;
 using LibGit2Sharp;
-using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls.SidebarControl
 {

@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Text;
 using ByteSizeLib;
 using TempoIDE.Core.Static;
 
@@ -18,7 +17,7 @@ namespace TempoIDE.Core.Types.Wrappers
             Update();
         }
 
-        public async void Update()
+        public void Update()
         {
             FileInfo.Refresh();
 
@@ -27,11 +26,11 @@ namespace TempoIDE.Core.Types.Wrappers
 
             try
             {
-                await using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                await using var buffer = new BufferedStream(file);
+                using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var buffer = new BufferedStream(file);
                 using var reader = new StreamReader(buffer);
 
-                Content = await reader.ReadToEndAsync();
+                Content = reader.ReadToEndAsync().Result;
             }
             catch (AccessViolationException)
             {

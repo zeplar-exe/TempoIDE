@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 
 namespace TempoControls

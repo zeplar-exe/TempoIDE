@@ -3,8 +3,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Static;
-using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;
 
@@ -16,7 +16,7 @@ namespace TempoIDE.UserControls.Editors
         
         private bool textChangedBeforeUpdate;
 
-        private const int WriterCooldown = 2;
+        private const int WriterCooldown = 500;
 
         public override bool IsFocused => TextBox.IsFocused;
 
@@ -42,7 +42,7 @@ namespace TempoIDE.UserControls.Editors
         {
             var inspector = ExtensionAssociator.InspectorFromExtension(BoundFile?.Extension);
             var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
-
+            
             inspector.Inspect(charCollection, project?.Compilation);
         }
 
@@ -125,7 +125,7 @@ namespace TempoIDE.UserControls.Editors
             {
                 try
                 {
-                    Thread.Sleep(WriterCooldown * 1000);
+                    Thread.Sleep(WriterCooldown);
                 }
                 catch (ThreadInterruptedException)
                 {
@@ -168,15 +168,15 @@ namespace TempoIDE.UserControls.Editors
             textChangedBeforeUpdate = false;
         }
 
-        public override async void UpdateFile()
+        public override void UpdateFile()
         {
             if (BoundFile == null) 
                 return;
                     
             BoundFile.Refresh();
 
-            await using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-            await using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding);
+            using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+            using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding);
             stream.Seek(0, SeekOrigin.End);
 
             var lines = TextBox.TextArea.Text.Split(Environment.NewLine);
@@ -184,10 +184,10 @@ namespace TempoIDE.UserControls.Editors
             
             foreach (var line in lines)
             {
-                await writer.WriteAsync(line);
+                writer.WriteAsync(line);
 
                 if (line != last && line.Length > 1)
-                    await writer.WriteAsync(Environment.NewLine);
+                    writer.WriteAsync(Environment.NewLine);
             }
         }
 

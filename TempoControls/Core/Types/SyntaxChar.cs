@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
+using TempoControls.Core.InfoStructs;
 
 namespace TempoControls.Core.Types
 {
@@ -40,6 +41,7 @@ namespace TempoControls.Core.Types
 
     public enum UnderlineType
     {
+        None = 0,
         Straight,
         Squiggly
     }

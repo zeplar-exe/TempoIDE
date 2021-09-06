@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
+using TempoControls.Core.InfoStructs;
 
 namespace TempoControls.Core.Types.Collections
 {
@@ -25,29 +26,29 @@ namespace TempoControls.Core.Types.Collections
         {
             var formatted = CreateFormattedText(characters.ToString());
             var lineDrawInfos = new List<RectangleDrawInfo>();
+            var charPosition = 0d;
 
             for (var index = 0; index < characters.Count; index++)
             {
                 var character = characters[index];
                 
                 formatted.SetForegroundBrush(character.Foreground, index, 1);
-
-                if (character.UnderlineColor == Brushes.Transparent)
-                    continue;
                 
                 if (character.UnderlineType == UnderlineType.Straight)
                 {
                     lineDrawInfos.Add(new RectangleDrawInfo(
                         character.UnderlineColor,
                         new Rect(
-                            character.Size.Width * index,
-                            origin.Y + character.Size.Height - 5, // TODO: Try to make this 5 not constant
+                            charPosition,
+                            origin.Y + character.Size.Height - 3, // TODO: Find a way to remove this constant
                             character.Size.Width, 1)));
                 }
                 else if (character.UnderlineType == UnderlineType.Squiggly)
                 {
                         
                 }
+
+                charPosition += character.Size.Width;
             }
             
             context.DrawText(formatted, origin);

@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 
@@ -170,7 +171,7 @@ namespace TempoControls
             HandledKeyPress?.Invoke(this, e);
         }
 
-        private void TextArea_OnBeforeCharacterRender(DrawingContext context, Rect charRect, int index)
+        private void TextArea_OnBeforeCharacterRead(DrawingContext context, SyntaxChar character, Rect charRect, int index)
         {
             var range = SelectionRange.Arrange();
             

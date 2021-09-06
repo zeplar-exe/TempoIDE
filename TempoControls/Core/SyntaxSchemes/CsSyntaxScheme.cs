@@ -1,6 +1,6 @@
 using System.Windows.Media;
 using Jammo.CsAnalysis.Helpers;
-using TempoControls.Core.Types;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types.Collections;
 
 namespace TempoControls.Core.SyntaxSchemes

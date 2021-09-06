@@ -2,9 +2,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Media;
 using TempoControls.Core.CompletionProviders;
+using TempoControls.Core.InfoStructs;
+using TempoControls.Core.IntTypes;
 using TempoControls.Core.Static;
 using TempoControls.Core.SyntaxSchemes;
-using TempoControls.Core.Types;
 
 namespace TempoControls
 {

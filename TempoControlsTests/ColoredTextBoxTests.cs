@@ -1,7 +1,7 @@
 using System.Threading;
 using NUnit.Framework;
 using TempoControls;
-using TempoControls.Core.Types;
+using TempoControls.Core.IntTypes;
 
 namespace TempoControlsTests
 {
