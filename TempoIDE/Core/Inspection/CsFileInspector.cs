@@ -1,4 +1,3 @@
-using System.Windows.Media;
 using Jammo.CsAnalysis.Compilation;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
@@ -13,9 +12,13 @@ namespace TempoIDE.Core.Inspection
             foreach (var inspection in compilation.Inspections)
             {
                 var range = new IntRange(inspection.Span.Start, inspection.Span.End);
+                var severity = InspectionSeverityAssociator.FromCode(inspection.Rule.GetInspectionInfo().InspectionCode);
+                var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
                 
                 characters.UpdateUnderlineType(range, UnderlineType.Straight);
-                characters.UpdateUnderline(range, Brushes.Yellow);
+                characters.UpdateUnderline(range, brush);
+                
+                return;
             }
         }
     }

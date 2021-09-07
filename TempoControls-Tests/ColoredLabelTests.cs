@@ -1,8 +1,7 @@
 using System.Threading;
 using NUnit.Framework;
-using TempoControls;
 
-namespace TempoControlsTests
+namespace TempoControls
 {
     [TestFixture]
     public class ColoredLabelTests

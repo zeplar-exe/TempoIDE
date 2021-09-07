@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using TempoControls;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Static;
 using TempoControls.Core.Types.Collections;
@@ -179,7 +180,7 @@ namespace TempoIDE.UserControls.Editors
             using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding);
             stream.Seek(0, SeekOrigin.End);
 
-            var lines = TextBox.TextArea.Text.Split(Environment.NewLine);
+            var lines = TextBox.TextArea.Text.Split(ColoredLabel.LineBreak);
             var last = lines.Last();
             
             foreach (var line in lines)

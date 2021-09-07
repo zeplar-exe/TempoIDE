@@ -1,9 +1,8 @@
 using System.Threading;
 using NUnit.Framework;
-using TempoControls;
 using TempoControls.Core.IntTypes;
 
-namespace TempoControlsTests
+namespace TempoControls
 {
     [TestFixture]
     public class ColoredTextBoxTests
