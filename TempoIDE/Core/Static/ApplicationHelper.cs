@@ -7,6 +7,23 @@ namespace TempoIDE.Core.Static
     {
         public static Encoding GlobalEncoding = Encoding.UTF8;
         
+        private static bool inspectionsEnabled = true;
+        public static bool InspectionsEnabled
+        {
+            get => inspectionsEnabled;
+            private set
+            {
+                inspectionsEnabled = value;
+                InspectionsEnabledChanged?.Invoke(value);
+            }
+        }
+
+        public static void EnableInspections() => InspectionsEnabled = false;
+        public static void DisableInspections() => InspectionsEnabled = false;
+
+        public delegate void EnabledEventHandler(bool enabled);
+        public static event EnabledEventHandler InspectionsEnabledChanged;
+
         public delegate void ErrorCodeEventHandler(ApplicationErrorCode code, string details);
         public static event ErrorCodeEventHandler ErrorCodeEmitted;
         

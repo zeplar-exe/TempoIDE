@@ -34,10 +34,9 @@
     <ItemGroup>
       <PackageReference Include="ByteSize" Version="2.0.0" />
       <PackageReference Include="CsvHelper" Version="27.1.1" />
-      <PackageReference Include="Jammo.CsAnalysis" Version="1.2.4" />
+      <PackageReference Include="Jammo.CsAnalysis" Version="1.2.7" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-      <PackageReference Include="Microsoft.Build" Version="16.11.0" />
-      <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="5.0.0" />
+      <PackageReference Include="NetSpell" Version="2.1.7" />
       <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     </ItemGroup>
@@ -50,6 +49,9 @@
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <None Update="data\inspection_severity.csv">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\dictionaries\en-US.dic">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

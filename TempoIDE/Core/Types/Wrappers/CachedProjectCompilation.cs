@@ -21,8 +21,8 @@ namespace TempoIDE.Core.Types.Wrappers
             var analysis = CSharpFileAnalysisWrapper.Create(Project.FileInfo.FullName, AnalysisType.Project);
             Compilation = analysis.CompilationWrapper;
             
-            Compilation.WithInspector(ExtensionAssociator.CodeInspectorFromExtension(".cs"));
-            Compilation.GenerateCompilation();
+            Compilation.SetInspector(ExtensionAssociator.CodeInspectorFromExtension(".cs"));
+            //Compilation.GenerateCompilation(); Disabled for now for performance reasons
         }
     }
 }

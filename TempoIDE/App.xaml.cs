@@ -9,7 +9,9 @@ namespace TempoIDE
         {
             ConsoleManager.Show();
             
-            #if !DEBUG
+            #if DEBUG
+            //ApplicationHelper.DisableInspections();
+            #else
             ConsoleManager.Hide();
             #endif
         }

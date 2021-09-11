@@ -6,45 +6,56 @@ using System.Windows;
 using TempoControls;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Static;
-using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls.Editors
 {
     public partial class TextFileEditor : FileEditor
     {
-        private Thread writerThread;
-        
-        private bool textChangedBeforeUpdate;
-
         private const int WriterCooldown = 500;
+        private const int InspectionCooldown = 1500;
+        
+        private Thread writerThread;
+        private bool textChangedBeforeUpdate;
 
         public override bool IsFocused => TextBox.IsFocused;
 
         public TextFileEditor()
         {
             InitializeComponent();
-            
-            TextBox.TextArea.AfterHighlight += TextEditor_OnAfterHighlight;
+        }
+
+        public static TextFileEditor FromExtension(string extension)
+        {
+            return extension.Replace(".", "") switch
+            {
+                "cs" => new CsFileEditor(),
+                _ => new TextFileEditor()
+            };
         }
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            writerThread = new Thread(TextWriterThread);
-            writerThread.Start();
+            Repeat.Interval(TimeSpan.FromMilliseconds(WriterCooldown), TextWriter, CancellationToken.None);
+        }
+        
+        public override void TextWriter()
+        {
+            if (textChangedBeforeUpdate)
+            {
+                UpdateFile();
+            }
+            else
+            {
+                UpdateVisual();
+            }
+
+            textChangedBeforeUpdate = false;
         }
 
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             textChangedBeforeUpdate = true;
-        }
-
-        private void TextEditor_OnAfterHighlight(SyntaxCharCollection charCollection)
-        {
-            var inspector = ExtensionAssociator.InspectorFromExtension(BoundFile?.Extension);
-            var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
-            
-            inspector.Inspect(charCollection, project?.Compilation);
         }
 
         public override bool TryCopy()
@@ -120,39 +131,6 @@ namespace TempoIDE.UserControls.Editors
                 ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
         }
 
-        private void TextWriterThread()
-        {
-            while (true)
-            {
-                try
-                {
-                    Thread.Sleep(WriterCooldown);
-                }
-                catch (ThreadInterruptedException)
-                {
-                    return;
-                }
-                finally
-                {
-                    Dispatcher.Invoke(TextWriter);;
-                }
-            }
-        }
-        
-        public override void TextWriter()
-        {
-            if (textChangedBeforeUpdate)
-            {
-                UpdateFile();
-            }
-            else
-            {
-                UpdateVisual();
-            }
-
-            textChangedBeforeUpdate = false;
-        }
-
         public override void UpdateVisual()
         {
             if (BoundFile == null) 
@@ -165,8 +143,12 @@ namespace TempoIDE.UserControls.Editors
             if (file == null || file.Content == TextBox.TextArea.Text)
                 return;
 
-            TextBox.TextArea.TextBuilder.SetString(file.Content);
+            TextBox.Clear();
+            TextBox.AppendTextAtCaret(file.Content);
+            
             textChangedBeforeUpdate = false;
+            
+            TextBox.TextArea.InvalidateTextChanged();
         }
 
         public override void UpdateFile()

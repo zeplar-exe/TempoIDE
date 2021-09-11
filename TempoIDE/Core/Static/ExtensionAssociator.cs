@@ -2,7 +2,7 @@ using Jammo.CsAnalysis.CodeInspection;
 using Jammo.CsAnalysis.CodeInspection.Rules;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
-using TempoIDE.Core.Inspection;
+using TempoIDE.Core.Inspections.TempoRules;
 
 namespace TempoIDE.Core.Static
 {
@@ -25,15 +25,6 @@ namespace TempoIDE.Core.Static
                 _ => new DefaultCompletionProvider()
             };
         }
-        
-        public static IFileInspector InspectorFromExtension(string extension)
-        {
-            return extension.Replace(".", string.Empty) switch
-            {
-                "cs" => new CsFileInspector(),
-                _ => new DefaultFileInspector()
-            };
-        }
 
         public static CodeInspector CodeInspectorFromExtension(string extension)
         {
@@ -41,12 +32,16 @@ namespace TempoIDE.Core.Static
             {
                 case "cs":
                     var inspector = new CodeInspector();
-                    inspector.WithRules(new[] { new UnusedFieldInspection() });
+                    inspector.AddRules(new InspectionRule[]
+                    {
+                        new UnusedFieldInspection(), 
+                        new MisspelledWordInspection()
+                    });
                     
                     return inspector;
+                default:
+                    return new CodeInspector();
             }
-
-            return new CodeInspector();
         }
     }
 }

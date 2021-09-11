@@ -5,7 +5,7 @@ using System.Windows.Media;
 using CsvHelper;
 using CsvHelper.Configuration;
 
-namespace TempoIDE.Core.Inspection
+namespace TempoIDE.Core.Inspections
 {
     public static class InspectionSeverityAssociator
     {
@@ -29,10 +29,11 @@ namespace TempoIDE.Core.Inspection
             return severity switch
             {
                 InspectionSeverity.None => Brushes.Transparent,
-                InspectionSeverity.Hint => Brushes.ForestGreen,
+                InspectionSeverity.Hint => Brushes.PaleGreen,
                 InspectionSeverity.Suggestion => Brushes.DodgerBlue,
                 InspectionSeverity.Warning => Brushes.Yellow,
                 InspectionSeverity.Error => Brushes.OrangeRed,
+                InspectionSeverity.Spelling => Brushes.ForestGreen,
                 _ => Brushes.Transparent
             };
         }

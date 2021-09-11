@@ -69,7 +69,7 @@ namespace TempoControls
         {
             TextBuilder.SetString(string.Empty);
             
-            TextChanged?.Invoke(this, default);
+            InvalidateTextChanged();
         }
         
         
@@ -81,7 +81,7 @@ namespace TempoControls
         {
             TextBuilder.Remove(index, 1);
             
-            TextChanged?.Invoke(this, default);
+            InvalidateTextChanged();
         }
         
         public void RemoveIndex(IntRange indices)

@@ -1,4 +1,4 @@
-namespace TempoIDE.Core.Inspection
+namespace TempoIDE.Core.Inspections
 {
     public enum InspectionSeverity
     {
@@ -6,6 +6,8 @@ namespace TempoIDE.Core.Inspection
         Hint,
         Suggestion,
         Warning,
-        Error
+        Error,
+        
+        Spelling
     }
 }

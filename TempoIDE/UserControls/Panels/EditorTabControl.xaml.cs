@@ -104,7 +104,7 @@ namespace TempoIDE.UserControls.Panels
                     continue;
                 }
 
-                var editor = new TextFileEditor();
+                var editor = TextFileEditor.FromExtension(fileInfo.Extension);
                 editor.Update(fileInfo);
 
                 var tab = new EditorTabItem

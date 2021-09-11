@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using TempoIDE.Core.Inspection;
+using TempoIDE.Core.Inspections;
 
 namespace TempoIDE_Tests
 {
@@ -7,11 +7,19 @@ namespace TempoIDE_Tests
     public class CsvTests
     {
         [Test]
-        public void TestCsvCodes()
+        public void TestCsvCode()
         {
             var severity = InspectionSeverityAssociator.FromCode("JAMMO_0001");
             
             Assert.True(severity == InspectionSeverity.Hint);
+        }
+        
+        [Test]
+        public void TestInvalidCsvCode()
+        {
+            var severity = InspectionSeverityAssociator.FromCode("JAMMO_null");
+            
+            Assert.True(severity == InspectionSeverity.None);
         }
     }
 }

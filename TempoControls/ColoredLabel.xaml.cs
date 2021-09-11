@@ -23,7 +23,7 @@ namespace TempoControls
         public int LineCount => TextBuilder.ToString().Count(c => c == LineBreak) + 1;
         
         public int LineHeight { get; set; } = 17;
-        public Typeface Typeface { get; set; } = new("Verdana");
+        public Typeface Typeface { get; set; } = new("Courier New");
         public new int FontSize { get; set; } = 15;
 
         public event RoutedEventHandler TextChanged;
@@ -129,9 +129,15 @@ namespace TempoControls
                 renderLines.Add(new ColoredTextLine(line, DefaultDrawInfo));
 
             AfterLineCalculation?.Invoke(renderLines);
-            
-            for (var lineIndex = 0; lineIndex < renderLines.Count; lineIndex++)
-                renderLines[lineIndex].Draw(drawingContext, new Point(0, lineIndex * LineHeight));
+
+            var currentY = 0d;
+
+            foreach (var line in renderLines)
+            {
+                line.Draw(drawingContext, new Point(0, currentY));
+
+                currentY += line.DrawnHeight;
+            }
 
             AfterRender?.Invoke(drawingContext);
         }

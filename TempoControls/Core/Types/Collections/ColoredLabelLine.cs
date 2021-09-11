@@ -8,6 +8,8 @@ namespace TempoControls.Core.Types.Collections
 {
     public interface IColoredLabelLine
     {
+        public double DrawnHeight { get; set; }
+        
         public void Draw(DrawingContext context, Point origin);
     }
 
@@ -15,6 +17,8 @@ namespace TempoControls.Core.Types.Collections
     {
         private readonly SyntaxCharCollection characters;
         private readonly DrawInfo drawInfo;
+        
+        public double DrawnHeight { get; set; }
 
         public ColoredTextLine(SyntaxCharCollection characters, DrawInfo drawInfo)
         {
@@ -50,7 +54,8 @@ namespace TempoControls.Core.Types.Collections
 
                 charPosition += character.Size.Width;
             }
-            
+
+            DrawnHeight = formatted.Height;
             context.DrawText(formatted, origin);
 
             foreach (var line in lineDrawInfos)
@@ -72,14 +77,6 @@ namespace TempoControls.Core.Types.Collections
             {
                 LineHeight = drawInfo.LineHeight
             };
-        }
-    }
-
-    public class CsMetricLine : IColoredLabelLine
-    {
-        public void Draw(DrawingContext context, Point origin)
-        {
-            
         }
     }
 

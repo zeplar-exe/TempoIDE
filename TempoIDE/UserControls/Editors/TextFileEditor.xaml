@@ -41,6 +41,7 @@
             <tempoControls:ColoredTextBox
                 Grid.Column="2"
                 x:Name="TextBox"
+                x:FieldModifier="protected"
                 Loaded="TextEditor_OnLoaded"
                 TextChanged="TextEditor_OnTextChanged"/>
         </Grid>
