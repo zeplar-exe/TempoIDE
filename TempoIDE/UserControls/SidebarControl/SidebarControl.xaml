@@ -14,14 +14,12 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <UserControl Grid.Column="0" Name="ContentDisplay"></UserControl>
+                <UserControl Grid.Column="0" Name="ContentDisplay" />
                 <ListBox Grid.Column="1" ItemsSource="{Binding Items}"/>
             </Grid>
         </ControlTemplate>
         
-        <ControlTemplate x:Key="VerticalTemplate">
-            
-        </ControlTemplate>
+        <ControlTemplate x:Key="VerticalTemplate" />
     </ItemsControl.Resources>
     
     <ItemsControl.Style>

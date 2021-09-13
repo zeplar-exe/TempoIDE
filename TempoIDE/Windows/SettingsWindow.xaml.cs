@@ -1,5 +1,8 @@
+using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using TempoIDE.Core.Static;
 using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows
@@ -35,6 +38,16 @@ namespace TempoIDE.Windows
         private void Explorer_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             ContentDisplay.Template = GetSectionTemplate(e.NewValue as UIElement);
+        }
+
+        private void Skins_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var item = ((ComboBox)sender).SelectedItem as TextBlock;
+            
+            if (item == null)
+                return;
+            
+            SkinHelper.LoadSkin(item.Text);
         }
     }
 }

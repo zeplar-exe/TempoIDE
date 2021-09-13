@@ -1,6 +1,7 @@
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Jammo.HTTP;
 using Newtonsoft.Json.Linq;
 using TempoIDE.UserControls.Editors;
 
@@ -15,13 +16,17 @@ namespace TempoIDE.Core.Static
 
             var owner = "zeplar-exe"; // use DotNetFoundation user
             var repo = "TempoIDE";
-            var request = $"/repos/{owner}/{repo}/git/commits/master";
-
-            var githubConnection = HttpHelper.Connect(url);
+            var request = $"/repos/{owner}/{repo}/git/commits/";
             
-            var treeData = githubConnection.RequestAsync(request).Result;
-            var tree = githubConnection
-                .RequestAsync($"/repos/{owner}/{repo}/git/trees/{treeData["tree"]["sha"]}").Result;
+            var client = new JHttpClient(new Url(url));
+            client.NavigateRelative(new RelativePath(request));
+            
+            var treeData = JObject.Parse(client.Get().Content.ReadAsStringAsync().Result);
+
+            client = new JHttpClient(new Url(url));
+            client.NavigateRelative(new RelativePath($"/repos/{owner}/{repo}/git/trees/{treeData["tree"]["sha"]}"));
+
+            var tree = JObject.Parse(client.Get().Content.ReadAsStringAsync().Result);
             
             Console.WriteLine(tree);
 

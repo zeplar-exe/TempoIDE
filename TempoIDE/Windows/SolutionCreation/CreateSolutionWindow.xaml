@@ -6,7 +6,6 @@
         xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         xmlns:slnCreation="clr-namespace:TempoIDE.Windows.SolutionCreation"
-        xmlns:netCore="clr-namespace:TempoIDE.Windows.SolutionCreation.NetCore"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"

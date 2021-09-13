@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE
@@ -8,7 +9,7 @@ namespace TempoIDE
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             ConsoleManager.Show();
-            
+
             #if DEBUG
             //ApplicationHelper.DisableInspections();
             #else

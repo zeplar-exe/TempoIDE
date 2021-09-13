@@ -5,12 +5,11 @@
              xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
              xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
              StartupUri="Windows/MainWindow.xaml"
-             Startup="App_OnStartup"
-              >
+             Startup="App_OnStartup">
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Skins/Dark.xaml" />
+                <ResourceDictionary Source="data/skins/Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <properties:Shortcuts x:Key="Shortcuts"/>

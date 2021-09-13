@@ -8,10 +8,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="TempoSourceGen.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Update="Properties\Shortcuts.Designer.cs">
         <DesignTimeSharedInput>True</DesignTimeSharedInput>
         <AutoGen>True</AutoGen>
@@ -35,6 +31,7 @@
       <PackageReference Include="ByteSize" Version="2.0.0" />
       <PackageReference Include="CsvHelper" Version="27.1.1" />
       <PackageReference Include="Jammo.CsAnalysis" Version="1.2.81" />
+      <PackageReference Include="Jammo.HTTP" Version="1.0.0" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
       <PackageReference Include="NetSpell" Version="2.1.7" />
       <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
@@ -62,19 +59,15 @@
 
     <ItemGroup>
       <Page Remove="packages\**" />
+      <Page Update="Core\Static\DefaultSkin.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>SkinHelper.cs</DependentUpon>
+      </Page>
     </ItemGroup>
     
     <ItemGroup>
       <Page Remove="Skins\Dark.xaml" />
-      <Resource Include="Skins\Dark.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-      </Resource>
       <Page Remove="Skins\Light.xaml" />
-      <Resource Include="Skins\Light.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <XamlRuntime>Wpf</XamlRuntime>
-      </Resource>
       <None Remove="Resources\Icons\cs-icon.png" />
       <EmbeddedResource Include="Resources\Icons\cs-icon.png" />
       <None Remove="Resources\Icons\png-icon.png" />
@@ -97,6 +90,17 @@
 
     <ItemGroup>
       <Folder Include="Windows\SolutionCreation\NetFramework" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="data\skins\Dark.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
+      <Resource Include="data\skins\Light.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
 </Project>

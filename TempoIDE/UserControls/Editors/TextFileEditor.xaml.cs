@@ -12,9 +12,6 @@ namespace TempoIDE.UserControls.Editors
     public partial class TextFileEditor : FileEditor
     {
         private const int WriterCooldown = 500;
-        private const int InspectionCooldown = 1500;
-        
-        private Thread writerThread;
         private bool textChangedBeforeUpdate;
 
         public override bool IsFocused => TextBox.IsFocused;

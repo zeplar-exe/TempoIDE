@@ -1,5 +1,4 @@
 ﻿<Window x:Class="TempoIDE.Windows.MainWindow"
-        x:Name="ThisWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,10 +6,9 @@
         xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
         xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
-        xmlns:sidebar="clr-namespace:TempoIDE.UserControls.SidebarControl"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
-        Background="{DynamicResource PrimaryBackgroundColor}"
+        Style="{StaticResource {x:Type Window}}"
         Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
     

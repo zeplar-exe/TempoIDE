@@ -66,6 +66,9 @@ namespace TempoIDE.Windows
             var button = (Button)sender;
 
             Result = GetBoundResult(button);
+            DialogResult = true;
+
+            Close();
         }
     }
 

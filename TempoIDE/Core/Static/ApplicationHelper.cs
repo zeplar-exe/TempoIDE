@@ -30,10 +30,10 @@ namespace TempoIDE.Core.Static
         public static void EmitErrorCode(ApplicationErrorCode code, string details)
         {
             var message =
-                $"TempoIDE ran into an error: {code}" +
-                "" +
-                "Error details" +
-                "---------------" +
+                $"TempoIDE ran into an error: {code}\n" +
+                "\n" +
+                "Error details\n" +
+                "---------------\n" +
                 $"{details}";
 
             var dialog = new UserDialog(message, UserResult.Ok);

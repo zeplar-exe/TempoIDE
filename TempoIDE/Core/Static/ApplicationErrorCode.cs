@@ -7,6 +7,8 @@ namespace TempoIDE.Core.Static
     {
         TI_FILE_NOMEM,
         TI_FILE_NO_ACCESS,
-        TI_DIR_NO_ACCESS
+        TI_DIR_NO_ACCESS,
+        
+        TI_INVALID_SKIN
     }
 }

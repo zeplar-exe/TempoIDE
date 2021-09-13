@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
-        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         xmlns:classes="clr-namespace:TempoIDE.Core.Static"
         xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
+        xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
@@ -43,19 +43,25 @@
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate>
                             <ControlTemplate.Resources>
-                                <ObjectDataProvider x:Key="ThemeData" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
-                                    <ObjectDataProvider.MethodParameters>
-                                        <x:Type TypeName="classes:Theme"/>
-                                    </ObjectDataProvider.MethodParameters>
-                                </ObjectDataProvider>
+                                <ObjectDataProvider
+                                    x:Key="Skins"
+                                    ObjectType="{x:Type classes:SkinHelper}"
+                                    MethodName="GetSkinFiles" />
                             </ControlTemplate.Resources>
                             
                             <Grid>
                                 <miniControls:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
-                                        ItemsSource="{Binding Source={StaticResource ThemeData}}"
-                                        ItemContainerStyle="{StaticResource TextStyle}"/>
+                                        ItemsSource="{Binding Source={StaticResource Skins}}"
+                                        ItemContainerStyle="{StaticResource TextStyle}"
+                                        SelectionChanged="Skins_OnSelectionChanged">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate DataType="io:FileInfo">
+                                                <TextBlock Text="{Binding Name}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
                                 </miniControls:SettingsCategoryControl>
                             </Grid>
                         </ControlTemplate>
