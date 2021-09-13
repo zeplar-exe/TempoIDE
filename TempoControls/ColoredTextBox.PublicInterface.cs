@@ -15,20 +15,12 @@ namespace TempoControls
             
             AutoComplete.Disable();
             
-            var newIndex = GetIndexAtOffset(position);
-            var caretCharacter = newIndex - 1;
+            var line = TextArea.GetLines()[position.Y];
 
-            if (position.X > 0 && VerifyIndex(caretCharacter))
+            if (position.X > 1)
             {
-                if (TextArea.TextBuilder[caretCharacter] == ColoredLabel.LineBreak)
-                {
-                    var newPos = GetOffsetAtIndex(caretCharacter);
-                    
-                    if (newPos.Y != position.Y)
-                        return;
-
+                if (line[position.X - 1] == ColoredLabel.LineBreak)
                     position = new IntVector(position.X - 1, position.Y);
-                }
             }
 
             CaretOffset = position;

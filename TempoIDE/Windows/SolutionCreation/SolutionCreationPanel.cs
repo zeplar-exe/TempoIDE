@@ -15,17 +15,11 @@ namespace TempoIDE.Windows.SolutionCreation
             return !string.IsNullOrWhiteSpace(slnName.Input.Text);
         }
 
-        protected static bool ValidateSolutionLocation(StringField slnName, StringField location)
+        protected static bool ValidateSolutionLocation(string slnName, string location)
         {
-            if (!Directory.Exists(location.Input.Text))
-                return false;
-
-            var fullPath = Path.Join(location.Input.Text, slnName.Input.Text);
+            var fullPath = Path.Join(location, slnName + ".sln");
             
-            if (File.Exists(fullPath))
-                return false;
-
-            return true;
+            return !File.Exists(fullPath);
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Threading;
 using System.Windows;
 using TempoControls;
 using TempoControls.Core.IntTypes;
-using TempoControls.Core.Static;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.UserControls.Editors
@@ -47,7 +46,7 @@ namespace TempoIDE.UserControls.Editors
             }
             else
             {
-                UpdateVisual();
+                Dispatcher.Invoke(UpdateVisual);
             }
 
             textChangedBeforeUpdate = false;
@@ -147,8 +146,6 @@ namespace TempoIDE.UserControls.Editors
             TextBox.AppendTextAtCaret(file.Content);
             
             textChangedBeforeUpdate = false;
-            
-            TextBox.TextArea.InvalidateTextChanged();
         }
 
         public override void UpdateFile()

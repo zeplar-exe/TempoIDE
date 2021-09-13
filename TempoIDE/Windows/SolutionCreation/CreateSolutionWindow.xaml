@@ -6,6 +6,7 @@
         xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
         xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         xmlns:slnCreation="clr-namespace:TempoIDE.Windows.SolutionCreation"
+        xmlns:netCore="clr-namespace:TempoIDE.Windows.SolutionCreation.NetCore"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"
@@ -59,14 +60,14 @@
                 <panels:ExplorerViewItem Header=".NET Core" IsExpanded="True">
                     <panels:ExplorerViewItem Header="Class Library" />
 
-                    <panels:ExplorerViewItem Header="Class Library" />
-
-                    <panels:ExplorerViewItem Header="Console Application" />
+                    <panels:ExplorerViewItem Header="Console Application">
+                        <!--<slnCreation:CreateSolutionWindow.CreationControl>
+                            <netCore:ConsoleApp/>
+                        </slnCreation:CreateSolutionWindow.CreationControl>-->
+                    </panels:ExplorerViewItem>
                 </panels:ExplorerViewItem>
                 
                 <panels:ExplorerViewItem Header=".NET Framework" IsExpanded="True">
-                    <panels:ExplorerViewItem Header="Class Library" />
-
                     <panels:ExplorerViewItem Header="Class Library" />
 
                     <panels:ExplorerViewItem Header="Console Application" />

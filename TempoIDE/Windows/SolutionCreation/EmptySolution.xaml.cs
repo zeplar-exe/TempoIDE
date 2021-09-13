@@ -1,4 +1,3 @@
-using System.IO;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.Windows.SolutionCreation
@@ -12,12 +11,12 @@ namespace TempoIDE.Windows.SolutionCreation
 
         public override void Create()
         {
-            EnvironmentHelper.CreateSolution(new DirectoryInfo(Location.Value), SlnName.Value);
+            EnvironmentHelper.CreateEmptySolution(Location.Text, SlnName.Text);
         }
 
         public override bool CanCreate()
         {
-            return ValidateSolutionName(SlnName) && ValidateSolutionLocation(SlnName, Location);
+            return ValidateSolutionName(SlnName) && ValidateSolutionLocation(SlnName.Text, Location.Text);
         }
     }
 }

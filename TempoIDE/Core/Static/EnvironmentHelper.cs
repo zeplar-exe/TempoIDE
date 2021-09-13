@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 using Jammo.CsAnalysis.MsBuildAnalysis;
+using Jammo.CsAnalysis.MsBuildAnalysis.Solutions;
 using TempoIDE.Core.Types;
 using TempoIDE.Core.Types.Wrappers;
 using TempoIDE.UserControls.Panels;
@@ -42,7 +43,7 @@ namespace TempoIDE.Core.Static
         public static FileSystemInfo EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
         
-        public static void Compile()
+        public static void Build()
         {
             if (Mode != EnvironmentMode.Solution)
                 return;
@@ -50,28 +51,41 @@ namespace TempoIDE.Core.Static
             var info = (FileInfo)EnvironmentPath;
             
             ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"build {EnvironmentPath}");
-            ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"publish {EnvironmentPath}");
         }
 
-        public static void CreateSolution(DirectoryInfo directory, string name, string template = "sln")
+        public static SolutionStream CreateEmptySolution(string directory, string name)
         {
-            CreateTemplate(directory, name, template);
-            // Implicitly creates .sln file
+            var stream = new SolutionStream();
+            stream.Version = new FormatVersion("12.00");
+
+            var global = new GlobalDefinition();
+            var configPlatforms = new GlobalSectionDefinition
+            {
+                ConfigurationType = "SolutionConfigurationPlatforms",
+                RunTime = "preSolution"
+            };
             
-            var solutionFile = directory
-                .GetFiles()
-                .First(f => f.Name == name + ".sln");
-            LoadEnvironment(solutionFile.FullName);
-        }
+            configPlatforms.AddConfiguration(new GlobalConfiguration
+            {
+                Config = "Debug|AnyCpu", 
+                AssignedConfig = "Debug|AnyCpu"
+            });
+            
+            configPlatforms.AddConfiguration(new GlobalConfiguration
+            {
+                Config = "Release|AnyCpu", 
+                AssignedConfig = "Release|AnyCpu"
+            });
+            
+            global.AddSection(configPlatforms);
+            stream.AddGlobal(global);
 
-        public static void CreateProject(DirectoryInfo directory, string name, string template)
-        {
-            CreateTemplate(directory, name, template);
-        }
-
-        private static void CreateTemplate(DirectoryInfo directory, string name, string template)
-        {
-            ConsoleManager.RunCommand("dotnet", directory.FullName, $"new {template} --force --name {name}");
+            var path = Path.Join(directory, name + ".sln");
+            stream.WriteTo(path);
+            
+            LoadEnvironment(path);
+            
+            return stream;
         }
         
         public static void CloseEnvironment()
@@ -256,7 +270,6 @@ namespace TempoIDE.Core.Static
                     var info = new FileInfo(e.FullPath);
                     
                     Cache.AddFile(info);
-                    GetProjectOfFile(info).Update();
                     
                     break;
             }

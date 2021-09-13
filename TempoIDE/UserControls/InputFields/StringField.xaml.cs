@@ -38,6 +38,7 @@ namespace TempoIDE.UserControls.InputFields
             );
         
         public TextBox InputElement => Input;
+        public string Text => InputElement.Text;
         
         public StringField()
         {

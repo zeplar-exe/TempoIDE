@@ -135,7 +135,7 @@ namespace TempoControls
             
             var lines = TextArea.GetLines();
 
-            if (lines.Length <= offset.Y || offset.Y < 0)
+            if (lines.Length <= offset.Y)
             {
                 return false;
             }
