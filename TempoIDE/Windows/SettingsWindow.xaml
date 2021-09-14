@@ -46,14 +46,15 @@
                                 <ObjectDataProvider
                                     x:Key="Skins"
                                     ObjectType="{x:Type classes:SkinHelper}"
-                                    MethodName="GetSkinFiles" />
+                                    MethodName="GetSkinFiles"/>
                             </ControlTemplate.Resources>
                             
                             <Grid>
                                 <miniControls:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
-                                        ItemsSource="{Binding Source={StaticResource Skins}}"
+                                        ItemsSource="{Binding
+                                            Source={StaticResource Skins}}"
                                         ItemContainerStyle="{StaticResource TextStyle}"
                                         SelectionChanged="Skins_OnSelectionChanged">
                                         <ComboBox.ItemTemplate>

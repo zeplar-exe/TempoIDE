@@ -58,8 +58,7 @@ namespace TempoIDE.Windows
 
             Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
 
-            if (!SkinHelper.LoadSkin("Dark.xaml")) // TODO: Load skin from settings
-                SkinHelper.LoadDefaultSkin();
+            SkinHelper.LoadSkin("Dark.xaml"); // TODO: Load skin from settings
         }
 
         private void LoadKeybindings()

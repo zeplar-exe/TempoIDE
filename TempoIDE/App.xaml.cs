@@ -9,11 +9,20 @@ namespace TempoIDE
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
             ConsoleManager.Show();
-
-            #if DEBUG
-            //ApplicationHelper.DisableInspections();
-            #else
+            
+            #if RELEASE
             ConsoleManager.Hide();
+            #endif
+            
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            #if RELEASE
+            ApplicationHelper.EmitErrorCode(
+                ApplicationErrorCode.TI_UNHANDLED, 
+                $"An unhandled exception was thrown:\n{e.ExceptionObject as Exception}");
             #endif
         }
         

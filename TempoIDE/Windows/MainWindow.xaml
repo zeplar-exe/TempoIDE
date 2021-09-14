@@ -36,8 +36,7 @@
                         </Grid.ColumnDefinitions>
                         
                         <Menu
-                            Grid.Column="0" 
-                            DataContext="{StaticResource Shortcuts}"
+                            Grid.Column="0"
                             Background="Transparent" 
                             Foreground="{DynamicResource BaseTextColor}">
                             

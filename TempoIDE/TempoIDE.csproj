@@ -59,10 +59,6 @@
 
     <ItemGroup>
       <Page Remove="packages\**" />
-      <Page Update="Core\Static\DefaultSkin.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <DependentUpon>SkinHelper.cs</DependentUpon>
-      </Page>
     </ItemGroup>
     
     <ItemGroup>
@@ -93,13 +89,21 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="data\skins\Dark.xaml">
+      <None Include="data\skins\Dark.xaml">
         <Generator>MSBuild:Compile</Generator>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Resource>
-      <Resource Include="data\skins\Light.xaml">
+      </None>
+      <None Include="data\skins\Light.xaml">
         <Generator>MSBuild:Compile</Generator>
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Page Remove="Core\Static\DefaultSkin.xaml" />
+      <Resource Include="Core\Static\DefaultSkin.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <DependentUpon>SkinHelper.cs</DependentUpon>
       </Resource>
     </ItemGroup>
 

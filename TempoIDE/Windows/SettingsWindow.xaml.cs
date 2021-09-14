@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -16,6 +17,11 @@ namespace TempoIDE.Windows
         
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
+            foreach (var file in SkinHelper.GetSkinFiles())
+            {
+                Console.WriteLine(file.Name);
+            }
+
             ContentDisplay.Template = GetSectionTemplate(Explorer.SelectedItem as UIElement);
         }
 
@@ -42,12 +48,12 @@ namespace TempoIDE.Windows
 
         private void Skins_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = ((ComboBox)sender).SelectedItem as TextBlock;
+            var item = (FileInfo)((ComboBox)sender).SelectedItem;
             
             if (item == null)
                 return;
             
-            SkinHelper.LoadSkin(item.Text);
+            SkinHelper.LoadSkin(item.Name);
         }
     }
 }
