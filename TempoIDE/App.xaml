@@ -9,18 +9,18 @@
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Core/Static/DefaultSkin.xaml" />
+                <ResourceDictionary Source="data/skins/DefaultSkin.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
             <properties:Shortcuts x:Key="Shortcuts"/>
 
-            <Style TargetType="{x:Type Window}">
+            <Style x:Key="WindowStyle" TargetType="Window">
                 <Setter Property="Background" Value="{DynamicResource PrimaryBackgroundColor}"/>
                 <Setter Property="WindowStyle" Value="None"/>
                 <Setter Property="AllowsTransparency" Value="True"/>
             </Style>
             
-            <Style x:Key="ModalWindowStyle" TargetType="Window" BasedOn="{StaticResource {x:Type Window}}">
+            <Style x:Key="ModalWindowStyle" TargetType="Window" BasedOn="{StaticResource WindowStyle}">
                 <Setter Property="ResizeMode" Value="NoResize"/>
                 <Setter Property="Height" Value="550"/>
                 <Setter Property="Width" Value="800"/>

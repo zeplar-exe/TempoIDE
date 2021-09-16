@@ -6,7 +6,7 @@ using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows.SolutionCreation
 {
-    public partial class CreateSolutionWindow : Window
+    public partial class CreateSolutionWindow : WindowEx
     {
         public CreateSolutionWindow()
         {

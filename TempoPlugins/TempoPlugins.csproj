@@ -3,11 +3,15 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <LangVersion>9</LangVersion>
+        <PackageId>TempoIDE.Plugins</PackageId>
+        <Title>TempoIDE.Plugins</Title>
+        <Authors>zeplar exe</Authors>
+        <Description>Plugin package for TempoIDE</Description>
+        <PackageReleaseNotes>Release</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
       <PackageReference Include="Jammo.ParserTools" Version="1.1.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
     </ItemGroup>
 
 </Project>

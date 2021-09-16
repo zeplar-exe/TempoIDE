@@ -6,7 +6,7 @@ namespace TempoPlugins
 {
     public abstract class Plugin
     {
-        public static Plugin LoadPluginFromAssembly(string path)
+        public static Plugin ReflectPluginFromAssembly(string path)
         {
             var assembly = Assembly.Load(path);
             var attachers = assembly.GetTypes()
@@ -31,9 +31,7 @@ namespace TempoPlugins
                 throw new NoAttachMethodException();
             }
 
-            var plugin = method.Invoke(attacher, null) as Plugin;
-
-            if (plugin == null)
+            if (method.Invoke(attacher, null) is not Plugin plugin)
             {
                 throw new InvalidAttacherReturnException();
             }

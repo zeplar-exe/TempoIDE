@@ -26,7 +26,7 @@ namespace TempoIDE.Core.Types.Wrappers
 
             try
             {
-                using var file = FileInfo.Open(FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var file = FileInfo.OpenRead();
                 using var buffer = new BufferedStream(file);
                 using var reader = new StreamReader(buffer);
 
@@ -35,7 +35,7 @@ namespace TempoIDE.Core.Types.Wrappers
             catch (AccessViolationException)
             {
                 var details = 
-                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}" +
+                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}\n" +
                     $"Security: {FileInfo.GetAccessControl().AccessRightType}";
                     
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_FILE_NO_ACCESS, details);
@@ -45,7 +45,7 @@ namespace TempoIDE.Core.Types.Wrappers
                 var fileSize = ByteSize.FromBits(FileInfo.Length).ToString();
 
                 var details = 
-                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}" +
+                    $"File: {FileInfo.DirectoryName}\\{FileInfo.Name}\n" +
                     $"File size: {fileSize}";
                     
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_FILE_NOMEM, details);

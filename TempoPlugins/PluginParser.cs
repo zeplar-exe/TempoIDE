@@ -1,9 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Jammo.ParserTools;
-using Newtonsoft.Json.Linq;
 
 namespace TempoPlugins
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Jammo.ParserTools;
-using Newtonsoft.Json.Linq;
 
 namespace TempoPlugins
 {
@@ -15,7 +14,41 @@ namespace TempoPlugins
         public string FilePath => stream.Name;
         
         public string Version = "";
-        public readonly Dictionary<string, string> Metadata = new();
+        public readonly Dictionary<string, string> Metadata = new(StringComparer.InvariantCulture);
+
+        public string PluginName
+        {
+            get
+            {
+                Metadata.TryGetValue("name", out var name);
+
+                return name;
+            }
+        }
+
+        public bool TryGetDirectoryPath(out string result)
+        {
+            result = null;
+            
+            Metadata.TryGetValue("directory", out var directoryPath);
+
+            if (directoryPath == null)
+            {
+                if (PluginName == null)
+                    return false;
+
+                var info = new FileInfo(FilePath);
+
+                directoryPath = Path.Join(info.DirectoryName, PluginName);
+            }
+
+            if (!Directory.Exists(directoryPath))
+                return false;
+
+            result = directoryPath;
+
+            return true;
+        }
 
         public PluginStream(FileStream stream = null)
         {
@@ -33,7 +66,7 @@ namespace TempoPlugins
             {
                 var working = Directory.GetCurrentDirectory();
 
-                Console.WriteLine("The current stream is null, a new file will be created in the working directory." +
+                Console.WriteLine("The current stream is null, a new file will be created in the working directory.\n" +
                                   $"Current working directory: {working}");
                 
                 stream = File.Create(Path.Join(Directory.GetCurrentDirectory(), "Jammo_SolutionStream.sln"));

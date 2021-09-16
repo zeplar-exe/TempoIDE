@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +7,7 @@ using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows
 {
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : WindowEx
     {
         public SettingsWindow()
         {
@@ -17,11 +16,6 @@ namespace TempoIDE.Windows
         
         private void SettingsWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            foreach (var file in SkinHelper.GetSkinFiles())
-            {
-                Console.WriteLine(file.Name);
-            }
-
             ContentDisplay.Template = GetSectionTemplate(Explorer.SelectedItem as UIElement);
         }
 

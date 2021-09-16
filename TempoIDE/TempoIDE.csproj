@@ -34,7 +34,6 @@
       <PackageReference Include="Jammo.HTTP" Version="1.0.0" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
       <PackageReference Include="NetSpell" Version="2.1.7" />
-      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     </ItemGroup>
 
@@ -81,7 +80,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\TempoControls\TempoControls.csproj" />
-      <ProjectReference Include="..\TempoSourceGen\TempoSourceGen.csproj" />
+      <ProjectReference Include="..\TempoPlugins\TempoPlugins.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -102,7 +101,10 @@
 
     <ItemGroup>
       <Page Remove="Core\Static\DefaultSkin.xaml" />
-      <Resource Include="Core\Static\DefaultSkin.xaml">
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="data\skins\DefaultSkin.xaml">
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>SkinHelper.cs</DependentUpon>
       </Resource>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using TempoIDE.Core.Plugins;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE
@@ -15,6 +16,8 @@ namespace TempoIDE
             #endif
             
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+            
+            PluginHelper.LoadPlugins();
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
