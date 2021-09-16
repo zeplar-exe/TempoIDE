@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoIDE-Tests", "TempoIDE-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoPlugins", "TempoPlugins\TempoPlugins.csproj", "{190AE3B9-EB38-4510-AD05-8A52A6224B0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TempoPlugins-Tests", "TempoPlugins-Tests\TempoPlugins-Tests.csproj", "{5AF63A8B-8937-495A-B20D-88F6E739AD6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,5 +38,9 @@ Global
 		{190AE3B9-EB38-4510-AD05-8A52A6224B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{190AE3B9-EB38-4510-AD05-8A52A6224B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{190AE3B9-EB38-4510-AD05-8A52A6224B0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF63A8B-8937-495A-B20D-88F6E739AD6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF63A8B-8937-495A-B20D-88F6E739AD6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF63A8B-8937-495A-B20D-88F6E739AD6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF63A8B-8937-495A-B20D-88F6E739AD6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -2,6 +2,12 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <LangVersion>9</LangVersion>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Jammo.ParserTools" Version="1.1.1" />
+      <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    </ItemGroup>
 
 </Project>
