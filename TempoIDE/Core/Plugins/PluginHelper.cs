@@ -20,12 +20,13 @@ namespace TempoIDE.Core.Plugins
                     $"Could not find the relative directory '{PluginPath}'.\n" +
                     "Is your executable in the correct place?");
             }
-
+            
             var info = new DirectoryInfo(IOHelper.GetRelativePath(PluginPath));
             
             foreach (var plugin in info.EnumerateFiles("*.plugin", SearchOption.AllDirectories))
             {
-                using var stream = PluginParser.Parse(IOHelper.ReadFullStream(plugin.OpenRead()));
+                using var stream = new PluginStream(plugin.OpenRead());
+                stream.Parse();
 
                 if (!stream.TryGetDirectoryPath(out var directoryPath))
                 {
@@ -34,7 +35,7 @@ namespace TempoIDE.Core.Plugins
                         "Its directory is missing or invalid.");
                 }
 
-                var dllPath = Path.Join(directoryPath, stream.PluginName);
+                var dllPath = Path.Join(directoryPath, stream.PluginName + ".dll");
 
                 if (!File.Exists(dllPath))
                 {
@@ -44,7 +45,7 @@ namespace TempoIDE.Core.Plugins
 
                 try
                 {
-                    var reflectedPlugin = Plugin.ReflectPluginFromAssembly(dllPath);
+                    loaded.Add(Plugin.ReflectPluginFromAssembly(dllPath));
                 }
                 catch (NoAttacherException)
                 {

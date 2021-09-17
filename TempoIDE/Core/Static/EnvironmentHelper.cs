@@ -14,28 +14,6 @@ namespace TempoIDE.Core.Static
 {
     public static class EnvironmentHelper
     {
-        public static MainWindow MainWindow
-        {
-            get
-            {
-                MainWindow window = null;
-
-                AppDispatcher.Invoke(delegate
-                {
-                    window = Application.Current.MainWindow as MainWindow;
-                });
-
-                return window;
-            }
-        }
-
-        public static Dispatcher AppDispatcher => Application.Current.Dispatcher;
-
-        public static Window ActiveWindow => Application.Current
-            .Windows
-            .OfType<Window>()
-            .SingleOrDefault(x => x.IsActive);
-
         public static EnvironmentCache Cache;
         public static JSolutionFile Solution;
 
@@ -94,8 +72,8 @@ namespace TempoIDE.Core.Static
             
             Cache.Clear();
 
-            AppDispatcher.Invoke(MainWindow.Editor.Tabs.CloseAll);
-            AppDispatcher.Invoke(LoadExplorer);
+            ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.CloseAll);
+            ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
         }
         
         public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
@@ -115,14 +93,14 @@ namespace TempoIDE.Core.Static
         public static void LoadEnvironment(string path)
         {
             directoryWatcher?.Dispose();
-            MainWindow.Editor.Tabs.CloseAll();
+            ApplicationHelper.MainWindow.Editor.Tabs.CloseAll();
             
             Cache = new EnvironmentCache();
 
             var progressDialog = new ProgressDialog
             {
                 Title = "Preparing workspace",
-                Owner = MainWindow
+                Owner = ApplicationHelper.MainWindow
             };
 
             progressDialog.Tasks.Enqueue(new ProgressTask(
@@ -132,7 +110,7 @@ namespace TempoIDE.Core.Static
                 "Reading semantics", Cache.UpdateModels));
             
             progressDialog.Tasks.Enqueue(new ProgressTask(
-                "Loading files", delegate { AppDispatcher.Invoke(LoadExplorer); }));
+                "Loading files", delegate { ApplicationHelper.AppDispatcher.Invoke(LoadExplorer); }));
 
             progressDialog.Completed += delegate { progressDialog.Close(); };
 
@@ -186,7 +164,7 @@ namespace TempoIDE.Core.Static
 
         private static void LoadExplorer()
         {
-            MainWindow.Explorer.Clear();
+            ApplicationHelper.MainWindow.Explorer.Clear();
                 
             switch (Mode)
             {
@@ -198,16 +176,16 @@ namespace TempoIDE.Core.Static
 
                     directoryWatcher = new DirectoryWatcher(info.Directory, info.Name);
                     directoryWatcher.Changed += DirectoryChanged;
-                    
-                    MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
-                    MainWindow.Editor.Tabs.Open(info);
+
+                    ApplicationHelper.MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
+                    ApplicationHelper.MainWindow.Editor.Tabs.Open(info);
                     
                     break;
                 case EnvironmentMode.Solution:
                     var solutionDirectory = new FileInfo(EnvironmentPath.FullName).Directory;
                     var topLevel = new ExplorerFileItem(EnvironmentPath.FullName) { IsExpanded = true };
-                    
-                    MainWindow.Explorer.AppendElement(topLevel);
+
+                    ApplicationHelper.MainWindow.Explorer.AppendElement(topLevel);
                     
                     foreach (var project in Solution.ProjectFiles)
                     {
@@ -224,8 +202,8 @@ namespace TempoIDE.Core.Static
                     break;
                 case EnvironmentMode.Directory:
                     var directory = (DirectoryInfo) EnvironmentPath;
-                    
-                    MainWindow.Explorer.AppendDirectory(directory);
+
+                    ApplicationHelper.MainWindow.Explorer.AppendDirectory(directory);
                     
                     directoryWatcher = new DirectoryWatcher(directory);
                     directoryWatcher.Changed += DirectoryChanged;
@@ -245,8 +223,8 @@ namespace TempoIDE.Core.Static
                 case WatcherChangeTypes.Created:
                     Cache.AddFile(new FileInfo(e.FullPath));
 
-                    AppDispatcher.Invoke(LoadExplorer);
-                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
+                    ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
+                    ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Renamed:
@@ -254,16 +232,16 @@ namespace TempoIDE.Core.Static
                     
                     Cache.RemoveFile(new FileInfo(renamedArgs.OldFullPath));
                     Cache.AddFile(new FileInfo(renamedArgs.FullPath));
-                    
-                    AppDispatcher.Invoke(LoadExplorer);
-                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
+
+                    ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
+                    ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Deleted:
                     Cache.RemoveFile(new FileInfo(e.FullPath));
 
-                    AppDispatcher.Invoke(LoadExplorer);
-                    AppDispatcher.Invoke(MainWindow.Editor.Tabs.Refresh);
+                    ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
+                    ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.Refresh);
                     
                     break;
                 case WatcherChangeTypes.Changed:

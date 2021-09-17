@@ -8,10 +8,11 @@
         <Authors>zeplar exe</Authors>
         <Description>Plugin package for TempoIDE</Description>
         <PackageReleaseNotes>Release</PackageReleaseNotes>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Jammo.ParserTools" Version="1.1.2" />
+      <PackageReference Include="Jammo.ParserTools" Version="1.1.3" />
     </ItemGroup>
 
 </Project>

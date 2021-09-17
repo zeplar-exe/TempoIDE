@@ -9,7 +9,7 @@ namespace TempoIDE.Core.Commands
 
         public override void Execute(object parameter)
         {
-            var window = EnvironmentHelper.MainWindow;
+            var window = ApplicationHelper.MainWindow;
             
             window.Editor.SelectedEditor.TryCopy();
         }

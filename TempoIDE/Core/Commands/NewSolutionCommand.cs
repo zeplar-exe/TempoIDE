@@ -9,7 +9,7 @@ namespace TempoIDE.Core.Commands
 
         public override void Execute(object parameter)
         {
-            var solutionWindow = new CreateSolutionWindow { Owner = EnvironmentHelper.MainWindow };
+            var solutionWindow = new CreateSolutionWindow { Owner = ApplicationHelper.MainWindow };
             
             solutionWindow.ShowDialog();
         }

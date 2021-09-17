@@ -4,6 +4,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Core.Commands;
+using TempoIDE.Core.Plugins;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.EventArgs;
 using TempoIDE.Properties;
@@ -21,35 +22,35 @@ namespace TempoIDE.Windows
         
         public static bool IsCoreElementFocused()
         {
-            if (EnvironmentHelper.MainWindow.Editor.SelectedEditor == null)
+            if (ApplicationHelper.MainWindow.Editor.SelectedEditor == null)
                 return false;
 
-            return EnvironmentHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null || EnvironmentHelper.MainWindow.Explorer.IsFocused;
+            return ApplicationHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null || ApplicationHelper.MainWindow.Explorer.IsFocused;
         }
         
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
         {
-            var window = EnvironmentHelper.ActiveWindow;
+            var window = ApplicationHelper.ActiveWindow;
             
             if (window.WindowState.HasFlag(WindowState.Minimized))
                 SystemCommands.MaximizeWindow(window);
             else
-                SystemCommands.MinimizeWindow(EnvironmentHelper.ActiveWindow);
+                SystemCommands.MinimizeWindow(ApplicationHelper.ActiveWindow);
         }
 
         public void MaximizeWindow(object sender, RoutedEventArgs routedEventArgs)
         {
-            var window = EnvironmentHelper.ActiveWindow;
+            var window = ApplicationHelper.ActiveWindow;
             
             if (window.WindowState.HasFlag(WindowState.Maximized))
                 SystemCommands.MinimizeWindow(window);
             else
-                SystemCommands.MaximizeWindow(EnvironmentHelper.ActiveWindow);
+                SystemCommands.MaximizeWindow(ApplicationHelper.ActiveWindow);
         }
 
         public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
         {
-            SystemCommands.CloseWindow(EnvironmentHelper.ActiveWindow);
+            SystemCommands.CloseWindow(ApplicationHelper.ActiveWindow);
         }
         
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
@@ -59,6 +60,10 @@ namespace TempoIDE.Windows
             Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
 
             SkinHelper.LoadSkin("Dark.xaml"); // TODO: Load skin from settings
+            PluginHelper.LoadPlugins();
+            
+            Notifier.Notify("Hello world!", NotificationIcon.Information);
+            Notifier.Notify("Hello world. 2!", NotificationIcon.Information);
         }
 
         private void LoadKeybindings()

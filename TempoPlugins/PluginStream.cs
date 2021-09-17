@@ -57,7 +57,14 @@ namespace TempoPlugins
 
         public void Parse()
         {
-            throw new NotImplementedException();
+            using var reader = new StreamReader(stream);
+            using var newStream = PluginParser.Parse(reader.ReadToEndAsync().Result);
+
+            Version = newStream.Version;
+            Metadata.Clear();
+            
+            foreach (var (key, value) in newStream.Metadata)
+                Metadata.Add(key, value);
         }
 
         public void Write()

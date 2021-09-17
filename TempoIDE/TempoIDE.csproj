@@ -50,6 +50,15 @@
       <None Update="data\dictionaries\en-US.dic">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="data\plugins\nothing.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\plugins\test.plugin">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="data\plugins\Test\Test.dll">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -84,7 +93,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="data\plugins" />
       <Folder Include="Windows\SolutionCreation\NetFramework" />
     </ItemGroup>
 

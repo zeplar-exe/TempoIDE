@@ -16,8 +16,6 @@ namespace TempoIDE
             #endif
             
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            
-            PluginHelper.LoadPlugins();
         }
 
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -31,7 +29,7 @@ namespace TempoIDE
         
         public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
         {
-            SystemCommands.CloseWindow(EnvironmentHelper.ActiveWindow);
+            SystemCommands.CloseWindow(ApplicationHelper.ActiveWindow);
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace TempoIDE.UserControls.Panels
 {
-    public partial class WindowNotifier : Panel
+    public partial class WindowNotifier : StackPanel
     {
         public WindowNotifier()
         {
@@ -17,43 +17,18 @@ namespace TempoIDE.UserControls.Panels
         {
             var notification = new WindowNotification(message, icon);
             notification.Closed += Notification_OnClosed;
-            
-            Children.Insert(0, notification);
 
-            InvalidateVisual();
+            Children.Add(notification);
         }
         
         private void Notification_OnClosed(object sender, EventArgs e)
         {
             Children.Remove((WindowNotification)sender);
-            
-            InvalidateVisual();
         }
 
         public void Clear()
         {
             Children.Clear();
-            
-            InvalidateVisual();
-        }
-
-        protected override Size ArrangeOverride(Size finalSize)
-        {
-            var height = 0d;
-
-            foreach (var child in Children.OfType<WindowNotification>())
-            {
-                height += child.Height;
-                
-                child.Arrange(new Rect(new Point(0, height), child.DesiredSize));
-            }
-
-            return finalSize;
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            return new Size(Width, Children.OfType<WindowNotification>().Sum(child => child.Height));
         }
     }
 

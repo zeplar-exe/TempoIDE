@@ -1,4 +1,8 @@
+using System.Linq;
 using System.Text;
+using System.Windows;
+using System.Windows.Threading;
+using TempoIDE.UserControls.Panels;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Static
@@ -11,15 +15,30 @@ namespace TempoIDE.Core.Static
         public static bool InspectionsEnabled
         {
             get => inspectionsEnabled;
-            private set
+            set { inspectionsEnabled = value; InspectionsEnabledChanged?.Invoke(value); }
+        }
+        
+        public static MainWindow MainWindow
+        {
+            get
             {
-                inspectionsEnabled = value;
-                InspectionsEnabledChanged?.Invoke(value);
+                MainWindow window = null;
+
+                AppDispatcher.Invoke(delegate
+                {
+                    window = Application.Current.MainWindow as MainWindow;
+                });
+
+                return window;
             }
         }
 
-        public static void EnableInspections() => InspectionsEnabled = false;
-        public static void DisableInspections() => InspectionsEnabled = false;
+        public static Window ActiveWindow => Application.Current
+            .Windows
+            .OfType<Window>()
+            .SingleOrDefault(x => x.IsActive);
+
+        public static Dispatcher AppDispatcher => Application.Current.Dispatcher;
 
         public delegate void EnabledEventHandler(bool enabled);
         public static event EnabledEventHandler InspectionsEnabledChanged;
@@ -36,9 +55,11 @@ namespace TempoIDE.Core.Static
                 "---------------\n" +
                 $"{details}";
 
-            var dialog = new UserDialog(message, UserResult.Ok);
+            MainWindow.Notifier.Notify(message, NotificationIcon.Information);
             
-            dialog.ShowDialog();
+            //var dialog = new UserDialog(message, UserResult.Ok);
+            //dialog.ShowDialog();
+            
             ErrorCodeEmitted?.Invoke(code, details);
         }
     }

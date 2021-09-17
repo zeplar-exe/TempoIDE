@@ -10,4 +10,5 @@
     <SolidColorBrush x:Key="SeparatorColor" Color="#828282"/>
     <SolidColorBrush x:Key="AcceptButtonColor" Color="ForestGreen"/>
     <SolidColorBrush x:Key="DeclineButtonColor" Color="DimGray"/>
+    <SolidColorBrush x:Key="NotificationColor" Color="DimGray"/>
 </ResourceDictionary>

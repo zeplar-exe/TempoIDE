@@ -1,14 +1,15 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
 namespace TempoPlugins
 {
     public abstract class Plugin
-    {
+    {  
         public static Plugin ReflectPluginFromAssembly(string path)
         {
-            var assembly = Assembly.Load(path);
+            var assembly = Assembly.Load(File.ReadAllBytes(path));
             var attachers = assembly.GetTypes()
                 .Where(t => t.GetCustomAttributes(typeof(PluginAttacherAttribute), false).Length > 0)
                 .ToArray();
@@ -24,7 +25,7 @@ namespace TempoPlugins
             }
 
             var attacher = attachers.First();
-            var method = attacher.GetMethod("Attach", BindingFlags.Static | BindingFlags.DeclaredOnly);
+            var method = attacher.GetMethod("Attach");
 
             if (method == null)
             {

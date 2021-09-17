@@ -15,10 +15,10 @@ namespace TempoIDE.Core.Static
         {
             var path = Path.Join(Directory.GetCurrentDirectory(), SkinsPath, skin);
 
-            if (!IOHelper.RelativeFileExists(SkinsPath))
+            if (!File.Exists(path))
             {
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, 
-                    $"Could not find the relative file '{Path.Join(SkinsPath, path)}'. " +
+                    $"Could not find the relative file '{Path.Join(SkinsPath, skin)}'. " +
                     "Is your executable in the correct place?");
             }
             

@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Jammo.ParserTools;
 
@@ -33,16 +34,23 @@ namespace TempoPlugins
                     }
                     case ParserState.Version:
                     {
-                        if (token.Type is BasicTokenType.Whitespace or BasicTokenType.Newline)
-                            break;
+                        var readStarted = false;
                         
-                        if (token.Type is BasicTokenType.Alphabetical or BasicTokenType.Numerical)
+                        BasicToken versionToken;
+                        while ((versionToken = tokenizer.Next()) != null)
                         {
-                            stream.Version += token.Text;
-                        }
-                        else
-                        {
-                            state.MoveLast();
+                            previous.Add(versionToken);
+
+                            if (versionToken.Type == BasicTokenType.Numerical)
+                            {
+                                readStarted = true;
+                                stream.Version += versionToken.Text;
+                            }
+                            else if (readStarted)
+                            {
+                                state.MoveLast();
+                                break;
+                            }
                         }
                         
                         break;
