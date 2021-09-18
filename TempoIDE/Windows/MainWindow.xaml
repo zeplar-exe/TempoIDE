@@ -170,7 +170,7 @@
             
             <ScrollViewer
                 MaxHeight="600"
-                Width="225"
+                Width="250"
                 VerticalScrollBarVisibility="Hidden" 
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"

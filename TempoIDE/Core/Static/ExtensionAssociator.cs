@@ -2,7 +2,6 @@ using Jammo.CsAnalysis.CodeInspection;
 using Jammo.CsAnalysis.CodeInspection.Rules;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
-using TempoIDE.Core.Inspections.TempoRules;
 
 namespace TempoIDE.Core.Static
 {
@@ -34,8 +33,7 @@ namespace TempoIDE.Core.Static
                     var inspector = new CodeInspector();
                     inspector.AddRules(new InspectionRule[]
                     {
-                        new UnusedFieldInspection(), 
-                        new MisspelledWordInspection()
+                        new UnusedFieldInspection()
                     });
                     
                     return inspector;

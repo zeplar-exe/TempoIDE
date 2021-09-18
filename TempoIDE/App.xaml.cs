@@ -1,17 +1,23 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using CSharp_Logger;
+using TempoIDE.Core;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE
 {
     public partial class App
     {
+        public static Logger Logger;
+        
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            ConsoleManager.Show();
+            Logger = new Logger();
+            Logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue()); 
             
-            #if RELEASE
-            ConsoleManager.Hide();
+            #if DEBUG
+            Process.Start("notepad", IOHelper.GetRelativePath("data\\logs.log"));
             #endif
             
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -23,6 +29,8 @@ namespace TempoIDE
             ApplicationHelper.EmitErrorCode(
                 ApplicationErrorCode.TI_UNHANDLED, 
                 $"An unhandled exception was thrown:\n{e.ExceptionObject as Exception}");
+            #else
+            throw (Exception)e.ExceptionObject;
             #endif
         }
         

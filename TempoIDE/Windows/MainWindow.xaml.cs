@@ -20,15 +20,6 @@ namespace TempoIDE.Windows
             InitializeComponent();
         }
         
-        public static bool IsCoreElementFocused()
-        {
-            if (ApplicationHelper.MainWindow.Editor.SelectedEditor == null)
-                return false;
-
-            return ApplicationHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null ||
-                   ApplicationHelper.MainWindow.Explorer.IsFocused;
-        }
-        
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
         {
             var window = ApplicationHelper.ActiveWindow;
@@ -57,10 +48,14 @@ namespace TempoIDE.Windows
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
             LoadKeybindings();
-
+            
             Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
-
-            SkinHelper.LoadSkin("Dark.xaml"); // TODO: Load skin from settings
+            
+            if (string.IsNullOrWhiteSpace(Settings.Default.ApplicationSkin))
+                SkinHelper.LoadDefaultSkin();
+            else if (!SkinHelper.TryLoadSkin(Settings.Default.ApplicationSkin))
+                SkinHelper.LoadDefaultSkin();
+            
             PluginHelper.LoadPlugins();
         }
 

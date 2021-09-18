@@ -1,5 +1,4 @@
 using TempoIDE.Core.Static;
-using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Commands
 {

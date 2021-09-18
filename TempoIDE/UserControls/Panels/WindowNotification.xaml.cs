@@ -1,11 +1,10 @@
 using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 
 namespace TempoIDE.UserControls.Panels
 {
-    public partial class WindowNotification : UserControl
+    public partial class WindowNotification
     {
         public event EventHandler Closed;
         

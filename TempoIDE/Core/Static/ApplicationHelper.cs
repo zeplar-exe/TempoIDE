@@ -55,10 +55,7 @@ namespace TempoIDE.Core.Static
                 "---------------\n" +
                 $"{details}";
 
-            MainWindow.Notifier.Notify(message, NotificationIcon.Information);
-            
-            //var dialog = new UserDialog(message, UserResult.Ok);
-            //dialog.ShowDialog();
+            MainWindow.Notifier.Notify(message, NotificationIcon.Error);
             
             ErrorCodeEmitted?.Invoke(code, details);
         }

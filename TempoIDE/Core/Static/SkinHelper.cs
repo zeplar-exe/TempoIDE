@@ -3,22 +3,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using TempoIDE.Properties;
 using XamlReader = System.Windows.Markup.XamlReader;
 
 namespace TempoIDE.Core.Static
 {
     public static class SkinHelper
     {
-        public const string SkinsPath = "data/skins";
+        public const string SkinsPath = "data\\skins";
         
-        public static bool LoadSkin(string skin)
+        public static bool TryLoadSkin(string skin)
         {
-            var path = Path.Join(Directory.GetCurrentDirectory(), SkinsPath, skin);
-
+            var path = IOHelper.GetRelativePath(Path.Join(SkinsPath, skin));
+            
             if (!File.Exists(path))
             {
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, 
-                    $"Could not find the relative file '{Path.Join(SkinsPath, skin)}'. " +
+                    $"Could not find the relative file '{Path.Join(SkinsPath, skin)}'.\n" +
                     "Is your executable in the correct place?");
 
                 return false;
@@ -44,19 +45,21 @@ namespace TempoIDE.Core.Static
                     $"The skin '{skin}' failed to load because it is not a valid xaml file.");
                 
                 #if DEBUG
-                Console.WriteLine(e.Message);
+                App.Logger.Debug(e.Message);
                 #endif
 
                 return false;
             }
 
+            Settings.Default.ApplicationSkin = skin;
+            
             return true;
         }
 
         public static void LoadDefaultSkin()
         {
             var component = Application.LoadComponent(
-                new Uri(SkinsPath + "DefaultSkin.xaml", UriKind.Relative));
+                new Uri(Path.Join(SkinsPath, "DefaultSkin.xaml"), UriKind.Relative));
             var dict = Application.Current.Resources.MergedDictionaries;
                 
             dict.Clear();

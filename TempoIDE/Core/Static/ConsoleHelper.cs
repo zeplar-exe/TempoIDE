@@ -7,7 +7,7 @@ using System.Security;
 namespace TempoIDE.Core.Static
 {
     [SuppressUnmanagedCodeSecurity]
-    public static class ConsoleManager
+    public static class ConsoleHelper
     {
         private const string Kernel32DllName = "kernel32.dll";
 

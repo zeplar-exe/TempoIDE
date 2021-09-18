@@ -1,8 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 using Jammo.CsAnalysis.MsBuildAnalysis;
 using Jammo.CsAnalysis.MsBuildAnalysis.Solutions;
 using TempoIDE.Core.Types;
@@ -28,7 +26,7 @@ namespace TempoIDE.Core.Static
 
             var info = (FileInfo)EnvironmentPath;
             
-            ConsoleManager.RunCommand("dotnet", info.DirectoryName, $"build {EnvironmentPath}");
+            ConsoleHelper.RunCommand("dotnet", info.DirectoryName, $"build {EnvironmentPath}");
         }
 
         public static SolutionStream CreateEmptySolution(string directory, string name)

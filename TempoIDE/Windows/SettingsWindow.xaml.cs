@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -47,7 +46,7 @@ namespace TempoIDE.Windows
             if (item == null)
                 return;
             
-            SkinHelper.LoadSkin(item.Name);
+            SkinHelper.TryLoadSkin(item.Name);
         }
     }
 }

@@ -26,12 +26,12 @@ namespace TempoIDE.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Aa {
+        public string ApplicationSkin {
             get {
-                return ((string)(this["Aa"]));
+                return ((string)(this["ApplicationSkin"]));
             }
             set {
-                this["Aa"] = value;
+                this["ApplicationSkin"] = value;
             }
         }
     }

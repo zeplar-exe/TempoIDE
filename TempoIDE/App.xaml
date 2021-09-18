@@ -53,6 +53,11 @@
                 <Setter Property="Foreground" Value="{DynamicResource BaseTextColor}"/>
             </Style>
             
+            <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+                <Setter Property="Content" Value="X"/>
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+            
             <Style TargetType="{x:Type Border}">
                 <Setter Property="BorderBrush" Value="{StaticResource PrimaryBorderColor}" />
             </Style>
