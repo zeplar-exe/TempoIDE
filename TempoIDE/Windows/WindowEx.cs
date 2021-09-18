@@ -3,7 +3,7 @@ using System.Windows.Shell;
 
 namespace TempoIDE.Windows
 {
-    public class WindowEx : Window
+    public abstract class WindowEx : Window
     {
         public WindowEx()
         {

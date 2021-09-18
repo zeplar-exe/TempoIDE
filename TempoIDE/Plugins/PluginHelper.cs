@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
+using TempoIDE.Core;
 using TempoIDE.Core.Static;
-using TempoPlugins;
 
-namespace TempoIDE.Core.Plugins
+namespace TempoIDE.Plugins
 {
     public static class PluginHelper
     {
-        private static List<Plugin> loaded = new();
+        internal static List<Plugin> loaded = new();
         
         public const string PluginPath = "data/plugins";
         
@@ -19,6 +18,8 @@ namespace TempoIDE.Core.Plugins
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_DIRECTORY, 
                     $"Could not find the relative directory '{PluginPath}'.\n" +
                     "Is your executable in the correct place?");
+                
+                return;
             }
             
             var info = new DirectoryInfo(IOHelper.GetRelativePath(PluginPath));
@@ -33,6 +34,8 @@ namespace TempoIDE.Core.Plugins
                     ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_PLUGIN,
                         $"Failed to load the plugin '{plugin.Name}'.\n" +
                         "Its directory is missing or invalid.");
+                    
+                    return;
                 }
 
                 var dllPath = Path.Join(directoryPath, stream.PluginName + ".dll");
@@ -41,27 +44,33 @@ namespace TempoIDE.Core.Plugins
                 {
                     ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_PLUGIN,
                         $"Failed to load the plugin dll '{dllPath}.dll' because it does not exist.");
+                    
+                    return;
                 }
 
                 try
                 {
                     loaded.Add(Plugin.ReflectPluginFromAssembly(dllPath));
                 }
+                catch (InvalidPluginPackageException)
+                {
+                    //throw;
+                }
                 catch (NoAttacherException)
                 {
-                    throw;
+                    //throw;
                 }
                 catch (TooManyAttachersException)
                 {
-                    throw;
+                    //throw;
                 }
                 catch (NoAttachMethodException)
                 {
-                    throw;
+                    //throw;
                 }
                 catch (InvalidAttacherReturnException)
                 {
-                    throw;
+                    //throw;
                 }
             }
         }

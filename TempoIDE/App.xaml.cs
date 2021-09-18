@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using TempoIDE.Core.Plugins;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE

@@ -4,9 +4,9 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Core.Commands;
-using TempoIDE.Core.Plugins;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.EventArgs;
+using TempoIDE.Plugins;
 using TempoIDE.Properties;
 using TempoIDE.UserControls.Editors;
 using TempoIDE.UserControls.Panels;
@@ -25,7 +25,8 @@ namespace TempoIDE.Windows
             if (ApplicationHelper.MainWindow.Editor.SelectedEditor == null)
                 return false;
 
-            return ApplicationHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null || ApplicationHelper.MainWindow.Explorer.IsFocused;
+            return ApplicationHelper.MainWindow.Editor.Tabs.GetFocusedEditor() != null ||
+                   ApplicationHelper.MainWindow.Explorer.IsFocused;
         }
         
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)
@@ -61,9 +62,6 @@ namespace TempoIDE.Windows
 
             SkinHelper.LoadSkin("Dark.xaml"); // TODO: Load skin from settings
             PluginHelper.LoadPlugins();
-            
-            Notifier.Notify("Hello world!", NotificationIcon.Information);
-            Notifier.Notify("Hello world. 2!", NotificationIcon.Information);
         }
 
         private void LoadKeybindings()

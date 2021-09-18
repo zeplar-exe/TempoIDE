@@ -20,6 +20,8 @@ namespace TempoIDE.Core.Static
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, 
                     $"Could not find the relative file '{Path.Join(SkinsPath, skin)}'. " +
                     "Is your executable in the correct place?");
+
+                return false;
             }
             
             try
@@ -74,13 +76,12 @@ namespace TempoIDE.Core.Static
             }
             catch (DirectoryNotFoundException)
             {
-                ApplicationHelper.EmitErrorCode(
-                    ApplicationErrorCode.TI_INVALID_DIRECTORY, 
+                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_DIRECTORY, 
                     $"Could not find the relative directory '{SkinsPath}'.\n" +
                     "Is your executable in the correct place?");
+                
+                return Enumerable.Empty<FileInfo>();
             }
-            
-            return Enumerable.Empty<FileInfo>();
         }
     }
 }

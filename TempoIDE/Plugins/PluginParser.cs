@@ -1,8 +1,7 @@
-using System;
 using System.Linq;
 using Jammo.ParserTools;
 
-namespace TempoPlugins
+namespace TempoIDE.Plugins
 {
     public static class PluginParser
     {

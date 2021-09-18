@@ -4,7 +4,7 @@ using System.IO;
 using System.Text;
 using Jammo.ParserTools;
 
-namespace TempoPlugins
+namespace TempoIDE.Plugins
 {
     public class PluginStream : IParserStream
     {

@@ -10,6 +10,9 @@ namespace TempoIDE.Core.Inspections
     {
         public void Inspect(SyntaxCharCollection characters, CompilationWrapper compilation)
         {
+            if (compilation?.Inspections == null)
+                return;
+            
             foreach (var inspection in compilation.Inspections.ToArray())
             {
                 var range = new IntRange(inspection.Span.Start, inspection.Span.End);

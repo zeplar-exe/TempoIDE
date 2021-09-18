@@ -3,25 +3,32 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace TempoPlugins
+namespace TempoIDE.Plugins
 {
     public abstract class Plugin
-    {  
+    {
         public static Plugin ReflectPluginFromAssembly(string path)
         {
             var assembly = Assembly.Load(File.ReadAllBytes(path));
-            var attachers = assembly.GetTypes()
-                .Where(t => t.GetCustomAttributes(typeof(PluginAttacherAttribute), false).Length > 0)
-                .ToArray();
-
-            if (attachers.Length == 0)
+            Type[] attachers;
+            
+            try
             {
-                throw new NoAttacherException();
+                attachers = assembly.GetTypes()
+                    .Where(t => t.GetCustomAttributes(typeof(PluginAttacherAttribute), false).Length > 0)
+                    .ToArray();
+            }
+            catch (ReflectionTypeLoadException)
+            {
+                throw new InvalidPluginPackageException();
             }
             
-            if (attachers.Length > 1)
+            switch (attachers.Length)
             {
-                throw new TooManyAttachersException();
+                case 0:
+                    throw new NoAttacherException();
+                case > 1:
+                    throw new TooManyAttachersException();
             }
 
             var attacher = attachers.First();
@@ -41,6 +48,7 @@ namespace TempoPlugins
         }
     }
     
+    public class InvalidPluginPackageException : Exception { }
     public class NoAttacherException : Exception { }
     public class TooManyAttachersException : Exception { }
     public class NoAttachMethodException : Exception { }
