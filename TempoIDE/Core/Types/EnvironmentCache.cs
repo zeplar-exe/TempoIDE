@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Jammo.CsAnalysis.MsBuildAnalysis;
+using ByteSizeLib;
+using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.Wrappers;
 
@@ -8,12 +10,18 @@ namespace TempoIDE.Core.Types
 {
     public class EnvironmentCache
     {
-        public readonly Dictionary<string, CachedProjectCompilation> ProjectCompilations = new();
-        public readonly Dictionary<string, CachedFile> FileData = new();
+        private static CacheOptions DefaultCacheOptions => new()
+        {
+            MaximumSize = (ulong)ByteSize.FromGigaBytes(6).Bits, MakeRoomOnSizeLimit = true,
+        };
+        
+        public readonly SimpleCache<string, CachedFile> FileData;
+        public readonly SimpleCache<string, CachedProjectCompilation> ProjectCompilations;
 
         public EnvironmentCache()
         {
-            Clear();
+            FileData = new SimpleCache<string, CachedFile>(DefaultCacheOptions);
+            ProjectCompilations = new SimpleCache<string, CachedProjectCompilation>(DefaultCacheOptions);
         }
         
         public void UpdateModels()
@@ -26,7 +34,7 @@ namespace TempoIDE.Core.Types
 
                 foreach (var project in solution.ProjectFiles)
                 {
-                    ProjectCompilations[project.FileInfo.FullName] = new CachedProjectCompilation(project);
+                    ProjectCompilations.Set(project.FileInfo.FullName, new CachedProjectCompilation(project));
                 }
             }
         }
@@ -39,37 +47,30 @@ namespace TempoIDE.Core.Types
 
         public CachedFile GetFile(FileInfo file)
         {
-            if (!FileData.TryGetValue(file.FullName, out var existing))
-                return FileData[file.FullName] = new CachedFile(file);
-            
-            return existing;
+            return FileData.GetOrCreate(file.FullName, CacheItemFromFile(file));
         }
 
         public void AddFile(FileInfo file)
         {
             if (file.Exists)
             {
-                try
-                {
-                    if (FileData.TryGetValue(file.FullName, out var cached))
-                    {
-                        cached.Update();
-                    }
-                    else
-                    {
-                        FileData[file.FullName] = new CachedFile(file);
-                    }
-                }
-                catch (IOException)
-                {
-                    FileData.Remove(file.FullName);
-                }
+                FileData.GetOrCreate(file.FullName, CacheItemFromFile(file)).Update();
             }
         }
 
         public void RemoveFile(FileInfo file)
         {
             FileData.Remove(file.FullName);
+        }
+
+        private CacheItem<CachedFile> CacheItemFromFile(FileInfo file)
+        {
+            return new CacheItem<CachedFile>(
+                new CachedFile(file), new CacheItemOptions
+                {
+                    NonAccessDeletionTime = TimeSpan.FromMinutes(15),
+                    Size = (ulong)file.Length
+                });
         }
     }
 }

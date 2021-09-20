@@ -25,7 +25,7 @@ namespace TempoIDE.UserControls.Editors
             var inspector = IFileInspector.FromExtension(BoundFile?.Extension);
             var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
 
-            inspector.Inspect(characters, project?.Compilation);
+            inspector?.Inspect(characters, project?.Compilation);
         }
     }
 }

@@ -1,7 +1,7 @@
 using System.Windows;
 using TempoIDE.UserControls.Panels;
 
-namespace TempoIDE.Core.Types.EventArgs
+namespace TempoIDE.Core.Types.CustomEventArgs
 {
     public delegate void OpenFileEventHandler(object sender, OpenExplorerElementArgs e);
     

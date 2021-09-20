@@ -1,11 +1,11 @@
-using Jammo.CsAnalysis.Compilation;
+using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoControls.Core.Types.Collections;
 
 namespace TempoIDE.Core.Inspections
 {
     public interface IFileInspector
     {
-        public void Inspect(SyntaxCharCollection characters, CompilationWrapper compilation);
+        public void Inspect(SyntaxCharCollection characters, CSharpAnalysisCompilation compilation);
 
         public static IFileInspector FromExtension(string extension)
         {
@@ -19,7 +19,7 @@ namespace TempoIDE.Core.Inspections
 
     public class DefaultFileInspector : IFileInspector
     {
-        public void Inspect(SyntaxCharCollection characters, CompilationWrapper compilation)
+        public void Inspect(SyntaxCharCollection characters, CSharpAnalysisCompilation compilation)
         {
             
         }

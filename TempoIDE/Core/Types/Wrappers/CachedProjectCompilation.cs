@@ -1,5 +1,5 @@
-using Jammo.CsAnalysis.Compilation;
-using Jammo.CsAnalysis.MsBuildAnalysis;
+using Jammo.TextAnalysis.DotNet.CSharp;
+using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.Core.Types.Wrappers
@@ -7,7 +7,7 @@ namespace TempoIDE.Core.Types.Wrappers
     public class CachedProjectCompilation
     {
         public readonly JProjectFile Project;
-        public CompilationWrapper Compilation;
+        public CSharpAnalysisCompilation Compilation;
 
         public CachedProjectCompilation(JProjectFile project)
         {
@@ -18,11 +18,10 @@ namespace TempoIDE.Core.Types.Wrappers
 
         public void Update()
         {
-            var analysis = CSharpFileAnalysisWrapper.Create(Project.FileInfo.FullName, AnalysisType.Project);
-            Compilation = analysis.CompilationWrapper;
+            Compilation = CSharpAnalysisCompilationHelper.Create(Project.FileInfo.FullName, AnalysisType.Project);
             
             Compilation.SetInspector(ExtensionAssociator.CodeInspectorFromExtension(".cs"));
-            //Compilation.GenerateCompilation(); Disabled for now for performance reasons
+            Compilation.GenerateInspections();
         }
     }
 }

@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Core.Commands;
 using TempoIDE.Core.Static;
-using TempoIDE.Core.Types.EventArgs;
+using TempoIDE.Core.Types.CustomEventArgs;
 using TempoIDE.Plugins;
 using TempoIDE.Properties;
 using TempoIDE.UserControls.Editors;

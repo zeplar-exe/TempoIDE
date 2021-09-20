@@ -1,7 +1,7 @@
 using System;
 using System.IO;
-using Jammo.CsAnalysis.MsBuildAnalysis.Projects;
-using Jammo.CsAnalysis.MsBuildAnalysis.Solutions;
+using Jammo.TextAnalysis.DotNet.MsBuild.Projects;
+using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Core.Static;
 
 namespace TempoIDE.Windows.SolutionCreation.NetCore
@@ -25,7 +25,7 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
             var projectPath = Path.Join(ProjectName.Text, ProjectName.Text + ".csproj");
             
             projStream.WriteTo(Path.Join(Location.Text, projectPath));
-            slnStream.AddProject(new ProjectDefinition
+            slnStream.Projects.Add(new ProjectDefinition
             {
                 ProjectGuid = Guid.NewGuid().ToString("B").ToUpper(),
                 GlobalGuid = Guid.NewGuid().ToString("B").ToUpper(),

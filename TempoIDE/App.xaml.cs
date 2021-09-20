@@ -29,8 +29,6 @@ namespace TempoIDE
             ApplicationHelper.EmitErrorCode(
                 ApplicationErrorCode.TI_UNHANDLED, 
                 $"An unhandled exception was thrown:\n{e.ExceptionObject as Exception}");
-            #else
-            throw (Exception)e.ExceptionObject;
             #endif
         }
         

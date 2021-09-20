@@ -126,8 +126,18 @@ namespace TempoControls
                 {
                     e.Handled = true;
                     overrideCaretVisibility = true;
-
-                    MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
+                    
+                    if (CaretOffset.X == 0)
+                    {
+                        if (CaretOffset.Y == 0)
+                            break;
+                        
+                        MoveCaret(new IntVector(TextArea.GetLines()[CaretOffset.Y - 1].Length, CaretOffset.Y - 1));
+                    }
+                    else
+                    {
+                        MoveCaret(new IntVector(CaretOffset.X - 1, CaretOffset.Y));
+                    }
 
                     break;
                 }
@@ -136,8 +146,20 @@ namespace TempoControls
                     e.Handled = true;
                     overrideCaretVisibility = true;
                     
-                    MoveCaret(new IntVector(CaretOffset.X + 1, CaretOffset.Y));
-                    
+                    var lines = TextArea.GetLines();
+
+                    if (CaretOffset.X == lines[CaretOffset.Y].Length)
+                    {
+                        if (CaretOffset.Y == lines.Length - 1)
+                            break;
+                        
+                        MoveCaret(new IntVector(lines[CaretOffset.Y + 1].Length, CaretOffset.Y + 1));
+                    }
+                    else
+                    {
+                        MoveCaret(new IntVector(CaretOffset.X + 1, CaretOffset.Y));
+                    }
+
                     break;
                 }
                 case Key.Up:
@@ -146,9 +168,21 @@ namespace TempoControls
                     overrideCaretVisibility = true;
 
                     if (AutoComplete.Enabled)
+                    {
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Backward);
+                    }
                     else
-                        MoveCaret(new IntVector(CaretOffset.X, CaretOffset.Y - 1));
+                    {
+                        if (CaretOffset.Y == 0)
+                            break;
+                        
+                        var newOffset = new IntVector(CaretOffset.X, CaretOffset.Y - 1);
+
+                        if (VerifyOffset(newOffset))
+                            MoveCaret(newOffset);
+                        else if (newOffset.Y < 0)
+                            MoveCaret(new IntVector(TextArea.GetLines()[CaretOffset.Y - 1].Length, CaretOffset.Y - 1));
+                    }
 
                     break;
                 }
@@ -158,9 +192,23 @@ namespace TempoControls
                     overrideCaretVisibility = true;
 
                     if (AutoComplete.Enabled)
+                    {
                         AutoComplete.MoveSelectedIndex(LogicalDirection.Forward);
+                    }
                     else
-                        MoveCaret(new IntVector(CaretOffset.X, CaretOffset.Y + 1));
+                    {
+                        var lines = TextArea.GetLines();
+                        
+                        if (CaretOffset.Y >= lines.Length - 1)
+                            break;
+                        
+                        var newOffset = new IntVector(CaretOffset.X, CaretOffset.Y + 1);
+
+                        if (VerifyOffset(newOffset))
+                            MoveCaret(newOffset);
+                        else if (newOffset.Y < TextArea.LineCount)
+                            MoveCaret(new IntVector(TextArea.GetLines()[CaretOffset.Y + 1].Length, CaretOffset.Y + 1));
+                    }
 
                     break;
                 }
@@ -210,7 +258,15 @@ namespace TempoControls
             
             for (var columnNo = 0; columnNo < CaretOffset.X; columnNo++)
             {
-                rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
+                try
+                {
+                    rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
+                }
+                catch (Exception e) when(e is not null)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
             }
             
             rect = Rect.Offset(rect, 0, TextArea.LineHeight * CaretOffset.Y);

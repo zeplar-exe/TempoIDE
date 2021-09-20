@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Core.Static;
-using TempoIDE.Core.Types.EventArgs;
+using TempoIDE.Core.Types.CustomEventArgs;
 
 namespace TempoIDE.UserControls.Panels
 {

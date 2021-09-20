@@ -43,6 +43,8 @@ namespace TempoControls
         private bool overrideCaretVisibility;
         private bool caretVisible;
 
+        private InputMode InputMode = InputMode.Text;
+
         private bool isSelecting;
 
         public ColoredTextBox()
@@ -167,5 +169,12 @@ namespace TempoControls
         }
         
         #endregion
+    }
+
+    public enum InputMode
+    {
+        Text,
+        TextAndAutoComplete,
+        AutoComplete
     }
 }

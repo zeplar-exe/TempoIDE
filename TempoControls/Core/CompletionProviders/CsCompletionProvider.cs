@@ -1,5 +1,5 @@
 using System.Linq;
-using Jammo.CsAnalysis.Helpers;
+using Jammo.TextAnalysis.DotNet.CSharp.Helpers;
 using TempoControls.Core.Types;
 
 namespace TempoControls.Core.CompletionProviders

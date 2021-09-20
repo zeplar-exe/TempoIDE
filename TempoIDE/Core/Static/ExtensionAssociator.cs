@@ -1,5 +1,6 @@
-using Jammo.CsAnalysis.CodeInspection;
-using Jammo.CsAnalysis.CodeInspection.Rules;
+using Jammo.TextAnalysis;
+using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
+using Jammo.TextAnalysis.DotNet.CSharp.Inspection.Rules;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
 
@@ -25,20 +26,20 @@ namespace TempoIDE.Core.Static
             };
         }
 
-        public static CodeInspector CodeInspectorFromExtension(string extension)
+        public static CSharpInspector CodeInspectorFromExtension(string extension)
         {
             switch (extension.Replace(".", string.Empty))
             {
                 case "cs":
-                    var inspector = new CodeInspector();
-                    inspector.AddRules(new InspectionRule[]
+                    var inspector = new CSharpInspector();
+                    inspector.AddRules(new CSharpInspectionRule[]
                     {
                         new UnusedFieldInspection()
                     });
                     
                     return inspector;
                 default:
-                    return new CodeInspector();
+                    return null;
             }
         }
     }

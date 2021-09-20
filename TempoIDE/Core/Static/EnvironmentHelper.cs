@@ -1,8 +1,8 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Jammo.CsAnalysis.MsBuildAnalysis;
-using Jammo.CsAnalysis.MsBuildAnalysis.Solutions;
+using Jammo.TextAnalysis.DotNet.MsBuild;
+using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Core.Types;
 using TempoIDE.Core.Types.Wrappers;
 using TempoIDE.UserControls.Panels;
@@ -54,7 +54,7 @@ namespace TempoIDE.Core.Static
             });
             
             global.AddSection(configPlatforms);
-            stream.AddGlobal(global);
+            stream.Globals.Add(global);
 
             var path = Path.Join(directory, name + ".sln");
             stream.WriteTo(path);
@@ -78,14 +78,10 @@ namespace TempoIDE.Core.Static
         {
             if (Mode != EnvironmentMode.Solution)
                 return null;
-            
-            foreach (var compilation in Cache.ProjectCompilations.Values)
-            {
-                if (compilation.Project.FileSystem.EnumerateTree().Any(projectFile => projectFile.Info.FullName == file.FullName))
-                    return compilation;
-            }
 
-            return null;
+            return Cache.ProjectCompilations.Values
+                .FirstOrDefault(compilation => compilation.Project.FileSystem.EnumerateTree()
+                    .Any(projectFile => projectFile.Info.FullName == file.FullName));
         }
         
         public static void LoadEnvironment(string path)

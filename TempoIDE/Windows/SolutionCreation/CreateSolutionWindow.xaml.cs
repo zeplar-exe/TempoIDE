@@ -48,7 +48,7 @@ namespace TempoIDE.Windows.SolutionCreation
         public static readonly RoutedCommandExt CreateRoutedCommand = new();
         public static readonly RoutedCommandExt CancelRoutedCommand = new();
 
-        private void ExecuteCreateCommand(object sender, ExecutedRoutedEventArgs executedRoutedEventArgs)
+        private void ExecuteCreateCommand(object sender, ExecutedRoutedEventArgs e)
         {
             ((SolutionCreationPanel)SelectedControl).Create();
             
