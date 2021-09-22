@@ -27,7 +27,7 @@
       <Compile Update="Core\Static\ApplicationErrorCode.cs">
         <DependentUpon>ApplicationHelper.cs</DependentUpon>
       </Compile>
-      <Compile Update="UserControls\Panels\ExplorerFileItem.cs">
+      <Compile Update="UserControls\Panels\ExplorerFileSystemItem.cs">
         <DependentUpon>ExplorerViewItem.xaml</DependentUpon>
       </Compile>
       <Compile Update="UserControls\Panels\EditorControl.FileHandling.cs">

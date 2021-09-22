@@ -6,10 +6,6 @@
              xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
-    <TreeViewItem.ContextMenu>
-        <panels:ExplorerViewItemContextMenu/>
-    </TreeViewItem.ContextMenu>
-    
     <TreeViewItem.Header>
         <Grid>
             <Grid.ColumnDefinitions>

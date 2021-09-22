@@ -2,7 +2,7 @@ using System.IO;
 
 namespace TempoIDE.UserControls.Panels
 {
-    public class ExplorerFileItem : ExplorerViewItem
+    public class ExplorerFileSystemItem : ExplorerViewItem
     {
         private string filePath;
         public string FilePath
@@ -12,16 +12,12 @@ namespace TempoIDE.UserControls.Panels
         }
         private ExplorerPanelElementType type;
         
-        public ExplorerFileItem()
-        {
-            InitializeComponent();
-        }
-        
-        public ExplorerFileItem(string path)
+        public ExplorerFileSystemItem(string path)
         {
             InitializeComponent();
             
             FilePath = path;
+            ContextMenu = new FileSystemItemContextMenu(this);
         }
         
         private void Update()

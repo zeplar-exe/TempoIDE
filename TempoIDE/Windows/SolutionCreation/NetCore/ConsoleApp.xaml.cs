@@ -34,7 +34,6 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
             }); // Courtesy of https://stackoverflow.com/a/29840377/16324801
             
             slnStream.WriteTo(Path.Join(Location.Text, SlnName.Text + ".sln"));
-            // TODO: Update Jammo with GetOrCreate methods
         }
 
         public override bool CanCreate()

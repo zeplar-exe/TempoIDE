@@ -13,21 +13,47 @@ namespace TempoIDE.Core.Static
     public static class EnvironmentHelper
     {
         public static EnvironmentCache Cache;
-        public static JSolutionFile Solution;
+
+        private static TempoConfigStream configStream;
+
+        public static TempoConfigStream ConfigStream
+        {
+            get
+            {
+                if (Mode == EnvironmentMode.None)
+                    return null;
+                
+                if (configStream != null)
+                    return configStream;
+
+                const string configDirectoryName = ".TempoConfig";
+
+                var currentPath = EnvironmentPath is DirectoryInfo ? 
+                    EnvironmentPath.FullName : 
+                    ((FileInfo)EnvironmentPath).Directory.FullName;
+
+                var directoryPath = Path.Join(currentPath, configDirectoryName);
+
+                if (Directory.Exists(directoryPath))
+                {
+                    var existingStream = new TempoConfigStream(directoryPath);
+                    existingStream.Parse();
+
+                    return configStream = existingStream;
+                }
+
+                var directory = Directory.CreateDirectory(directoryPath);
+
+                var stream = new TempoConfigStream(directory.FullName);
+                stream.Write();
+
+                return configStream = stream;
+            }
+        }
 
         public static EnvironmentMode Mode;
         public static FileSystemInfo EnvironmentPath;
         private static DirectoryWatcher directoryWatcher;
-        
-        public static void Build()
-        {
-            if (Mode != EnvironmentMode.Solution)
-                return;
-
-            var info = (FileInfo)EnvironmentPath;
-            
-            ConsoleHelper.RunCommand("dotnet", info.DirectoryName, $"build {EnvironmentPath}");
-        }
 
         public static SolutionStream CreateEmptySolution(string directory, string name)
         {
@@ -63,27 +89,7 @@ namespace TempoIDE.Core.Static
             
             return stream;
         }
-        
-        public static void CloseEnvironment()
-        {
-            Mode = EnvironmentMode.None;
-            
-            Cache.Clear();
 
-            ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.CloseAll);
-            ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
-        }
-        
-        public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
-        {
-            if (Mode != EnvironmentMode.Solution)
-                return null;
-
-            return Cache.ProjectCompilations.Values
-                .FirstOrDefault(compilation => compilation.Project.FileSystem.EnumerateTree()
-                    .Any(projectFile => projectFile.Info.FullName == file.FullName));
-        }
-        
         public static void LoadEnvironment(string path)
         {
             directoryWatcher?.Dispose();
@@ -110,6 +116,33 @@ namespace TempoIDE.Core.Static
 
             progressDialog.StartAsync();
         }
+        
+        public static void CloseEnvironment()
+        {
+            Mode = EnvironmentMode.None;
+            
+            Cache.Clear();
+
+            ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.CloseAll);
+            ApplicationHelper.AppDispatcher.Invoke(LoadExplorer);
+        }
+        
+        public static CachedProjectCompilation GetProjectOfFile(FileInfo file)
+        {
+            if (Mode != EnvironmentMode.Solution)
+                return null;
+
+            return Cache.ProjectCompilations.Values
+                .FirstOrDefault(compilation => compilation.Project.FileSystem.EnumerateTree()
+                    .Any(projectFile => projectFile.Info.FullName == file.FullName));
+        }
+
+        public static void RefreshExplorer() => LoadExplorer();
+        public static void RefreshCache()
+        {
+            Cache.Clear();
+            CacheFilesInPath(EnvironmentPath.FullName);
+        }
 
         private static async void CacheFilesInPath(string path)
         {
@@ -135,12 +168,12 @@ namespace TempoIDE.Core.Static
 
                 if (info.Extension == ".sln")
                 {
-                    Solution = new JSolutionFile(info.FullName);
+                    using var solution = new JSolutionFile(info.FullName);
                     Mode = EnvironmentMode.Solution;
 
                     await Task.Run(delegate
                     {
-                        foreach (var project in Solution.ProjectFiles)
+                        foreach (var project in solution.ProjectFiles)
                         {
                             foreach (var file in project.FileSystem.EnumerateTree().OfType<ProjectFile>())
                             {
@@ -163,6 +196,7 @@ namespace TempoIDE.Core.Static
             switch (Mode)
             {
                 case EnvironmentMode.File:
+                {
                     if (EnvironmentPath.Extension == ".sln")
                         goto case EnvironmentMode.Solution;
 
@@ -171,20 +205,24 @@ namespace TempoIDE.Core.Static
                     directoryWatcher = new DirectoryWatcher(info.Directory, info.Name);
                     directoryWatcher.Changed += DirectoryChanged;
 
-                    ApplicationHelper.MainWindow.Explorer.AppendElement(new ExplorerFileItem(info.FullName));
+                    ApplicationHelper.MainWindow.Explorer.AppendElement(new ExplorerFileSystemItem(info.FullName));
                     ApplicationHelper.MainWindow.Editor.Tabs.Open(info);
                     
                     break;
+                }
                 case EnvironmentMode.Solution:
+                {
                     var solutionDirectory = new FileInfo(EnvironmentPath.FullName).Directory;
-                    var topLevel = new ExplorerFileItem(EnvironmentPath.FullName) { IsExpanded = true };
+                    var topLevel = new ExplorerFileSystemItem(EnvironmentPath.FullName) { IsExpanded = true };
 
                     ApplicationHelper.MainWindow.Explorer.AppendElement(topLevel);
+
+                    using var solution = new JSolutionFile(EnvironmentPath.FullName);
                     
-                    foreach (var project in Solution.ProjectFiles)
+                    foreach (var project in solution.ProjectFiles)
                     {
                         var projectFile = new FileInfo(project.FileInfo.FullName);
-                        var projectItem = new ExplorerFileItem(projectFile.FullName);
+                        var projectItem = new ExplorerFileSystemItem(projectFile.FullName);
 
                         topLevel.AppendElement(projectItem);
                         projectItem.AppendDirectory(projectFile.Directory, false);
@@ -194,7 +232,9 @@ namespace TempoIDE.Core.Static
                     directoryWatcher.Changed += DirectoryChanged;
                     
                     break;
+                }
                 case EnvironmentMode.Directory:
+                {
                     var directory = (DirectoryInfo) EnvironmentPath;
 
                     ApplicationHelper.MainWindow.Explorer.AppendDirectory(directory);
@@ -203,6 +243,7 @@ namespace TempoIDE.Core.Static
                     directoryWatcher.Changed += DirectoryChanged;
                     
                     break;
+                }
             }
         }
         

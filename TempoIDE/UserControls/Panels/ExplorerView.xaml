@@ -3,6 +3,7 @@
           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
           BorderThickness="0"
           PreviewMouseLeftButtonDown="ExplorerView_OnPreviewMouseLeftButtonDown"
+          PreviewMouseRightButtonDown="ExplorerView_OnPreviewMouseRightButtonDown"
           DataContext="{Binding RelativeSource={RelativeSource Self}}">
     
     <TreeView.Resources>

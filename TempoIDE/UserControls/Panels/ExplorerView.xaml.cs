@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace TempoIDE.UserControls.Panels
         public Color SelectedItemColor { get; set; } = Brushes.Blue.Color;
         public Color UnfocusedItemColor { get; set; } = Brushes.CadetBlue.Color;
 
-        public static string[] SupportedExtensions =
+        public static readonly string[] SupportedExtensions =
         {
             ".txt", ".cs", ".xml", ".xaml"
         };
@@ -34,7 +35,7 @@ namespace TempoIDE.UserControls.Panels
 
         public async void AppendDirectory(DirectoryInfo directory)
         {
-            ExplorerViewItem root = new ExplorerFileItem(directory.FullName);
+            ExplorerViewItem root = new ExplorerFileSystemItem(directory.FullName);
 
             Dispatcher.Invoke(delegate
             {
@@ -45,6 +46,14 @@ namespace TempoIDE.UserControls.Panels
             {
                 foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
                 {
+                    foreach (var excluded in EnvironmentHelper.ConfigStream.Excluded)
+                        App.Logger.Debug(excluded);
+                    Console.WriteLine();
+                    Console.WriteLine(filePath);
+                    
+                    if (EnvironmentHelper.ConfigStream.Excluded.Contains(filePath))
+                        continue;
+                    
                     if (Directory.Exists(filePath))
                     {
                         Dispatcher.Invoke(delegate
@@ -56,7 +65,7 @@ namespace TempoIDE.UserControls.Panels
                     {
                         Dispatcher.Invoke(delegate
                         {
-                            root.AppendElement(new ExplorerFileItem(filePath));
+                            root.AppendElement(new ExplorerFileSystemItem(filePath));
                         });
                     }
                 }
@@ -78,6 +87,16 @@ namespace TempoIDE.UserControls.Panels
             var element = clicked.FindAncestorOfType<ExplorerViewItem>();
 
             OpenItemEvent?.Invoke(this, new OpenExplorerElementArgs(element));
+        }
+
+        private void ExplorerView_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var clicked = (UIElement)e.OriginalSource;
+            
+            if (clicked is null)
+                return;
+
+            clicked.FindAncestorOfType<TreeViewItem>().IsSelected = true;
         }
     }
 }

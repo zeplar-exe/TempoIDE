@@ -37,13 +37,11 @@ namespace TempoControls
         public event KeyEventHandler HandledKeyPress;
         public event RoutedEventHandler TextChanged;
 
-        private static readonly int CaretBlinkFrequencyMs = 500;
+        private const int CaretBlinkFrequencyMs = 500;
 
         private Thread caretThread;
         private bool overrideCaretVisibility;
         private bool caretVisible;
-
-        private InputMode InputMode = InputMode.Text;
 
         private bool isSelecting;
 

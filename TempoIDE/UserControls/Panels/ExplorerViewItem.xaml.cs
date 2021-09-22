@@ -27,7 +27,7 @@ namespace TempoIDE.UserControls.Panels
 
             if (includeRoot)
             {
-                root = new ExplorerFileItem(directory.FullName);
+                root = new ExplorerFileSystemItem(directory.FullName);
 
                 Dispatcher.Invoke(delegate
                 {
@@ -55,7 +55,7 @@ namespace TempoIDE.UserControls.Panels
                     {
                         Dispatcher.Invoke(delegate
                         {
-                            root.AppendElement(new ExplorerFileItem(filePath));
+                            root.AppendElement(new ExplorerFileSystemItem(filePath));
                         });
                     }
                 }
