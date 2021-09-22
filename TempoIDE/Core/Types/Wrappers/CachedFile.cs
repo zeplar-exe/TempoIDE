@@ -26,11 +26,7 @@ namespace TempoIDE.Core.Types.Wrappers
 
             try
             {
-                using var file = FileInfo.OpenRead();
-                using var buffer = new BufferedStream(file);
-                using var reader = new StreamReader(buffer);
-
-                Content = reader.ReadToEndAsync().Result;
+                Content = File.ReadAllText(FileInfo.FullName);
             }
             catch (AccessViolationException)
             {

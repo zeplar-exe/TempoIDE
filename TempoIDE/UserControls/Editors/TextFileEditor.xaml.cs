@@ -147,25 +147,20 @@ namespace TempoIDE.UserControls.Editors
 
         public override void UpdateFile()
         {
-            if (BoundFile == null) 
+            if (BoundFile == null)
                 return;
-                    
+
             BoundFile.Refresh();
-
-            using var stream = BoundFile.Open(FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
-            using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding);
-            stream.Seek(0, SeekOrigin.End);
-
-            var lines = TextBox.TextArea.Text.Split(ColoredLabel.LineBreak);
-            var last = lines.Last();
             
-            foreach (var line in lines)
-            {
-                writer.WriteAsync(line);
+            File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()));
 
-                if (line != last && line.Length > 1)
-                    writer.WriteAsync(Environment.NewLine);
-            }
+            // using var stream = BoundFile.OpenRead();
+            // using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding) { AutoFlush = false };
+            //
+            // foreach (var line in TextBox.TextArea.GetLines())
+            //     writer.Write(line);
+            //
+            // writer.Flush();
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

@@ -124,6 +124,8 @@ namespace TempoIDE.Core.Types
             {
                 Timer = new Timer(options.NonAccessDeletionTime.TotalMilliseconds);
                 Timer.Elapsed += delegate { DeletionRequested?.Invoke(this, EventArgs.Empty); };
+
+                Timer.Start();
             }
         }
 

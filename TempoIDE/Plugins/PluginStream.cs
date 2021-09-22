@@ -79,12 +79,13 @@ namespace TempoIDE.Plugins
                 stream = File.Create(Path.Join(Directory.GetCurrentDirectory(), "Jammo_SolutionStream.sln"));
             }
             
-            var writer = new StreamWriter(stream);
-            stream.SetLength(0);
+            var builder = new StringBuilder();
             
-            writer.WriteLine(Version);
-            writer.WriteLine();
-            writer.WriteLine(Metadata.ToString());
+            builder.AppendLine(Version);
+            builder.AppendLine();
+            builder.AppendLine(Metadata.ToString());
+            
+            File.WriteAllText(FilePath, builder.ToString());
         }
 
         public void WriteTo(string path)

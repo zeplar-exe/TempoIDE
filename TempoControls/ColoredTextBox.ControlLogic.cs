@@ -241,11 +241,8 @@ namespace TempoControls
                 if (lineCount > CaretOffset.Y)
                     break;
 
-                if (character.Value == ColoredLabel.LineBreak)
-                {
-                    lineCount++;
-                }
-                else if (lineCount == CaretOffset.Y)
+                if (lineCount == CaretOffset.Y ||
+                    lineCount == CaretOffset.Y && character.Value == ColoredLabel.LineBreak)
                 {
                     columnIndex++;
 
@@ -254,19 +251,15 @@ namespace TempoControls
                     
                     line.Add(character);
                 }
+                else if (character.Value == ColoredLabel.LineBreak)
+                {
+                    lineCount++;
+                }
             }
             
             for (var columnNo = 0; columnNo < CaretOffset.X; columnNo++)
             {
-                try
-                {
-                    rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
-                }
-                catch (Exception e) when(e is not null)
-                {
-                    Console.WriteLine(e);
-                    throw;
-                }
+                rect = Rect.Offset(rect, line[columnNo].Size.Width, 0);
             }
             
             rect = Rect.Offset(rect, 0, TextArea.LineHeight * CaretOffset.Y);
