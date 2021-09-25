@@ -9,12 +9,14 @@ namespace TempoIDE
 {
     public partial class App
     {
-        public static Logger Logger;
-        
+        public static App CurrentApp => (App)Current;
+
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
-            Logger = new Logger();
-            Logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue()); 
+            var logger = new Logger();
+            logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue());
+
+            ApplicationHelper.Logger = logger;
             
             #if DEBUG
             Process.Start("notepad", IOHelper.GetRelativePath("data\\logs.log"));

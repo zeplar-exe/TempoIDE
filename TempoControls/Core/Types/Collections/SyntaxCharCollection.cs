@@ -19,7 +19,7 @@ namespace TempoControls.Core.Types.Collections
         public SyntaxChar this[int index]
         {
             get => items[index];
-            set => Insert(index, value);
+            set => items[index] = value;
         }
 
         public static SyntaxCharCollection FromString(string text, DrawInfo drawInfo)

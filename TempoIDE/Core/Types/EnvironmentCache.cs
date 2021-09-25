@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using ByteSizeLib;
 using Jammo.TextAnalysis.DotNet.MsBuild;
+using TempoIDE.Core.Environments;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.Wrappers;
 
@@ -26,16 +26,16 @@ namespace TempoIDE.Core.Types
         
         public void UpdateModels()
         {
-            if (EnvironmentHelper.Mode == EnvironmentMode.Solution)
-            {
-                ProjectCompilations.Clear();
+            ProjectCompilations.Clear();
 
-                var solution = new JSolutionFile(EnvironmentHelper.EnvironmentPath.FullName);
+            if (EnvironmentHelper.Current is SolutionEnvironment solutionEnv)
+            { // TODO: Use compilation of all relevant files if false
+                var solution = new JSolutionFile(solutionEnv.EnvironmentPath.FullName);
 
                 foreach (var project in solution.ProjectFiles)
                 {
                     ProjectCompilations.Set(project.FileInfo.FullName, new CachedProjectCompilation(project));
-                }
+                }   
             }
         }
 

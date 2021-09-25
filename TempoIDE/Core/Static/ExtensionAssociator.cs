@@ -1,4 +1,3 @@
-using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
 using Jammo.TextAnalysis.DotNet.CSharp.Inspection.Rules;
 using TempoControls.Core.CompletionProviders;

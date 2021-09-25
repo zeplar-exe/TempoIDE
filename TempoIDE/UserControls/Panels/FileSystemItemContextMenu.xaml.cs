@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoIDE.Core.Commands;
@@ -27,10 +26,10 @@ namespace TempoIDE.UserControls.Panels
 
         private void ExcludeFileExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            EnvironmentHelper.ConfigStream.Excluded.Add(fileSystemItem.FilePath);
-            EnvironmentHelper.ConfigStream.Write();
+            EnvironmentHelper.Current.ConfigStream.Exclude(fileSystemItem.FilePath);
+            EnvironmentHelper.Current.ConfigStream.Write();
             
-            EnvironmentHelper.RefreshCache();
+            EnvironmentHelper.Current.RefreshCache();
             EnvironmentHelper.RefreshExplorer();
         }
     }

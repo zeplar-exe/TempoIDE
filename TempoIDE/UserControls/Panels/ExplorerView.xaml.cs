@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using TempoIDE.Core.Environments;
 using TempoIDE.Core.Static;
 using TempoIDE.Core.Types.CustomEventArgs;
 
@@ -46,14 +46,12 @@ namespace TempoIDE.UserControls.Panels
             {
                 foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
                 {
-                    foreach (var excluded in EnvironmentHelper.ConfigStream.Excluded)
-                        App.Logger.Debug(excluded);
-                    Console.WriteLine();
-                    Console.WriteLine(filePath);
-                    
-                    if (EnvironmentHelper.ConfigStream.Excluded.Contains(filePath))
-                        continue;
-                    
+                    if (EnvironmentHelper.Current is SolutionEnvironment solutionEnv)
+                    {
+                        if (solutionEnv.ConfigStream.QueryExcluded(filePath))
+                            continue;
+                    }
+
                     if (Directory.Exists(filePath))
                     {
                         Dispatcher.Invoke(delegate

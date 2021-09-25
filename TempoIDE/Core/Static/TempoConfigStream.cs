@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
 using TempoIDE.Core.Types;
@@ -21,6 +20,21 @@ namespace TempoIDE.Core.Static
 
             if (!this.directory.Exists)
                 throw new ArgumentException("Expected a directory.");
+        }
+
+        public bool QueryExcluded(string path)
+        {
+            return Excluded.Contains(path);
+        }
+
+        public void Exclude(string path)
+        {
+            Excluded.Add(path);
+        }
+
+        public void Restore(string path)
+        {
+            Excluded.Remove(path);
         }
 
         public void Parse()

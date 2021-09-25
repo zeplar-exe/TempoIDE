@@ -1,4 +1,5 @@
 using TempoControls.Core.Types.Collections;
+using TempoIDE.Core.Environments;
 using TempoIDE.Core.Inspections;
 using TempoIDE.Core.Static;
 
@@ -23,9 +24,13 @@ namespace TempoIDE.UserControls.Editors
                 return;
             
             var inspector = IFileInspector.FromExtension(BoundFile?.Extension);
-            var project = EnvironmentHelper.GetProjectOfFile(BoundFile);
 
-            inspector?.Inspect(characters, project?.Compilation);
+            if (EnvironmentHelper.Current is SolutionEnvironment solutionEnv) 
+            { // TODO: Use compilation of all relevant files if false
+                var project = solutionEnv.GetProjectOfFile(BoundFile);
+
+                inspector?.Inspect(characters, project?.Compilation);   
+            }
         }
     }
 }

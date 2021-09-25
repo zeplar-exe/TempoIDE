@@ -1,4 +1,4 @@
-using TempoIDE.Core.Static;
+using TempoIDE.Core.Environments;
 
 namespace TempoIDE.Windows.SolutionCreation
 {
@@ -11,7 +11,7 @@ namespace TempoIDE.Windows.SolutionCreation
 
         public override void Create()
         {
-            EnvironmentHelper.CreateEmptySolution(Location.Text, SlnName.Text);
+            SolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text);
         }
 
         public override bool CanCreate()

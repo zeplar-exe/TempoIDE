@@ -1,9 +1,7 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Threading;
 using System.Windows;
-using TempoControls;
 using TempoControls.Core.IntTypes;
 using TempoIDE.Core.Static;
 
@@ -134,7 +132,7 @@ namespace TempoIDE.UserControls.Editors
                     
             BoundFile.Refresh();
             
-            var file = EnvironmentHelper.Cache.GetFile(BoundFile);
+            var file = EnvironmentHelper.Current.Cache.GetFile(BoundFile);
 
             if (file == null || file.Content == TextBox.TextArea.Text)
                 return;
@@ -152,15 +150,8 @@ namespace TempoIDE.UserControls.Editors
 
             BoundFile.Refresh();
             
-            File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()));
-
-            // using var stream = BoundFile.OpenRead();
-            // using var writer = new StreamWriter(stream, ApplicationHelper.GlobalEncoding) { AutoFlush = false };
-            //
-            // foreach (var line in TextBox.TextArea.GetLines())
-            //     writer.Write(line);
-            //
-            // writer.Flush();
+            File.WriteAllText(BoundFile.FullName, 
+                string.Concat(TextBox.TextArea.GetLines()), ApplicationHelper.GlobalEncoding);
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

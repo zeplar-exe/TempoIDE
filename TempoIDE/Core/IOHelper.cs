@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 namespace TempoIDE.Core
@@ -6,10 +5,10 @@ namespace TempoIDE.Core
     // ReSharper disable once InconsistentNaming
     public static class IOHelper
     {
-        public static bool TryOpenRelativeFile(
+        public static bool TryReadRelativeFile(
             string path,
             out FileStream result,
-            out Exception exception)
+            out IOException exception)
         {
             result = null;
             exception = null;

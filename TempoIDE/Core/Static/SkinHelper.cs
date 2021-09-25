@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Markup;
 using TempoIDE.Properties;
-using XamlReader = System.Windows.Markup.XamlReader;
 
 namespace TempoIDE.Core.Static
 {
@@ -27,7 +27,7 @@ namespace TempoIDE.Core.Static
             
             try
             {
-                if (IOHelper.TryOpenRelativeFile(Path.Join(SkinsPath, skin), out var stream, out var e))
+                if (IOHelper.TryReadRelativeFile(Path.Join(SkinsPath, skin), out var stream, out var e))
                 {
                     using (stream)
                     {
@@ -45,13 +45,14 @@ namespace TempoIDE.Core.Static
                     $"The skin '{skin}' failed to load because it is not a valid xaml file.");
                 
                 #if DEBUG
-                App.Logger.Debug(e.Message);
+                ApplicationHelper.Logger.Debug(e.Message);
                 #endif
 
                 return false;
             }
 
             Settings.Default.ApplicationSkin = skin;
+            Settings.Default.Save();
             
             return true;
         }

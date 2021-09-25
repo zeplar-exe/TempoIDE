@@ -2,6 +2,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using CSharp_Logger;
 using TempoIDE.UserControls.Panels;
 using TempoIDE.Windows;
 
@@ -10,6 +11,8 @@ namespace TempoIDE.Core.Static
     public static class ApplicationHelper
     {
         public static Encoding GlobalEncoding = Encoding.UTF8;
+        
+        public static Logger Logger;
         
         private static bool inspectionsEnabled = true;
         public static bool InspectionsEnabled
