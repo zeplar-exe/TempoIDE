@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:TempoIDE.Windows.SolutionCreation"
-             xmlns:fields="clr-namespace:TempoIDE.UserControls.InputFields"
+             xmlns:inputFields="clr-namespace:TempoIDE.Controls.InputFields"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
@@ -28,13 +28,13 @@
             
             <StackPanel Grid.Row="2">
                 <StackPanel.Resources>
-                    <Style TargetType="fields:StringField">
+                    <Style TargetType="inputFields:StringField">
                         <Setter Property="Margin" Value="0,0,0,5"/>
                     </Style>
                 </StackPanel.Resources>
                 
-                <fields:StringField x:Name="SlnName" FieldTitle="Solution name"/>
-                <fields:StringField x:Name="Location" FieldTitle="Location"/>
+                <inputFields:StringField x:Name="SlnName" FieldTitle="Solution name"/>
+                <inputFields:StringField x:Name="Location" FieldTitle="Location"/>
             </StackPanel>
         </Grid>
         

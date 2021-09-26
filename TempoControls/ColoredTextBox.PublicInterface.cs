@@ -17,7 +17,7 @@ namespace TempoControls
             
             var line = TextArea.GetLines()[position.Y];
 
-            if (position.X > 1)
+            if (position.X >= 1)
             {
                 if (line[position.X - 1] == ColoredLabel.LineBreak)
                     position = new IntVector(position.X - 1, position.Y);

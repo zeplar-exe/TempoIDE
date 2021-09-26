@@ -1,0 +1,33 @@
+<UserControl x:Class="TempoIDE.Controls.Panels.EditorTabItem"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             MouseLeftButtonDown="EditorTabItem_OnMouseLeftButtonDown">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="20"/>
+        </Grid.ColumnDefinitions>
+        
+        <Image Grid.Column="0" Name="Icon"/>
+        
+        <TextBlock
+            Grid.Column="2" Name="Header" 
+            VerticalAlignment="Center" 
+            Foreground="{DynamicResource BaseTextColor}"/>
+        
+        <Button 
+            Grid.Column="4"
+            Name="Close" 
+            Background="Transparent" 
+            BorderThickness="0"
+            Content="X" 
+            Click="Close_OnClick"/>
+    </Grid>
+</UserControl>

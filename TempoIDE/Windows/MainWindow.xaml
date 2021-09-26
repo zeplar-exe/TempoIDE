@@ -4,9 +4,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
-        xmlns:minis="clr-namespace:TempoIDE.UserControls.MiniControls"
-        xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
+        xmlns:ui="clr-namespace:TempoIDE.Core.Commands.UI"
+        xmlns:io="clr-namespace:TempoIDE.Core.Commands.IO"
+        xmlns:common="clr-namespace:TempoIDE.Core.Commands.Common"
+        xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
+        xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Loaded="MainWindow_OnLoaded"
@@ -19,8 +22,8 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <minis:TopbarControl Grid.Row="0">
-            <minis:TopbarControl.Template>
+        <subControls:TopbarControl Grid.Row="0">
+            <subControls:TopbarControl.Template>
                 <ControlTemplate>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -38,31 +41,31 @@
                             
                             <MenuItem Header="File" Background="Transparent">
                                 <MenuItem Header="New solution">
-                                    <MenuItem.Command> <commands:NewSolutionCommand/> </MenuItem.Command>
+                                    <MenuItem.Command> <ui:NewSolutionCommand/> </MenuItem.Command>
                                 </MenuItem>
                                 
                                 <MenuItem Header="Open...">
-                                    <MenuItem.Command> <commands:OpenDropdown/> </MenuItem.Command>
+                                    <MenuItem.Command> <ui:OpenDropdown/> </MenuItem.Command>
                                     
                                     <MenuItem Header="File...">
-                                        <MenuItem.Command> <commands:OpenFileCommand/> </MenuItem.Command>
+                                        <MenuItem.Command> <io:OpenFileCommand/> </MenuItem.Command>
                                     </MenuItem>
                                         
                                     <MenuItem Header="Folder...">
-                                        <MenuItem.Command> <commands:OpenFolderCommand/></MenuItem.Command>
+                                        <MenuItem.Command> <io:OpenFolderCommand/></MenuItem.Command>
                                     </MenuItem>
                                 </MenuItem>
                                 
-                                <minis:MenuSeparator/>
+                                <subControls:MenuSeparator/>
                                 
                                 <MenuItem Header="Settings">
-                                    <MenuItem.Command> <commands:OpenSettingsCommand/> </MenuItem.Command>
+                                    <MenuItem.Command> <ui:OpenSettingsCommand/> </MenuItem.Command>
                                 </MenuItem>
                                 
-                                <minis:MenuSeparator/>
+                                <subControls:MenuSeparator/>
                                 
                                 <MenuItem Header="Exit">
-                                    <MenuItem.Command> <commands:ExitCommand/> </MenuItem.Command>
+                                    <MenuItem.Command> <ui:ExitCommand/> </MenuItem.Command>
                                 </MenuItem>
                             </MenuItem>
                             
@@ -72,7 +75,7 @@
                                     InputGestureText="{Binding Path=Copy}">
                                     
                                     <MenuItem.Command>
-                                        <commands:CopyCommand/>
+                                        <common:CopyCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                                 
@@ -81,7 +84,7 @@
                                     InputGestureText="{Binding Path=Paste}">
                                     
                                     <MenuItem.Command>
-                                        <commands:PasteCommand/>
+                                        <common:PasteCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                                 
@@ -90,7 +93,7 @@
                                     InputGestureText="{Binding Path=Cut}">
                                     
                                     <MenuItem.Command>
-                                        <commands:CutCommand/>
+                                        <common:CutCommand/>
                                     </MenuItem.Command>
                                 </MenuItem>
                             </MenuItem>
@@ -128,8 +131,8 @@
                             Click="CloseWindow"/>
                     </Grid>
                 </ControlTemplate>
-            </minis:TopbarControl.Template>
-        </minis:TopbarControl>
+            </subControls:TopbarControl.Template>
+        </subControls:TopbarControl>
         
         <!-- Topbar... 2? -->
         <Border

@@ -1,0 +1,82 @@
+<ItemsControl x:Class="TempoIDE.Controls.SidebarControl.SidebarControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <ItemsControl.Resources>
+        <ControlTemplate x:Key="HorizontalTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <UserControl Grid.Column="0" Name="ContentDisplay" />
+                <ListBox Grid.Column="1" ItemsSource="{Binding Items}"/>
+            </Grid>
+        </ControlTemplate>
+        
+        <ControlTemplate x:Key="VerticalTemplate" />
+    </ItemsControl.Resources>
+    
+    <ItemsControl.Style>
+        <Style TargetType="{x:Type ItemsControl}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Orientation}" Value="Horizontal">
+                    <Setter Property="Template" Value="{StaticResource HorizontalTemplate}"/>
+                </DataTrigger>
+                
+                <DataTrigger Binding="{Binding Orientation}" Value="Vertical">
+                    <Setter Property="Template" Value="{StaticResource VerticalTemplate}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </ItemsControl.Style>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ListBox Grid.Column="0" Grid.Row="1" Name="VerticalBox">
+            <ListBox.Style>
+                <Style TargetType="{x:Type ListBox}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Orientation}" Value="Vertical">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding Orientation}" Value="Horizontal">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+        </ListBox>
+        
+        <ListBox Grid.Column="1" Grid.Row="0" Name="HorizontalBox">
+            <ListBox.Style>
+                <Style TargetType="{x:Type ListBox}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Orientation}" Value="Vertical">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                        </DataTrigger>
+                        
+                        <DataTrigger Binding="{Binding Orientation}" Value="Horizontal">
+                            <Setter Property="Visibility" Value="Visible"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+        </ListBox>
+    </Grid>
+</ItemsControl>

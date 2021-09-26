@@ -1,6 +1,6 @@
 using System.IO;
 using System.Windows.Controls;
-using TempoIDE.UserControls.InputFields;
+using TempoIDE.Controls.InputFields;
 
 namespace TempoIDE.Windows.SolutionCreation
 {

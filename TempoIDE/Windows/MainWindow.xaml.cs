@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
+using TempoIDE.Controls.Editors;
+using TempoIDE.Controls.Panels;
+using TempoIDE.Core;
 using TempoIDE.Core.Commands;
-using TempoIDE.Core.Static;
-using TempoIDE.Core.Types.CustomEventArgs;
+using TempoIDE.Core.Commands.Common;
+using TempoIDE.Core.CustomEventArgs;
+using TempoIDE.Core.Helpers;
 using TempoIDE.Plugins;
 using TempoIDE.Properties;
-using TempoIDE.UserControls.Editors;
-using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows
 {

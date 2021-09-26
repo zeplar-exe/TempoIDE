@@ -3,10 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
-using TempoIDE.Core.Static;
-using TempoIDE.Core.Types;
-using TempoIDE.Core.Types.Wrappers;
-using TempoIDE.UserControls.Panels;
+using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Helpers;
+using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Environments
 {

@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.IO;
 using TempoIDE.Core;
-using TempoIDE.Core.Static;
+using TempoIDE.Core.Helpers;
+using TempoIDE.Plugins.Core;
 
 namespace TempoIDE.Plugins
 {
-    public static class PluginHelper
+    internal static class PluginHelper
     {
         internal static List<Plugin> loaded = new();
         
@@ -50,27 +51,27 @@ namespace TempoIDE.Plugins
 
                 try
                 {
-                    loaded.Add(Plugin.ReflectPluginFromAssembly(dllPath));
+                    //loaded.Add(Plugin.ReflectPluginFromAssembly(dllPath));
                 }
                 catch (InvalidPluginPackageException)
                 {
-                    //throw;
+                    throw;
                 }
                 catch (NoAttacherException)
                 {
-                    //throw;
+                    throw;
                 }
                 catch (TooManyAttachersException)
                 {
-                    //throw;
+                    throw;
                 }
                 catch (NoAttachMethodException)
                 {
-                    //throw;
+                    throw;
                 }
                 catch (InvalidAttacherReturnException)
                 {
-                    //throw;
+                    throw;
                 }
             }
         }

@@ -11,11 +11,6 @@ namespace TempoIDE.Plugins
         {
             this.window = window;
         }
-
-        public virtual void Loaded()
-        {
-            
-        }
     }
 
     public class MainWindowExtender : WindowExtender

@@ -1,7 +1,7 @@
 using System.IO;
-using TempoIDE.Core.Static;
-using TempoIDE.Core.Types;
-using TempoIDE.UserControls.Panels;
+using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Helpers;
+using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Environments
 {

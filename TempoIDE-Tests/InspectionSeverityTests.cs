@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using TempoIDE.Core.Inspections;
+using TempoIDE.Core.Inspections.Inspectors;
 
 namespace TempoIDE_Tests
 {

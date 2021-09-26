@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using CsvHelper;
 using CsvHelper.Configuration;
+using TempoIDE.Core.Inspections.Inspectors;
 
 namespace TempoIDE.Core.Inspections
 {

@@ -1,8 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Commands;
-using TempoIDE.UserControls.Panels;
 
 namespace TempoIDE.Windows.SolutionCreation
 {

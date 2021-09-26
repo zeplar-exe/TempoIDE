@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
-        xmlns:classes="clr-namespace:TempoIDE.Core.Static"
-        xmlns:miniControls="clr-namespace:TempoIDE.UserControls.MiniControls"
-        xmlns:panels="clr-namespace:TempoIDE.UserControls.Panels"
         xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
+        xmlns:classes="clr-namespace:TempoIDE.Core.Helpers"
+        xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
+        xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
@@ -18,7 +18,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <miniControls:TopbarControl Grid.Row="0" Template="{StaticResource TopbarCloseButton}"/>
+        <subControls:TopbarControl Grid.Row="0" Template="{StaticResource TopbarCloseButton}"/>
         
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -46,7 +46,7 @@
                             </ControlTemplate.Resources>
                             
                             <Grid>
-                                <miniControls:SettingsCategoryControl HeaderText="Theme">
+                                <subControls:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
                                         ItemsSource="{Binding
@@ -59,7 +59,7 @@
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>
                                     </ComboBox>
-                                </miniControls:SettingsCategoryControl>
+                                </subControls:SettingsCategoryControl>
                             </Grid>
                         </ControlTemplate>
                     </windows:SettingsWindow.SectionTemplate>

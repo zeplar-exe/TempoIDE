@@ -1,8 +1,8 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using TempoIDE.Core.Static;
-using TempoIDE.UserControls.Panels;
+using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Windows
 {
