@@ -59,7 +59,7 @@ namespace TempoIDE.Core.Helpers
                 "---------------\n" +
                 $"{details}";
 
-            MainWindow.Notifier.Notify(message, NotificationIcon.Error);
+            MainWindow.Notify(message, NotificationIcon.Error);
             
             ErrorCodeEmitted?.Invoke(code, details);
         }

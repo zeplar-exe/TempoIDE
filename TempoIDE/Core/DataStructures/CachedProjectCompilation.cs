@@ -1,7 +1,7 @@
 using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 
-namespace TempoIDE.Core.Wrappers
+namespace TempoIDE.Core.DataStructures
 {
     public class CachedProjectCompilation
     {

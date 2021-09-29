@@ -3,9 +3,9 @@ using System.Windows.Shell;
 
 namespace TempoIDE.Windows
 {
-    public abstract class WindowEx : Window
+    public abstract class ModifiedWindow : Window
     {
-        public WindowEx()
+        public ModifiedWindow()
         {
             Style = Application.Current.Resources["WindowStyle"] as Style;
             WindowChrome.SetWindowChrome(this, new WindowChrome { CaptionHeight = 20 });

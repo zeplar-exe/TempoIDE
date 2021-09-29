@@ -3,7 +3,7 @@ using System.IO;
 using ByteSizeLib;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Core.Wrappers
+namespace TempoIDE.Core.DataStructures
 {
     public class CachedFile
     {

@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace TempoIDE.Core.Wrappers
+namespace TempoIDE.Core.DataStructures
 {
     public class DistinctCollection<T> : ICollection<T>
     {

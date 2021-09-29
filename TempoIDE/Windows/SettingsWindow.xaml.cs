@@ -6,7 +6,7 @@ using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Windows
 {
-    public partial class SettingsWindow : WindowEx
+    public partial class SettingsWindow : ModifiedWindow
     {
         public SettingsWindow()
         {

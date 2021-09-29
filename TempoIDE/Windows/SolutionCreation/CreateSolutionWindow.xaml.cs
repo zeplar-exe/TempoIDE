@@ -6,7 +6,7 @@ using TempoIDE.Core.Commands;
 
 namespace TempoIDE.Windows.SolutionCreation
 {
-    public partial class CreateSolutionWindow : WindowEx
+    public partial class CreateSolutionWindow : ModifiedWindow
     {
         public CreateSolutionWindow()
         {

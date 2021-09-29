@@ -12,6 +12,7 @@ using TempoIDE.Core.CustomEventArgs;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Plugins;
 using TempoIDE.Properties;
+using TempoIDE.Windows.SubWindows;
 
 namespace TempoIDE.Windows
 {
@@ -20,6 +21,19 @@ namespace TempoIDE.Windows
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        public void Notify(string message, NotificationIcon icon)
+        {
+            Notifier.Notify(message, icon);
+        }
+        
+        public UserResult Alert(string message, UserResult options)
+        {
+            var window = new UserDialog(message, options);
+            window.ShowDialog();
+            
+            return window.Result;
         }
         
         public void MinimizeWindow(object sender, RoutedEventArgs routedEventArgs)

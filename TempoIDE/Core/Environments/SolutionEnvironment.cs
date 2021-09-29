@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Controls.Panels;
+using TempoIDE.Core.DataStructures;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Wrappers;
 

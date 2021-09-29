@@ -1,4 +1,4 @@
-﻿<windows:WindowEx x:Class="TempoIDE.Windows.MainWindow"
+﻿<windows:ModifiedWindow x:Class="TempoIDE.Windows.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -139,7 +139,25 @@
             Background="Transparent"
             Grid.Row="1"
             Height="20"
-            BorderThickness="0, 0, 0, 1" />
+            BorderThickness="0, 0, 0, 1">
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <Grid Grid.Column="0"/>
+                
+                <Grid Grid.Column="2">
+                    <Button Name="Build"/>
+                    <Button Name="Run"/>
+                    <Button Name="Debug"/>
+                    <Button Name="Stop"/>
+                </Grid>
+            </Grid>
+        </Border>
         
         <Grid Grid.Row="2"> 
             <Grid>
@@ -182,4 +200,4 @@
             </ScrollViewer>
         </Grid>
     </Grid>
-</windows:WindowEx>
+</windows:ModifiedWindow>

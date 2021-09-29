@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Core;
 using TempoIDE.Core.CustomEventArgs;
+using TempoIDE.Core.DataStructures;
 using TempoIDE.Core.Environments;
 using TempoIDE.Core.Helpers;
 
@@ -27,6 +29,20 @@ namespace TempoIDE.Controls.Panels
         public ExplorerView()
         {
             InitializeComponent();
+        }
+
+        public BitTree GetExpansionState()
+        {
+            var trees = Items.OfType<ExplorerViewItem>()
+                .Select(item => 
+                    BitTree.FromTree(item, 
+                        i => i.Items.OfType<ExplorerViewItem>(), 
+                        i => i.IsExpanded).Root);
+
+            var root = new Bit(true);
+            root.Children.AddRange(trees);
+
+            return new BitTree(root);
         }
 
         public void AppendElement(ExplorerViewItem element)

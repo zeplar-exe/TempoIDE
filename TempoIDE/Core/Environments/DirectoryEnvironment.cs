@@ -37,11 +37,6 @@ namespace TempoIDE.Core.Environments
 
         protected override void DirectoryChanged(object sender, FileSystemEventArgs e)
         {
-            if (e.ChangeType == WatcherChangeTypes.Deleted)
-            {
-                
-            }
-            
             switch (e.ChangeType)
             {
                 case WatcherChangeTypes.Created:
