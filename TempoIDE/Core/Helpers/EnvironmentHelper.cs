@@ -7,39 +7,45 @@ namespace TempoIDE.Core.Helpers
     public static class EnvironmentHelper
     {
         public static DevelopmentEnvironment Current;
-        
+
         public static void LoadEnvironment(string path)
         {
-            ApplicationHelper.MainWindow.Editor.Tabs.CloseAll();
-            
             var env = EnvFromPath(path);
 
             if (env == null)
             {
-                // TODO: Notify user
-                
+                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE,
+                    $"The given file '{Path.GetFileName(path)}' does not exist.");
+
                 return;
             }
 
+            LoadEnvironment(env);
+        }
+        
+        public static void LoadEnvironment(DevelopmentEnvironment environment)
+        {
+            ApplicationHelper.MainWindow.Editor.Tabs.CloseAll();
+            
             var progressDialog = new ProgressDialog
             {
                 Title = "Preparing workspace",
                 Owner = ApplicationHelper.MainWindow
             };
+            
+            Current = environment;
 
-            progressDialog.Tasks.Enqueue(new ProgressTask("Caching files", env.CacheFiles));
+            progressDialog.Tasks.Enqueue(new ProgressTask("Caching files", environment.CacheFiles));
             
-            progressDialog.Tasks.Enqueue(new ProgressTask("Reading semantics", env.Cache.UpdateModels));
+            progressDialog.Tasks.Enqueue(new ProgressTask("Reading semantics", environment.Cache.UpdateModels));
             
-            progressDialog.Tasks.Enqueue(new ProgressTask(
-                "Loading files", delegate { ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer); }));
+            progressDialog.Tasks.Enqueue(new ProgressTask("Loading files", 
+                delegate { ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer); }));
 
             progressDialog.Completed += delegate { progressDialog.Close(); };
-            progressDialog.StartAsync();
+            progressDialog.ShowDialog();
 
-            env.DirectoryWatcher.Changed += DirectoryChanged;
-            
-            Current = env;
+            environment.DirectoryWatcher.Changed += DirectoryChanged;
         }
 
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)

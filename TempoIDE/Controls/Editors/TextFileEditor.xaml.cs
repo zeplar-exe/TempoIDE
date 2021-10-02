@@ -153,7 +153,6 @@ namespace TempoIDE.Controls.Editors
             
             File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()),
                 ApplicationHelper.GlobalEncoding);
-            // TODO: Fix file handle conflicts
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

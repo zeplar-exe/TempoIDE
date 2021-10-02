@@ -3,6 +3,7 @@ using System.IO;
 using Jammo.TextAnalysis.DotNet.MsBuild.Projects;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Core.Environments;
+using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Windows.SolutionCreation.NetCore
 {
@@ -34,6 +35,8 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
             }); // Courtesy of https://stackoverflow.com/a/29840377/16324801
             
             env.Stream.WriteTo(Path.Join(Location.Text, SlnName.Text + ".sln"));
+            
+            EnvironmentHelper.LoadEnvironment(env);
         }
 
         public override bool CanCreate()
@@ -41,7 +44,7 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
             if (!ValidateSolutionName(SlnName))
                 return false;
 
-            if (!ValidateSolutionLocation(SlnName.Text, Location.Text))
+            if (!ValidateSolutionLocation(SlnName, Location))
                 return false;
 
             var projectDirectoryPath = Path.Join(Location.Text, SlnName.Text, ProjectName.Text);

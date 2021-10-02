@@ -16,11 +16,10 @@ namespace TempoIDE.Windows
         {
             InitializeComponent();
         }
-
-        public async void StartAsync()
+        
+        private async void ProgressDialog_OnActivated(object sender, EventArgs e)
         {
-            Dispatcher.Invoke(Show);
-           
+            Console.WriteLine("Activated");
             foreach (var task in Tasks)
             {
                 Header.Text = task.Header;
@@ -32,6 +31,7 @@ namespace TempoIDE.Windows
                 });
             }
 
+            DialogResult = true;
             Completed?.Invoke(this, EventArgs.Empty);
         }
     }

@@ -29,12 +29,25 @@ namespace TempoIDE.Core.Caches
         {
             ProjectCompilations.Clear();
 
-            if (EnvironmentHelper.Current is SolutionEnvironment solutionEnv)
-            { // TODO: Use compilation of all relevant files if false
-                var solution = new JSolutionFile(solutionEnv.EnvironmentPath.FullName);
+            switch (EnvironmentHelper.Current)
+            {
+                case SolutionEnvironment solutionEnv:
+                {
+                    var solution = new JSolutionFile(solutionEnv.EnvironmentPath.FullName);
 
-                foreach (var project in solution.ProjectFiles)
-                    ProjectCompilations.Set(project.FileInfo.FullName, new CachedProjectCompilation(project));
+                    foreach (var project in solution.ProjectFiles)
+                        ProjectCompilations.Set(project.FileInfo.FullName, new CachedProjectCompilation(project));
+                    
+                    break;
+                }
+                case DirectoryEnvironment directoryEnv:
+                {
+                    break;
+                }
+                case FileEnvironment fileEnv:
+                {
+                    break;
+                }
             }
         }
 

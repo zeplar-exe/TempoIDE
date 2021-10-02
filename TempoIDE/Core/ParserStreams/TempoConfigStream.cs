@@ -14,6 +14,7 @@ namespace TempoIDE.Core.ParserStreams
         public string FilePath => directory.FullName;
 
         public readonly DistinctCollection<string> Excluded = new();
+        public readonly DistinctCollection<string> ReferencedAssemblies = new();
 
         public TempoConfigStream(string directory)
         {
@@ -23,24 +24,18 @@ namespace TempoIDE.Core.ParserStreams
                 throw new ArgumentException("Expected a directory.");
         }
 
-        public bool QueryExcluded(string path)
-        {
-            return Excluded.Contains(path);
-        }
+        public bool QueryExcluded(string path) => Excluded.Contains(path);
+        public void Exclude(string path) => Excluded.Add(path);
+        public void Restore(string path) => Excluded.Remove(path);
 
-        public void Exclude(string path)
-        {
-            Excluded.Add(path);
-        }
-
-        public void Restore(string path)
-        {
-            Excluded.Remove(path);
-        }
+        public bool QueryReferences(string path) => ReferencedAssemblies.Contains(path);
+        public void ReferenceAssembly(string path) => ReferencedAssemblies.Add(path);
+        public void DereferenceAssembly(string path) => ReferencedAssemblies.Remove(path);
 
         public void Parse()
         {
             Excluded.Clear();
+            ReferencedAssemblies.Clear();
             
             foreach (var excludeFile in directory.GetFiles("exclude.txt"))
             {
@@ -49,6 +44,15 @@ namespace TempoIDE.Core.ParserStreams
                 
                 while (!reader.EndOfStream)
                     Excluded.Add(reader.ReadLineAsync().Result);
+            }
+
+            foreach (var referenceFile in directory.GetFiles("assembly_referemces.txt"))
+            {
+                using var file = referenceFile.OpenRead();
+                using var reader = new StreamReader(file);
+
+                while (!reader.EndOfStream)
+                    ReferencedAssemblies.Add(reader.ReadToEndAsync().Result);
             }
         }
 

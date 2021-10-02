@@ -1,4 +1,5 @@
 using System.IO;
+using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Caches;
 using TempoIDE.Core.ParserStreams;
@@ -13,7 +14,7 @@ namespace TempoIDE.Core.Environments
         public readonly FileSystemInfo EnvironmentPath;
         public readonly DirectoryWatcher DirectoryWatcher;
         
-        protected const string ConfigDirectoryName = ".TempoConfig";
+        private const string ConfigDirectoryName = ".TempoConfig";
 
         private TempoConfigStream configStream;
         public TempoConfigStream ConfigStream

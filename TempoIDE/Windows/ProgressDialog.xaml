@@ -6,7 +6,8 @@
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="ProgressDialog" Height="60" Width="270"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Activated="ProgressDialog_OnActivated">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.3*"/>

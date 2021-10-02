@@ -12,12 +12,12 @@ namespace TempoIDE.Windows.SolutionCreation
         
         protected static bool ValidateSolutionName(StringField slnName)
         {
-            return !string.IsNullOrWhiteSpace(slnName.Input.Text);
+            return !string.IsNullOrWhiteSpace(slnName.Text);
         }
 
-        protected static bool ValidateSolutionLocation(string slnName, string location)
+        protected static bool ValidateSolutionLocation(StringField slnName, StringField location)
         {
-            var fullPath = Path.Join(location, slnName + ".sln");
+            var fullPath = Path.Join(location.Text, slnName.Text + ".sln");
             
             return !File.Exists(fullPath);
         }

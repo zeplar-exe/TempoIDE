@@ -1,4 +1,5 @@
 using TempoIDE.Core.Environments;
+using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Windows.SolutionCreation
 {
@@ -11,12 +12,12 @@ namespace TempoIDE.Windows.SolutionCreation
 
         public override void Create()
         {
-            SolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text);
-        }
+            EnvironmentHelper.LoadEnvironment(SolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text));
+        } // TODO: Window is unfocused
 
         public override bool CanCreate()
         {
-            return ValidateSolutionName(SlnName) && ValidateSolutionLocation(SlnName.Text, Location.Text);
+            return ValidateSolutionName(SlnName) && ValidateSolutionLocation(SlnName, Location);
         }
     }
 }
