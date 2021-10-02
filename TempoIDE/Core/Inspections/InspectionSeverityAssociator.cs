@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Media;
 using CsvHelper;
 using CsvHelper.Configuration;
+using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections.Inspectors;
 
 namespace TempoIDE.Core.Inspections
@@ -17,7 +18,7 @@ namespace TempoIDE.Core.Inspections
                 Comment = '#',
                 AllowComments = true,
             };
-            using var reader = new StreamReader("data/inspection_severity.csv");
+            using var reader = new StreamReader(AppDataHelper.GetFile("inspection_severity.csv"));
             using var csv = new CsvReader(reader, config);
 
             var records = csv.GetRecords<SeverityPair>();

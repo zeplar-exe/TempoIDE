@@ -1,6 +1,8 @@
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Controls.Panels;
@@ -12,17 +14,22 @@ namespace TempoIDE.Core.Environments
 {
     public class SolutionEnvironment : DevelopmentEnvironment
     {
-        public readonly SolutionStream Stream;
+        private readonly Dictionary<string, CachedProjectCompilation> projectCompilations = new();
+
+        public readonly JSolutionFile SolutionFile;
 
         public SolutionEnvironment(FileInfo file) : base(file, CreateWatcher(file.FullName))
         {
-            Stream = SolutionParser.Parse( IOHelper.ReadFullStream(file.OpenRead()));
+            SolutionFile = new JSolutionFile(file.FullName);
+
+            foreach (var project in SolutionFile.ProjectFiles)
+                projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));
         }
         
-        public SolutionEnvironment(SolutionStream stream) 
-            : base(new FileInfo(stream.FilePath), CreateWatcher(stream.FilePath))
+        public SolutionEnvironment(JSolutionFile solutionFile) 
+            : base(new FileInfo(solutionFile.Stream.FilePath), CreateWatcher(solutionFile.Stream.FilePath))
         {
-            Stream = stream;
+            SolutionFile = solutionFile;
         }
 
         private static DirectoryWatcher CreateWatcher(string path)
@@ -34,7 +41,11 @@ namespace TempoIDE.Core.Environments
 
         public static SolutionEnvironment CreateEmpty(string directory, string name)
         {
-            var stream = new SolutionStream();
+            var path = Path.Join(directory, name + ".sln");
+
+            var file = new JSolutionFile(path);
+            var stream = file.Stream;
+            
             stream.Version = new FormatVersion("12.00");
 
             var global = new GlobalDefinition();
@@ -58,32 +69,38 @@ namespace TempoIDE.Core.Environments
             
             global.AddSection(configPlatforms);
             stream.Globals.Add(global);
-
-            var path = Path.Join(directory, name + ".sln");
-            stream.WriteTo(path);
             
-            return new SolutionEnvironment(stream);
+            stream.Write();
+            file.UpdateProjects();
+            
+            return new SolutionEnvironment(file);
         }
 
-        public CachedProjectCompilation GetProjectOfFile(FileInfo file)
+        public override CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null)
         {
-            return Cache.ProjectCompilations.Values
-                .FirstOrDefault(compilation => compilation.Project.FileSystem.EnumerateTree()
-                    .Any(projectFile => projectFile.Info.FullName == file.FullName));
+            if (file == null)
+                return null;
+            
+            if (Cache.FileData.Get(file.FullName) is not CachedProjectFile cachedFile)
+                return null;
+
+            foreach (var (path, compilation) in projectCompilations)
+            {
+                if (path == cachedFile.FileInfo.FullName)
+                    return compilation.Compilation;
+            }
+
+            return null;
         }
 
         public override async void CacheFiles()
         {
-            using var solution = new JSolutionFile(EnvironmentPath.FullName);
-
             await Task.Run(delegate
             {
-                foreach (var project in solution.ProjectFiles)
+                foreach (var project in SolutionFile.ProjectFiles)
                 {
                     foreach (var file in project.FileSystem.EnumerateTree().OfType<ProjectFile>())
-                    {
-                        Cache.AddFile((FileInfo)file.Info);
-                    }
+                        Cache.FileData.Set(file.Info.FullName, new CachedProjectFile((FileInfo)file.Info, project));
                 }
             });
         }
@@ -92,7 +109,6 @@ namespace TempoIDE.Core.Environments
         {
             Cache.Clear();
             CacheFiles();
-            Cache.UpdateModels();
         }
 
         public override void LoadExplorer(ExplorerView explorer)
@@ -149,7 +165,8 @@ namespace TempoIDE.Core.Environments
                     break;
             }
             
-            RefreshCache();
+            foreach (var project in SolutionFile.ProjectFiles)
+                projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));
         }
     }
 }

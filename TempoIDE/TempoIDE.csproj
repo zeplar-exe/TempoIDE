@@ -125,7 +125,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="data\skins\DefaultSkin.xaml">
+      <Resource Include="DefaultSkin.xaml">
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>SkinHelper.cs</DependentUpon>
       </Resource>

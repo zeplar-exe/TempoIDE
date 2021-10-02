@@ -17,44 +17,16 @@ namespace TempoIDE.Core.Caches
         };
         
         public readonly SimpleCache<string, CachedFile> FileData;
-        public readonly SimpleCache<string, CachedProjectCompilation> ProjectCompilations;
 
         public EnvironmentCache()
         {
             FileData = new SimpleCache<string, CachedFile>(DefaultCacheOptions);
-            ProjectCompilations = new SimpleCache<string, CachedProjectCompilation>(DefaultCacheOptions);
         }
         
-        public void UpdateModels()
-        {
-            ProjectCompilations.Clear();
-
-            switch (EnvironmentHelper.Current)
-            {
-                case SolutionEnvironment solutionEnv:
-                {
-                    var solution = new JSolutionFile(solutionEnv.EnvironmentPath.FullName);
-
-                    foreach (var project in solution.ProjectFiles)
-                        ProjectCompilations.Set(project.FileInfo.FullName, new CachedProjectCompilation(project));
-                    
-                    break;
-                }
-                case DirectoryEnvironment directoryEnv:
-                {
-                    break;
-                }
-                case FileEnvironment fileEnv:
-                {
-                    break;
-                }
-            }
-        }
 
         public void Clear()
         {
             FileData.Clear();
-            ProjectCompilations.Clear();
         }
 
         public CachedFile GetFile(FileInfo file)

@@ -10,21 +10,20 @@ namespace TempoIDE.Plugins
     {
         internal static List<Plugin> loaded = new();
         
-        public const string PluginPath = "data/plugins";
+        public const string PluginPath = "plugins";
         
         public static void LoadPlugins()
         {
-            if (!IOHelper.RelativeDirectoryExists(PluginPath))
+            var info = new DirectoryInfo(Path.Join(AppDataHelper.Directory.FullName, PluginPath));
+            
+            if (!info.Exists)
             {
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_DIRECTORY, 
-                    $"Could not find the relative directory '{PluginPath}'.\n" +
-                    "Is your executable in the correct place?");
+                    $"Could not find the relevant directory '{PluginPath}'.");
                 
                 return;
             }
-            
-            var info = new DirectoryInfo(IOHelper.GetRelativePath(PluginPath));
-            
+
             foreach (var plugin in info.EnumerateFiles("*.plugin", SearchOption.AllDirectories))
             {
                 using var stream = new PluginStream(plugin.OpenRead());

@@ -26,20 +26,12 @@ namespace TempoIDE.Controls.Editors
             
             var inspector = IFileInspector.FromExtension(BoundFile?.Extension);
 
-            var compilation = EnvironmentHelper.Current switch
-            {
-                SolutionEnvironment solutionEnv => solutionEnv.GetProjectOfFile(BoundFile)?.Compilation,
-                
-                DirectoryEnvironment directoryEnv => CSharpAnalysisCompilationHelper.Create(
-                    directoryEnv.EnvironmentPath.FullName, AnalysisType.Directory),
-                
-                FileEnvironment fileEnv => CSharpAnalysisCompilationHelper.Create(fileEnv.EnvironmentPath.FullName,
-                    AnalysisType.File),
-                
-                _ => null
-            };
+            if (inspector == null)
+                return;
+            
+            var compilation = EnvironmentHelper.Current.GetRelevantCompilation();
 
-            inspector?.Inspect(characters, compilation);
+            inspector.Inspect(characters, compilation);
         }
     }
 }

@@ -37,8 +37,6 @@ namespace TempoIDE.Core.Helpers
 
             progressDialog.Tasks.Enqueue(new ProgressTask("Caching files", environment.CacheFiles));
             
-            progressDialog.Tasks.Enqueue(new ProgressTask("Reading semantics", environment.Cache.UpdateModels));
-            
             progressDialog.Tasks.Enqueue(new ProgressTask("Loading files", 
                 delegate { ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer); }));
 
@@ -55,8 +53,6 @@ namespace TempoIDE.Core.Helpers
                 ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer);
                 ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.Editor.Tabs.Refresh);
             }
-
-            Current.Cache.UpdateModels();
         }
         
         public static void CloseEnvironment()

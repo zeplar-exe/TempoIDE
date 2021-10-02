@@ -55,6 +55,8 @@ namespace TempoIDE.Core.Environments
             DirectoryWatcher.Changed += DirectoryChanged;
         }
 
+        public abstract CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null);
+
         public abstract void CacheFiles();
         public abstract void RefreshCache();
         public abstract void LoadExplorer(ExplorerView explorer);

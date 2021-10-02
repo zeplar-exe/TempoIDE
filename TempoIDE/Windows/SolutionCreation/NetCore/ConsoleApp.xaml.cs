@@ -26,7 +26,7 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
             var projectPath = Path.Join(ProjectName.Text, ProjectName.Text + ".csproj");
             
             projStream.WriteTo(Path.Join(Location.Text, projectPath));
-            env.Stream.Projects.Add(new ProjectDefinition
+            env.SolutionFile.Stream.Projects.Add(new ProjectDefinition
             {
                 ProjectGuid = Guid.NewGuid().ToString("B").ToUpper(),
                 GlobalGuid = Guid.NewGuid().ToString("B").ToUpper(),
@@ -34,7 +34,7 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
                 RelativePath = Path.Join(ProjectName.Text, ProjectName.Text + ".csproj")
             }); // Courtesy of https://stackoverflow.com/a/29840377/16324801
             
-            env.Stream.WriteTo(Path.Join(Location.Text, SlnName.Text + ".sln"));
+            env.SolutionFile.Stream.WriteTo(Path.Join(Location.Text, SlnName.Text + ".sln"));
             
             EnvironmentHelper.LoadEnvironment(env);
         }

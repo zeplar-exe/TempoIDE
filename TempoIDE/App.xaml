@@ -9,7 +9,7 @@
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="data/skins/DefaultSkin.xaml"/>
+                <ResourceDictionary Source="./DefaultSkin.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <properties:Shortcuts x:Key="Shortcuts"/>

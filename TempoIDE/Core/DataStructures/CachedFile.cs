@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using ByteSizeLib;
+using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Core.DataStructures
@@ -46,6 +47,16 @@ namespace TempoIDE.Core.DataStructures
                     
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_FILE_NOMEM, details);
             }
+        }
+    }
+
+    public class CachedProjectFile : CachedFile
+    {
+        public readonly JProjectFile ProjectFile;
+
+        public CachedProjectFile(FileInfo fileInfo, JProjectFile projectFile) : base(fileInfo)
+        {
+            ProjectFile = projectFile;
         }
     }
 }
