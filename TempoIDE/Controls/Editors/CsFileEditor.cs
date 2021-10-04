@@ -1,12 +1,9 @@
-using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
-using TempoIDE.Core.Environments;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections;
-using TempoIDE.Core.Inspections.Inspectors;
 
 namespace TempoIDE.Controls.Editors
 {

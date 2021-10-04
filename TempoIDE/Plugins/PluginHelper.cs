@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using TempoIDE.Core;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Plugins.Core;
 

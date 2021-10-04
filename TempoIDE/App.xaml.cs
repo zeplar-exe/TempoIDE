@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using CSharp_Logger;
-using TempoIDE.Core;
 using TempoIDE.Core.Helpers;
 
 namespace TempoIDE

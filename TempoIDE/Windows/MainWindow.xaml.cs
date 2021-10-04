@@ -6,11 +6,9 @@ using System.Windows.Input;
 using TempoIDE.Controls.Editors;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core;
-using TempoIDE.Core.Commands;
 using TempoIDE.Core.Commands.Common;
 using TempoIDE.Core.CustomEventArgs;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Plugins;
 using TempoIDE.Properties;
 using TempoIDE.Windows.SubWindows;
 
@@ -71,8 +69,6 @@ namespace TempoIDE.Windows
                 SkinHelper.LoadDefaultSkin();
             else if (!SkinHelper.TryLoadSkin(Settings.Default.ApplicationSkin))
                 SkinHelper.LoadDefaultSkin();
-            
-            PluginHelper.LoadPlugins();
         }
 
         private void LoadKeybindings()

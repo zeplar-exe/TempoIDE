@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.IO;
-using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Caches;
