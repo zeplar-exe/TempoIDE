@@ -6,7 +6,7 @@ namespace TempoIDE.Core.DataStructures
     public class CachedProjectCompilation
     {
         public readonly JProjectFile Project;
-        public CSharpAnalysisCompilation Compilation;
+        public CSharpProjectAnalysisCompilation Compilation;
 
         public CachedProjectCompilation(JProjectFile project)
         {
@@ -17,7 +17,8 @@ namespace TempoIDE.Core.DataStructures
 
         public void Update()
         {
-            Compilation = CSharpAnalysisCompilationHelper.Create(Project.FileInfo.FullName, AnalysisType.Project);
+            Compilation = (CSharpProjectAnalysisCompilation)CSharpAnalysisCompilationHelper
+                .Create(Project.FileInfo.FullName, AnalysisType.Project);
             Compilation.GenerateCompilation();
         }
     }

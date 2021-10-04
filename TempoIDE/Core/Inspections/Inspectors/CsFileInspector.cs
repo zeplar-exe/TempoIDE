@@ -6,21 +6,11 @@ using TempoControls.Core.Types.Collections;
 
 namespace TempoIDE.Core.Inspections.Inspectors
 {
-    public class CsFileInspector : IFileInspector
+    public class CsFileInspector
     {
-        public void Inspect(SyntaxCharCollection characters, CSharpAnalysisCompilation compilation)
+        public void Inspect(SyntaxCharCollection characters, CSharpDocument document)
         {
-            var inspector = new CSharpInspector();
-            
-            if (compilation == null)
-            {
-                compilation = new CSharpAnalysisCompilation();
-                compilation.AppendText(characters.ToString());
-            }
-            
-            inspector.Inspect(compilation);
-
-            foreach (var diagnostic in inspector.Diagnostics)
+            foreach (var diagnostic in document.Diagnostics)
             {
                 var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
                 var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);

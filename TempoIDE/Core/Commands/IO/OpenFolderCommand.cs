@@ -11,7 +11,7 @@ namespace TempoIDE.Core.Commands.IO
         {
             var dialog = new VistaFolderBrowserDialog();
             
-            if (dialog.ShowDialog().ToRealValue())
+            if (dialog.ShowDialog() == true)
             {
                 EnvironmentHelper.LoadEnvironment(dialog.SelectedPath);   
             }

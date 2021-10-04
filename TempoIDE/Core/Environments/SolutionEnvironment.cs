@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;

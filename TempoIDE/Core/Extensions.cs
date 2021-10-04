@@ -53,39 +53,6 @@ namespace TempoIDE.Core
 
             return image;
         }
-
-        public static string ReplaceFirst(this string text, string search, string replace)
-        {
-            var pos = text.IndexOf(search, StringComparison.Ordinal);
-            
-            if (pos < 0)
-            {
-                return text;
-            }
-            
-            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
-        }
-
-        public static T ToRealValue<T>(this T? nullable) where T : struct
-        {
-            return (T) nullable;
-        }
-        
-        public static Bitmap ToBitmap(this WriteableBitmap writeBmp)
-        {
-            Bitmap bmp;
-            
-            using (var stream = new MemoryStream())
-            {
-                BitmapEncoder enc = new BmpBitmapEncoder();
-                
-                enc.Frames.Add(BitmapFrame.Create(writeBmp));
-                enc.Save(stream);
-                bmp = new Bitmap(stream);
-            }
-            
-            return bmp;
-        }
         
         public static KeyGesture ToGesture(this string value)
         {
@@ -101,27 +68,6 @@ namespace TempoIDE.Core
             }
 
             return new KeyGesture(gestureKey, gestureModifiers);
-        }
-
-        public static byte[] ReadAllBytes(this BinaryReader reader)
-        {
-            const int bufferSize = 4096;
-            using (var ms = new MemoryStream())
-            {
-                byte[] buffer = new byte[bufferSize];
-                int count;
-                while ((count = reader.Read(buffer, 0, buffer.Length)) != 0)
-                    ms.Write(buffer, 0, count);
-                return ms.ToArray();
-            }
-        }
-
-        public static double Safe(this double d)
-        {
-            if (double.IsNaN(d))
-                return 0;
-
-            return d;
         }
     }
 }
