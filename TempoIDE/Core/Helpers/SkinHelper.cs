@@ -60,7 +60,7 @@ namespace TempoIDE.Core.Helpers
         public static void LoadDefaultSkin()
         {
             var component = Application.LoadComponent(
-                new Uri(Path.Join(SkinsPath, "DefaultSkin.xaml"), UriKind.Relative));
+                new Uri("DefaultSkin.xaml", UriKind.Relative));
             var dict = Application.Current.Resources.MergedDictionaries;
                 
             dict.Clear();

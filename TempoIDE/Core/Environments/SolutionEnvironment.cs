@@ -2,10 +2,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Associators;
 using TempoIDE.Core.DataStructures;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Wrappers;
@@ -76,21 +78,41 @@ namespace TempoIDE.Core.Environments
             return new SolutionEnvironment(file);
         }
 
-        public override CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null)
+        public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
         {
             if (file == null)
                 return null;
-            
-            if (Cache.FileData.Get(file.FullName) is not CachedProjectFile cachedFile)
-                return null;
 
-            foreach (var (path, compilation) in projectCompilations)
+            if (file.Extension == ".cs")
             {
-                if (path == cachedFile.FileInfo.FullName)
-                    return compilation.Compilation;
-            }
+                if (Cache.FileData.Get(file.FullName) is not CachedProjectFile cachedFile)
+                    return ExtensionAssociator.AnalysisCompilationFromFile(file);
 
-            return null;
+                foreach (var (path, compilation) in projectCompilations)
+                {
+                    if (path == cachedFile.FileInfo.FullName)
+                        return compilation.Compilation;
+                }
+            }
+            
+            return ExtensionAssociator.AnalysisCompilationFromFile(file);
+        }
+
+        public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null)
+        {
+            if (file == null)
+                return Enumerable.Empty<Diagnostic>();
+
+            if (GetRelevantCompilation() is not CSharpProjectAnalysisCompilation compilation)
+                return Enumerable.Empty<Diagnostic>(); // TODO
+
+            foreach (var document in compilation.Documents)
+            {
+                if (document.File.FullName != file.FullName)
+                    return document.Diagnostics;
+            }
+            
+            return Enumerable.Empty<Diagnostic>();
         }
 
         public override async void CacheFiles()
@@ -164,6 +186,8 @@ namespace TempoIDE.Core.Environments
                     
                     break;
             }
+            
+            projectCompilations.Clear();
             
             foreach (var project in SolutionFile.ProjectFiles)
                 projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));

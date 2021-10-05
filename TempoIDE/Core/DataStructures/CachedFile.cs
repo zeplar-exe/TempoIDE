@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Threading;
 using ByteSizeLib;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Helpers;
@@ -27,6 +28,9 @@ namespace TempoIDE.Core.DataStructures
 
             try
             {
+                Thread.Sleep(50); 
+                // TODO: Figure out how to prevent FileSystemWatcher from firing before the stream is disposed
+                
                 Content = File.ReadAllText(FileInfo.FullName);
             }
             catch (AccessViolationException)

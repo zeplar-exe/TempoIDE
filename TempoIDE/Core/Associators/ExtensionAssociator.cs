@@ -1,5 +1,9 @@
+using System.IO;
+using Jammo.TextAnalysis;
+using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
 using Jammo.TextAnalysis.DotNet.CSharp.Inspection.Rules;
+using Jammo.TextAnalysis.Xml;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;
 
@@ -25,18 +29,22 @@ namespace TempoIDE.Core.Associators
             };
         }
 
-        public static CSharpInspector CodeInspectorFromExtension(string extension)
+        public static AnalysisCompilation AnalysisCompilationFromFile(FileInfo file)
         {
-            switch (extension.Replace(".", string.Empty))
+            switch (file.Extension)
             {
-                case "cs":
-                    var inspector = new CSharpInspector();
-                    inspector.AddRules(new CSharpInspectionRule[]
-                    {
-                        new UnusedFieldInspection()
-                    });
-                    
-                    return inspector;
+                case ".cs":
+                {
+                    return CSharpAnalysisCompilationHelper.Create(file.FullName, AnalysisType.File);
+                }
+                case ".xml":
+                {
+                    var comp = new XmlAnalysisCompilation();
+                    comp.AppendFile(file);
+                    comp.GenerateCompilation();
+
+                    return comp;
+                }
                 default:
                     return null;
             }
