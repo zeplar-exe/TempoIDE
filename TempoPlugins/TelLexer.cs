@@ -139,13 +139,26 @@ namespace TempoPlugins
             
             Identifier,
             
-            OpenInstruction,
-            InInstruction,
             DefineInstruction,
+            AsInstruction,
+            ImportInstruction,
+            FromInstruction,
             
-            ParenthesisGroup,
-            BracketGroup,
-            Block,
+            ProtocolKeyword,
+            
+            DelegateOperator,
+            Plus, Dash, Star, Slash,
+            LessThan, LessThanOrEqual,
+            MoreThan, MoreThanOrEqual,
+            Assignment, Equals, Not, NotEqual,
+            Or, And,
+
+            OpenParenthesis,
+            CloseParenthesis,
+            OpenBracket,
+            CloseBracket,
+            OpenCurlyBracket,
+            CloseCurlyBracket,
         }
     }
 }
