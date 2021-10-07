@@ -1,7 +1,10 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using TempoControls.Core.IntTypes;
+using TempoControls.Core.Static;
 using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
@@ -15,15 +18,49 @@ namespace TempoControls
             if (IsReadOnly)
                 return;
             
+            var oldPosition = CaretOffset;
+            
+            MoveCaret(GetCaretOffsetByClick(e));
+
+            if (e.ClickCount == 2)
+            {
+                if (oldPosition == CaretOffset)
+                    if (TrySelectWord())
+                        return;
+            }
+            
             selectStartXPosition = e.GetPosition(this).X;
 
             Focus();
-            
-            MoveCaret(GetCaretOffsetByClick(e));
             AutoComplete.Disable();
 
             isSelecting = true;
             Select(new IntRange(CaretIndex, CaretIndex));
+        }
+
+        private bool TrySelectWord()
+        {
+            var index = CaretIndex;
+            var start = index;
+            var end = start;
+
+            if (!Text.Any())
+                return false;
+
+            if (index == Text.Length)
+                return false;
+
+            while (VerifyIndex(++index))
+            {
+                end++;
+                
+                if (!char.IsLetter(Text[index]))
+                    break;
+            }
+            
+            Select(new IntRange(start, end));
+            
+            return true;
         }
 
         private void ColoredTextBox_OnPreviewMouseLeftButtonUp(object sender, RoutedEventArgs e)
@@ -97,9 +134,15 @@ namespace TempoControls
                                 break;
                             }
                         }
-                        else
+                        else if (totalWidth > clickPos.X)
                         {
-                            if (totalWidth > clickPos.X)
+                            var oldWidth = totalWidth - character.Size.Width;
+
+                            if (clickPos.X - oldWidth > character.Size.Width / 2)
+                            {
+                                break;
+                            }
+                            else
                             {
                                 column--;
                                 break;

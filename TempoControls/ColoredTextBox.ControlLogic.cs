@@ -55,7 +55,7 @@ namespace TempoControls
         {
             if (IsReadOnly)
                 return;
-
+            
             switch (e.Key)
             {
                 #region Special

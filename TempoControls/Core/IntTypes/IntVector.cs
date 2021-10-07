@@ -1,9 +1,11 @@
+using System;
+
 namespace TempoControls.Core.IntTypes
 {
-    public struct IntVector
+    public readonly struct IntVector
     {
-        public int X;
-        public int Y;
+        public readonly int X;
+        public readonly int Y;
 
         public IntVector(int x, int y)
         {
@@ -13,7 +15,32 @@ namespace TempoControls.Core.IntTypes
 
         public static IntVector operator +(IntVector a, IntVector b) => new(a.X + b.X, a.Y + b.Y);
         public static IntVector operator -(IntVector a, IntVector b) => new(a.X - b.X, a.Y - b.Y);
+        
+        public static bool operator ==(IntVector left, IntVector right)
+        {
+            return left.Equals(right);
+        }
 
+        public static bool operator !=(IntVector left, IntVector right)
+        {
+            return !left.Equals(right);
+        }
+        
+        public bool Equals(IntVector other)
+        {
+            return X == other.X && Y == other.Y;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is IntVector other && Equals(other);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(X, Y);
+        }
+        
         public override string ToString()
         {
             return $"{X}, {Y}";
