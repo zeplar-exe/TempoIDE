@@ -45,6 +45,48 @@ namespace TempoControls
 
         private bool isSelecting;
 
+        #region RoutedCommands
+        
+        public static readonly RoutedCommand CopyCommand = new();
+        private void CopyCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectionRange.Size > 0;
+        }
+        private void CopyCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(GetSelectedText(), TextDataFormat.UnicodeText);
+        }
+
+        public static readonly RoutedCommand PasteCommand = new();
+        private void PasteCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = Clipboard.ContainsText(TextDataFormat.UnicodeText);
+        }
+        private void PasteCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Backspace(0);
+            AppendTextAtCaret(Clipboard.GetText(TextDataFormat.UnicodeText));
+        }
+        
+        public static readonly RoutedCommand CutCommand = new();
+        private void CutCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = SelectionRange.Size > 0;
+        }
+        private void CutCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Clipboard.SetText(GetSelectedText(), TextDataFormat.UnicodeText);
+            Backspace(0);
+        }
+
+        public static readonly RoutedCommand SelectAllCommand = new();
+        private void SelectAllCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            Select(new IntRange(0, Text.Length));
+        }
+        
+        #endregion
+
         public ColoredTextBox()
         {
             InitializeComponent();

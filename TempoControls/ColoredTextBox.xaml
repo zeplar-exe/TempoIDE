@@ -1,7 +1,7 @@
 <UserControl x:Class="TempoControls.ColoredTextBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:tempoControls="clr-namespace:TempoControls"
+             xmlns:local="clr-namespace:TempoControls"
              xmlns:controls="clr-namespace:TempoControls.Controls"
              Focusable="True"
              IsTabStop="True"
@@ -16,8 +16,29 @@
              MouseEnter="ColoredTextBox_OnMouseEnter"
              MouseLeave="ColoredTextBox_OnMouseLeave">
     
+    <UserControl.CommandBindings>
+        <CommandBinding Command="{x:Static local:ColoredTextBox.CopyCommand}"
+                        Executed="CopyCommand_OnExecuted"
+                        CanExecute="CopyCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:ColoredTextBox.PasteCommand}"
+                        Executed="PasteCommand_OnExecuted"
+                        CanExecute="PasteCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:ColoredTextBox.CutCommand}"
+                        Executed="CutCommand_OnExecuted"
+                        CanExecute="CutCommand_CanExecute"/>
+        <CommandBinding Command="{x:Static local:ColoredTextBox.SelectAllCommand}"
+                        Executed="SelectAllCommand_OnExecuted"/>
+    </UserControl.CommandBindings>
+    
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+C" Command="{x:Static local:ColoredTextBox.CopyCommand}"/>
+        <KeyBinding Gesture="Ctrl+V" Command="{x:Static local:ColoredTextBox.PasteCommand}"/>
+        <KeyBinding Gesture="Ctrl+X" Command="{x:Static local:ColoredTextBox.CutCommand}"/>
+        <KeyBinding Gesture="Ctrl+A" Command="{x:Static local:ColoredTextBox.SelectAllCommand}"/>
+    </UserControl.InputBindings>
+    
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <tempoControls:ColoredLabel
+        <local:ColoredLabel
             x:Name="TextArea"
             x:FieldModifier="public"
             AfterRender="TextArea_OnAfterRender"

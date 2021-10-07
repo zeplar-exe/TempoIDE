@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Controls.Editors;
 using TempoIDE.Controls.Panels;
-using TempoIDE.Core;
-using TempoIDE.Core.Commands.Common;
 using TempoIDE.Core.CustomEventArgs;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Properties;
@@ -61,31 +58,12 @@ namespace TempoIDE.Windows
         
         private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
         {
-            LoadKeybindings();
-            
-            Shortcuts.Default.SettingChanging += delegate { LoadKeybindings(); };
-            
             if (string.IsNullOrWhiteSpace(Settings.Default.ApplicationSkin))
                 SkinHelper.LoadDefaultSkin();
             else if (!SkinHelper.TryLoadSkin(Settings.Default.ApplicationSkin))
                 SkinHelper.LoadDefaultSkin();
         }
-
-        private void LoadKeybindings()
-        {
-            InputBindings.Clear();
-            
-            var shortcuts = Shortcuts.Default;
-            
-            InputBindings.AddRange(new List<KeyBinding>
-            {
-                new(new CopyCommand(), shortcuts.Copy.ToGesture()),
-                new(new PasteCommand(), shortcuts.Paste.ToGesture()),
-                new(new CutCommand(), shortcuts.Cut.ToGesture()),
-                new(new SelectAllCommand(), shortcuts.SelectAll.ToGesture())
-            });
-        }
-
+        
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             if (Editor.SelectedEditor is FileEditor fileEditor)

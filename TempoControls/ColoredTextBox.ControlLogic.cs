@@ -47,7 +47,6 @@ namespace TempoControls
                 return;
             
             Backspace(0);
-
             AppendTextAtCaret(e.Text);
             UpdateAutoCompletion();
         }

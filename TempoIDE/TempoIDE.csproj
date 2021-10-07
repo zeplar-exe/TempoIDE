@@ -105,6 +105,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Core\Commands\Common" />
       <Folder Include="Core\Inspections\TempoRules" />
       <Folder Include="Windows\SolutionCreation\NetFramework" />
     </ItemGroup>

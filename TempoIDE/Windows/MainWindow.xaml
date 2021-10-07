@@ -7,7 +7,6 @@
         xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:ui="clr-namespace:TempoIDE.Core.Commands.UI"
         xmlns:io="clr-namespace:TempoIDE.Core.Commands.IO"
-        xmlns:common="clr-namespace:TempoIDE.Core.Commands.Common"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
         mc:Ignorable="d"
@@ -70,32 +69,7 @@
                             </MenuItem>
                             
                             <MenuItem Header="Edit" Background="Transparent">
-                                <MenuItem 
-                                    Header="Copy"
-                                    InputGestureText="{Binding Path=Copy}">
-                                    
-                                    <MenuItem.Command>
-                                        <common:CopyCommand/>
-                                    </MenuItem.Command>
-                                </MenuItem>
                                 
-                                <MenuItem
-                                    Header="Paste"
-                                    InputGestureText="{Binding Path=Paste}">
-                                    
-                                    <MenuItem.Command>
-                                        <common:PasteCommand/>
-                                    </MenuItem.Command>
-                                </MenuItem>
-                                
-                                <MenuItem
-                                    Header="Cut"
-                                    InputGestureText="{Binding Path=Cut}">
-                                    
-                                    <MenuItem.Command>
-                                        <common:CutCommand/>
-                                    </MenuItem.Command>
-                                </MenuItem>
                             </MenuItem>
                             
                             <MenuItem Header="View" Background="Transparent"/>

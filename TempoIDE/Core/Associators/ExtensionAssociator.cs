@@ -1,8 +1,6 @@
 using System.IO;
 using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp;
-using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
-using Jammo.TextAnalysis.DotNet.CSharp.Inspection.Rules;
 using Jammo.TextAnalysis.Xml;
 using TempoControls.Core.CompletionProviders;
 using TempoControls.Core.SyntaxSchemes;

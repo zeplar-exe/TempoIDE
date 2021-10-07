@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Jammo.TextAnalysis;
-using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
