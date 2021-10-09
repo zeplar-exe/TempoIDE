@@ -42,7 +42,7 @@ namespace TempoIDE.Core.Environments
             var info = (FileInfo) EnvironmentPath;
 
             explorer.AppendElement(new ExplorerFileSystemItem(info.FullName));
-            ApplicationHelper.MainWindow.Editor.Tabs.Open(info);
+            ApplicationHelper.MainWindow.Editor.Tabs.OpenFile(info);
         }
 
         protected override void DirectoryChanged(object sender, FileSystemEventArgs e)

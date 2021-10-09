@@ -67,7 +67,7 @@ namespace TempoIDE.Windows
         private void MainWindow_OnClosed(object sender, EventArgs e)
         {
             if (Editor.SelectedEditor is FileEditor fileEditor)
-                fileEditor.TextWriter();
+                fileEditor.FileWriter();
         }
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenExplorerElementArgs e)
@@ -77,7 +77,7 @@ namespace TempoIDE.Windows
             if (path == null)
                 return;
                 
-            Editor.Tabs.Open(new FileInfo(path));
+            Editor.Tabs.OpenFile(new FileInfo(path));
         }
 
         private void Editor_OnGotFocus(object sender, RoutedEventArgs e)

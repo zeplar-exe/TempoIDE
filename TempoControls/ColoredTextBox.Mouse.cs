@@ -1,10 +1,8 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using TempoControls.Core.IntTypes;
-using TempoControls.Core.Static;
 using TempoControls.Core.Types.Collections;
 
 namespace TempoControls
