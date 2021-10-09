@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading;
 using ByteSizeLib;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Helpers;

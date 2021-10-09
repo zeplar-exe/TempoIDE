@@ -12,7 +12,7 @@ namespace TempoIDE.Windows.SolutionCreation
 
         public override void Create()
         {
-            EnvironmentHelper.LoadEnvironment(SolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text));
+            EnvironmentHelper.LoadEnvironment(CSharpSolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text));
         } // TODO: Window is unfocused
 
         public override bool CanCreate()

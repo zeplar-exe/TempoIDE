@@ -62,7 +62,7 @@ namespace TempoIDE.Controls.Panels
             {
                 foreach (var filePath in Directory.GetFileSystemEntries(directory.FullName))
                 {
-                    if (EnvironmentHelper.Current is SolutionEnvironment solutionEnv)
+                    if (EnvironmentHelper.Current is CSharpSolutionEnvironment solutionEnv)
                     {
                         if (solutionEnv.ConfigStream.QueryExcluded(filePath))
                             continue;

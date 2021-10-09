@@ -14,13 +14,13 @@ using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Environments
 {
-    public class SolutionEnvironment : DevelopmentEnvironment
+    public class CSharpSolutionEnvironment : DevelopmentEnvironment
     {
         private readonly Dictionary<string, CachedProjectCompilation> projectCompilations = new();
 
         public readonly JSolutionFile SolutionFile;
 
-        public SolutionEnvironment(FileInfo file) : base(file, CreateWatcher(file.FullName))
+        public CSharpSolutionEnvironment(FileInfo file) : base(file, CreateWatcher(file.FullName))
         {
             SolutionFile = new JSolutionFile(file.FullName);
 
@@ -28,7 +28,7 @@ namespace TempoIDE.Core.Environments
                 projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));
         }
         
-        public SolutionEnvironment(JSolutionFile solutionFile) 
+        public CSharpSolutionEnvironment(JSolutionFile solutionFile) 
             : base(new FileInfo(solutionFile.Stream.FilePath), CreateWatcher(solutionFile.Stream.FilePath))
         {
             SolutionFile = solutionFile;
@@ -41,7 +41,7 @@ namespace TempoIDE.Core.Environments
             return new DirectoryWatcher(file.Directory);
         }
 
-        public static SolutionEnvironment CreateEmpty(string directory, string name)
+        public static CSharpSolutionEnvironment CreateEmpty(string directory, string name)
         {
             var path = Path.Join(directory, name + ".sln");
 
@@ -75,7 +75,7 @@ namespace TempoIDE.Core.Environments
             stream.Write();
             file.UpdateProjects();
             
-            return new SolutionEnvironment(file);
+            return new CSharpSolutionEnvironment(file);
         }
 
         public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
