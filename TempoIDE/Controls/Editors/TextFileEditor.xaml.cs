@@ -101,8 +101,12 @@ namespace TempoIDE.Controls.Editors
 
             BoundFile.Refresh();
             
+            EnvironmentHelper.Current.DirectoryWatcher.Buffer();
+            
             File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()),
                 ApplicationHelper.GlobalEncoding);
+            
+            EnvironmentHelper.Current.DirectoryWatcher.Resume();
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

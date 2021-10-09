@@ -1,13 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace TempoIDE.Core.Wrappers
 {
     public class DirectoryWatcher : IDisposable
     {
-        public event FileSystemEventHandler Changed;
+        private bool buffering;
+        private readonly Queue<(object sender, FileSystemEventArgs args)> eventBuffer = new();
+        private readonly FileSystemWatcher watcher;
         
-        private FileSystemWatcher watcher;
+        public event FileSystemEventHandler Changed;
 
         public DirectoryWatcher(DirectoryInfo directory, string filter = "*")
         {
@@ -20,14 +23,43 @@ namespace TempoIDE.Core.Wrappers
                                    NotifyFilters.LastWrite | 
                                    NotifyFilters.CreationTime;
             
-            watcher.Changed += (sender, e) => Changed?.Invoke(sender, e);
-            watcher.Created += (sender, e) => Changed?.Invoke(sender, e);
-            watcher.Deleted += (sender, e) => Changed?.Invoke(sender, e);
-            watcher.Renamed += (sender, e) => Changed?.Invoke(sender, e);
+            watcher.Changed += InvokeEvent;
+            watcher.Created += InvokeEvent;
+            watcher.Deleted += InvokeEvent;
+            watcher.Renamed += InvokeEvent;
 
             watcher.Filter = filter;
             watcher.IncludeSubdirectories = true;
             watcher.EnableRaisingEvents = true;
+        }
+
+        private void InvokeEvent(object sender, FileSystemEventArgs e)
+        {
+            if (buffering)
+            {
+                eventBuffer.Enqueue((sender, e));
+                
+                return;
+            }
+            
+            Changed?.Invoke(sender, e);
+        }
+
+        public void Buffer()
+        {
+            buffering = true;
+        }
+
+        public void Resume()
+        {
+            buffering = false;
+            
+            while (eventBuffer.Count > 0)
+            {
+                var (sender, args) = eventBuffer.Dequeue();
+
+                Changed?.Invoke(sender, args);
+            }
         }
 
         public void Dispose()

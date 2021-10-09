@@ -278,7 +278,7 @@ namespace TempoIDE.Controls.Panels
 
         private void OnTabClosed(object sender, EventArgs e)
         {
-            CloseTab(((EditorTabItem)sender));
+            CloseTab((EditorTabItem)sender);
         }
     }
 }
