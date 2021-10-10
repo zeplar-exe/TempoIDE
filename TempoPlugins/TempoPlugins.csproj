@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Jammo.ParserTools" Version="1.2.0" />
+      <PackageReference Include="Jammo.ParserTools" Version="1.2.2" />
     </ItemGroup>
 
 </Project>
