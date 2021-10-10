@@ -5,11 +5,32 @@ using Jammo.ParserTools;
 
 namespace TempoPlugins
 {
-    public static class TelLexer
+    public class TelLexer
     {
-        public static IEnumerable<TelToken> Lex(string input)
+        private readonly string text;
+        
+        private int line;
+        private int column;
+
+        private readonly List<TelToken> tokens = new();
+        private readonly List<LexerError> errors = new();
+
+        public TelLexer(string text)
         {
-            var lexer = new Lexer(input, new LexerOptions
+            this.text = text;
+        }
+
+        public IEnumerable<TelToken> Tokens => tokens;
+        public IEnumerable<LexerError> Errors => errors;
+
+        public IEnumerable<TelToken> Lex()
+        {
+            line = 0;
+            column = 0;
+            
+            errors.Clear();
+            
+            var lexer = new Lexer(text, new LexerOptions
             {
                 IncludeUnderscoreAsAlphabetic = true,
                 IncludePeriodAsNumeric = true
@@ -17,9 +38,12 @@ namespace TempoPlugins
             var preceding = new LinkedList<LexerToken>();
 
             bool LastIs(LexerTokenId id) => preceding.LastOrDefault()?.Is(id) ?? false;
+            bool NextIs(LexerTokenId id) => lexer.PeekNext()?.Is(id) ?? false;
             
             foreach (var token in lexer)
             {
+                column += token.RawToken.Length;
+                
                 switch (token.Id)
                 {
                     case LexerTokenId.Alphabetic:
@@ -27,22 +51,22 @@ namespace TempoPlugins
                         switch (token.RawToken)
                         {
                             case "define":
-                                yield return new TelToken(token.ToString(), TelTokenId.DefineInstruction);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.DefineInstruction));
                                 break;
                             case "as":
-                                yield return new TelToken(token.ToString(), TelTokenId.AsInstruction);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.AsInstruction));
                                 break;
                             case "import":
-                                yield return new TelToken(token.ToString(), TelTokenId.ImportInstruction);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.ImportInstruction));
                                 break;
                             case "from":
-                                yield return new TelToken(token.ToString(), TelTokenId.FromInstruction);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.FromInstruction));
                                 break;
                             case "protocol":
-                                yield return new TelToken(token.ToString(), TelTokenId.ProtocolKeyword);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.ProtocolKeyword));
                                 break;
                             default:
-                                yield return new TelToken(token.ToString(), TelTokenId.Identifier);
+                                tokens.Add(new TelToken(token.ToString(), TelTokenId.Identifier));
                                 break;
                         }
                         
@@ -50,7 +74,7 @@ namespace TempoPlugins
                     }
                     case LexerTokenId.Numeric:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.NumericLiteral);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.NumericLiteral));
                         break;
                     }
                     case LexerTokenId.Quote:
@@ -58,23 +82,23 @@ namespace TempoPlugins
                     {
                         if (LastIs(LexerTokenId.Backslash))
                         {
-                            yield return new TelToken(token.ToString(), TelTokenId.Unknown);
+                            ReportError(token);
                             break;
                         }
                         
-                        var tokens = new List<LexerToken> { token };
+                        var stringTokens = new List<LexerToken> { token };
 
                         foreach (var literalToken in lexer)
                         {
-                            tokens.Add(literalToken);
+                            stringTokens.Add(literalToken);
                             
                             if (literalToken.Is(token.Id))
                             {
                                 if (!LastIs(LexerTokenId.Backslash))
                                 {
-                                    yield return new TelToken(
-                                        string.Concat(tokens.SelectMany(t => t.RawToken)),
-                                        TelTokenId.StringLiteral);
+                                    tokens.Add(new TelToken(
+                                        string.Concat(stringTokens.SelectMany(t => t.RawToken)),
+                                        TelTokenId.StringLiteral));
                                     
                                     break;
                                 }
@@ -87,170 +111,180 @@ namespace TempoPlugins
                     }
                     case LexerTokenId.LeftParenthesis:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.OpenParenthesis);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenParenthesis));
                         
                         break;
                     }
                     case LexerTokenId.RightParenthesis:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.CloseParenthesis);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseParenthesis));
                         break;
                     }
                     case LexerTokenId.OpenBracket:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.OpenBracket);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenBracket));
                         break;    
                     }
                     case LexerTokenId.CloseBracket:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.CloseBracket);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseBracket));
                         break;
                     }
                     case LexerTokenId.OpenCurlyBracket:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.OpenCurlyBracket);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenCurlyBracket));
                         break;
                     }
                     case LexerTokenId.CloseCurlyBracket:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.CloseCurlyBracket);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseCurlyBracket));
                         break;
                     }
                     case LexerTokenId.Space:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Whitespace);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Whitespace));
                         break;
                     }
                     case LexerTokenId.NewLine:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Newline);
+                        line++;
+                        column = 0;
+                        
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Newline));
                         break;
                     }
                     case LexerTokenId.Period:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Period);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Period));
                         break;
                     }
                     case LexerTokenId.Comma:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Comma);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Comma));
                         break;
                     }
                     case LexerTokenId.Plus:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Plus);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Plus));
                         break;
                     }
                     case LexerTokenId.Dash:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Minus);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Minus));
                         break;
                     }
                     case LexerTokenId.Star:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Multiply);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Multiply));
                         break;
                     }
                     case LexerTokenId.Slash:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Divide);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Divide));
                         break;
                     }
                     case LexerTokenId.LessThan:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Equals))
+                        if (NextIs(LexerTokenId.Equals))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.LessThanOrEqual);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.LessThanOrEqual));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.LessThan);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.LessThan));
                         break;
                     }
                     case LexerTokenId.GreaterThan:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Equals))
+                        if (NextIs(LexerTokenId.Equals))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.GreaterThanOrEqual);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.GreaterThanOrEqual));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.GreaterThan);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.GreaterThan));
                         break;
                     }
                     case LexerTokenId.Equals:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Equals))
+                        if (NextIs(LexerTokenId.Equals))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.Equals);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.Equals));
                             break;
                         }
 
-                        if (lexer.PeekNext().Is(LexerTokenId.GreaterThan))
+                        if (NextIs(LexerTokenId.GreaterThan))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.DelegateOperator);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.DelegateOperator));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.Assignment);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Assignment));
                         break;
                     }
                     case LexerTokenId.ExclamationMark:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Equals))
+                        if (NextIs(LexerTokenId.Equals))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.NotEqual);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.NotEqual));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.Not);
+                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Not));
                         break;
                     }
                     case LexerTokenId.Vertical:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Vertical))
+                        if (NextIs(LexerTokenId.Vertical))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.Or);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.Or));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.Unknown);
+                        ReportError(token);
                         break;
                     }
                     case LexerTokenId.Amphersand:
                     {
-                        if (lexer.PeekNext().Is(LexerTokenId.Amphersand))
+                        if (NextIs(LexerTokenId.Amphersand))
                         {
                             lexer.Skip();
                             
-                            yield return new TelToken(token.ToString(), TelTokenId.And);
+                            tokens.Add(new TelToken(token.ToString(), TelTokenId.And));
                             break;
                         }
                         
-                        yield return new TelToken(token.ToString(), TelTokenId.Unknown);
+                        ReportError(token);
                         break;
                     }
                     default:
                     {
-                        yield return new TelToken(token.ToString(), TelTokenId.Unknown);
+                        ReportError(token);
                         break;
                     }
                 }
                 
                 preceding.AddFirst(token);
             }
+
+            return tokens;
+        }
+
+        private void ReportError(LexerToken token)
+        {
+            errors.Add(new LexerError("Unexpected character", token.ToString(), line, column));
         }
     }
     

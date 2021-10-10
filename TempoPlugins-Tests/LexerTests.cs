@@ -9,32 +9,44 @@ namespace TempoPlugins_Tests
         [Test]
         public void TestKeyword()
         {
-            var lexer = TelLexer.Lex("protocol");
+            var lexer = new TelLexer("protocol");
             
-            Assert.True(lexer.First().Id == TelTokenId.ProtocolKeyword);
+            Assert.True(lexer.Lex().First().Id == TelTokenId.ProtocolKeyword);
         }
 
         [Test]
         public void TestInstruction()
         {
-            var lexer = TelLexer.Lex("define a as import");
+            var lexer = new TelLexer("define a as import");
             
-            Assert.True(lexer.First().Id == TelTokenId.DefineInstruction);
+            Assert.True(lexer.Lex().First().Id == TelTokenId.DefineInstruction);
         }
 
         [Test]
         public void TestString()
         {
             const string literal = "\"text\"";
-            var lexer = TelLexer.Lex($"\"This {literal} you talk about, is it real?\"");
-
-            Assert.True(lexer.First().Id == TelTokenId.StringLiteral);
+            var lexer = new TelLexer($"\"This {literal} you talk about, is it real?\"");
+            lexer.Lex();
+            
+            Assert.True(lexer.Lex().First().Id == TelTokenId.StringLiteral);
         }
 
         [Test]
         public void TestNumber()
         {
-            
+            var lexer = new TelLexer("12.34").Lex();
+
+            Assert.True(lexer.First().Id == TelTokenId.NumericLiteral);
+        }
+
+        [Test]
+        public void TestLexerError()
+        {
+            var lexer = new TelLexer("|");
+            lexer.Lex();
+
+            Assert.True(lexer.Errors.Count() == 1);
         }
     }
 }
