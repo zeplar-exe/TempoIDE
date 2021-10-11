@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Jammo.ParserTools;
@@ -297,6 +296,13 @@ namespace TempoPlugins
         {
             Text = text;
             Id = id;
+        }
+
+        public bool Is(TelTokenId id) => Id == id;
+
+        public override string ToString()
+        {
+            return Text;
         }
     }
 }

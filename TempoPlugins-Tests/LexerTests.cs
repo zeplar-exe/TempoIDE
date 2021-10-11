@@ -27,7 +27,6 @@ namespace TempoPlugins_Tests
         {
             const string literal = "\"text\"";
             var lexer = new TelLexer($"\"This {literal} you talk about, is it real?\"");
-            lexer.Lex();
             
             Assert.True(lexer.Lex().First().Id == TelTokenId.StringLiteral);
         }

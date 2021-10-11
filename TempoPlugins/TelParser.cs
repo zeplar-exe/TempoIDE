@@ -1,29 +1,57 @@
+using System;
+using System.Linq;
 using Jammo.ParserTools;
+using TempoPlugins.Syntax;
+using TempoPlugins.Syntax.Nodes;
 
 namespace TempoPlugins
 {
-    public static partial class TelParser
+    public static class TelParser
     {
-        public static TelStream Parse(string text)
+        public static TelSyntaxTree Parse(string text)
         {
-            var stream = new TelStream();
+            var root = new TelCompilationRoot();
             var state = new StateMachine<ParserState>();
-            var lexer = new Lexer(text);
+            var navigator = new TelLexer(text).Lex().ToNavigator();
 
-            foreach (var token in lexer)
+            var token = navigator.Current;
+            
+            do
             {
                 switch (state.Current)
                 {
-                    
+                    case ParserState.Any:
+                    {
+                        switch (token.Id)
+                        {
+                            case TelTokenId.DefineInstruction:
+                            {
+                                root.AddNode(DefineSyntax.Parse(navigator));
+
+                                break;
+                            }
+                            case TelTokenId.AsInstruction:
+                            {
+                                root.AddNode(AsSyntax.Parse(navigator));
+
+                                break;
+                            }
+                            case TelTokenId.Newline:
+                            case TelTokenId.Whitespace:
+                                continue;
+                        }
+
+                        break;
+                    }
                 }
-            }
-            
-            return stream;
+            } while (navigator.TryMoveNext(out token));
+
+            return new TelSyntaxTree(root);
         }
 
         private enum ParserState
         {
-            
+            Any
         }
     }
 }
