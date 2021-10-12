@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Jammo.ParserTools;
 using TempoPlugins.Syntax;
 using TempoPlugins.Syntax.Nodes;
@@ -30,14 +28,7 @@ namespace TempoPlugins
 
                                 break;
                             }
-                            case TelTokenId.AsInstruction:
-                            {
-                                root.AddNode(AsSyntax.Parse(navigator));
-
-                                break;
-                            }
                             case TelTokenId.Newline:
-                            case TelTokenId.Whitespace:
                                 continue;
                         }
 

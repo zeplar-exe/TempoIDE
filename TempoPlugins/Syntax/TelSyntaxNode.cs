@@ -5,9 +5,10 @@ using TempoPlugins.Syntax.Nodes;
 namespace TempoPlugins.Syntax
 {
     public abstract class TelSyntaxNode
-    {
-        internal readonly List<TelSyntaxNode> nodes = new();
-        internal readonly List<ParserError> errors = new();
+    { // TODO: Add back node list and also add TelToken list, remove abstract descendents
+        protected readonly List<TelSyntaxNode> nodes = new();
+        private readonly List<ParserError> errors = new();
+        
         public IEnumerable<TelSyntaxNode> Nodes => nodes;
         public IEnumerable<ParserError> Errors => errors;
 
@@ -17,14 +18,14 @@ namespace TempoPlugins.Syntax
         {
             nodes.Add(node);
         }
-
+        
         public IEnumerable<TelSyntaxNode> Descendents()
         {
             foreach (var node in Nodes)
             {
                 yield return node;
 
-                foreach (var nestedNode in node.Descendents())
+                foreach (var nestedNode in node.Nodes)
                     yield return nestedNode;
             }
         }

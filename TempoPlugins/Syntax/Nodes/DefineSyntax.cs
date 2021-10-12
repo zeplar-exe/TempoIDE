@@ -19,8 +19,6 @@ namespace TempoPlugins.Syntax.Nodes
                 
                 switch (token.Id)
                 {
-                    case TelTokenId.Whitespace:
-                        continue;
                     case TelTokenId.Identifier:
                         syntax.Identifier = token.ToString();
                         break;

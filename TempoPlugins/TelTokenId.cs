@@ -4,7 +4,6 @@ namespace TempoPlugins
     {
         Unknown = 0,
             
-        Whitespace,
         Newline,
             
         Identifier,

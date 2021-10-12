@@ -29,11 +29,13 @@ namespace TempoPlugins
             
             errors.Clear();
             
-            var lexer = new Lexer(text, new LexerOptions
-            {
-                IncludeUnderscoreAsAlphabetic = true,
-                IncludePeriodAsNumeric = true
-            });
+            var lexer = new Lexer(text, new TokenizerOptions(BasicTokenType.Whitespace), 
+                new LexerOptions 
+                {
+                    IncludeUnderscoreAsAlphabetic = true,
+                    IncludePeriodAsNumeric = true
+                });
+            
             var preceding = new LinkedList<LexerToken>();
 
             bool LastIs(LexerTokenId id) => preceding.LastOrDefault()?.Is(id) ?? false;
@@ -137,11 +139,6 @@ namespace TempoPlugins
                     case LexerTokenId.CloseCurlyBracket:
                     {
                         tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseCurlyBracket));
-                        break;
-                    }
-                    case LexerTokenId.Space:
-                    {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Whitespace));
                         break;
                     }
                     case LexerTokenId.NewLine:

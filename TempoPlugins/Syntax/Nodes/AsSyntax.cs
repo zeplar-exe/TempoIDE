@@ -1,4 +1,3 @@
-using System;
 using Jammo.ParserTools;
 using TempoPlugins.Syntax.Nodes.Expressions;
 
@@ -20,8 +19,6 @@ namespace TempoPlugins.Syntax.Nodes
                 
                 switch (token.Id)
                 {
-                    case TelTokenId.Whitespace:
-                        continue;
                     case TelTokenId.Newline:
                         syntax.ReportError("Expected an expression.");
                         break;

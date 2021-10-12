@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TempoPlugins.Syntax.Nodes;
 
 namespace TempoPlugins.Syntax
 {
