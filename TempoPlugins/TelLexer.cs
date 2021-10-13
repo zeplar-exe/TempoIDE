@@ -7,7 +7,8 @@ namespace TempoPlugins
     public class TelLexer
     {
         private readonly string text;
-        
+        private EnumerableNavigator<LexerToken> navigator;
+
         private int line;
         private int column;
 
@@ -29,22 +30,19 @@ namespace TempoPlugins
             
             errors.Clear();
             
-            var lexer = new Lexer(text, new TokenizerOptions(BasicTokenType.Whitespace), 
-                new LexerOptions 
+            navigator = new Lexer(text, new LexerOptions 
                 {
                     IncludeUnderscoreAsAlphabetic = true,
                     IncludePeriodAsNumeric = true
-                });
+                }).ToNavigator();
             
             var preceding = new LinkedList<LexerToken>();
+            var token = navigator.Current;
 
-            bool LastIs(LexerTokenId id) => preceding.LastOrDefault()?.Is(id) ?? false;
-            bool NextIs(LexerTokenId id) => lexer.PeekNext()?.Is(id) ?? false;
-            
-            foreach (var token in lexer)
+            do
             {
                 column += token.RawToken.Length;
-                
+
                 switch (token.Id)
                 {
                     case LexerTokenId.Alphabetic:
@@ -52,30 +50,30 @@ namespace TempoPlugins
                         switch (token.RawToken)
                         {
                             case "define":
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.DefineInstruction));
+                                AddToken(token.ToString(), TelTokenId.DefineInstruction);
                                 break;
                             case "as":
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.AsInstruction));
+                                AddToken(token.ToString(), TelTokenId.AsInstruction);
                                 break;
                             case "import":
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.ImportInstruction));
+                                AddToken(token.ToString(), TelTokenId.ImportInstruction);
                                 break;
                             case "from":
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.FromInstruction));
+                                AddToken(token.ToString(), TelTokenId.FromInstruction);
                                 break;
                             case "protocol":
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.ProtocolKeyword));
+                                AddToken(token.ToString(), TelTokenId.ProtocolKeyword);
                                 break;
                             default:
-                                tokens.Add(new TelToken(token.ToString(), TelTokenId.Identifier));
+                                AddToken(token.ToString(), TelTokenId.Identifier);
                                 break;
                         }
-                        
+
                         break;
                     }
                     case LexerTokenId.Numeric:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.NumericLiteral));
+                        AddToken(token.ToString(), TelTokenId.NumericLiteral);
                         break;
                     }
                     case LexerTokenId.Quote:
@@ -86,169 +84,171 @@ namespace TempoPlugins
                             ReportError(token);
                             break;
                         }
-                        
-                        var stringTokens = new List<LexerToken> { token };
 
-                        foreach (var literalToken in lexer)
+                        var stringTokens = new List<LexerToken> { token };
+                        
+                        while (navigator.TryMoveNext(out var literalToken))
                         {
                             stringTokens.Add(literalToken);
-                            
+
                             if (literalToken.Is(token.Id))
                             {
                                 if (!LastIs(LexerTokenId.Backslash))
                                 {
-                                    tokens.Add(new TelToken(
+                                    AddToken(
                                         string.Concat(stringTokens.SelectMany(t => t.RawToken)),
-                                        TelTokenId.StringLiteral));
-                                    
+                                        TelTokenId.StringLiteral);
+
                                     break;
                                 }
                             }
 
                             preceding.AddFirst(token);
                         }
-                        
+
                         break;
                     }
                     case LexerTokenId.LeftParenthesis:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenParenthesis));
-                        
+                        AddToken(token.ToString(), TelTokenId.OpenParenthesis);
+
                         break;
                     }
                     case LexerTokenId.RightParenthesis:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseParenthesis));
+                        AddToken(token.ToString(), TelTokenId.CloseParenthesis);
                         break;
                     }
                     case LexerTokenId.OpenBracket:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenBracket));
-                        break;    
+                        AddToken(token.ToString(), TelTokenId.OpenBracket);
+                        break;
                     }
                     case LexerTokenId.CloseBracket:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseBracket));
+                        AddToken(token.ToString(), TelTokenId.CloseBracket);
                         break;
                     }
                     case LexerTokenId.OpenCurlyBracket:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.OpenCurlyBracket));
+                        AddToken(token.ToString(), TelTokenId.OpenCurlyBracket);
                         break;
                     }
                     case LexerTokenId.CloseCurlyBracket:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.CloseCurlyBracket));
+                        AddToken(token.ToString(), TelTokenId.CloseCurlyBracket);
                         break;
                     }
+                    case LexerTokenId.Space:
+                        continue;
                     case LexerTokenId.NewLine:
                     {
                         line++;
                         column = 0;
-                        
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Newline));
+
+                        AddToken(token.ToString(), TelTokenId.Newline);
                         break;
                     }
                     case LexerTokenId.Period:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Period));
+                        AddToken(token.ToString(), TelTokenId.Period);
                         break;
                     }
                     case LexerTokenId.Comma:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Comma));
+                        AddToken(token.ToString(), TelTokenId.Comma);
                         break;
                     }
                     case LexerTokenId.Plus:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Plus));
+                        AddToken(token.ToString(), TelTokenId.Plus);
                         break;
                     }
                     case LexerTokenId.Dash:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Minus));
+                        AddToken(token.ToString(), TelTokenId.Minus);
                         break;
                     }
                     case LexerTokenId.Star:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Multiply));
+                        AddToken(token.ToString(), TelTokenId.Multiply);
                         break;
                     }
                     case LexerTokenId.Slash:
                     {
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Divide));
+                        AddToken(token.ToString(), TelTokenId.Divide);
                         break;
                     }
                     case LexerTokenId.LessThan:
                     {
                         if (NextIs(LexerTokenId.Equals))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.LessThanOrEqual));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.LessThanOrEqual);
                             break;
                         }
-                        
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.LessThan));
+
+                        AddToken(token.ToString(), TelTokenId.LessThan);
                         break;
                     }
                     case LexerTokenId.GreaterThan:
                     {
                         if (NextIs(LexerTokenId.Equals))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.GreaterThanOrEqual));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.GreaterThanOrEqual);
                             break;
                         }
-                        
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.GreaterThan));
+
+                        AddToken(token.ToString(), TelTokenId.GreaterThan);
                         break;
                     }
                     case LexerTokenId.Equals:
                     {
                         if (NextIs(LexerTokenId.Equals))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.Equals));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.Equals);
                             break;
                         }
 
                         if (NextIs(LexerTokenId.GreaterThan))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.DelegateOperator));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.DelegateOperator);
                             break;
                         }
-                        
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Assignment));
+
+                        AddToken(token.ToString(), TelTokenId.Assignment);
                         break;
                     }
                     case LexerTokenId.ExclamationMark:
                     {
                         if (NextIs(LexerTokenId.Equals))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.NotEqual));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.NotEqual);
                             break;
                         }
-                        
-                        tokens.Add(new TelToken(token.ToString(), TelTokenId.Not));
+
+                        AddToken(token.ToString(), TelTokenId.Not);
                         break;
                     }
                     case LexerTokenId.Vertical:
                     {
                         if (NextIs(LexerTokenId.Vertical))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.Or));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.Or);
                             break;
                         }
-                        
+
                         ReportError(token);
                         break;
                     }
@@ -256,12 +256,12 @@ namespace TempoPlugins
                     {
                         if (NextIs(LexerTokenId.Amphersand))
                         {
-                            lexer.Skip();
-                            
-                            tokens.Add(new TelToken(token.ToString(), TelTokenId.And));
+                            navigator.Skip();
+
+                            AddToken(token.ToString(), TelTokenId.And);
                             break;
                         }
-                        
+
                         ReportError(token);
                         break;
                     }
@@ -271,35 +271,31 @@ namespace TempoPlugins
                         break;
                     }
                 }
-                
+
                 preceding.AddFirst(token);
-            }
+            } while (navigator.TryMoveNext(out token));
 
             return tokens;
+        }
+
+        private bool NextIs(LexerTokenId id)
+        {
+            return navigator.TryPeekNext(out var token) && token.Is(id);
+        }
+        
+        private bool LastIs(LexerTokenId id)
+        {
+            return navigator.TryPeekLast(out var token) && token.Is(id);
+        }
+
+        private void AddToken(string rawText, TelTokenId id)
+        {
+            tokens.Add(new TelToken(rawText, line, column, id));
         }
 
         private void ReportError(LexerToken token)
         {
             errors.Add(new LexerError("Unexpected character", token.ToString(), line, column));
-        }
-    }
-    
-    public class TelToken
-    {
-        public readonly string Text;
-        public readonly TelTokenId Id;
-
-        public TelToken(string text, TelTokenId id)
-        {
-            Text = text;
-            Id = id;
-        }
-
-        public bool Is(TelTokenId id) => Id == id;
-
-        public override string ToString()
-        {
-            return Text;
         }
     }
 }

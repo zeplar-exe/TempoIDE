@@ -10,5 +10,10 @@ namespace TempoPlugins.Syntax.Nodes.Expressions
         {
             return new NumericExpressionSyntax { Literal = navigator.Current };
         }
+
+        public override string ToString()
+        {
+            return Literal.ToString();
+        }
     }
 }

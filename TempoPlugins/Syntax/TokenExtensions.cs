@@ -2,6 +2,11 @@ namespace TempoPlugins.Syntax
 {
     public static class TokenExtensions
     {
+        public static bool IsIdentifier(this TelToken token)
+        {
+            return !token.IsKeyword() && !token.IsOperator();
+        }
+        
         public static bool IsKeyword(this TelToken token)
         {
             switch (token.Id)
@@ -26,6 +31,17 @@ namespace TempoPlugins.Syntax
                     return false;
             }
         }
+        
+        public static bool IsOperator(this TelToken token)
+        {
+            switch (token.Id)
+            {
+                case TelTokenId.Assignment:
+                    return true;
+                default:
+                    return token.IsConditional() || token.IsArithmetic();
+            }
+        }
 
         public static bool IsArithmetic(this TelToken token)
         {
@@ -41,17 +57,6 @@ namespace TempoPlugins.Syntax
             }
         }
         
-        public static bool IsOperator(this TelToken token)
-        {
-            switch (token.Id)
-            {
-                case TelTokenId.Assignment:
-                    return true;
-                default:
-                    return token.IsConditional() || token.IsArithmetic();
-            }
-        }
-
         public static bool IsConditional(this TelToken token)
         {
             switch (token.Id)

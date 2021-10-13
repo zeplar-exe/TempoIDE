@@ -8,7 +8,7 @@ namespace TempoPlugins.Syntax.Nodes
         public TelToken AsToken;
         public ExpressionSyntax Value;
 
-        public static AsSyntax Parse(EnumerableNavigator<TelToken> navigator)
+        internal static AsSyntax Parse(EnumerableNavigator<TelToken> navigator)
         {
             var syntax = new AsSyntax { AsToken = navigator.Current };
 
@@ -23,6 +23,12 @@ namespace TempoPlugins.Syntax.Nodes
                         syntax.ReportError("Expected an expression.");
                         break;
                     default:
+                        if (!token.IsIdentifier())
+                        {
+                            syntax.ReportError("Expected an expression.");
+                            break;
+                        }
+                        
                         syntax.Value = ExpressionSyntax.Parse(navigator);
 
                         return syntax;

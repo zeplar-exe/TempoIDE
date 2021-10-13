@@ -4,7 +4,7 @@ namespace TempoPlugins.Syntax.Nodes.Expressions
 {
     public abstract class ExpressionSyntax : TelSyntaxNode
     {
-        public static ExpressionSyntax Parse(EnumerableNavigator<TelToken> navigator)
+        internal static ExpressionSyntax Parse(EnumerableNavigator<TelToken> navigator)
         {
             switch (navigator.Current.Id)
             {
@@ -16,5 +16,7 @@ namespace TempoPlugins.Syntax.Nodes.Expressions
                     return new UnknownExpressionSyntax(navigator.Current);
             }
         }
+
+        public abstract override string ToString();
     }
 }

@@ -6,7 +6,7 @@ namespace TempoPlugins.Syntax
 {
     public abstract class TelSyntaxNode
     { // TODO: Add back node list and also add TelToken list, remove abstract descendents
-        protected readonly List<TelSyntaxNode> nodes = new();
+        private readonly List<TelSyntaxNode> nodes = new();
         private readonly List<ParserError> errors = new();
         
         public IEnumerable<TelSyntaxNode> Nodes => nodes;

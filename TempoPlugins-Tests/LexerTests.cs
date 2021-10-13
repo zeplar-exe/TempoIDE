@@ -34,7 +34,7 @@ namespace TempoPlugins_Tests
         [Test]
         public void TestNumber()
         {
-            var lexer = new TelLexer("12.34").Lex();
+            var lexer = new TelLexer("12.34 aaaaaaaaa 56.78").Lex();
 
             Assert.True(lexer.First().Id == TelTokenId.NumericLiteral);
         }
