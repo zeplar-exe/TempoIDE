@@ -12,28 +12,10 @@ namespace TempoPlugins.Syntax.Nodes
         {
             var syntax = new AsSyntax { AsToken = navigator.Current };
 
-            while (navigator.TryMoveNext(out var token))
-            {
-                if (syntax.HasError)
-                    break;
-                
-                switch (token.Id)
-                {
-                    case TelTokenId.Newline:
-                        syntax.ReportError("Expected an expression.");
-                        break;
-                    default:
-                        if (!token.IsIdentifier())
-                        {
-                            syntax.ReportError("Expected an expression.");
-                            break;
-                        }
-                        
-                        syntax.Value = ExpressionSyntax.Parse(navigator);
-
-                        return syntax;
-                }
-            }
+            if (!navigator.TryMoveNext(out _))
+                return syntax;
+            
+            syntax.Value = ExpressionSyntax.Parse(navigator);
 
             return syntax;
         }

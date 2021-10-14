@@ -4,7 +4,7 @@ namespace TempoPlugins.Syntax
     {
         public static bool IsIdentifier(this TelToken token)
         {
-            return !token.IsKeyword() && !token.IsOperator();
+            return !token.IsKeyword() && !token.IsBinary();
         }
         
         public static bool IsKeyword(this TelToken token)
@@ -32,7 +32,7 @@ namespace TempoPlugins.Syntax
             }
         }
         
-        public static bool IsOperator(this TelToken token)
+        public static bool IsBinary(this TelToken token)
         {
             switch (token.Id)
             {

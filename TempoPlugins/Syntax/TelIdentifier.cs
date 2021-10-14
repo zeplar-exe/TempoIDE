@@ -4,6 +4,6 @@ namespace TempoPlugins.Syntax
     {
         public string Name;
         public TelType Type;
-        public TelObject Value;
+        public object Value;
     }
 }

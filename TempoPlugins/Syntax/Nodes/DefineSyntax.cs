@@ -19,7 +19,6 @@ namespace TempoPlugins.Syntax.Nodes
 
                 switch (token.Id)
                 {
-                    // TODO: Switch state so you can identifiy a mismatch like As coming before the identifier
                     case TelTokenId.Identifier:
                         syntax.Identifier = new TelIdentifier { Name = token.ToString() };
 

@@ -1,3 +1,5 @@
+using Jammo.ParserTools;
+
 namespace TempoPlugins.Syntax.Nodes.Expressions
 {
     public class BinaryExpressionSyntax : ExpressionSyntax
@@ -5,6 +7,15 @@ namespace TempoPlugins.Syntax.Nodes.Expressions
         public ExpressionSyntax Left;
         public TelToken Operator;
         public ExpressionSyntax Right;
+
+        public new static BinaryExpressionSyntax Parse(EnumerableNavigator<TelToken> navigator)
+        {
+            var syntax = new BinaryExpressionSyntax();
+
+            
+            
+            return syntax;
+        }
         
         public override string ToString()
         {

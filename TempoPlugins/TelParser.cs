@@ -11,10 +11,8 @@ namespace TempoPlugins
             var root = new TelCompilationRoot();
             var state = new StateMachine<ParserState>();
             var navigator = new TelLexer(text).Lex().ToNavigator();
-
-            var token = navigator.Current;
             
-            do
+            foreach (var token in navigator.EnumerateFromIndex())
             {
                 switch (state.Current)
                 {
@@ -28,14 +26,12 @@ namespace TempoPlugins
 
                                 break;
                             }
-                            case TelTokenId.Newline:
-                                continue;
                         }
 
                         break;
                     }
                 }
-            } while (navigator.TryMoveNext(out token));
+            }
 
             return new TelSyntaxTree(root);
         }

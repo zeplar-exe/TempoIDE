@@ -30,16 +30,14 @@ namespace TempoPlugins
             
             errors.Clear();
             
-            navigator = new Lexer(text, new LexerOptions 
+            navigator = new Lexer(text, new TokenizerOptions(BasicTokenType.Whitespace), 
+                new LexerOptions 
                 {
                     IncludeUnderscoreAsAlphabetic = true,
                     IncludePeriodAsNumeric = true
                 }).ToNavigator();
-            
-            var preceding = new LinkedList<LexerToken>();
-            var token = navigator.Current;
 
-            do
+            foreach (var token in navigator.EnumerateFromIndex())
             {
                 column += token.RawToken.Length;
 
@@ -64,6 +62,15 @@ namespace TempoPlugins
                             case "protocol":
                                 AddToken(token.ToString(), TelTokenId.ProtocolKeyword);
                                 break;
+                            case "and":
+                                AddToken(token.ToString(), TelTokenId.And);
+                                break;
+                            case "or":
+                                AddToken(token.ToString(), TelTokenId.Or);
+                                break;
+                            case "not":
+                                AddToken(token.ToString(), TelTokenId.Not);
+                                break;
                             default:
                                 AddToken(token.ToString(), TelTokenId.Identifier);
                                 break;
@@ -87,23 +94,18 @@ namespace TempoPlugins
 
                         var stringTokens = new List<LexerToken> { token };
                         
-                        while (navigator.TryMoveNext(out var literalToken))
+                        foreach (var literalToken in navigator.EnumerateFromIndex())
                         {
                             stringTokens.Add(literalToken);
 
-                            if (literalToken.Is(token.Id))
-                            {
-                                if (!LastIs(LexerTokenId.Backslash))
-                                {
-                                    AddToken(
-                                        string.Concat(stringTokens.SelectMany(t => t.RawToken)),
-                                        TelTokenId.StringLiteral);
+                            if (literalToken.Is(token.Id) && !LastIs(LexerTokenId.Backslash))
+                            { // Passing the id guarantees the closing token will be the same
+                                AddToken(
+                                    string.Concat(stringTokens.SelectMany(t => t.RawToken)),
+                                    TelTokenId.StringLiteral);
 
-                                    break;
-                                }
+                                break;
                             }
-
-                            preceding.AddFirst(token);
                         }
 
                         break;
@@ -139,14 +141,11 @@ namespace TempoPlugins
                         AddToken(token.ToString(), TelTokenId.CloseCurlyBracket);
                         break;
                     }
-                    case LexerTokenId.Space:
-                        continue;
                     case LexerTokenId.NewLine:
                     {
                         line++;
                         column = 0;
-
-                        AddToken(token.ToString(), TelTokenId.Newline);
+                        
                         break;
                     }
                     case LexerTokenId.Period:
@@ -236,32 +235,6 @@ namespace TempoPlugins
                             break;
                         }
 
-                        AddToken(token.ToString(), TelTokenId.Not);
-                        break;
-                    }
-                    case LexerTokenId.Vertical:
-                    {
-                        if (NextIs(LexerTokenId.Vertical))
-                        {
-                            navigator.Skip();
-
-                            AddToken(token.ToString(), TelTokenId.Or);
-                            break;
-                        }
-
-                        ReportError(token);
-                        break;
-                    }
-                    case LexerTokenId.Amphersand:
-                    {
-                        if (NextIs(LexerTokenId.Amphersand))
-                        {
-                            navigator.Skip();
-
-                            AddToken(token.ToString(), TelTokenId.And);
-                            break;
-                        }
-
                         ReportError(token);
                         break;
                     }
@@ -271,16 +244,14 @@ namespace TempoPlugins
                         break;
                     }
                 }
-
-                preceding.AddFirst(token);
-            } while (navigator.TryMoveNext(out token));
+            }
 
             return tokens;
         }
 
         private bool NextIs(LexerTokenId id)
         {
-            return navigator.TryPeekNext(out var token) && token.Is(id);
+            return navigator.TakeIf(t=> t.Is(id), out _);
         }
         
         private bool LastIs(LexerTokenId id)
