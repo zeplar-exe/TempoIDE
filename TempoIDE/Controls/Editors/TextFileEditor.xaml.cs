@@ -1,15 +1,17 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using System.Windows;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
+using Timer = System.Timers.Timer;
 
 namespace TempoIDE.Controls.Editors
 {
     public partial class TextFileEditor : FileEditor
     {
-        private const int WriterCooldown = 500;
+        private readonly Timer timer = new(500);
         private bool textChangedBeforeUpdate;
 
         public override bool IsFocused => TextBox.IsFocused;
@@ -34,7 +36,7 @@ namespace TempoIDE.Controls.Editors
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Repeat.Interval(TimeSpan.FromMilliseconds(WriterCooldown), FileWriter, CancellationToken.None);
+            timer.Elapsed += delegate { FileWriter(); };
         }
         
         public override void FileWriter()
