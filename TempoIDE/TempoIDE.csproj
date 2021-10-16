@@ -68,6 +68,9 @@
       <None Update="data\logs.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="DefaultSkin.py">
+        <DependentUpon>App.xaml</DependentUpon>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
