@@ -7,8 +7,8 @@ namespace TempoIDE.Core.UserActions
 {
     public static class ActionHelper
     {
-        private static readonly List<IUserAction> actionBuffer = new();
-        private static readonly List<ActionSession> sessions = new();
+        private static readonly List<IUserAction> ActionBuffer = new();
+        private static readonly List<ActionSession> Sessions = new();
 
         public static void ProcessActionResult(ActionResult result)
         {
@@ -20,7 +20,7 @@ namespace TempoIDE.Core.UserActions
 
         public static bool LogAction(object id, IUserAction action)
         {
-            actionBuffer.Add(action);
+            ActionBuffer.Add(action);
             
             var session = GetSession(id);
 
@@ -42,19 +42,21 @@ namespace TempoIDE.Core.UserActions
             return GetSession(id)?.Redo();
         }
         
-        public static ActionSession GetSession(object id) => sessions.FirstOrDefault(s => s.Id == id);
+        public static ActionSession GetSession(object id) => Sessions.FirstOrDefault(s => s.Id == id);
 
         public static ActionSession GetOrCreateSession(object id)
         {
             var session = GetSession(id);
 
-            if (session == null)
-            {
-                session = new ActionSession(id);
-                sessions.Add(session);
-            }
+            if (session != null)
+                return session;
+            
+            session = new ActionSession(id);
+            Sessions.Add(session);
 
             return session;
         }
+
+        public static IEnumerable<IUserAction> PullBuffer() => ActionBuffer;
     }
 }
