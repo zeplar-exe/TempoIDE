@@ -7,23 +7,24 @@ namespace TempoIDE.Core.UserActions
         private LinkedListNode<IUserAction> currentActionNode;
         private IUserAction CurrentAction => currentActionNode?.Value;
         
-        public readonly string Id;
+        public readonly object Id;
         public readonly LinkedList<IUserAction> Actions = new();
 
-        public ActionSession(string id)
+        public ActionSession(object id)
         {
             Id = id;
+            currentActionNode = Actions.AddFirst(new SessionCreatedAction());
         }
 
         public void AddAction(IUserAction action)
         {
-            currentActionNode = currentActionNode == null ? Actions.AddFirst(action) : Actions.AddAfter(currentActionNode, action);
+            currentActionNode = Actions.AddAfter(currentActionNode, action);
         }
 
-        public ActionResult? Undo()
+        public ActionResult Undo()
         {
-            if (CurrentAction == null)
-                return null;
+            if (CurrentAction is SessionCreatedAction)
+                return new ActionResult(false, "Nothing to undo.");
 
             var result = CurrentAction.Undo();
             currentActionNode = currentActionNode.Previous;
@@ -31,15 +32,28 @@ namespace TempoIDE.Core.UserActions
             return result;
         }
 
-        public ActionResult? Redo()
+        public ActionResult Redo()
         {
-            if (CurrentAction == null)
-                return null;
+            if (currentActionNode.Next == null)
+                return new ActionResult(false, "Nothing to redo.");
 
-            var result = CurrentAction.Redo();
+            var result = currentActionNode.Next.Value.Redo();
             currentActionNode = currentActionNode.Next;
 
             return result;
+        }
+    }
+    
+    public class SessionCreatedAction : IUserAction
+    {
+        public ActionResult Undo()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public ActionResult Redo()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

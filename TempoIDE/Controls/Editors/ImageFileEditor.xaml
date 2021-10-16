@@ -7,6 +7,21 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="600"
              PreviewMouseRightButtonDown="ImageFileEditor_OnMouseRightButtonDown">
+    
+    <local:FileEditor.CommandBindings>
+        <CommandBinding
+            Command="{x:Static local:ImageFileEditor.UndoCommand}"
+            Executed="UndoCommand_OnExecuted"/>
+        <CommandBinding
+            Command="{x:Static local:ImageFileEditor.RedoCommand}"
+            Executed="RedoCommand_OnExecuted"/>
+    </local:FileEditor.CommandBindings>
+    
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+Z" Command="{x:Static local:ImageFileEditor.UndoCommand}"/>
+        <KeyBinding Gesture="Ctrl+Shift+Z" Command="{x:Static local:ImageFileEditor.RedoCommand}"/>
+    </UserControl.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
@@ -28,7 +43,14 @@
                 Unchecked="DrawButton_OnIsCheckedChanged"/>
         </Grid>
 
-        <InkCanvas Grid.Row="1" Name="Canvas" Background="Transparent" EditingMode="None" Loaded="Canvas_OnLoaded">
+        <InkCanvas 
+            Grid.Row="1"
+            Name="Canvas"
+            Background="Transparent" 
+            EditingMode="None" 
+            Loaded="Canvas_OnLoaded"
+            StrokeCollected="Canvas_OnStrokeCollected">
+            
             <InkCanvas.DefaultDrawingAttributes>
                 <DrawingAttributes Width="10" Height="10"/>
             </InkCanvas.DefaultDrawingAttributes>

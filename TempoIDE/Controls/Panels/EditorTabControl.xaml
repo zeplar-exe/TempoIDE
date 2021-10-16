@@ -3,9 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
+             xmlns:local="clr-namespace:TempoIDE.Controls.Panels"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300">
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,7 +20,7 @@
             Background="{DynamicResource SecondaryBackgroundColor}">
             
             <StackPanel.Resources>
-                <Style TargetType="panels:EditorTabItem">
+                <Style TargetType="local:EditorTabItem">
                     <Setter Property="MinWidth" Value="150"/>
                 </Style>
             </StackPanel.Resources>

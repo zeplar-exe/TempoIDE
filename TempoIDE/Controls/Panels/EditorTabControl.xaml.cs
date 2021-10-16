@@ -2,16 +2,19 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Controls.Editors;
 using TempoIDE.Core;
+using TempoIDE.Core.Commands;
+using TempoIDE.Core.UserActions;
 
 namespace TempoIDE.Controls.Panels
 {
     public partial class EditorTabControl : UserControl
     {
-        public EditorTabItem SelectedItem { get; private set; }
-        public int SelectedIndex => TabsPanel.Children.IndexOf(SelectedItem);
+        public EditorTabItem SelectedTab { get; private set; }
+        public int SelectedIndex => TabsPanel.Children.IndexOf(SelectedTab);
         public EditorTabItem[] Children => TabsPanel.Children.OfType<EditorTabItem>().ToArray();
 
         public EditorTabControl()
@@ -43,7 +46,7 @@ namespace TempoIDE.Controls.Panels
 
         public bool TryOpenNext()
         {
-            if (SelectedItem == null)
+            if (SelectedTab == null)
                 return false;
 
             if (SelectedIndex <= TabsPanel.Children.Count)
@@ -56,7 +59,7 @@ namespace TempoIDE.Controls.Panels
 
         public bool TryOpenPrevious()
         {
-            if (SelectedItem == null)
+            if (SelectedTab == null)
                 return false;
             
             if (SelectedIndex <= 0)
@@ -203,14 +206,14 @@ namespace TempoIDE.Controls.Panels
             if (tabItem == null)
                 return;
             
-            var closingSelected = SelectedItem == tabItem;
+            var closingSelected = SelectedTab == tabItem;
 
             if (tabItem.Editor is FileEditor fileEditor)
                 fileEditor.UpdateFile();
 
             if (closingSelected)
             {
-                SelectedItem = null;
+                SelectedTab = null;
 
                 if (!TryOpenNext())
                 {
@@ -249,15 +252,15 @@ namespace TempoIDE.Controls.Panels
 
         private void OnTabSelected(object sender, EventArgs e)
         {
-            if (SelectedItem != null)
-                SelectedItem.IsSelected = false;
+            if (SelectedTab != null)
+                SelectedTab.IsSelected = false;
             
-            SelectedItem = (EditorTabItem)sender;
+            SelectedTab = (EditorTabItem)sender;
             
-            if (ContentDisplay.Child == SelectedItem)
+            if (ContentDisplay.Child == SelectedTab)
                 return;
             
-            ContentDisplay.Child = SelectedItem.Editor;
+            ContentDisplay.Child = SelectedTab.Editor;
         }
 
         private void OnTabMouseMove(object sender, EventArgs e)

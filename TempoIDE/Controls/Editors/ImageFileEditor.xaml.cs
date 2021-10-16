@@ -6,7 +6,10 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using TempoIDE.Core.Commands;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.UserActions;
+using TempoIDE.Core.UserActions.Standard;
 
 namespace TempoIDE.Controls.Editors
 {
@@ -19,6 +22,20 @@ namespace TempoIDE.Controls.Editors
         public ImageFileEditor()
         {
             InitializeComponent();
+        }
+        
+        public static readonly RoutedCommandExt UndoCommand = new();
+
+        public void UndoCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ActionHelper.ProcessActionResult(Session.Undo());
+        }
+        
+        public static readonly RoutedCommandExt RedoCommand = new();
+        
+        public void RedoCommand_OnExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            ActionHelper.ProcessActionResult(Session.Redo());
         }
 
         public static ImageFileEditor FromFile(FileInfo file)
@@ -101,5 +118,10 @@ namespace TempoIDE.Controls.Editors
             using var stream = BoundFile.OpenWrite();
             encoder.Save(stream);
         } // Courtesy of https://social.msdn.microsoft.com/Forums/vstudio/en-US/ba4dc89f-0169-43a9-8374-68e1fb34a222/saving-inkcanvas-as-image?forum=wpf
+
+        private void Canvas_OnStrokeCollected(object sender, InkCanvasStrokeCollectedEventArgs e)
+        {
+            Session.AddAction(new ImageDrawAction(e.Stroke, Canvas));
+        }
     }
 }

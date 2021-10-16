@@ -10,5 +10,10 @@ namespace TempoIDE.Core.UserActions
             Success = success;
             Message = message;
         }
+
+        public override string ToString()
+        {
+            return Message;
+        }
     }
 }
