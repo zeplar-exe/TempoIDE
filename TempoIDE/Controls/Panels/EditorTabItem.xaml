@@ -8,22 +8,6 @@
              d:DesignHeight="300" d:DesignWidth="300"
              MouseLeftButtonDown="EditorTabItem_OnMouseLeftButtonDown">
     
-    <UserControl.CommandBindings>
-        <CommandBinding
-            Command="{x:Static local:EditorTabItem.UndoCommand}"
-            Executed="UndoCommand_OnExecuted"
-            CanExecute="TabCommand_CanExecute"/>
-        <CommandBinding
-            Command="{x:Static local:EditorTabItem.RedoCommand}"
-            Executed="RedoCommand_OnExecuted"
-            CanExecute="TabCommand_CanExecute"/>
-    </UserControl.CommandBindings>
-    
-    <UserControl.InputBindings>
-        <KeyBinding Gesture="Ctrl+Z" Command="{x:Static local:EditorTabItem.UndoCommand}"/>
-        <KeyBinding Gesture="Ctrl+Shift+Z" Command="{x:Static local:EditorTabItem.RedoCommand}"/>
-    </UserControl.InputBindings>
-    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"/>
