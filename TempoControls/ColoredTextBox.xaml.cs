@@ -210,11 +210,4 @@ namespace TempoControls
         
         #endregion
     }
-
-    public enum InputMode
-    {
-        Text,
-        TextAndAutoComplete,
-        AutoComplete
-    }
 }
