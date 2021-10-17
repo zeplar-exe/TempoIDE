@@ -1,12 +1,8 @@
-using Jammo.TextAnalysis.DotNet.CSharp;
-using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
-using TempoIDE.Core.Environments;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections;
-using TempoIDE.Core.Inspections.Inspectors;
 
 namespace TempoIDE.Controls.Editors
 {
@@ -27,11 +23,8 @@ namespace TempoIDE.Controls.Editors
         {
             if (!ApplicationHelper.InspectionsEnabled)
                 return;
-
-            var inspector = new CSharpInspector(); // TODO: Assume C#, will change 
-            inspector.Inspect(EnvironmentHelper.Current.GetRelevantCompilation(BoundFile));
             
-            foreach (var diagnostic in inspector.Diagnostics)
+            foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
             {
                 var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
                 var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);

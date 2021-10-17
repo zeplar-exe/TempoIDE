@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using Jammo.ParserTools;
 using TempoIDE.Core.DataStructures;
-using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.ParserStreams
 {

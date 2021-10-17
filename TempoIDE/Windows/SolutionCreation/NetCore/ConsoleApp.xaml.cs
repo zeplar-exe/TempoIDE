@@ -16,7 +16,7 @@ namespace TempoIDE.Windows.SolutionCreation.NetCore
 
         public override void Create()
         {
-            var env = SolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text);
+            var env = CSharpSolutionEnvironment.CreateEmpty(Location.Text, SlnName.Text);
             using var projStream = new ProjectStream();
             
             projStream.Properties.Add("OutputType", "Exe");

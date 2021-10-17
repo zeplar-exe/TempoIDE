@@ -1,16 +1,17 @@
 using System;
 using System.IO;
 using System.Threading;
+using System.Timers;
 using System.Windows;
-using TempoControls.Core.IntTypes;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
+using Timer = System.Timers.Timer;
 
 namespace TempoIDE.Controls.Editors
 {
     public partial class TextFileEditor : FileEditor
     {
-        private const int WriterCooldown = 500;
+        private readonly Timer timer = new(500);
         private bool textChangedBeforeUpdate;
 
         public override bool IsFocused => TextBox.IsFocused;
@@ -20,21 +21,25 @@ namespace TempoIDE.Controls.Editors
             InitializeComponent();
         }
 
-        public static TextFileEditor FromExtension(string extension)
+        public static TextFileEditor FromFile(FileInfo file)
         {
-            return extension.Replace(".", "") switch
+            var editor = file.Extension.Replace(".", "") switch
             {
                 "cs" => new CsFileEditor(),
                 _ => new TextFileEditor()
             };
+            
+            editor.Update(file);
+
+            return editor;
         }
 
         private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Repeat.Interval(TimeSpan.FromMilliseconds(WriterCooldown), TextWriter, CancellationToken.None);
+            timer.Elapsed += delegate { FileWriter(); };
         }
         
-        public override void TextWriter()
+        public override void FileWriter()
         {
             if (textChangedBeforeUpdate)
             {
@@ -51,59 +56,6 @@ namespace TempoIDE.Controls.Editors
         private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
         {
             textChangedBeforeUpdate = true;
-        }
-
-        public override bool TryCopy()
-        {
-            var text = TextBox.GetSelectedText();
-            
-            if (string.IsNullOrEmpty(text)) 
-                return false;
-
-            Clipboard.SetText(text, ApplicationHelper.ClipboardEncoding);
-                
-            return true;
-
-        }
-
-        public override bool TryPaste()
-        {
-            var text = Clipboard.GetText();
-
-            if (string.IsNullOrEmpty(text))
-                return false;
-            
-            if (TextBox.GetSelectedText().Length == 0)
-            {
-                TextBox.AppendTextAtCaret(Clipboard.GetText(ApplicationHelper.ClipboardEncoding));   
-            }
-            else
-            {
-                TextBox.Backspace(0);
-                TextBox.AppendTextAtCaret(Clipboard.GetText(ApplicationHelper.ClipboardEncoding));
-            }
-            
-            return true;
-        }
-
-        public override bool TryCut()
-        {
-            var text = TextBox.GetSelectedText();
-
-            if (string.IsNullOrEmpty(text)) 
-                return false;
-            
-            Clipboard.SetText(text, ApplicationHelper.ClipboardEncoding);
-            TextBox.Backspace(0);
-        
-            return true;
-        }
-        
-        public override bool TrySelectAll()
-        {
-            TextBox.Select(new IntRange(0, TextBox.TextArea.TextBuilder.Length));
-            
-            return true;
         }
 
         public override void Refresh() => UpdateVisual();
@@ -151,8 +103,12 @@ namespace TempoIDE.Controls.Editors
 
             BoundFile.Refresh();
             
+            EnvironmentHelper.Current.DirectoryWatcher.Buffer();
+            
             File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()),
                 ApplicationHelper.GlobalEncoding);
+            
+            EnvironmentHelper.Current.DirectoryWatcher.Resume();
         }
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)

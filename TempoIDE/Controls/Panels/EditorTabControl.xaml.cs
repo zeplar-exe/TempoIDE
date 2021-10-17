@@ -1,23 +1,25 @@
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Controls.Editors;
+using TempoIDE.Core;
+using TempoIDE.Core.Commands;
+using TempoIDE.Core.UserActions;
 
 namespace TempoIDE.Controls.Panels
 {
     public partial class EditorTabControl : UserControl
     {
-        public EditorTabItem SelectedItem { get; private set; }
-        
-        public ObservableCollection<string> Files { get; } = new(); 
-        
+        public EditorTabItem SelectedTab { get; private set; }
+        public int SelectedIndex => TabsPanel.Children.IndexOf(SelectedTab);
+        public EditorTabItem[] Children => TabsPanel.Children.OfType<EditorTabItem>().ToArray();
+
         public EditorTabControl()
         {
             DataContext = this;
-            Files.CollectionChanged += delegate { Refresh(); };
             
             InitializeComponent();
         }
@@ -26,110 +28,239 @@ namespace TempoIDE.Controls.Panels
         public Brush HoveredTabColor { get; set; }
         public Brush UnselectedTabColor { get; set; }
 
-        public void Open(FileInfo file)
+        public EditorTabItem OpenFile(FileInfo file)
         {
-            if (!file.Exists)
-                return;
-            
-            if (!Files.Contains(file.FullName))
-                Files.Add(file.FullName);
-
-            var tab = TabsPanel.Children
-                .OfType<EditorTabItem>()
-                .First(t => t.BoundFile.FullName == file.FullName);
-            
-            tab.IsSelected = true;
-
-            if (SelectedItem != null)
-                SelectedItem.IsSelected = false;
-
-            SelectedItem = tab;
-            ContentDisplay.Child = tab.Editor;
-        }
-
-        public void Close(FileInfo file)
-        {
-            var closingSelected = file.FullName == SelectedItem?.BoundFile.FullName;
-            
-            var index = Files.IndexOf(file.FullName);
-            var nextIndex = index + 1;
-            var lastIndex = index - 1;
-            
-            var tab = TabsPanel.Children
-                .OfType<EditorTabItem>()
-                .First(t => t.BoundFile.FullName == file.FullName);
-            
-            if (tab.Editor is FileEditor fileEditor)
-                fileEditor.UpdateFile();
-            
-            Files.Remove(file.FullName);
-            
-            if (closingSelected)
+            switch (file.Extension)
             {
-                SelectedItem = null;
-
-                if (index == 0)
+                case ".png":
+                case ".jpg":
                 {
-                    if (nextIndex < Files.Count)
-                        Open(new FileInfo(Files[nextIndex]));
-                    else
-                        ContentDisplay.Child = null;
+                    return OpenImageFile(file);
                 }
-                else
+                default:
                 {
-                    Open(new FileInfo(Files[lastIndex]));
+                    return OpenTextFile(file);
                 }
             }
         }
 
+        public bool TryOpenNext()
+        {
+            if (SelectedTab == null)
+                return false;
+
+            if (SelectedIndex <= TabsPanel.Children.Count)
+                return false;
+
+            OpenEditor(Children[SelectedIndex + 1].Editor);
+
+            return true;
+        }
+
+        public bool TryOpenPrevious()
+        {
+            if (SelectedTab == null)
+                return false;
+            
+            if (SelectedIndex <= 0)
+                return false;
+
+            OpenEditor(Children[SelectedIndex - 1].Editor);
+
+            return true;
+        }
+
+        public EditorTabItem OpenTextFile(FileInfo file)
+        {
+            if (file is not { Exists: true })
+                return null;
+
+            if (TryGetFileEditorTab(file, out var tab))
+            {
+                tab.Select();
+
+                return tab;
+            }
+
+            var newTab = OpenEditor(TextFileEditor.FromFile(file));
+            newTab.Header.Text = file.Name;
+            
+            return newTab;
+        }
+
+        public EditorTabItem OpenImageFile(FileInfo file)
+        {
+            if (TryGetFileEditorTab(file, out var tab))
+            {
+                tab.Select();
+
+                return tab;
+            }
+
+            var newTab = OpenEditor(ImageFileEditor.FromFile(file));
+            newTab.Header.Text = file.Name;
+
+            return newTab;
+        }
+
+        public EditorTabItem OpenEditor(Editor editor)
+        {
+            if (editor == null)
+                return null;
+            
+            foreach (var tab in Children)
+            {
+                if (tab.Editor == editor)
+                {
+                    tab.Select();
+
+                    return tab;
+                }
+            }
+
+            var newTab = CreateEditorTab(editor);
+            OpenTab(newTab);
+
+            return newTab;
+        }
+
+        private bool TryGetFileEditorTab(FileInfo file, out EditorTabItem editorTab)
+        {
+            editorTab = null;
+            
+            foreach (var tab in Children)
+            {
+                if (tab.Editor is not FileEditor fileEditor)
+                    continue;
+                
+                if (fileEditor.BoundFile.EqualsOther(file))
+                {
+                    editorTab = tab;
+
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private EditorTabItem CreateEditorTab(Editor editor)
+        {
+            var tab = new EditorTabItem
+            {
+                Editor = editor,
+                Background = UnselectedTabColor
+            };
+
+            tab.Selected += OnTabSelected;
+            tab.MouseMove += OnTabMouseMove;
+            tab.MouseLeave += OnTabMouseLeave;
+            tab.Closed += OnTabClosed;
+
+            return tab;
+        }
+
+        public void CloseFile(FileInfo file)
+        {
+            foreach (var tab in Children)
+            {
+                if (tab.Editor is not FileEditor fileEditor) 
+                    continue;
+                
+                if (fileEditor.BoundFile.EqualsOther(file))
+                {
+                    CloseEditor(fileEditor);
+                        
+                    return;
+                }
+            }
+        }
+        
+        public void OpenTab(EditorTabItem tabItem)
+        {
+            foreach (var tab in Children)
+            {
+                if (tab == tabItem)
+                {
+                    tab.Select();
+                    return;
+                }
+            }
+
+            TabsPanel.Children.Add(tabItem);
+            tabItem.Select();
+        }
+
+        public void CloseEditor(Editor editor)
+        {
+            var tab = GetTabOfEditor(editor);
+            
+            if (tab == null)
+                return;
+            
+            CloseTab(tab);
+        }
+
+        public void CloseTab(EditorTabItem tabItem)
+        {
+            if (tabItem == null)
+                return;
+            
+            var closingSelected = SelectedTab == tabItem;
+
+            if (tabItem.Editor is FileEditor fileEditor)
+                fileEditor.UpdateFile();
+
+            if (closingSelected)
+            {
+                SelectedTab = null;
+
+                if (!TryOpenNext())
+                {
+                    if (!TryOpenPrevious())
+                        ContentDisplay.Child = null;
+                }
+            }
+            
+            TabsPanel.Children.Remove(tabItem);
+        }
+        
         public void CloseAll()
         {
-            foreach (var item in Files.ToArray())
-                Close(new FileInfo(item));
+            foreach (var tab in Children)
+                CloseTab(tab);
+        }
+
+        private EditorTabItem GetTabOfEditor(Editor editor)
+        {
+            return Children.FirstOrDefault(tab => tab.Editor == editor);
         }
 
         public void Refresh()
         {
-            var selectedFile = SelectedItem?.BoundFile;
-            
-            TabsPanel.Children.Clear();
-
-            foreach (var path in Files.ToArray())
+            foreach (var tab in Children)
             {
-                var fileInfo = new FileInfo(path);
-
-                if (!fileInfo.Exists)
+                if (tab.Editor is FileEditor fileEditor)
                 {
-                    Files.Remove(path);
-                    continue;
+                    if (!fileEditor.BoundFile.Exists)
+                        CloseEditor(fileEditor);
+
+                    return;
                 }
-
-                var editor = TextFileEditor.FromExtension(fileInfo.Extension);
-                editor.Update(fileInfo);
-
-                var tab = new EditorTabItem
-                {
-                    Header = { Text = fileInfo.Name },
-                    Editor = editor,
-                    BoundFile = fileInfo,
-                    Background = UnselectedTabColor
-                };
-
-                tab.Selected += OnTabSelected;
-                tab.MouseMove += OnTabMouseMove;
-                tab.MouseLeave += OnTabMouseLeave;
-                tab.Closed += OnTabClosed;
-
-                TabsPanel.Children.Add(tab);
-                
-                if (selectedFile?.FullName == tab.BoundFile.FullName)
-                    tab.Select();
             }
         }
 
         private void OnTabSelected(object sender, EventArgs e)
         {
-            Open(((EditorTabItem)sender).BoundFile);
+            if (SelectedTab != null)
+                SelectedTab.IsSelected = false;
+            
+            SelectedTab = (EditorTabItem)sender;
+            
+            if (ContentDisplay.Child == SelectedTab)
+                return;
+            
+            ContentDisplay.Child = SelectedTab.Editor;
         }
 
         private void OnTabMouseMove(object sender, EventArgs e)
@@ -150,15 +281,7 @@ namespace TempoIDE.Controls.Panels
 
         private void OnTabClosed(object sender, EventArgs e)
         {
-            Close(((EditorTabItem)sender).BoundFile);
-        }
-
-        public Editor GetFocusedEditor()
-        {
-            var selected = SelectedItem?.Editor;
-
-            return selected?.IsFocused ?? false 
-                ? selected : null;
+            CloseTab((EditorTabItem)sender);
         }
     }
 }

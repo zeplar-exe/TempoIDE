@@ -11,6 +11,14 @@ using System.Windows.Media.Imaging;
 
 namespace TempoIDE.Core
 {
+    public static class FileInfoExtensions
+    {
+        public static bool EqualsOther(this FileInfo fileInfo, FileInfo other)
+        {
+            return fileInfo.FullName == other.FullName;
+        }
+    }
+    
     public static class Extensions
     {
         public static IEnumerable<Enum> EnumerateFlags(this Enum input)

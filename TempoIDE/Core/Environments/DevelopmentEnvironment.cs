@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Jammo.TextAnalysis;
-using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Caches;
 using TempoIDE.Core.ParserStreams;
@@ -57,8 +56,8 @@ namespace TempoIDE.Core.Environments
             DirectoryWatcher.Changed += DirectoryChanged;
         }
         
-        // TODO: Remove reliance on C#
-        public abstract CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null);
+        public abstract AnalysisCompilation GetRelevantCompilation(FileInfo file = null);
+        public abstract IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null);
 
         public abstract void CacheFiles();
         public abstract void RefreshCache();

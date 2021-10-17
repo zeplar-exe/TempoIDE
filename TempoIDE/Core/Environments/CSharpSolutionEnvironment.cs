@@ -7,19 +7,20 @@ using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Associators;
 using TempoIDE.Core.DataStructures;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Environments
 {
-    public class SolutionEnvironment : DevelopmentEnvironment
+    public class CSharpSolutionEnvironment : DevelopmentEnvironment
     {
         private readonly Dictionary<string, CachedProjectCompilation> projectCompilations = new();
 
         public readonly JSolutionFile SolutionFile;
 
-        public SolutionEnvironment(FileInfo file) : base(file, CreateWatcher(file.FullName))
+        public CSharpSolutionEnvironment(FileInfo file) : base(file, CreateWatcher(file.FullName))
         {
             SolutionFile = new JSolutionFile(file.FullName);
 
@@ -27,7 +28,7 @@ namespace TempoIDE.Core.Environments
                 projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));
         }
         
-        public SolutionEnvironment(JSolutionFile solutionFile) 
+        public CSharpSolutionEnvironment(JSolutionFile solutionFile) 
             : base(new FileInfo(solutionFile.Stream.FilePath), CreateWatcher(solutionFile.Stream.FilePath))
         {
             SolutionFile = solutionFile;
@@ -40,7 +41,7 @@ namespace TempoIDE.Core.Environments
             return new DirectoryWatcher(file.Directory);
         }
 
-        public static SolutionEnvironment CreateEmpty(string directory, string name)
+        public static CSharpSolutionEnvironment CreateEmpty(string directory, string name)
         {
             var path = Path.Join(directory, name + ".sln");
 
@@ -74,24 +75,44 @@ namespace TempoIDE.Core.Environments
             stream.Write();
             file.UpdateProjects();
             
-            return new SolutionEnvironment(file);
+            return new CSharpSolutionEnvironment(file);
         }
 
-        public override CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null)
+        public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
         {
             if (file == null)
                 return null;
-            
-            if (Cache.FileData.Get(file.FullName) is not CachedProjectFile cachedFile)
-                return null;
 
-            foreach (var (path, compilation) in projectCompilations)
+            if (file.Extension == ".cs")
             {
-                if (path == cachedFile.FileInfo.FullName)
-                    return compilation.Compilation;
-            }
+                if (Cache.FileData.Get(file.FullName) is not CachedProjectFile cachedFile)
+                    return ExtensionAssociator.AnalysisCompilationFromFile(file);
 
-            return null;
+                foreach (var (path, compilation) in projectCompilations)
+                {
+                    if (path == cachedFile.FileInfo.FullName)
+                        return compilation.Compilation;
+                }
+            }
+            
+            return ExtensionAssociator.AnalysisCompilationFromFile(file);
+        }
+
+        public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null)
+        {
+            if (file == null)
+                return Enumerable.Empty<Diagnostic>();
+
+            if (GetRelevantCompilation() is not CSharpProjectAnalysisCompilation compilation)
+                return Enumerable.Empty<Diagnostic>(); // TODO
+
+            foreach (var document in compilation.Documents)
+            {
+                if (document.File.FullName != file.FullName)
+                    return document.Diagnostics;
+            }
+            
+            return Enumerable.Empty<Diagnostic>();
         }
 
         public override async void CacheFiles()
@@ -165,6 +186,8 @@ namespace TempoIDE.Core.Environments
                     
                     break;
             }
+            
+            projectCompilations.Clear();
             
             foreach (var project in SolutionFile.ProjectFiles)
                 projectCompilations.Add(project.FileInfo.Name, new CachedProjectCompilation(project));

@@ -1,11 +1,7 @@
 using System;
 using System.IO;
 using ByteSizeLib;
-using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.DataStructures;
-using TempoIDE.Core.Environments;
-using TempoIDE.Core.Helpers;
-using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Caches
 {

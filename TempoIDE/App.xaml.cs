@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using CSharp_Logger;
-using TempoIDE.Core;
 using TempoIDE.Core.Helpers;
 
 namespace TempoIDE
@@ -13,11 +11,8 @@ namespace TempoIDE
         {
             var logger = new Logger();
             logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue());
-
-            logger.CatchLog += (_, logArgs) => Console.WriteLine(logArgs.Message);
             
             ApplicationHelper.Logger = logger;
-
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
         

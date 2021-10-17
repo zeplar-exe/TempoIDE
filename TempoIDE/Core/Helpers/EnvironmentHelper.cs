@@ -75,10 +75,8 @@ namespace TempoIDE.Core.Helpers
             if (File.Exists(path))
             {
                 if (Path.GetExtension(path) == ".sln")
-                {
-                    return new SolutionEnvironment(new FileInfo(path));
-                }
-                
+                    return new CSharpSolutionEnvironment(new FileInfo(path));
+
                 return new FileEnvironment(new FileInfo(path));
             }
             

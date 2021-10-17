@@ -1,7 +1,10 @@
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using Jammo.TextAnalysis.DotNet.CSharp;
+using Jammo.TextAnalysis;
 using TempoIDE.Controls.Panels;
+using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Wrappers;
 
@@ -9,16 +12,19 @@ namespace TempoIDE.Core.Environments
 {
     public class DirectoryEnvironment : DevelopmentEnvironment
     {
-        private CSharpAnalysisCompilation compilation;
-        
         public DirectoryEnvironment(DirectoryInfo directory) : base(directory, new DirectoryWatcher(directory))
         {
-            compilation = CSharpAnalysisCompilationHelper.Create(directory.FullName, AnalysisType.Directory);
+            
         }
 
-        public override CSharpAnalysisCompilation GetRelevantCompilation(FileInfo file = null)
+        public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
         {
-            return compilation;
+            return ExtensionAssociator.AnalysisCompilationFromFile(file);
+        }
+
+        public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null)
+        {
+            return Enumerable.Empty<Diagnostic>(); // TODO
         }
 
         public override async void CacheFiles()

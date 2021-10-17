@@ -1,5 +1,4 @@
 using Jammo.TextAnalysis.DotNet.CSharp;
-using Jammo.TextAnalysis.DotNet.CSharp.Inspection;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;

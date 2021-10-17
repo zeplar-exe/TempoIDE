@@ -1,27 +1,16 @@
 using System;
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoIDE.Controls.Editors;
-using TempoIDE.Core.Caches;
+using TempoIDE.Core.Commands;
+using TempoIDE.Core.UserActions;
 
 namespace TempoIDE.Controls.Panels
 {
     public partial class EditorTabItem : UserControl
     {
         public Editor Editor;
-
-        private FileInfo boundFile;
-        public FileInfo BoundFile
-        {
-            get => boundFile;
-            set
-            {
-                boundFile = value;
-                Icon.Source = IconCache.ImageFromExtension(BoundFile?.Extension);
-            }
-        }
 
         public bool IsSelected;
 
@@ -32,7 +21,7 @@ namespace TempoIDE.Controls.Panels
         {
             InitializeComponent();
         }
-
+        
         public void Select()
         {
             IsSelected = true;

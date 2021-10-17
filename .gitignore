@@ -7,3 +7,4 @@ riderModule.iml
 .vs
 TempoIDE.sln.DotSettings
 TempoIDE.sln.DotSettings.user
+*.py

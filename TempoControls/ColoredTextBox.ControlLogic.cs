@@ -47,7 +47,6 @@ namespace TempoControls
                 return;
             
             Backspace(0);
-
             AppendTextAtCaret(e.Text);
             UpdateAutoCompletion();
         }
@@ -56,7 +55,7 @@ namespace TempoControls
         {
             if (IsReadOnly)
                 return;
-
+            
             switch (e.Key)
             {
                 #region Special

@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using TempoIDE.Plugins;
 using TempoIDE.Plugins.Core;
 
 namespace TempoIDE_Tests
