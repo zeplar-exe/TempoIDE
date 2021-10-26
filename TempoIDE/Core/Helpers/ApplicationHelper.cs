@@ -62,6 +62,12 @@ namespace TempoIDE.Core.Helpers
             MainWindow.Notify(message, NotificationIcon.Error);
             
             ErrorCodeEmitted?.Invoke(code, details);
+            LogError(message);
+        }
+
+        public static void LogError(string error)
+        {
+            Logger.Error(error);
         }
     }
 }

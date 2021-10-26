@@ -19,7 +19,7 @@
         <DependentUpon>Shortcuts.settings</DependentUpon>
       </Compile>
       <Compile Remove="packages\**" />
-      <Compile Update="Properties\Resources.Designer.cs">
+      <Compile Update="Properties\ImageResources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
@@ -30,6 +30,11 @@
       <Compile Update="UserControls\Panels\EditorControl.FileHandling.cs">
         <DependentUpon>EditorControl.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Properties\ErrorResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>ErrorResources.resx</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -37,7 +42,7 @@
       <PackageReference Include="CSharp-Logger" Version="1.0.1" />
       <PackageReference Include="CsvHelper" Version="27.1.1" />
       <PackageReference Include="Jammo.HTTP" Version="1.0.0" />
-      <PackageReference Include="Jammo.ParserTools" Version="1.4.0" />
+      <PackageReference Include="Jammo.ParserTools" Version="1.5.2" />
       <PackageReference Include="Jammo.TextAnalysis" Version="2.2.0" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
       <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
@@ -46,9 +51,9 @@
     <ItemGroup>
       <EmbeddedResource Remove="packages\**" />
       <None Remove="ProgramData\intellisense.cs.xml" />
-      <EmbeddedResource Update="Properties\Resources.resx">
+      <EmbeddedResource Update="Properties\ImageResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
       <None Update="data\inspection_severity.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -65,12 +70,16 @@
       <None Update="data\plugins\Test\Test.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="data\logs.log">
+      <None Update="data\output.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="DefaultSkin.py">
         <DependentUpon>App.xaml</DependentUpon>
       </None>
+      <EmbeddedResource Update="Properties\ErrorResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>

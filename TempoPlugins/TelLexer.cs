@@ -30,8 +30,7 @@ namespace TempoPlugins
             
             errors.Clear();
             
-            navigator = new Lexer(text, new TokenizerOptions(BasicTokenType.Whitespace), 
-                new LexerOptions 
+            navigator = new Lexer(text, new LexerOptions(t => t.Is(LexerTokenId.Whitespace))
                 {
                     IncludeUnderscoreAsAlphabetic = true,
                     IncludePeriodAsNumeric = true
@@ -141,7 +140,7 @@ namespace TempoPlugins
                         AddToken(token.ToString(), TelTokenId.CloseCurlyBracket);
                         break;
                     }
-                    case LexerTokenId.NewLine:
+                    case LexerTokenId.Newline:
                     {
                         line++;
                         column = 0;

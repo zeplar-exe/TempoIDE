@@ -1,5 +1,8 @@
+using System;
 using System.IO;
+using TempoControls.Properties;
 using TempoIDE.Core.Environments;
+using TempoIDE.Properties;
 using TempoIDE.Windows;
 
 namespace TempoIDE.Core.Helpers
@@ -14,8 +17,9 @@ namespace TempoIDE.Core.Helpers
 
             if (env == null)
             {
+                Console.WriteLine(ErrorResources.FileDoesNotExist, Path.GetFileName(path));
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE,
-                    $"The given file '{Path.GetFileName(path)}' does not exist.");
+                    string.Format(ErrorResources.FileDoesNotExist, Path.GetFileName(path)));
 
                 return;
             }
