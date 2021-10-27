@@ -16,7 +16,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             navigator = new SettingsLexer(text).Lex().ToNavigator();
         }
 
-        public IEnumerable<DataPair> Parse()
+        public IEnumerable<Setting> Parse()
         {
             foreach (var token in navigator.EnumerateFromIndex())
             {
@@ -32,7 +32,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
                         if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out var openBlock))
                         {
-                            yield return new DataPair(token.Text, new ExtendedData(ParseBlock()));
+                            yield return new Setting(token.Text, new ExtendedSetting(ParseBlock()));
                             
                             break;
                         }
