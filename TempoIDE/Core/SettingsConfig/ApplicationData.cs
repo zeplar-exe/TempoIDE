@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
-using TempoControls.Properties;
+using TempoIDE.Core.Helpers;
 using TempoIDE.Properties;
 
-namespace TempoIDE.Core.Helpers
+namespace TempoIDE.Core.SettingsConfig
 {
     public static class ApplicationData
     {
@@ -40,12 +39,12 @@ namespace TempoIDE.Core.Helpers
 
             return true;
         }
-
+// TODO: implement stuff copy
         private static IEnumerable<DataPair> Parse(string text)
         {
             var navigator = new Lexer(text).ToNavigator();
 
-            
+            yield break;
         }
 
         public static bool TryGetDataDirectory(out DirectoryInfo info)
@@ -78,6 +77,8 @@ namespace TempoIDE.Core.Helpers
                         break;
                 }
             }
+            
+            yield break;
         }
     }
 
