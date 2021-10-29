@@ -2,9 +2,11 @@ namespace TempoIDE.Core.SettingsConfig
 {
     public abstract class TextSetting : SettingValue
     {
-        protected TextSetting(string raw) : base(raw)
+        public string Value;
+        
+        protected TextSetting(string value)
         {
-            
+            Value = value;
         }
     }
 }

@@ -1,11 +1,13 @@
+using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
+using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
 
 namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 {
     public class SettingsParser
     {
-        private readonly EnumerableNavigator<GenericLexerToken<SettingsTokenId>> navigator;
+        private readonly EnumerableNavigator<SettingsToken> navigator;
 
         private readonly List<ParserError> errors = new();
 
@@ -24,15 +26,15 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                 {
                     case SettingsTokenId.Identifier:
                     {
-                        if (!navigator.TakeIf(t => t.Is(SettingsTokenId.Equals), out var equals))
+                        if (!navigator.TakeIf(t => t.Is(SettingsTokenId.Equals), out _))
                         {
                             ReportError("Expected a '='");
                             break;
                         }
 
-                        if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out var openBlock))
+                        if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
                         {
-                            yield return new Setting(token.Text, new ExtendedSetting(ParseBlock()));
+                            yield return new Setting(token.Text, ParseMethod(token));
                             
                             break;
                         }
@@ -48,9 +50,47 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             yield break;
         }
 
-        private SettingsNode ParseBlock()
+        private MethodSetting ParseMethod(SettingsToken name)
         {
-            return null;
+            
+        }
+
+        private BlockNode ParseBlock()
+        {
+            var node = new BlockNode(navigator.Current.Context);
+            
+            foreach (var token in navigator.EnumerateFromIndex())
+            {
+                if (token.Is(SettingsTokenId.CloseCurlyBracket))
+                    break;
+
+                if (token.Is(SettingsTokenId.Identifier)) 
+                {
+                    
+                }
+                else if (token.IsKeyword())
+                {
+                    switch (token.Id)
+                    {
+                        case SettingsTokenId.OrKeyword:
+                            if (!navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
+                            {
+                                ReportError("Expected a '{'");
+                                break;
+                            }
+                            
+                            node.AddNode(ParseBlock());
+                            
+                            break;
+                    }
+                }
+                else
+                {
+                    ReportError("Unexpected token.");
+                }
+            }
+
+            return node;
         }
 
         private void ReportError(string message)

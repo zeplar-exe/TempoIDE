@@ -20,7 +20,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             }).ToNavigator();
         }
 
-        public IEnumerable<GenericLexerToken<SettingsTokenId>> Lex()
+        public IEnumerable<SettingsToken> Lex()
         {
             foreach (var token in navigator.EnumerateFromIndex())
             {
@@ -32,7 +32,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         switch (token.ToString())
                         {
                             case "IF":
-                                CreateToken(SettingsTokenId.IfKeyword);
+                                yield return CreateToken(SettingsTokenId.IfKeyword);
                                 break;
                             case "OR":
                                 yield return CreateToken(SettingsTokenId.OrKeyword);
@@ -51,9 +51,6 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                                 break;
                             case "XAND":
                                 yield return CreateToken(SettingsTokenId.XandKeyword);
-                                break;
-                            case "NOT":
-                                yield return CreateToken(SettingsTokenId.NotKeyword);
                                 break;
                             default:
                                 yield return CreateToken(SettingsTokenId.Identifier);
@@ -88,14 +85,15 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         break;
                     default:
                         ReportError("Unexpected token.");
+                        yield return CreateToken(SettingsTokenId.Unknown);
                         break;
                 }
             }
         }
 
-        private GenericLexerToken<SettingsTokenId> CreateToken(SettingsTokenId id)
+        private SettingsToken CreateToken(SettingsTokenId id)
         {
-            return new GenericLexerToken<SettingsTokenId>(navigator.Current.ToString(), navigator.Current.Context, id);
+            return new SettingsToken(navigator.Current.ToString(), navigator.Current.Context, id);
         }
         private void ReportError(string message)
         {

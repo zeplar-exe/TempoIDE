@@ -2,6 +2,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 {
     public enum SettingsTokenId
     {
+        Unknown = 0,
+        
         Identifier,
         
         IsOperator,
@@ -12,7 +14,6 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         NandKeyword,
         XorKeyword,
         XandKeyword,
-        NotKeyword,
         
         OpenParenthesis, 
         CloseParenthesis,

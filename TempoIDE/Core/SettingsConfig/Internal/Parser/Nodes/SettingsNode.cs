@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Jammo.ParserTools;
 
-namespace TempoIDE.Core.SettingsConfig.Internal.Parser
+namespace TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes
 {
     public abstract class SettingsNode
     {
@@ -8,6 +9,13 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public abstract IEnumerable<SettingsNode> Nodes { get; }
         public IEnumerable<ParserError> Errors => errors;
+
+        public StringContext Context;
+
+        protected SettingsNode(StringContext context)
+        {
+            Context = context;
+        }
 
         public IEnumerable<SettingsNode> Descendents()
         {
@@ -18,6 +26,11 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                 foreach (var descendent in child.Descendents())
                     yield return descendent;
             }
+        }
+
+        public void ReportError(string message)
+        {
+            errors.Add(new ParserError(message, Context));
         }
     }
 }
