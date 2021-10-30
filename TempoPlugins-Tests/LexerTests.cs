@@ -4,6 +4,7 @@ using TempoPlugins;
 
 namespace TempoPlugins_Tests
 {
+    [TestFixture]
     public class LexerTests
     {
         [Test]

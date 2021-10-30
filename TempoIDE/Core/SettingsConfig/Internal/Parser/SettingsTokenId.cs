@@ -9,6 +9,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         StringLiteral,
         NumericLiteral,
         
+        Comment,
+        
         IsOperator,
         IfKeyword,
         OrKeyword,

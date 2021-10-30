@@ -10,5 +10,10 @@ namespace TempoIDE.Core.SettingsConfig
             Key = key;
             Value = value;
         }
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

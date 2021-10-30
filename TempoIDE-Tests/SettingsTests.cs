@@ -9,6 +9,15 @@ namespace TempoIDE_Tests
     public class SettingsTests
     {
         [Test]
+        public void TestComment()
+        {
+            var testString = "thing=123 # This is a comment";
+            var setting = new SettingsParser(testString).Parse().ElementAt(1);
+            
+            Assert.True(setting.Value.ToString() == " This is a comment");
+        }
+        
+        [Test]
         public void TestTextSetting()
         {
             var testString = "thing=\"Hello world!\"";

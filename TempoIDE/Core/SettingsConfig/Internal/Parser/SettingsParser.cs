@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
 using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
@@ -48,6 +49,9 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         
                         break;
                     }
+                    case SettingsTokenId.Comment:
+                        yield return new Setting("", new Comment(token.ToString()));
+                        break;
                     default:
                         ReportError("Unexpected token.");
                         break;

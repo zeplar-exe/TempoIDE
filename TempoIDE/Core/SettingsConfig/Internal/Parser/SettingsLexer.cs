@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
 
@@ -79,6 +80,10 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                             string.Concat(fullString), token.Context,
                             SettingsTokenId.StringLiteral);
                         
+                        break;
+                    case LexerTokenId.Octothorpe:
+                        var comment = navigator.TakeWhile(t => !t.Is(LexerTokenId.Newline));
+                        yield return new SettingsToken(string.Concat(comment), token.Context, SettingsTokenId.Comment);
                         break;
                     case LexerTokenId.Numeric:
                         yield return CreateToken(SettingsTokenId.NumericLiteral);
