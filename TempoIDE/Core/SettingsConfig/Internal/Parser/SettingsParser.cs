@@ -1,5 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Jammo.ParserTools;
 using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
 using TempoIDE.Core.SettingsConfig.Settings;
@@ -15,12 +16,24 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public IEnumerable<ParserError> Errors => errors;
 
+        public SettingsParser(Stream stream)
+        {
+            using var reader = new StreamReader(stream, leaveOpen: true);
+
+            navigator = new SettingsLexer(reader.ReadToEnd()).Lex().ToNavigator();
+        }
+        
         public SettingsParser(string text)
         {
             navigator = new SettingsLexer(text).Lex().ToNavigator();
         }
 
-        public IEnumerable<Setting> Parse()
+        public IEnumerable<Setting> ParseSettings()
+        {
+            return ParseSettingsAndComments().OfType<Setting>();
+        }
+
+        public IEnumerable<ISetting> ParseSettingsAndComments()
         {
             foreach (var token in navigator.EnumerateFromIndex())
             {
@@ -36,7 +49,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
                         if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
                         {
-                            yield return new Setting(token.ToString(), ParseMethod(token));
+                            yield return new Setting(token.ToString(), ParseMethod(token), token.Context);
                             
                             break;
                         }
@@ -47,12 +60,12 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                             break;
                         }
 
-                        yield return new Setting(token.ToString(), new TextSetting(literalToken.ToString()));
+                        yield return new Setting(token.ToString(), new TextSetting(literalToken.ToString()), token.Context);
                         
                         break;
                     }
                     case SettingsTokenId.Comment:
-                        yield return new Setting("", new Comment(token.ToString()));
+                        yield return new Comment(token.ToString(), token.Context);
                         break;
                     default:
                         ReportError("Unexpected token.");

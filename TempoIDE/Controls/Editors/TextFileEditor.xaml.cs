@@ -1,7 +1,4 @@
-using System;
 using System.IO;
-using System.Threading;
-using System.Timers;
 using System.Windows;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;

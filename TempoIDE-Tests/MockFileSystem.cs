@@ -8,42 +8,18 @@ namespace TempoIDE_Tests
     {
         public readonly MockDirectory Root;
         
-        public MockFileSystem(string name, string directory)
+        public MockFileSystem(string name, DirectoryInfo directory)
         {
-            if (Directory.Exists(directory))
-                Directory.Delete(directory, true);
-
-            var path = Path.Join(directory, name);
+            var path = Path.Join(directory.FullName, name);
+            var directoryInfo = new DirectoryInfo(path);
+            
+            if (Directory.Exists(directoryInfo.FullName))
+                Directory.Delete(directoryInfo.FullName, true);
             
             Directory.CreateDirectory(path);
             Root = new MockDirectory(new DirectoryInfo(path));
         }
 
-        public void CreateDirectory(string relativePath)
-        {
-            Root.ItemsList.Add(new MockDirectory(Directory.CreateDirectory(Path.Join(Root.Info.FullName, relativePath))));
-        }
-
-        public bool DeleteDirectory(MockDirectory directory)
-        {
-            directory.Dispose();
-            
-            return Root.ItemsList.Remove(directory);
-        }
-
-        public void CreateFile(string relativePath)
-        {
-            var file = File.Create(Path.Join(Root.Info.FullName, relativePath));
-            Root.ItemsList.Add(new MockFile(file));
-        }
-
-        public bool DeleteFile(MockFile file)
-        {
-            file.Dispose();
-            
-            return Root.ItemsList.Remove(file);
-        }
-        
         public void Dispose()
         {
             Root.Dispose();   
@@ -52,11 +28,11 @@ namespace TempoIDE_Tests
     
     public abstract class MockFileSystemItem : IDisposable
     {
-        public readonly FileSystemInfo Info;
+        protected readonly FileSystemInfo info;
 
         internal MockFileSystemItem(FileSystemInfo info)
         {
-            Info = info;
+            this.info = info;
         }
 
         public abstract void Dispose();
@@ -64,38 +40,47 @@ namespace TempoIDE_Tests
 
     public class MockDirectory : MockFileSystemItem
     {
-        internal readonly List<MockFileSystemItem> ItemsList = new();
-        public IEnumerable<MockFileSystemItem> Items => ItemsList;
+        public DirectoryInfo Info => (DirectoryInfo)info;
+        
+        private readonly List<MockFileSystemItem> items = new();
+        public IEnumerable<MockFileSystemItem> Items => items;
         
         internal MockDirectory(DirectoryInfo directory) : base(directory)
         {
             
         }
 
-        public void CreateDirectory(string relativePath)
+        public MockDirectory CreateDirectory(string relativePath)
         {
-            ItemsList.Add(new MockDirectory(Directory.CreateDirectory(Path.Join(Info.FullName, relativePath))));
+            var directory = new MockDirectory(Directory.CreateDirectory(Path.Join(Info.FullName, relativePath)));
+            
+            items.Add(directory);
+
+            return directory;
         }
 
         public bool DeleteDirectory(MockDirectory directory)
         {
-            return ItemsList.Remove(directory);
+            return items.Remove(directory);
         }
 
-        public void CreateFile(string relativePath)
+        public MockFile CreateFile(string relativePath)
         {
-            var file = File.Create(Path.Join(Info.FullName, relativePath));
-            ItemsList.Add(new MockFile(file));
+            var file = new MockFile(new FileInfo(Path.Join(Info.FullName, relativePath)));
+            
+            items.Add(file);
+
+            return file;
         }
 
         public bool DeleteFile(MockFile file)
         {
-            return ItemsList.Remove(file);
+            return items.Remove(file);
         }
 
         public override void Dispose()
         {
-            foreach (var item in ItemsList)
+            foreach (var item in items)
                 item.Dispose();
             
             Directory.Delete(Info.FullName, true);
@@ -104,17 +89,18 @@ namespace TempoIDE_Tests
 
     public class MockFile : MockFileSystemItem
     {
-        private readonly FileStream stream;
+        public FileInfo Info => (FileInfo)info;
         
-        internal MockFile(FileStream file) : base(new FileInfo(file.Name))
+        internal MockFile(FileInfo file) : base(file)
         {
-            stream = file;
+            
         }
+
+        public StreamReader ReadStream() => new(Info.OpenRead(), leaveOpen: true);
+        public StreamWriter WriteToStream() => new(Info.OpenWrite(), leaveOpen: true);
 
         public override void Dispose()
         {
-            stream.Dispose();
-            
             File.Delete(Info.FullName);
         }
     }

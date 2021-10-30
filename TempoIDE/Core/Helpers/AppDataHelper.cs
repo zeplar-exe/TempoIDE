@@ -10,7 +10,7 @@ namespace TempoIDE.Core.Helpers
         
         public static FileStream GetFile(string path)
         {
-            return File.OpenRead(Path.Join(Directory.FullName, path));
+            return File.OpenRead(Directory.ToFile(path).FullName);
         }
         
         public static bool TryGetDataDirectory(out DirectoryInfo info)

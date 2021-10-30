@@ -1,69 +1,40 @@
-using System;
 using System.IO;
-using System.Linq;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
 using TempoIDE.Core.SettingsConfig.Settings.Exceptions;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
-    public class SkinConfig : Config
+    public sealed class SkinConfig : Config
     {
-        public SkinConfigSetting CurrentSkin;
-        public SkinConfigSetting PreviousSkin;
+        public string CurrentSkin = "_default";
+        public string PreviousSkin; 
         
-        public SkinConfig(Stream stream) : base(stream)
-        {
-            
-        }
+        public SkinConfig(FileInfo file) : base(file) { Parse(); }
+        public SkinConfig(Stream stream) : base(stream) { Parse(); }
 
-        public SkinConfig(FileStream stream) : base(stream)
+        public override void Parse()
         {
-            
-        }
-
-        public override async void Parse()
-        {
-            if (FilePath == null)
-                throw new IOException("Cannot correctly parse a non-file stream.");
-            
-            using var reader = new StreamReader(Stream, leaveOpen: true);
-            var settings = new SettingsParser(await reader.ReadToEndAsync()).Parse();
-
-            var previous = "";
-            var current = "";
+            var settings = new SettingsParser(Stream).ParseSettings();
             
             foreach (var setting in settings)
             {
                 switch (setting.Key)
                 {
                     case "previous_skin":
-                        previous = setting.Value.ToString();
+                        PreviousSkin = setting.Value.ToString();
                         break;
                     case "current_skin":
-                        current = setting.Value.ToString();
+                        CurrentSkin = setting.Value.ToString();
+                        
+                        if (string.IsNullOrEmpty(CurrentSkin))
+                            ReportEmptySetting(setting);
+                        
+                        break;
+                    default:
+                        ReportUnexpectedSetting(setting);
                         break;
                 }
             }
-
-            if (string.IsNullOrEmpty(current))
-                throw new MissingSettingException("current_skin");
-
-            var file = new FileInfo(FilePath);
-            var skinDirectory = new DirectoryInfo(Path.Join(file.DirectoryName, "skins"));
-
-            if (!skinDirectory.Exists)
-                throw new DirectoryNotFoundException("Expected a 'skins' directory adjacent to 'skins.txt'");
-
-            var targetPreviousFile = new FileInfo(Path.Join(skinDirectory.FullName, previous));
-            var targetCurrentFile = new FileInfo(Path.Join(skinDirectory.FullName, current));
-
-            if (!targetCurrentFile.Exists)
-                throw new FileNotFoundException("The target 'current_file' does not exist.");
-
-            CurrentSkin = new SkinConfigSetting(current, targetCurrentFile);
-
-            if (targetPreviousFile.Exists)
-                PreviousSkin = new SkinConfigSetting(previous, targetPreviousFile);
         }
 
         public override void Write()
@@ -72,10 +43,10 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
             using var writer = new StreamWriter(Stream, leaveOpen: true);
             
-            if (!string.IsNullOrEmpty(PreviousSkin.GivenName))
-                writer.WriteLine($"previous_skin={PreviousSkin.GivenName}");
+            if (!string.IsNullOrEmpty(PreviousSkin))
+                writer.WriteLine($"previous_skin={PreviousSkin}");
             
-            writer.Write($"current_skin={CurrentSkin.GivenName}");
+            writer.WriteAsync($"current_skin={CurrentSkin}");
         }
     }
 }

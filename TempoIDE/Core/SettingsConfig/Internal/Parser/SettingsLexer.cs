@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
 
@@ -23,6 +22,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public IEnumerable<SettingsToken> Lex()
         {
+            errors.Clear();
+            
             foreach (var token in navigator.EnumerateFromIndex())
             {
                 switch (token.Id)

@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using TempoControls.Properties;
 using TempoIDE.Core.Environments;
 using TempoIDE.Properties;
 using TempoIDE.Windows;
