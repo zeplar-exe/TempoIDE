@@ -13,7 +13,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public SettingsLexer(string text)
         {
-            navigator = new Lexer(text, new LexerOptions(t => t.Is(LexerTokenId.Whitespace))
+            navigator = new Lexer(text, new LexerOptions
             {
                 IncludeUnderscoreAsAlphabetic = true,
                 IncludePeriodAsNumeric = true
@@ -59,6 +59,30 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         
                         break;
                     }
+                    case LexerTokenId.DoubleQuote:
+                        var fullString = new List<string>();
+                        
+                        foreach (var stringToken in navigator.EnumerateFromIndex())
+                        {
+                            if (stringToken.Is(LexerTokenId.DoubleQuote))
+                            {
+                                navigator.TryPeekLast(out var last);
+                                
+                                if (!last.Is(LexerTokenId.Backslash))
+                                    break;
+                            }
+                            
+                            fullString.Add(stringToken.ToString());
+                        }
+
+                        yield return new SettingsToken(
+                            string.Concat(fullString), token.Context,
+                            SettingsTokenId.StringLiteral);
+                        
+                        break;
+                    case LexerTokenId.Numeric:
+                        yield return CreateToken(SettingsTokenId.NumericLiteral);
+                        break;
                     case LexerTokenId.LeftParenthesis:
                         yield return CreateToken(SettingsTokenId.OpenParenthesis);
                         break;
@@ -83,6 +107,9 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
                         yield return CreateToken(SettingsTokenId.Equals);
                         break;
+                    case LexerTokenId.Newline:
+                    case LexerTokenId.Whitespace:
+                        continue;
                     default:
                         ReportError("Unexpected token.");
                         yield return CreateToken(SettingsTokenId.Unknown);

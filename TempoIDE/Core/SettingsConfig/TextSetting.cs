@@ -1,12 +1,17 @@
 namespace TempoIDE.Core.SettingsConfig
 {
-    public abstract class TextSetting : SettingValue
+    public class TextSetting : SettingValue
     {
-        public string Value;
+        public readonly string Value;
         
-        protected TextSetting(string value)
+        public TextSetting(string value)
         {
             Value = value;
+        }
+
+        public override string ToString()
+        {
+            return Value;
         }
     }
 }

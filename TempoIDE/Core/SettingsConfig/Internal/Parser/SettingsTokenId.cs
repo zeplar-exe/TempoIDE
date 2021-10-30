@@ -6,6 +6,9 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         
         Identifier,
         
+        StringLiteral,
+        NumericLiteral,
+        
         IsOperator,
         IfKeyword,
         OrKeyword,
@@ -20,6 +23,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         OpenCurlyBracket,
         CloseCurlyBracket,
         Period,
-        Equals
+        Equals,
+        
+        DoubleQuote
     }
 }

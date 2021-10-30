@@ -8,13 +8,10 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         {
             
         }
-    }
 
-    public static class SettingTokenExtensions
-    {
-        public static bool IsKeyword(this SettingsToken token)
+        public override string ToString()
         {
-            return (int)token.Id > 2 && (int)token.Id < 11;
+            return Text;
         }
     }
 }

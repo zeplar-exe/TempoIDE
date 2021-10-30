@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
 using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
@@ -34,10 +33,18 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
                         if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
                         {
-                            yield return new Setting(token.Text, ParseMethod(token));
+                            yield return new Setting(token.ToString(), ParseMethod(token));
                             
                             break;
                         }
+
+                        if (!navigator.TryMoveNext(out var literalToken) || !literalToken.IsLiteral())
+                        {
+                            ReportError("Expected a literal value.");
+                            break;
+                        }
+
+                        yield return new Setting(token.ToString(), new TextSetting(literalToken.ToString()));
                         
                         break;
                     }
@@ -49,10 +56,17 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             
             yield break;
         }
-
+        
         private MethodSetting ParseMethod(SettingsToken name)
         {
+            var setting = new MethodSetting(name.ToString());
             
+            foreach (var block in ParseBlock().Nodes)
+            {
+                // Test if member access, method invocation, etc
+            }
+
+            return setting;
         }
 
         private BlockNode ParseBlock()
@@ -66,23 +80,24 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
                 if (token.Is(SettingsTokenId.Identifier)) 
                 {
-                    
-                }
-                else if (token.IsKeyword())
-                {
-                    switch (token.Id)
+                    if (navigator.TakeIf(t => t.Is(SettingsTokenId.Period), out _))
                     {
-                        case SettingsTokenId.OrKeyword:
-                            if (!navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
-                            {
-                                ReportError("Expected a '{'");
-                                break;
-                            }
-                            
-                            node.AddNode(ParseBlock());
-                            
-                            break;
+                        
                     }
+                }
+                else if (token.IsLogical())
+                {
+                    if (!navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
+                    {
+                        ReportError("Expected a '{'");
+                        continue;
+                    }
+                    
+                    node.AddNode(ParseBlock());
+                }
+                else if (token.IsControl())
+                {
+                    
                 }
                 else
                 {

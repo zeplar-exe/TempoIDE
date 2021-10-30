@@ -1,5 +1,4 @@
 using System.IO;
-using System.Threading.Tasks;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Internal;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;

@@ -1,10 +1,9 @@
+using System;
 using System.Collections.Generic;
-using TempoIDE.Core.SettingsConfig.Internal.Parser;
-using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
 
 namespace TempoIDE.Core.SettingsConfig
 {
-    public abstract class MethodSetting : SettingValue
+    public class MethodSetting : SettingValue, IInvokable
     {
         private readonly List<MethodOperation> operations = new();
         public IEnumerable<MethodOperation> Operations => operations;
@@ -16,9 +15,9 @@ namespace TempoIDE.Core.SettingsConfig
             Name = name;
         }
 
-        public void Invoke()
+        public InvokeResult Invoke()
         {
-            
+            throw new NotImplementedException();
         }
 
         public void AddOperation(MethodOperation operation)
@@ -30,10 +29,18 @@ namespace TempoIDE.Core.SettingsConfig
         {
             return operations.Remove(operation);
         }
+
+        public override string ToString()
+        {
+            throw new NotImplementedException();
+        }
     }
 
-    public class MethodOperation
+    public class MethodOperation : IInvokable
     {
-        
+        public InvokeResult Invoke()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
