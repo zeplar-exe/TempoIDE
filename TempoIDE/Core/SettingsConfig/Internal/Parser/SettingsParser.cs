@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Jammo.ParserTools;
 using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
+using TempoIDE.Core.SettingsConfig.Settings;
+using TempoIDE.Core.SettingsConfig.Settings.Methods;
 
 namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 {

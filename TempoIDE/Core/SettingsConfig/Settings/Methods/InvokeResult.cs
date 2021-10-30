@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Settings.Methods
 {
     public readonly struct InvokeResult
     {

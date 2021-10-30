@@ -2,6 +2,7 @@ using System.IO;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Internal;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
+using TempoIDE.Core.SettingsConfig.Settings;
 using TempoIDE.Properties;
 
 namespace TempoIDE.Core.SettingsConfig

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Settings.Methods
 {
     public class MethodSetting : SettingValue, IInvokable
     {

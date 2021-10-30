@@ -1,7 +1,9 @@
 using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
+using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE_Tests
 {
@@ -15,6 +17,12 @@ namespace TempoIDE_Tests
             var setting = new SettingsParser(testString).Parse().ElementAt(1);
             
             Assert.True(setting.Value.ToString() == " This is a comment");
+        }
+
+        [Test]
+        public void TestSkinConfig()
+        {
+            // TODO
         }
         
         [Test]

@@ -1,4 +1,4 @@
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Settings
 {
     public class Setting
     {
