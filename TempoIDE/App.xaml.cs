@@ -2,18 +2,24 @@
 using System.Windows;
 using CSharp_Logger;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Properties;
 
 namespace TempoIDE
 {
     public partial class App
     {
-        private void App_OnStartup(object sender, StartupEventArgs e)
+        private async void App_OnStartup(object sender, StartupEventArgs e)
         {
             var logger = new Logger();
-            logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue());
+            logger.SetConfiguration(IOHelper.GetRelativePath(@"data\output.log"), LogFilterFactory.AllTrue());
             
             ApplicationHelper.Logger = logger;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+            
+            await AsyncHelper.WaitUntilNotNull(() => MainWindow);
+            
+            if (!SkinHelper.TryLoadSkin(SettingsHelper.Settings.AppSettings.SkinSettings.SkinConfig.CurrentSkin))
+                SkinHelper.LoadDefaultSkin();
         }
         
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

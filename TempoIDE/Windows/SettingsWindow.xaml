@@ -4,10 +4,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
-        xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
         xmlns:classes="clr-namespace:TempoIDE.Core.Helpers"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+        xmlns:settingsFiles="clr-namespace:TempoIDE.Core.SettingsConfig.Settings.SettingsFiles"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
@@ -42,7 +42,7 @@
                                 <ObjectDataProvider
                                     x:Key="Skins"
                                     ObjectType="{x:Type classes:SkinHelper}"
-                                    MethodName="GetSkinFiles"/>
+                                    MethodName="GetSkinDefinitions"/>
                             </ControlTemplate.Resources>
                             
                             <Grid>
@@ -54,7 +54,7 @@
                                         ItemContainerStyle="{StaticResource TextStyle}"
                                         SelectionChanged="Skins_OnSelectionChanged">
                                         <ComboBox.ItemTemplate>
-                                            <DataTemplate DataType="io:FileInfo">
+                                            <DataTemplate DataType="settingsFiles:SkinDefinition">
                                                 <TextBlock Text="{Binding Name}"/>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>

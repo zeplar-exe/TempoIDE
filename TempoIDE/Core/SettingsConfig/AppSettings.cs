@@ -1,22 +1,27 @@
+using System.Collections.Generic;
 using System.IO;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Core.SettingsConfig
 {
-    public class AppSettings
+    public class AppSettings : SettingDirectoryWrapper
     {
-        public readonly SkinConfig SkinConfig;
+        public readonly SkinSettings SkinSettings;
 
-        public AppSettings(SkinConfig skinConfig)
+        public AppSettings(DirectoryInfo directory) : base(directory)
         {
-            SkinConfig = skinConfig;
+            SkinSettings = new SkinSettings(directory.ToRelativeDirectory("skins").CreateIfMissing());
+        }
+        
+        public override void Parse()
+        {
+            SkinSettings.Parse();
         }
 
-        public static AppSettings Create(DirectoryInfo directory)
+        public override void Write()
         {
-            return new AppSettings(
-                new SkinConfig(directory.ToFile("skin.txt")));
+            SkinSettings.Write();
         }
     }
 }

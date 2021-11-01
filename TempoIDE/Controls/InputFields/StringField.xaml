@@ -27,7 +27,7 @@
             VerticalContentAlignment="Center"
             FontSize="{Binding TextFontSize}"
             Style="{Binding TextBoxStyle}"
-            Foreground="{DynamicResource BaseTextColor}"
+            Foreground="{DynamicResource TextForegroundColor}"
             Background="{DynamicResource TextBoxBackgroundColor}"/>
     </Grid>
 </inputFields:InputField>

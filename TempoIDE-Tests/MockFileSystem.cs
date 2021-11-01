@@ -96,8 +96,8 @@ namespace TempoIDE_Tests
             
         }
 
-        public StreamReader ReadStream() => new(Info.OpenRead(), leaveOpen: true);
-        public StreamWriter WriteToStream() => new(Info.OpenWrite(), leaveOpen: true);
+        public StreamReader ReadStream() => new(Info.OpenRead());
+        public StreamWriter WriteToStream() => new(Info.OpenWrite());
 
         public override void Dispose()
         {

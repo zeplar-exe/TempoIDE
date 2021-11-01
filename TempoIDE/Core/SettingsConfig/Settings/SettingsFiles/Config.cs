@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.SettingsConfig.Internal.Parser;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
@@ -17,8 +18,6 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         protected Config(FileInfo file)
         {
-            _ = file ?? throw new ArgumentNullException(nameof(file));
-            
             Stream = file.OpenOrCreate(FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
         }
         
@@ -31,15 +30,21 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public abstract void Parse();
         public abstract void Write();
-        
+
+        public IEnumerable<Setting> EnumerateSettings()
+        {
+            return new SettingsParser(Stream).ParseSettings();
+        }
+
         protected void ReportUnexpectedSetting(Setting setting)
         {
             ReportWarning($"The setting '{setting.Key}' is never used.", setting.Context);
         }
 
-        protected void ReportEmptySetting(Setting setting)
+        protected void ReportIfEmptySetting(Setting setting)
         {
-            ReportError($"The setting {setting.Key} cannot be empty.", setting.Context);
+            if (string.IsNullOrEmpty(setting.Value.ToString()))
+                ReportError($"The setting {setting.Key} cannot be empty.", setting.Context);
         }
 
         protected void ReportWarning(string message, StringContext context)

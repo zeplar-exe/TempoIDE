@@ -1,33 +1,29 @@
 using System.IO;
-using TempoIDE.Core.SettingsConfig.Internal.Parser;
-using TempoIDE.Core.SettingsConfig.Settings.Exceptions;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
     public sealed class SkinConfig : Config
     {
-        public string CurrentSkin = "_default";
+        public const string DefaultSkinIdentifier = "_default";
+        
+        public string CurrentSkin = DefaultSkinIdentifier;
         public string PreviousSkin; 
         
-        public SkinConfig(FileInfo file) : base(file) { Parse(); }
-        public SkinConfig(Stream stream) : base(stream) { Parse(); }
+        public SkinConfig(FileInfo file) : base(file) { }
+        public SkinConfig(Stream stream) : base(stream) { }
 
         public override void Parse()
         {
-            var settings = new SettingsParser(Stream).ParseSettings();
-            
-            foreach (var setting in settings)
+            foreach (var setting in EnumerateSettings())
             {
-                switch (setting.Key)
+                switch (setting.Key.ToLower())
                 {
                     case "previous_skin":
                         PreviousSkin = setting.Value.ToString();
                         break;
                     case "current_skin":
                         CurrentSkin = setting.Value.ToString();
-                        
-                        if (string.IsNullOrEmpty(CurrentSkin))
-                            ReportEmptySetting(setting);
+                        ReportIfEmptySetting(setting);
                         
                         break;
                     default:
@@ -47,6 +43,12 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
                 writer.WriteLine($"previous_skin={PreviousSkin}");
             
             writer.WriteAsync($"current_skin={CurrentSkin}");
+        }
+
+        public void SetSkin(SkinDefinition definition)
+        {
+            PreviousSkin = CurrentSkin;
+            CurrentSkin = definition.Name;
         }
     }
 }

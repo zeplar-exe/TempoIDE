@@ -80,6 +80,12 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
+      <None Update="data\app\skins\skins\Dark.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="data\app\skins\skins\Light.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -123,17 +129,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Include="data\skins\Dark.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Include="data\skins\Light.xaml">
-        <Generator>MSBuild:Compile</Generator>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
       <Page Remove="Core\Static\DefaultSkin.xaml" />
     </ItemGroup>
 
@@ -142,6 +137,8 @@
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>SkinHelper.cs</DependentUpon>
       </Resource>
+      <None Remove="default_skin.txt" />
+      <EmbeddedResource Include="default_skin.txt" />
     </ItemGroup>
 
 </Project>

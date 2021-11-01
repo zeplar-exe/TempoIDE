@@ -10,7 +10,6 @@ namespace TempoIDE.Controls.Editors
     {
         public CsFileEditor()
         {
-            ApplicationHelper.InspectionsEnabledChanged += _ => TextBox.TextArea.InvalidateTextChanged();
             TextBox.TextArea.AfterHighlight += Label_OnAfterHighlight;
         }
         
@@ -21,9 +20,6 @@ namespace TempoIDE.Controls.Editors
 
         private void Inspect(SyntaxCharCollection characters)
         {
-            if (!ApplicationHelper.InspectionsEnabled)
-                return;
-            
             foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
             {
                 var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);

@@ -37,8 +37,7 @@ namespace TempoIDE.Controls.SidebarControl
         public static GitInfo LoadRepository(string path)
         {
             using var repository = new Repository(path);
-        
-            // TODO: Repository iteration causes AccessViolationException
+            
             return new GitInfo();
         }
     }

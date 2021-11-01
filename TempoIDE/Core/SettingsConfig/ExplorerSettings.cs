@@ -2,11 +2,20 @@ using System.IO;
 
 namespace TempoIDE.Core.SettingsConfig
 {
-    public class ExplorerSettings
+    public class ExplorerSettings : SettingDirectoryWrapper
     {
-        public static ExplorerSettings Create(DirectoryInfo directory)
+        public ExplorerSettings(DirectoryInfo directory) : base(directory)
         {
-            return new ExplorerSettings();
+        }
+
+        public override void Parse()
+        {
+            
+        }
+
+        public override void Write()
+        {
+            
         }
     }
 }

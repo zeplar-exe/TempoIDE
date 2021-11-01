@@ -5,7 +5,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes
 {
     public abstract class LogicalStatement : HeaderedBlockNode, ITruthy
     {
-        public readonly IEnumerable<bool> Values; // TODO, fill these somehow
+        public readonly IEnumerable<bool> Values;
         
         protected LogicalStatement(BlockNode block, StringContext context) : base(block, context)
         {

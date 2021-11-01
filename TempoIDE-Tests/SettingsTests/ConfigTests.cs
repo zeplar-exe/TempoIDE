@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.IO.Abstractions;
 using NUnit.Framework;
@@ -22,17 +23,21 @@ namespace TempoIDE_Tests.SettingsTests
             
             root.CreateDirectory(@"Settings\editor");
             root.CreateDirectory(@"Settings\explorer");
+            // TODO: SettingDirectory should create necessary files and directories
+            var directory = new SettingsDirectory(settingsDirectory.Info);
             
-            var directory = SettingsDirectory.Create(settingsDirectory.Info);
+            directory.Parse();
             
-            Assert.True(directory.AppSettings.SkinConfig.CurrentSkin == "_default");
+            Assert.True(directory.AppSettings.SkinSettings.SkinConfig.CurrentSkin == "_default");
         }
         
         [Test]
         public void TestSkinConfig()
         {
-            var testString = "previous_skin=\"Light\" current_skin=\"Dark\"";
-            var config = new SkinConfig(testString.CreateStream());
+            using var testString = "previous_skin=\"Light\" current_skin=\"Dark\"".CreateStream();
+            var config = new SkinConfig(testString);
+            
+            config.Parse();
             
             Assert.True(config.CurrentSkin == "Dark");
         }

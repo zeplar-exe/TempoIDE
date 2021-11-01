@@ -1,4 +1,5 @@
 using System.IO;
+using TempoIDE.Core.SettingsConfig;
 
 namespace TempoIDE.Core.Helpers
 {
@@ -6,7 +7,6 @@ namespace TempoIDE.Core.Helpers
     {
         public static DirectoryInfo Directory => new(IOHelper.GetRelativePath("data")); 
         public static bool Exists => Directory.Exists;
-        //TODO: Use Users/AppData
         
         public static FileStream GetFile(string path)
         {

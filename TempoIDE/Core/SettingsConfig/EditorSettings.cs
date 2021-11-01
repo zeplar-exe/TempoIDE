@@ -2,11 +2,21 @@ using System.IO;
 
 namespace TempoIDE.Core.SettingsConfig
 {
-    public class EditorSettings
+    public class EditorSettings : SettingDirectoryWrapper
     {
-        public static EditorSettings Create(DirectoryInfo directory)
+        public EditorSettings(DirectoryInfo directory) : base(directory)
         {
-            return new EditorSettings();
+            
+        }
+
+        public override void Parse()
+        {
+            
+        }
+
+        public override void Write()
+        {
+            
         }
     }
 }

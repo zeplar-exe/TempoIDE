@@ -6,7 +6,6 @@ using TempoIDE.Controls.Editors;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.CustomEventArgs;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Properties;
 using TempoIDE.Windows.SubWindows;
 
 namespace TempoIDE.Windows
@@ -54,14 +53,6 @@ namespace TempoIDE.Windows
         public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
         {
             SystemCommands.CloseWindow(ApplicationHelper.ActiveWindow);
-        }
-        
-        private void MainWindow_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(Settings.Default.ApplicationSkin))
-                SkinHelper.LoadDefaultSkin();
-            else if (!SkinHelper.TryLoadSkin(Settings.Default.ApplicationSkin))
-                SkinHelper.LoadDefaultSkin();
         }
         
         private void MainWindow_OnClosed(object sender, EventArgs e)
