@@ -18,7 +18,7 @@ namespace TempoIDE.Core.Helpers
         public static TextDataFormat ClipboardEncoding = TextDataFormat.UnicodeText;
         
         public static Logger Logger;
-// TODO: Integrate settings helper object here
+        
         public delegate void ApplicationTickHandler(ulong tick);
         public static event ApplicationTickHandler ApplicationTick;
 

@@ -23,7 +23,7 @@ namespace TempoIDE_Tests.SettingsTests
             
             root.CreateDirectory(@"Settings\editor");
             root.CreateDirectory(@"Settings\explorer");
-            // TODO: SettingDirectory should create necessary files and directories
+            
             var directory = new SettingsDirectory(settingsDirectory.Info);
             
             directory.Parse();
