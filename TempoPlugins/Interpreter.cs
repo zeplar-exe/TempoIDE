@@ -1,6 +1,8 @@
+using System;
+
 namespace TempoPlugins
 {
-    public class TelCompilation
+    public class Interpreter
     {
         
     }

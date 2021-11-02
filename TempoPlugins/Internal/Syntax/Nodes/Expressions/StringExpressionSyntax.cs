@@ -1,6 +1,7 @@
 using Jammo.ParserTools;
+using TempoPlugins.Internal.Lexer;
 
-namespace TempoPlugins.Syntax.Nodes.Expressions
+namespace TempoPlugins.Internal.Syntax.Nodes.Expressions
 {
     public class StringExpressionSyntax : ExpressionSyntax
     {

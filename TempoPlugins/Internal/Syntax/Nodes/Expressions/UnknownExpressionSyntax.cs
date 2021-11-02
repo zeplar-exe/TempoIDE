@@ -1,4 +1,6 @@
-namespace TempoPlugins.Syntax.Nodes.Expressions
+using TempoPlugins.Internal.Lexer;
+
+namespace TempoPlugins.Internal.Syntax.Nodes.Expressions
 {
     public class UnknownExpressionSyntax : ExpressionSyntax
     {

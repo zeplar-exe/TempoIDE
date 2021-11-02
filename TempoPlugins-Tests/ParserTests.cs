@@ -2,8 +2,8 @@ using System;
 using System.Linq;
 using NUnit.Framework;
 using TempoPlugins;
-using TempoPlugins.Syntax.Nodes;
-using TempoPlugins.Syntax.Nodes.Expressions;
+using TempoPlugins.Internal.Parser;
+using TempoPlugins.Internal.Syntax.Nodes;
 
 namespace TempoPlugins_Tests
 {
@@ -14,7 +14,7 @@ namespace TempoPlugins_Tests
         public void TestDefine()
         {
             const string testString = "define x";
-            var tree = TelParser.Parse(testString);
+            var tree = new TelParser(testString).Parse();
             var syntax = (DefineSyntax)tree.Root.Nodes.First();
             
             Assert.True(syntax.Identifier.Name == "x");
@@ -24,7 +24,7 @@ namespace TempoPlugins_Tests
         public void TestDefineAsString()
         {
             const string testString = "define x as \"string\"";
-            var tree = TelParser.Parse(testString);
+            var tree = new TelParser(testString).Parse();
             var syntax = (DefineSyntax)tree.Root.Nodes.First();
             
             Assert.True(syntax.Initializer.Value.ToString() == "\"string\"");
@@ -34,7 +34,7 @@ namespace TempoPlugins_Tests
         public void TestDefineAsDecimal()
         {
             const string testString = "define x as 12.34 define x as 56.78";
-            var tree = TelParser.Parse(testString);
+            var tree = new TelParser(testString).Parse();
             var syntax = (DefineSyntax)tree.Root.Nodes.First();
             
             Assert.True(syntax.Initializer.Value.ToString() == "12.34");

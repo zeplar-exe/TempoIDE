@@ -1,4 +1,6 @@
-namespace TempoPlugins.Syntax
+using TempoPlugins.Internal.Lexer;
+
+namespace TempoPlugins.Internal.Syntax
 {
     public static class TokenExtensions
     {

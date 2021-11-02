@@ -1,17 +1,17 @@
-namespace TempoPlugins
+using Jammo.ParserTools;
+
+namespace TempoPlugins.Internal.Lexer
 {
     public class TelToken
     {
         public readonly string Text;
-        public readonly int Line;
-        public readonly int Column;
+        public readonly StringContext Context;
         public readonly TelTokenId Id;
 
-        public TelToken(string text, int line, int column, TelTokenId id)
+        public TelToken(string text, StringContext context, TelTokenId id)
         {
             Text = text;
-            Line = line;
-            Column = column;
+            Context = context;
             Id = id;
         }
 

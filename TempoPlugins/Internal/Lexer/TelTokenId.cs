@@ -1,10 +1,8 @@
-namespace TempoPlugins
+namespace TempoPlugins.Internal.Lexer
 {
     public enum TelTokenId
     {
         Unknown = 0,
-            
-        Newline,
             
         Identifier,
             

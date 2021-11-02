@@ -1,6 +1,7 @@
 using System.Linq;
 using NUnit.Framework;
 using TempoPlugins;
+using TempoPlugins.Internal.Lexer;
 
 namespace TempoPlugins_Tests
 {

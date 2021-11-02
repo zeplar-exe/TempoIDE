@@ -1,4 +1,4 @@
-namespace TempoPlugins.Syntax
+namespace TempoPlugins.Internal.Syntax
 {
     public class TelType
     {

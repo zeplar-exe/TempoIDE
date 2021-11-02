@@ -1,9 +1,15 @@
 using System.Collections.Generic;
+using Jammo.ParserTools;
+using TempoPlugins.Internal.Syntax.Nodes;
 
-namespace TempoPlugins.Syntax
+namespace TempoPlugins.Internal.Syntax
 {
     public class TelSyntaxTree
     {
+        private readonly List<ParserError> errors = new();
+
+        public IReadOnlyCollection<ParserError> Errors => errors.AsReadOnly();
+
         public readonly TelSyntaxNode Root;
 
         public TelSyntaxTree(TelSyntaxNode root)
@@ -17,6 +23,11 @@ namespace TempoPlugins.Syntax
 
             foreach (var child in Root.Descendents())
                 yield return child;
+        }
+
+        internal void ReportError(string message, StringContext context)
+        {
+            errors.Add(new ParserError(message, context));
         }
     }
 }

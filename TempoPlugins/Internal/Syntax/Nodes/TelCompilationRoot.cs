@@ -1,4 +1,4 @@
-namespace TempoPlugins.Syntax.Nodes
+namespace TempoPlugins.Internal.Syntax.Nodes
 {
     public class TelCompilationRoot : TelSyntaxNode
     {

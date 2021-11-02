@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
-using TempoPlugins.Syntax.Nodes;
+using Jammo.ParserTools;
+using TempoPlugins.Internal.Syntax.Nodes;
 
-namespace TempoPlugins.Syntax
+namespace TempoPlugins.Internal.Syntax
 {
     public abstract class TelSyntaxNode
-    { // TODO: Add back node list and also add TelToken list, remove abstract descendents
+    {
         private readonly List<TelSyntaxNode> nodes = new();
         private readonly List<ParserError> errors = new();
         
@@ -30,9 +31,9 @@ namespace TempoPlugins.Syntax
             }
         }
 
-        protected void ReportError(string message)
+        protected void ReportError(string message, StringContext context)
         {
-            ReportError(new ParserError(message));
+            ReportError(new ParserError(message, context));
         }
 
         protected void ReportError(ParserError error)

@@ -35,6 +35,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public IEnumerable<ISetting> ParseSettingsAndComments()
         {
+            errors.Clear();
+            
             foreach (var token in navigator.EnumerateFromIndex())
             {
                 switch (token.Id)
