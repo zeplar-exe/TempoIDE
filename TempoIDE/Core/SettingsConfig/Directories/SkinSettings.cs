@@ -1,11 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SkinSettings : SettingDirectoryWrapper
     {
@@ -15,14 +14,14 @@ namespace TempoIDE.Core.SettingsConfig
         public SkinSettings(DirectoryInfo directory) : base(directory)
         {
             SkinConfig = new SkinConfig(Directory.ToFile("skin.txt").CreateIfMissing());
-            SkinDefinitions = GetSkinDefinitions(Directory);
+            SkinDefinitions = GetSkinDefinitions();
         }
         
-        private static IEnumerable<SkinDefinition> GetSkinDefinitions(DirectoryInfo appDirectory)
+        private IEnumerable<SkinDefinition> GetSkinDefinitions()
         {
-            return appDirectory
+            return Directory
                 .ToRelativeDirectory("skins").CreateIfMissing()
-                .GetFiles("*.txt", SearchOption.AllDirectories)
+                .EnumerateFiles("*.txt", SearchOption.AllDirectories)
                 .Select(f => new SkinDefinition(f));
         }
 
@@ -32,7 +31,7 @@ namespace TempoIDE.Core.SettingsConfig
                 definition.Dispose();
             
             SkinConfig.Parse();
-            SkinDefinitions = GetSkinDefinitions(Directory);
+            SkinDefinitions = GetSkinDefinitions();
         }
 
         public override void Write()

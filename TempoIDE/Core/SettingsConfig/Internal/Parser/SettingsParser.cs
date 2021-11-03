@@ -14,7 +14,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         private readonly List<ParserError> errors = new();
 
-        public IEnumerable<ParserError> Errors => errors;
+        public IEnumerable<ParserError> Errors => errors.AsReadOnly();
 
         public SettingsParser(Stream stream)
         {

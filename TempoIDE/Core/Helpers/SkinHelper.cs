@@ -1,13 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Markup;
+using TempoIDE.Core.SettingsConfig;
 using TempoIDE.Core.SettingsConfig.Converters;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
-using TempoIDE.Properties;
 
 namespace TempoIDE.Core.Helpers
 {

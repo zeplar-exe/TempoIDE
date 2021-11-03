@@ -1,8 +1,9 @@
 using System.IO;
-using TempoIDE.Core.SettingsConfig;
+using TempoIDE.Core.Helpers;
+using TempoIDE.Core.SettingsConfig.Directories;
 using TempoIDE.Core.Wrappers;
 
-namespace TempoIDE.Core.Helpers
+namespace TempoIDE.Core.SettingsConfig
 {
     public static class SettingsHelper
     {
@@ -24,6 +25,7 @@ namespace TempoIDE.Core.Helpers
             
             watcher = new DirectoryWatcher(directory);
             Settings = new SettingsDirectory(directory);
+            Settings.Parse();
             
             watcher.Changed += DirectoryChanged;
         }

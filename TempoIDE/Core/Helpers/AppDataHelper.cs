@@ -1,11 +1,10 @@
 using System.IO;
-using TempoIDE.Core.SettingsConfig;
 
 namespace TempoIDE.Core.Helpers
 {
     public static class AppDataHelper
     {
-        public static DirectoryInfo Directory => new(IOHelper.GetRelativePath("data")); 
+        public static DirectoryInfo Directory => new(IOHelper.GetRelativePath("appdata")); 
         public static bool Exists => Directory.Exists;
         
         public static FileStream GetFile(string path)

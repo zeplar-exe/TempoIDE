@@ -1,12 +1,12 @@
-using System;
 using System.IO;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.Interfaces;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
-    public abstract class SettingDirectoryWrapper
+    public abstract class SettingDirectoryWrapper : IParseWriteStream
     {
-        protected readonly DirectoryInfo Directory;
+        public readonly DirectoryInfo Directory;
 
         protected SettingDirectoryWrapper(DirectoryInfo directory)
         {

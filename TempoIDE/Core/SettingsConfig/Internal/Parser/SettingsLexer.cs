@@ -9,7 +9,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         private readonly List<LexerError> errors = new();
         
-        public IEnumerable<LexerError> Errors => errors;
+        public IEnumerable<LexerError> Errors => errors.AsReadOnly();
 
         public SettingsLexer(string text)
         {

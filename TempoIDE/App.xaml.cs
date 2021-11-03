@@ -2,7 +2,7 @@
 using System.Windows;
 using CSharp_Logger;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Properties;
+using TempoIDE.Core.SettingsConfig;
 
 namespace TempoIDE
 {
@@ -10,16 +10,28 @@ namespace TempoIDE
     {
         private async void App_OnStartup(object sender, StartupEventArgs e)
         {
-            var logger = new Logger();
-            logger.SetConfiguration(IOHelper.GetRelativePath(@"data\output.log"), LogFilterFactory.AllTrue());
-            
-            ApplicationHelper.Logger = logger;
-            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-            
-            await AsyncHelper.WaitUntilNotNull(() => MainWindow);
-            
+            SetSkin();
+            InitLogger();
+            HookEvents();
+        }
+
+        private void SetSkin()
+        {
             if (!SkinHelper.TryLoadSkin(SettingsHelper.Settings.AppSettings.SkinSettings.SkinConfig.CurrentSkin))
                 SkinHelper.LoadDefaultSkin();
+        }
+
+        private void InitLogger()
+        {
+            var logger = new Logger();
+            logger.SetConfiguration(IOHelper.GetRelativePath(@"appdata\output.log"), LogFilterFactory.AllTrue());
+            
+            ApplicationHelper.Logger = logger;
+        }
+
+        private void HookEvents()
+        {
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
         
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -30,8 +42,8 @@ namespace TempoIDE
                 $"An unhandled exception was thrown:\n{e.ExceptionObject as Exception}");
             #endif
         }
-
-        public void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
+        
+        private void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
         {
             SystemCommands.CloseWindow(ApplicationHelper.ActiveWindow);
         }

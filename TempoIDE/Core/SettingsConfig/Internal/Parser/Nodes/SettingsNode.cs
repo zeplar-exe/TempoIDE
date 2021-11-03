@@ -8,7 +8,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes
         private readonly List<ParserError> errors = new();
 
         public abstract IEnumerable<SettingsNode> Nodes { get; }
-        public IEnumerable<ParserError> Errors => errors;
+        public IEnumerable<ParserError> Errors => errors.AsReadOnly();
 
         public StringContext Context;
 

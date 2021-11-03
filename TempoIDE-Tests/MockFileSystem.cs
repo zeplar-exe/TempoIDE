@@ -43,7 +43,7 @@ namespace TempoIDE_Tests
         public DirectoryInfo Info => (DirectoryInfo)info;
         
         private readonly List<MockFileSystemItem> items = new();
-        public IEnumerable<MockFileSystemItem> Items => items;
+        public IEnumerable<MockFileSystemItem> Items => items.AsReadOnly();
         
         internal MockDirectory(DirectoryInfo directory) : base(directory)
         {

@@ -35,12 +35,10 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Write()
         {
-            Stream.Seek(0, SeekOrigin.Begin);
-
             using var writer = new StreamWriter(Stream, leaveOpen: true);
             
             if (!string.IsNullOrEmpty(PreviousSkin))
-                writer.WriteLine($"previous_skin={PreviousSkin}");
+                writer.WriteLineAsync($"previous_skin={PreviousSkin}");
             
             writer.WriteAsync($"current_skin={CurrentSkin}");
         }

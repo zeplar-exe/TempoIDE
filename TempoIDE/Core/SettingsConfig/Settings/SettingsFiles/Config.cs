@@ -3,16 +3,29 @@ using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.Interfaces;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
-    public abstract class Config : IDisposable
+    public abstract class Config : IDisposable, IParseWriteStream
     {
         protected readonly Stream Stream;
 
         private readonly List<ConfigDiagnostic> diagnostics = new();
-        public IEnumerable<ConfigDiagnostic> Diagnostics => diagnostics;
+        
+        public IEnumerable<ConfigDiagnostic> Diagnostics => diagnostics.AsReadOnly();
+
+        public string FilePath
+        {
+            get
+            {
+                if (Stream is FileStream fileStream)
+                    return fileStream.Name;
+
+                return string.Empty;
+            }
+        }
 
         public bool IsInitialized => Stream?.CanRead ?? false;
 

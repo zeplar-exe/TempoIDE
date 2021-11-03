@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Abstractions;
 using NUnit.Framework;
 using TempoIDE.Core.SettingsConfig;
+using TempoIDE.Core.SettingsConfig.Directories;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE_Tests.SettingsTests

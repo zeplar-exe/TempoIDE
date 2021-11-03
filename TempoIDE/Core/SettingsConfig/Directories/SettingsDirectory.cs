@@ -1,7 +1,7 @@
 using System.IO;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SettingsDirectory : SettingDirectoryWrapper
     {

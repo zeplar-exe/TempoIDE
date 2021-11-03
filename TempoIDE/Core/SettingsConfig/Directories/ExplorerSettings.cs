@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class ExplorerSettings : SettingDirectoryWrapper
     {

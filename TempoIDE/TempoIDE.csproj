@@ -55,22 +55,22 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="data\inspection_severity.csv">
+      <None Update="appdata\inspection_severity.csv">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\dictionaries\en-US.dic">
+      <None Update="appdata\dictionaries\en-US.dic">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\plugins\nothing.txt">
+      <None Update="appdata\plugins\nothing.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\plugins\test.plugin">
+      <None Update="appdata\plugins\test.plugin">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="data\plugins\Test\Test.dll">
+      <None Update="appdata\plugins\Test\Test.dll">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="data\output.log">
+      <None Update="appdata\output.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="DefaultSkin.py">
@@ -80,10 +80,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="data\app\skins\skins\Dark.txt">
+      <None Update="appdata\app\skins\skins\Dark.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\app\skins\skins\Light.txt">
+      <None Update="appdata\app\skins\skins\Light.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

@@ -4,7 +4,7 @@ using ByteSizeLib;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Core.DataStructures
+namespace TempoIDE.Core.Wrappers
 {
     public class CachedFile
     {

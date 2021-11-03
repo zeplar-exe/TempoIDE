@@ -20,8 +20,8 @@ namespace TempoPlugins
             this.text = text;
         }
 
-        public IEnumerable<TelToken> Tokens => tokens;
-        public IEnumerable<LexerError> Errors => errors;
+        public IEnumerable<TelToken> Tokens => tokens.AsReadOnly();
+        public IEnumerable<LexerError> Errors => errors.AsReadOnly();
 
         public IEnumerable<TelToken> Lex()
         {
