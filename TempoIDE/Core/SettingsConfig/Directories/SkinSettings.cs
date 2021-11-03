@@ -8,30 +8,36 @@ namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SkinSettings : SettingDirectoryWrapper
     {
+        private readonly List<SkinDefinition> skinDefinitions = new();
+
         public readonly SkinConfig SkinConfig;
-        public IEnumerable<SkinDefinition> SkinDefinitions { get; private set; }
+        public IEnumerable<SkinDefinition> SkinDefinitions => skinDefinitions.AsReadOnly();
         
         public SkinSettings(DirectoryInfo directory) : base(directory)
         {
             SkinConfig = new SkinConfig(Directory.ToFile("skin.txt").CreateIfMissing());
-            SkinDefinitions = GetSkinDefinitions();
         }
         
         private IEnumerable<SkinDefinition> GetSkinDefinitions()
         {
-            return Directory
+            foreach (var file in Directory
                 .ToRelativeDirectory("skins").CreateIfMissing()
-                .EnumerateFiles("*.txt", SearchOption.AllDirectories)
-                .Select(f => new SkinDefinition(f));
+                .EnumerateFiles("*.txt", SearchOption.AllDirectories))
+            {
+                var def = new SkinDefinition(file);
+                def.Parse();
+                
+                yield return def;
+            }
         }
 
         public override void Parse()
         {
-            foreach (var definition in SkinDefinitions)
+            foreach (var definition in SkinDefinitions ?? Enumerable.Empty<SkinDefinition>())
                 definition.Dispose();
             
             SkinConfig.Parse();
-            SkinDefinitions = GetSkinDefinitions();
+            skinDefinitions.AddRange(GetSkinDefinitions());;
         }
 
         public override void Write()

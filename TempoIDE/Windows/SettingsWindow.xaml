@@ -41,7 +41,7 @@
                             <ControlTemplate.Resources>
                                 <ObjectDataProvider
                                     x:Key="Skins"
-                                    ObjectType="{x:Type classes:SkinHelper}"
+                                    ObjectType="{x:Type windows:SettingsWindow}"
                                     MethodName="GetSkinDefinitions"/>
                             </ControlTemplate.Resources>
                             

@@ -1,4 +1,5 @@
 using System.IO;
+using System.Windows.Forms.Design.Behavior;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
@@ -6,8 +7,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
     {
         public const string DefaultSkinIdentifier = "_default";
         
-        public string CurrentSkin = DefaultSkinIdentifier;
-        public string PreviousSkin; 
+        public string CurrentSkin { get; private set; } = DefaultSkinIdentifier;
+        public string PreviousSkin { get; private set; } 
         
         public SkinConfig(FileInfo file) : base(file) { }
         public SkinConfig(Stream stream) : base(stream) { }
@@ -22,9 +23,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
                         PreviousSkin = setting.Value.ToString();
                         break;
                     case "current_skin":
-                        CurrentSkin = setting.Value.ToString();
+                        CurrentSkin = setting.Value.ToString() ?? DefaultSkinIdentifier;
                         ReportIfEmptySetting(setting);
-                        
                         break;
                     default:
                         ReportUnexpectedSetting(setting);
@@ -35,6 +35,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Write()
         {
+            Stream.Seek(0, SeekOrigin.Begin);
+        
             using var writer = new StreamWriter(Stream, leaveOpen: true);
             
             if (!string.IsNullOrEmpty(PreviousSkin))

@@ -1,7 +1,9 @@
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.SettingsConfig;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Windows
@@ -47,6 +49,11 @@ namespace TempoIDE.Windows
                 return;
             
             SkinHelper.TryLoadSkin(item.Name);
+        }
+        
+        public static IEnumerable<SkinDefinition> GetSkinDefinitions()
+        {
+            return SettingsHelper.Settings.AppSettings.SkinSettings.SkinDefinitions;
         }
     }
 }

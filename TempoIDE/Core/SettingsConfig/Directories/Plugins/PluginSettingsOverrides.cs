@@ -6,16 +6,18 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {
     public class PluginSettingsOverrides : SettingDirectoryWrapper
     {
-        public IEnumerable<SettingsFileOverride> Overrides { get; private set; }
+        private readonly List<SettingsFileOverride> overrides = new();
+
+        public IEnumerable<SettingsFileOverride> Overrides => overrides.AsReadOnly();
 
         public PluginSettingsOverrides(DirectoryInfo directory) : base(directory)
         {
-            Overrides = GetOverrides();
+            
         }
 
         public override void Parse()
         {
-            Overrides = GetOverrides();
+            overrides.AddRange(GetOverrides());
         }
 
         private IEnumerable<SettingsFileOverride> GetOverrides()

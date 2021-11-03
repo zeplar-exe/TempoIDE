@@ -71,6 +71,9 @@ namespace TempoIDE.Core.Helpers
 
             dict.Clear();
             dict.Add(converter.Convert(skin, null, CultureInfo.CurrentCulture));
+
+            if (settings.SkinConfig.CurrentSkin == SkinConfig.DefaultSkinIdentifier) 
+                return;
             
             settings.SkinConfig.SetSkin(skin);
             settings.SkinConfig.Write();
@@ -78,15 +81,11 @@ namespace TempoIDE.Core.Helpers
 
         public static SkinDefinition GetDefaultSkin()
         {
-            var definition = new SkinDefinition(ResourceHelper.GetResourceFile("default_skin.txt"));
+            var definition = new SkinDefinition(
+                ResourceHelper.GetResourceFile("default_skin.txt"), SkinConfig.DefaultSkinIdentifier);
             definition.Parse();
 
             return definition;
-        }
-
-        public static IEnumerable<SkinDefinition> GetSkinDefinitions()
-        {
-            return SettingsHelper.Settings.AppSettings.SkinSettings.SkinDefinitions;
         }
     }
 }

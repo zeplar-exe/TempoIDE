@@ -24,11 +24,12 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         public SkinDefinition(FileInfo file) : base(file)
         {
             Name = Path.GetFileNameWithoutExtension(file.Name);
-            
-            Parse();
         }
 
-        public SkinDefinition(Stream stream) : base(stream) { }
+        public SkinDefinition(Stream stream, string name) : base(stream)
+        {
+            Name = name;
+        }
 
         public override void Parse()
         {
@@ -75,7 +76,7 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
                 }
                 
                 ReportIfEmptySetting(setting);
-                // If it isn't an invalid setting, we check if it's empty
+                // If it's a valid setting, we check if it's empty
             }
         }
 

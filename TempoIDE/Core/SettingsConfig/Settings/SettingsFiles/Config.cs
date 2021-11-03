@@ -5,6 +5,7 @@ using Jammo.ParserTools;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Interfaces;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
+using TempoIDE.Core.SettingsConfig.Settings.Exceptions;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {

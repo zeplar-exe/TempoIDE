@@ -18,7 +18,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         public SettingsParser(Stream stream)
         {
-            using var reader = new StreamReader(stream);
+            using var reader = new StreamReader(stream, leaveOpen: true);
 
             navigator = new SettingsLexer(reader.ReadToEnd()).Lex().ToNavigator();
         }

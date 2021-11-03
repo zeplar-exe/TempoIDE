@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using CSharp_Logger;
 using TempoIDE.Core.Helpers;
@@ -8,7 +9,7 @@ namespace TempoIDE
 {
     public partial class App
     {
-        private async void App_OnStartup(object sender, StartupEventArgs e)
+        private void App_OnStartup(object sender, StartupEventArgs e)
         {
             SetSkin();
             InitLogger();
