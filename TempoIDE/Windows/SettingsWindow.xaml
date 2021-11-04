@@ -8,8 +8,10 @@
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
         xmlns:settingsFiles="clr-namespace:TempoIDE.Core.SettingsConfig.Settings.SettingsFiles"
+        xmlns:sys="clr-namespace:System;assembly=System.Runtime"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="SettingsWindow_OnLoaded">
     
     <Grid>
@@ -53,6 +55,7 @@
                                             Source={StaticResource Skins}}"
                                         ItemContainerStyle="{StaticResource TextStyle}"
                                         SelectionChanged="Skins_OnSelectionChanged">
+                                        
                                         <ComboBox.ItemTemplate>
                                             <DataTemplate DataType="settingsFiles:SkinDefinition">
                                                 <TextBlock Text="{Binding Name}"/>

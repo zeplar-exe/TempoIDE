@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace TempoIDE.Windows
+namespace TempoIDE.Windows.SubWindows
 {
     public partial class ProgressDialog : Window
     {

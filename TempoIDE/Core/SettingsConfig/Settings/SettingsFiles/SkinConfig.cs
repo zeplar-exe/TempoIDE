@@ -40,13 +40,16 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
             using var writer = new StreamWriter(Stream, leaveOpen: true);
             
             if (!string.IsNullOrEmpty(PreviousSkin))
-                writer.WriteLineAsync($"previous_skin={PreviousSkin}");
+                writer.WriteLineAsync(Setting.Create("previous_skin", PreviousSkin).ToFullString());
             
-            writer.WriteAsync($"current_skin={CurrentSkin}");
+            writer.WriteAsync(Setting.Create("current_skin", CurrentSkin).ToFullString());
         }
 
         public void SetSkin(SkinDefinition definition)
         {
+            if (definition.Name == CurrentSkin)
+                return;
+            
             PreviousSkin = CurrentSkin;
             CurrentSkin = definition.Name;
         }

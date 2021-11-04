@@ -3,6 +3,7 @@ using System.IO;
 using TempoIDE.Core.Environments;
 using TempoIDE.Properties;
 using TempoIDE.Windows;
+using TempoIDE.Windows.SubWindows;
 
 namespace TempoIDE.Core.Helpers
 {

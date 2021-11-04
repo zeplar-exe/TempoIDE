@@ -19,14 +19,13 @@ namespace TempoIDE_Tests.SettingsTests
 
             var settingsDirectory = root.CreateDirectory("Settings");
             
-            var appDirectory = root.CreateDirectory(@"Settings\app");
+            var appDirectory = settingsDirectory.CreateDirectory(@"app");
             appDirectory.CreateFile("skin.txt");
             
-            root.CreateDirectory(@"Settings\editor");
-            root.CreateDirectory(@"Settings\explorer");
-            
+            settingsDirectory.CreateDirectory(@"editor");
+            settingsDirectory.CreateDirectory(@"explorer");
+
             var directory = new SettingsDirectory(settingsDirectory.Info);
-            
             directory.Parse();
             
             Assert.True(directory.AppSettings.SkinSettings.SkinConfig.CurrentSkin == "_default");

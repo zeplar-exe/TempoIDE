@@ -11,9 +11,17 @@ namespace TempoIDE
     {
         private void App_OnStartup(object sender, StartupEventArgs e)
         {
+            ApplicationHelper.Start();
+            
+            InitSettings();
             SetSkin();
             InitLogger();
             HookEvents();
+        }
+
+        private void InitSettings()
+        {
+            SettingsHelper.Settings.Parse();
         }
 
         private void SetSkin()

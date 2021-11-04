@@ -22,8 +22,11 @@ namespace TempoIDE.Core.Helpers
         public delegate void ApplicationTickHandler(ulong tick);
         public static event ApplicationTickHandler ApplicationTick;
 
-        static ApplicationHelper()
+        public static void Start()
         {
+            if (tick > 0)
+                return;
+            
             TickTimer.Elapsed += delegate { ApplicationTick?.Invoke(++tick); };
             
             AwaitMainWindow();
