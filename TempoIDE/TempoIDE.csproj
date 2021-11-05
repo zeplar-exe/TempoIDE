@@ -35,6 +35,9 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ErrorResources.resx</DependentUpon>
       </Compile>
+      <Compile Update="Controls\Panels\EditorTabModel.cs">
+        <DependentUpon>EditorTabControl.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>

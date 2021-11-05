@@ -27,13 +27,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         {
             navigator = new SettingsLexer(text).Lex().ToNavigator();
         }
-
         public IEnumerable<Setting> ParseSettings()
-        {
-            return ParseSettingsAndComments().OfType<Setting>();
-        }
-
-        public IEnumerable<ISetting> ParseSettingsAndComments()
         {
             foreach (var token in navigator.EnumerateFromIndex())
             {
@@ -65,8 +59,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         break;
                     }
                     case SettingsTokenId.Comment:
-                        yield return new Comment(token.ToString(), token.Context);
-                        break;
+                        continue;
                     default:
                         ReportError("Unexpected token.");
                         break;

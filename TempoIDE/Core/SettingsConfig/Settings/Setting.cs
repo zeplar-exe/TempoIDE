@@ -1,23 +1,31 @@
 using Jammo.ParserTools;
+using TempoIDE.Core.Interfaces;
 
 namespace TempoIDE.Core.SettingsConfig.Settings
 {
-    public class Setting : ISetting
+    public class Setting : IProcessedStringPart
     {
         public readonly string Key;
         public readonly SettingValue Value;
+        
         public StringContext Context { get; }
 
-        public Setting(string key, SettingValue value, StringContext context = new())
+        internal Setting(string key, SettingValue value, StringContext context = new())
         {
             Key = key;
             Value = value;
             Context = context;
         }
-
-        public static Setting Create(string key, string value, StringContext context = new())
+        
+        public Setting(string key, SettingValue value)
         {
-            return new Setting(key, new TextSetting(value), context);
+            Key = key;
+            Value = value;
+        }
+
+        public static Setting Create(string key, string value)
+        {
+            return new Setting(key, new TextSetting(value));
         }
 
         public override string ToString()
