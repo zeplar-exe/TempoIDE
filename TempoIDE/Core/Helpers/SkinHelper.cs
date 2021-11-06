@@ -82,7 +82,7 @@ namespace TempoIDE.Core.Helpers
         public static SkinDefinition GetDefaultSkin()
         {
             var definition = new SkinDefinition(
-                ResourceHelper.GetResourceFile("default_skin.txt"), SkinConfig.DefaultSkinIdentifier);
+                ResourceHelper.GetResourceFile("default_skin.txt"), "Default");
             definition.Parse();
 
             return definition;

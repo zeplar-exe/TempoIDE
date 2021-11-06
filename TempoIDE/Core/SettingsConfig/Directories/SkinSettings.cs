@@ -36,6 +36,8 @@ namespace TempoIDE.Core.SettingsConfig.Directories
             foreach (var definition in SkinDefinitions ?? Enumerable.Empty<SkinDefinition>())
                 definition.Dispose();
             
+            skinDefinitions.Clear();
+            
             SkinConfig.Parse();
             skinDefinitions.AddRange(GetSkinDefinitions());;
         }

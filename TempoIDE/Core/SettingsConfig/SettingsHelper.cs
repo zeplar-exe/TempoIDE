@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Directories;
@@ -11,6 +12,8 @@ namespace TempoIDE.Core.SettingsConfig
         private static DirectoryWatcher watcher;
         
         public static SettingsDirectory Settings { get; private set; }
+
+        public static event EventHandler SettingsUpdated;
         
         static SettingsHelper()
         {
@@ -25,7 +28,9 @@ namespace TempoIDE.Core.SettingsConfig
             
             watcher = new DirectoryWatcher(directory);
             Settings = new SettingsDirectory(directory);
+            
             Settings.Parse();
+            SettingsUpdated?.Invoke(default, EventArgs.Empty);
             
             watcher.Changed += DirectoryChanged;
         }
@@ -43,6 +48,7 @@ namespace TempoIDE.Core.SettingsConfig
             changed = false;
             
             Settings.Parse();
+            SettingsUpdated?.Invoke(default, EventArgs.Empty);
         }
     }
 }

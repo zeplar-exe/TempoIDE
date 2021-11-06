@@ -10,6 +10,8 @@ namespace TempoIDE.Windows
 {
     public partial class SettingsWindow : ModifiedWindow
     {
+        public SettingsViewModel ViewModel { get; } = new();
+        
         public SettingsWindow()
         {
             InitializeComponent();
@@ -49,11 +51,6 @@ namespace TempoIDE.Windows
                 return;
             
             SkinHelper.TryLoadSkin(item.Name);
-        }
-        
-        public static IEnumerable<SkinDefinition> GetSkinDefinitions()
-        {
-            return SettingsHelper.Settings.AppSettings.SkinSettings.SkinDefinitions;
         }
     }
 }

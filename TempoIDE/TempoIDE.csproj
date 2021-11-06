@@ -38,6 +38,9 @@
       <Compile Update="Controls\Panels\EditorTabModel.cs">
         <DependentUpon>EditorTabControl.xaml</DependentUpon>
       </Compile>
+      <Compile Update="Windows\SettingsViewModel.cs">
+        <DependentUpon>SettingsWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -75,9 +78,6 @@
       </None>
       <None Update="appdata\output.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="DefaultSkin.py">
-        <DependentUpon>App.xaml</DependentUpon>
       </None>
       <EmbeddedResource Update="Properties\ErrorResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
