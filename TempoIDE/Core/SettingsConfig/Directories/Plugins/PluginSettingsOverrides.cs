@@ -1,11 +1,17 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {
     public class PluginSettingsOverrides : SettingDirectoryWrapper
     {
+        private readonly string[] protectedRelativePaths =
+        {
+            
+        };
+    
         private readonly List<SettingsFileOverride> overrides = new();
 
         public IEnumerable<SettingsFileOverride> Overrides => overrides.AsReadOnly();
@@ -24,6 +30,7 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
         {
             return Directory
                 .EnumerateFiles("*.txt", SearchOption.AllDirectories)
+                .Where(f => protectedRelativePaths.Any(p => f.FullName.EndsWith(p)))
                 .Select(f => new SettingsFileOverride(f));
         }
 

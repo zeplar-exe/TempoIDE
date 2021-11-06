@@ -19,12 +19,15 @@ namespace TempoIDE.Core.Helpers.Plugins
 
             foreach (var loaded in loadedPlugins)
             {
-                if (directories.All(d => d.FullName != loaded.PluginDirectory.Directory.FullName))
+                if (directories.All(d => !d.EqualsOther(loaded.PluginDirectory.Directory)))
                     loadedPlugins.Remove(loaded);
             }
-            
+
             foreach (var directory in pluginDirectory.EnumerateDirectories())
-                loadedPlugins.Add(new PluginWorker(new PluginDirectory(directory)));
+            {
+                if (loadedPlugins.All(p => !p.PluginDirectory.Directory.EqualsOther(directory)))
+                    loadedPlugins.Add(new PluginWorker(new PluginDirectory(directory)));
+            }
         }
         
         public static bool DownloadPlugin(PluginInfo pluginInfo)

@@ -9,7 +9,7 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
         
         public PluginDirectory(DirectoryInfo directory) : base(directory)
         {
-            SettingsOverrides = new PluginSettingsOverrides(Directory.ToRelativeDirectory("appdata")); 
+            SettingsOverrides = new PluginSettingsOverrides(Directory.ToRelativeDirectory("settings")); 
         }
 
         public override void Parse()

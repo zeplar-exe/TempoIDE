@@ -4,7 +4,7 @@ namespace TempoIDE.Core.Helpers
 {
     public static class AppDataHelper
     {
-        public static DirectoryInfo Directory => new(IOHelper.GetRelativePath("appdata")); 
+        public static DirectoryInfo Directory => new(IOHelper.GetRelativePath(@"appdata\settings")); 
         public static bool Exists => Directory.Exists;
         
         public static FileStream GetFile(string path)

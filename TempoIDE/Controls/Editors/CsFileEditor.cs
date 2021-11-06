@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
@@ -11,6 +12,7 @@ namespace TempoIDE.Controls.Editors
         public CsFileEditor()
         {
             TextBox.TextArea.AfterHighlight += Label_OnAfterHighlight;
+            // TODO: Improve ColoredTextBox a tonne
         }
         
         private void Label_OnAfterHighlight(SyntaxCharCollection characters)
@@ -23,9 +25,8 @@ namespace TempoIDE.Controls.Editors
             foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
             {
                 var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
-                var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
-                var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
-            
+                var brush = Brushes.Orange; // TODO: Implement InspectionSeverity from SharpEye
+
                 characters.UpdateUnderlineType(range, UnderlineType.Straight);
                 characters.UpdateUnderline(range, brush);
             }

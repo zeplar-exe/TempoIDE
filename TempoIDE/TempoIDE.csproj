@@ -61,20 +61,8 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="appdata\inspection_severity.csv">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="appdata\dictionaries\en-US.dic">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\plugins\nothing.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\plugins\test.plugin">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\plugins\Test\Test.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
       <None Update="appdata\output.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -83,10 +71,10 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="appdata\app\skins\skins\Dark.txt">
+      <None Update="appdata\settings\app\skins\skins\Dark.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="appdata\app\skins\skins\Light.txt">
+      <None Update="appdata\settings\app\skins\skins\Light.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
@@ -126,6 +114,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="appdata\plugins" />
+      <Folder Include="appdata\settings" />
       <Folder Include="Core\Commands\Common" />
       <Folder Include="Core\Inspections\TempoRules" />
       <Folder Include="Windows\SolutionCreation\NetFramework" />
