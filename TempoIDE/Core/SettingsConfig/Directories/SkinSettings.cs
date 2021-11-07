@@ -8,27 +8,12 @@ namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SkinSettings : SettingDirectoryWrapper
     {
-        private readonly List<SkinDefinition> skinDefinitions = new();
-
-        public readonly SkinConfig SkinConfig;
-        public IEnumerable<SkinDefinition> SkinDefinitions => skinDefinitions.AsReadOnly();
+        public SkinConfig SkinConfig { get; }
+        public SkinDefinition[] SkinDefinitions { get; private set; }
         
         public SkinSettings(DirectoryInfo directory) : base(directory)
         {
             SkinConfig = new SkinConfig(Directory.ToFile("skin.txt").CreateIfMissing());
-        }
-        
-        private IEnumerable<SkinDefinition> GetSkinDefinitions()
-        {
-            foreach (var file in Directory
-                .ToRelativeDirectory("skins").CreateIfMissing()
-                .EnumerateFiles("*.txt", SearchOption.AllDirectories))
-            {
-                var def = new SkinDefinition(file);
-                def.Parse();
-                
-                yield return def;
-            }
         }
 
         public override void Parse()
@@ -36,10 +21,25 @@ namespace TempoIDE.Core.SettingsConfig.Directories
             foreach (var definition in SkinDefinitions ?? Enumerable.Empty<SkinDefinition>())
                 definition.Dispose();
             
-            skinDefinitions.Clear();
-            
             SkinConfig.Parse();
-            skinDefinitions.AddRange(GetSkinDefinitions());;
+            SkinDefinitions = GetSkinDefinitions();
+        }
+        
+        private SkinDefinition[] GetSkinDefinitions()
+        {
+            var list = new List<SkinDefinition>();
+            
+            foreach (var file in Directory
+                .ToRelativeDirectory("skins").CreateIfMissing()
+                .EnumerateFiles("*.txt", SearchOption.AllDirectories))
+            {
+                var def = new SkinDefinition(file);
+                def.Parse();
+                
+                list.Add(def);
+            }
+
+            return list.ToArray();
         }
 
         public override void Write()

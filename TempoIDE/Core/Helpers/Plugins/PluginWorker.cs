@@ -1,4 +1,3 @@
-using System.IO;
 using System.Linq;
 using TempoIDE.Core.SettingsConfig.Directories.Plugins;
 

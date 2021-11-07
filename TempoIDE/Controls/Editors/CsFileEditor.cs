@@ -3,7 +3,6 @@ using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.Inspections;
 
 namespace TempoIDE.Controls.Editors
 {

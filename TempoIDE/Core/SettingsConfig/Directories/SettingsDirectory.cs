@@ -5,9 +5,9 @@ namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SettingsDirectory : SettingDirectoryWrapper
     {
-        public readonly AppSettings AppSettings;
-        public readonly EditorSettings EditorSettings;
-        public readonly ExplorerSettings ExplorerSettings;
+        public AppSettings AppSettings { get; }
+        public EditorSettings EditorSettings { get; }
+        public ExplorerSettings ExplorerSettings { get; }
 
         public SettingsDirectory(DirectoryInfo root) : base(root)
         {

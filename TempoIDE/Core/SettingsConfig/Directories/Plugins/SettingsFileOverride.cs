@@ -25,7 +25,7 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 
         public override void Parse()
         {
-            foreach (var setting in EnumerateSettings())
+            foreach (var setting in Document.Settings)
             {
                 switch (setting.Key.ToLower())
                 {

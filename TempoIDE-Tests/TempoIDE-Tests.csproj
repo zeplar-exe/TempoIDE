@@ -21,4 +21,8 @@
       <ProjectReference Include="..\TempoIDE\TempoIDE.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="SettingsTests\PluginTests" />
+    </ItemGroup>
+
 </Project>

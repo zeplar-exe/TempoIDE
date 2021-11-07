@@ -5,13 +5,12 @@ using Jammo.ParserTools;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Interfaces;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
-using TempoIDE.Core.SettingsConfig.Settings.Exceptions;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
     public abstract class Config : IDisposable, IParseWriteStream
     {
-        protected readonly Stream Stream;
+        protected Stream Stream { get; }
 
         private readonly List<ConfigDiagnostic> diagnostics = new();
         
@@ -29,6 +28,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         }
 
         public bool IsInitialized => Stream?.CanRead ?? false;
+        
+        public SettingsDocument Document => new SettingsParser(Stream).Parse();
 
         protected Config(FileInfo file)
         {
@@ -45,20 +46,36 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         public abstract void Parse();
         public abstract void Write();
 
-        public IEnumerable<Setting> EnumerateSettings()
-        {
-            return new SettingsParser(Stream).ParseSettings();
-        }
+        protected StreamWriter CreateWriter() => new(Stream, leaveOpen: true);
 
         protected void ReportUnexpectedSetting(Setting setting)
         {
             ReportWarning($"The setting '{setting.Key}' is never used.", setting.Context);
         }
-
-        protected void ReportIfEmptySetting(Setting setting)
+        
+        protected bool ReportIfUnexpectedSettingType<TType>(Setting setting, out TType expected) where TType : class
         {
-            if (string.IsNullOrEmpty(setting.Value.ToString()))
-                ReportError($"The setting {setting.Key} cannot be empty.", setting.Context);
+            expected = default;
+            
+            if (setting.Value.GetType() == typeof(TType))
+            {
+                expected = setting.Value as TType;
+                return false;
+            }
+
+            ReportWarning($"The setting '{setting.Key}' is of the wrong type. Expected {expected}.", setting.Context);
+
+            return true;
+        }
+
+        protected bool ReportIfEmptySetting(Setting setting)
+        {
+            if (!string.IsNullOrEmpty(setting.Value.ToString()))
+                return false;
+            
+            ReportError($"The setting {setting.Key} cannot be empty.", setting.Context);
+            return true;
+
         }
 
         protected void ReportWarning(string message, StringContext context)

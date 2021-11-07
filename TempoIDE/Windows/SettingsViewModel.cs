@@ -1,11 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 using TempoIDE.Properties;

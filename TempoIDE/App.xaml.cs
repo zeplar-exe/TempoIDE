@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using CSharp_Logger;
 using TempoIDE.Core.Helpers;

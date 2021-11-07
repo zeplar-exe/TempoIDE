@@ -1,5 +1,4 @@
 using System.IO;
-using System.Windows.Forms.Design.Behavior;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
@@ -15,15 +14,18 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Parse()
         {
-            foreach (var setting in EnumerateSettings())
+            foreach (var setting in Document.Settings)
             {
+                if (ReportIfUnexpectedSettingType(setting, out TextSetting text))
+                    break;
+                
                 switch (setting.Key.ToLower())
                 {
                     case "previous_skin":
-                        PreviousSkin = setting.Value.ToString();
+                        PreviousSkin = text.ToString();
                         break;
                     case "current_skin":
-                        CurrentSkin = setting.Value.ToString() ?? DefaultSkinIdentifier;
+                        CurrentSkin = text.ToString() ?? DefaultSkinIdentifier;
                         ReportIfEmptySetting(setting);
                         break;
                     default:
@@ -35,9 +37,7 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Write()
         {
-            Stream.Seek(0, SeekOrigin.Begin);
-        
-            using var writer = new StreamWriter(Stream, leaveOpen: true);
+            using var writer = CreateWriter();
             
             if (!string.IsNullOrEmpty(PreviousSkin))
                 writer.WriteLineAsync(Setting.Create("previous_skin", PreviousSkin).ToFullString());

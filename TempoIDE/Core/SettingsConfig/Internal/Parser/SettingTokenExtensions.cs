@@ -1,10 +1,16 @@
+using TempoIDE.Core.SettingsConfig.Internal.Lexer;
+
 namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 {
     public static class SettingTokenExtensions
     {
         public static bool IsLiteral(this SettingsToken token)
         {
-            return token.Id is SettingsTokenId.StringLiteral or SettingsTokenId.NumericLiteral;
+            return token.Id is
+                SettingsTokenId.StringLiteral or 
+                SettingsTokenId.NumericLiteral or
+                SettingsTokenId.BooleanTrue or
+                SettingsTokenId.BooleanFalse;
         }
         
         public static bool IsKeyword(this SettingsToken token)

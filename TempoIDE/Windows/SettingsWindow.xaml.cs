@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.SettingsConfig;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Windows

@@ -1,17 +1,17 @@
 namespace TempoIDE.Core.SettingsConfig.Settings
 {
-    public class TextSetting : SettingValue
+    public class BooleanSetting : SettingValue
     {
-        public string Value { get; }
+        public bool Value { get; }
         
-        public TextSetting(string value)
+        public BooleanSetting(bool value)
         {
             Value = value;
         }
 
         public override string ToString()
         {
-            return Value;
+            return Value.ToString();
         }
     }
 }

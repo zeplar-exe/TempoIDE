@@ -1,4 +1,4 @@
-namespace TempoIDE.Core.SettingsConfig.Internal.Parser
+namespace TempoIDE.Core.SettingsConfig.Internal.Lexer
 {
     public enum SettingsTokenId
     {
@@ -11,6 +11,9 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         
         Comment,
         
+        BooleanTrue,
+        BooleanFalse,
+        
         IsOperator,
         IfKeyword,
         OrKeyword,
@@ -22,6 +25,8 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
         
         OpenParenthesis, 
         CloseParenthesis,
+        OpenBracket,
+        CloseBracket,
         OpenCurlyBracket,
         CloseCurlyBracket,
         Period,

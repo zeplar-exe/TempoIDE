@@ -5,8 +5,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings
 {
     public class Setting : IProcessedStringPart
     {
-        public readonly string Key;
-        public readonly SettingValue Value;
+        public string Key { get; }
+        public SettingValue Value { get; }
         
         public StringContext Context { get; }
 
@@ -23,9 +23,29 @@ namespace TempoIDE.Core.SettingsConfig.Settings
             Value = value;
         }
 
-        public static Setting Create(string key, string value)
+        public static Setting Create(string key, string value, StringContext context = new())
         {
-            return new Setting(key, new TextSetting(value));
+            return new Setting(key, new TextSetting(value), context);
+        }
+        
+        public static Setting Create(string key, bool value, StringContext context = new())
+        {
+            return new Setting(key, new BooleanSetting(value), context);
+        }
+        
+        public static Setting Create(string key, int value, StringContext context = new())
+        {
+            return new Setting(key, new NumericSetting(value), context);
+        }
+        
+        public static Setting Create(string key, float value, StringContext context = new())
+        {
+            return new Setting(key, new NumericSetting(value), context);
+        }
+        
+        public static Setting Create(string key, double value, StringContext context = new())
+        {
+            return new Setting(key, new NumericSetting(value), context);
         }
 
         public override string ToString()

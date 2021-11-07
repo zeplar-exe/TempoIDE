@@ -23,7 +23,7 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         
         public SkinDefinition(FileInfo file) : base(file)
         {
-            Name = Path.GetFileNameWithoutExtension(file.Name);
+            Name = Path.GetFileNameWithoutExtension(FilePath);
         }
 
         public SkinDefinition(Stream stream, string name) : base(stream)
@@ -33,8 +33,11 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Parse()
         {
-            foreach (var setting in EnumerateSettings())
+            foreach (var setting in Document.Settings)
             {
+                if (ReportIfUnexpectedSettingType(setting, out TextSetting _))
+                    continue;
+                
                 switch (setting.Key.ToLower())
                 {
                     case "primary_background_color":
@@ -87,9 +90,7 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Write()
         {
-            Stream.Seek(0, SeekOrigin.Begin);
-            
-            using var writer = new StreamWriter(Stream, leaveOpen: true);
+            using var writer = CreateWriter();
             
             writer.WriteLine(CreateSetting(PrimaryBackgroundColor));
             writer.WriteLine(CreateSetting(SecondaryBackgroundColor));
