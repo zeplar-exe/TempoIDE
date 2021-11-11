@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using TempoIDE.Core.SettingsConfig.Settings;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
@@ -8,45 +9,50 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {
     public class SettingsFileOverride : Config
     {
-        private readonly List<Setting> overriddenSettings = new();
-
-        public IReadOnlyCollection<Setting> OverridenSettings => overriddenSettings.AsReadOnly();
-        public PluginSettingsFileMode Mode;
+        public IEnumerable<Setting> OverridenSettings { get; private set; } = Enumerable.Empty<Setting>();
         
-        public SettingsFileOverride(FileInfo file) : base(file)
+        public string RelativePath { get; }
+        public PluginSettingsFileMode Mode { get; private set; } = PluginSettingsFileMode.Overwrite;
+        
+        public SettingsFileOverride(FileInfo file, string relativePath) : base(file)
         {
+            RelativePath = relativePath;
             
+            Parse();
         }
 
         public SettingsFileOverride(Stream stream) : base(stream)
         {
-            
+            Parse();
         }
 
-        public override void Parse()
+        private void Parse()
         {
+            var settings = new List<Setting>();
+            
             foreach (var setting in Document.Settings)
             {
                 switch (setting.Key.ToLower())
                 {
                     case "mode":
-                        if (!Enum.TryParse(setting.Value.ToString(), out Mode))
+                        if (!Enum.TryParse(setting.Value.ToString(), out PluginSettingsFileMode tempMode))
                             ReportWarning("Invalid mode.", setting.Context);
+                        Mode = tempMode;
                         break;
                     default:
-                        overriddenSettings.Add(setting);
+                        settings.Add(setting);
                         break;
                 }
             }
+
+            OverridenSettings = settings;
         }
 
         public override void Write()
         {
-            using var writer = new StreamWriter(Stream, leaveOpen: true);
+            using var writer = CreateWriter();
             
-            if (Mode != PluginSettingsFileMode.None)
-                writer.WriteLineAsync(
-                    new Setting("mode", new TextSetting(Mode.ToString()), default).ToString());
+            writer.WriteLineAsync(new Setting("mode", new TextSetting(Mode.ToString()), default).ToString());
             
             foreach (var setting in OverridenSettings)
                 writer.WriteLineAsync(setting.ToString());
@@ -57,7 +63,6 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
     {
         None = 0,
         
-        Replace,
         Overwrite
     }
 }

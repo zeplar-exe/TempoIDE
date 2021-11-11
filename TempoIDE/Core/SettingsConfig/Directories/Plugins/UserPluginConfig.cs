@@ -8,45 +8,74 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {
     public class UserPluginConfig : Config
     {
-        private List<PluginMapping> MappingsList { get; } = new();
-
-        public IEnumerable<PluginMapping> Mappings => MappingsList.AsReadOnly();
-        public IEnumerable<PluginMapping> OrderedMappings => MappingsList.OrderByDescending(m => m.LoadPriority);
+        public IEnumerable<PluginMapping> Mappings { get; private set; } = Enumerable.Empty<PluginMapping>();
+        public IEnumerable<PluginMapping> OrderedMappings => Mappings?.OrderByDescending(m => m.LoadPriority);
 
         public UserPluginConfig(FileInfo file) : base(file)
         {
-            
+            Parse();
         }
 
         public UserPluginConfig(Stream stream) : base(stream)
         {
-            
+            Parse();
         }
 
-        public override void Parse()
+        private void Parse()
         {
+            var mappings = new List<PluginMapping>();
+            
             foreach (var setting in Document.Settings)
             {
                 switch (setting.Key.ToLower())
                 {
-                    case "plugin_def":
+                    case PluginMapping.MappingKey:
                         if (ReportIfUnexpectedSettingType(setting, out SettingTree tree))
                             break;
 
                         var mapping = new PluginMapping();
 
-                        foreach (var pluginSetting in tree.Settings)
+                        foreach (var mappingSetting in tree.Settings)
                         {
-                            switch (pluginSetting.Key.ToLower())
-                            {
-                                case "name":
-                                    if (ReportIfUnexpectedSettingType(setting, out TextSetting text))
+                                switch (mappingSetting.Key)
+                                {
+                                    case "enabled":
+                                        if (mappingSetting.Value is not BooleanSetting enabled)
+                                            break;
+
+                                        mapping.IsEnabled = enabled.Value;
                                         break;
-                                        
-                                    mapping.Name = text.ToString();
-                                    break;
-                            }
+                                    case "pinned":
+                                        if (mappingSetting.Value is not BooleanSetting pinned)
+                                            break;
+
+                                        mapping.IsPinned = pinned.Value;
+                        
+                                        break;
+                                    case "name":
+                                        if (mappingSetting.Value is not TextSetting name)
+                                            break;
+
+                                        mapping.Name = name.Value;
+                        
+                                        break;
+                                    case "path":
+                                        if (mappingSetting.Value is not TextSetting path)
+                                            break;
+
+                                        mapping.RelativePath = path.Value;
+                        
+                                        break;
+                                    case "priority":
+                                        if (mappingSetting.Value is not NumericSetting priority)
+                                            break;
+
+                                        mapping.LoadPriority = (int)priority.Value;
+                                        break;
+                                }
                         }
+                        
+                        mappings.Add(mapping);
                         
                         break;
                     default:
@@ -54,13 +83,15 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
                         break;
                 }
             }
+
+            Mappings = mappings;
         }
 
         public override void Write()
         {
             using var writer = CreateWriter();
             
-            foreach (var mapping in MappingsList)
+            foreach (var mapping in Mappings)
                 writer.WriteLineAsync(mapping.ToString());
         }
     }

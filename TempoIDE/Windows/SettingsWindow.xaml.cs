@@ -44,7 +44,7 @@ namespace TempoIDE.Windows
         private void Skins_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var item = (SkinDefinition)((ComboBox)sender).SelectedItem;
-            
+        
             if (item == null)
                 return;
             

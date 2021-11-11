@@ -24,14 +24,18 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         public SkinDefinition(FileInfo file) : base(file)
         {
             Name = Path.GetFileNameWithoutExtension(FilePath);
+            
+            Parse();
         }
 
         public SkinDefinition(Stream stream, string name) : base(stream)
         {
             Name = name;
+            
+            Parse();
         }
 
-        public override void Parse()
+        private void Parse()
         {
             foreach (var setting in Document.Settings)
             {

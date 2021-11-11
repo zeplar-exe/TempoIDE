@@ -1,10 +1,10 @@
+using System;
 using System.IO;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.Interfaces;
 
 namespace TempoIDE.Core.SettingsConfig.Directories
 {
-    public abstract class SettingDirectoryWrapper : IParseWriteStream
+    public abstract class SettingDirectoryWrapper : IDisposable
     {
         public readonly DirectoryInfo Directory;
 
@@ -12,8 +12,9 @@ namespace TempoIDE.Core.SettingsConfig.Directories
         {
             Directory = directory.CreateIfMissing();
         }
-
-        public abstract void Parse();
+        
         public abstract void Write();
+
+        public abstract void Dispose();
     }
 }

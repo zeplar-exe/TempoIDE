@@ -22,7 +22,7 @@ namespace TempoIDE.Core.SettingsConfig.Settings
             builder.Append('[');
 
             foreach (var setting in Settings)
-                builder.AppendLine(setting.ToFullString());
+                builder.AppendLine(setting.ToString());
             
             builder.Append(']');
             

@@ -1,7 +1,6 @@
 using System.Globalization;
 using System.Linq;
 using System.Windows;
-using TempoIDE.Core.SettingsConfig;
 using TempoIDE.Core.SettingsConfig.Converters;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
@@ -43,15 +42,15 @@ namespace TempoIDE.Core.Helpers
             {
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_SKIN_NAME, 
                     $"Could not find the requested skin '{name}'.\n");
-                
+
                 return false;
             }
 
             var converter = new SkinConverter();
             var resource = converter.Convert(definition, null, CultureInfo.CurrentCulture);
-            
-            var dict = Application.Current.Resources.MergedDictionaries;
 
+            var dict = Application.Current.Resources.MergedDictionaries;
+            
             dict.Clear();
             dict.Add(resource);
 
@@ -81,8 +80,7 @@ namespace TempoIDE.Core.Helpers
         public static SkinDefinition GetDefaultSkin()
         {
             var definition = new SkinDefinition(
-                ResourceHelper.GetResourceFile("default_skin.txt"), "Default");
-            definition.Parse();
+                ResourceHelper.GetResourceFile("default_skin.txt"), SkinConfig.DefaultSkinIdentifier);
 
             return definition;
         }

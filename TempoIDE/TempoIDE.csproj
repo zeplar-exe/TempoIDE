@@ -77,6 +77,12 @@
       <None Update="appdata\settings\app\skins\skins\Light.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="appdata\plugins\plugin_config.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appdata\plugins\light_mode\settings\app\skins\skin.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
     <ItemGroup>
@@ -114,7 +120,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="appdata\plugins" />
+      <Folder Include="appdata\plugins\light_mode" />
       <Folder Include="appdata\settings" />
       <Folder Include="Core\Commands\Common" />
       <Folder Include="Core\Inspections\TempoRules" />

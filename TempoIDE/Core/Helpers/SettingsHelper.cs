@@ -1,38 +1,45 @@
 using System;
 using System.IO;
-using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Directories;
 using TempoIDE.Core.Wrappers;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.Helpers
 {
     public static class SettingsHelper
     {
         private static bool changed;
+        private static DirectoryInfo directoryInfo;
         private static DirectoryWatcher watcher;
         
         public static SettingsDirectory Settings { get; private set; }
 
         public static event EventHandler SettingsUpdated;
-        
-        static SettingsHelper()
+
+        public static void Start()
         {
-            MoveDirectory(AppDataHelper.Directory);
-            
             ApplicationHelper.ApplicationTick += On_ApplicationTick;
         }
 
         public static void MoveDirectory(DirectoryInfo directory)
         {
+            directoryInfo = directory;
+            
             watcher?.Dispose();
-            
             watcher = new DirectoryWatcher(directory);
-            Settings = new SettingsDirectory(directory);
             
-            Settings.Parse();
-            SettingsUpdated?.Invoke(default, EventArgs.Empty);
+            Update();
             
             watcher.Changed += DirectoryChanged;
+        }
+
+        public static void Update()
+        {
+            ApplicationHelper.AppDispatcher.Invoke(delegate
+            {
+                Settings = new SettingsDirectory(directoryInfo);
+            }); // Required because the program bitches about thread ownership
+            
+            SettingsUpdated?.Invoke(default, EventArgs.Empty);
         }
 
         private static void DirectoryChanged(object sender, FileSystemEventArgs e)
@@ -47,8 +54,7 @@ namespace TempoIDE.Core.SettingsConfig
             
             changed = false;
             
-            Settings.Parse();
-            SettingsUpdated?.Invoke(default, EventArgs.Empty);
+            Update();
         }
     }
 }

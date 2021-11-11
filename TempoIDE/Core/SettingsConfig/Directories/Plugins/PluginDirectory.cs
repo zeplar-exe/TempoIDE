@@ -5,21 +5,21 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {
     public class PluginDirectory : SettingDirectoryWrapper
     {
-        public readonly PluginSettingsOverrides SettingsOverrides;
+        public readonly PluginSettingOverrides SettingOverrides;
         
         public PluginDirectory(DirectoryInfo directory) : base(directory)
         {
-            SettingsOverrides = new PluginSettingsOverrides(Directory.ToRelativeDirectory("settings")); 
-        }
-
-        public override void Parse()
-        {
-            SettingsOverrides.Parse();
+            SettingOverrides = new PluginSettingOverrides(Directory.ToRelativeDirectory("settings")); 
         }
 
         public override void Write()
         {
-            SettingsOverrides.Write();
+            SettingOverrides.Write();
+        }
+
+        public override void Dispose()
+        {
+            SettingOverrides.Dispose();
         }
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using CSharp_Logger;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.SettingsConfig;
+using TempoIDE.Core.Helpers.Plugins;
 
 namespace TempoIDE
 {
@@ -13,6 +14,7 @@ namespace TempoIDE
             ApplicationHelper.Start();
             
             InitSettings();
+            InitPlugins();
             SetSkin();
             InitLogger();
             HookEvents();
@@ -20,7 +22,18 @@ namespace TempoIDE
 
         private void InitSettings()
         {
-            SettingsHelper.Settings.Parse();
+            SettingsHelper.Start();
+            SettingsHelper.MoveDirectory(AppDataHelper.Directory.CreateSubdirectory("settings"));
+        }
+
+        private void InitPlugins()
+        {
+            PluginsHelper.MoveDirectory(AppDataHelper.Directory.CreateSubdirectory("plugins"));
+
+            foreach (var plugin in PluginsHelper.Plugins.Plugins.Where(p => p.Enabled))
+                plugin.Start();
+            
+            SettingsHelper.Update();
         }
 
         private void SetSkin()
@@ -51,7 +64,12 @@ namespace TempoIDE
             #endif
         }
         
-        private void CloseWindow(object sender, RoutedEventArgs routedEventArgs)
+        private void App_OnExit(object sender, ExitEventArgs e)
+        {
+            SettingsHelper.Settings.Dispose();
+        }
+        
+        private void CloseActiveWindow(object sender, RoutedEventArgs e)
         {
             SystemCommands.CloseWindow(ApplicationHelper.ActiveWindow);
         }

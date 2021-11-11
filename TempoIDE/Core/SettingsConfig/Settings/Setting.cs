@@ -47,13 +47,8 @@ namespace TempoIDE.Core.SettingsConfig.Settings
         {
             return new Setting(key, new NumericSetting(value), context);
         }
-
-        public override string ToString()
-        {
-            return Value.ToString();
-        }
         
-        public string ToFullString()
+        public override string ToString()
         {
             return $"{Key}=\"{Value}\"";
         }

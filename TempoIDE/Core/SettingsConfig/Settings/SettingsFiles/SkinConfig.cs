@@ -7,12 +7,19 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
         public const string DefaultSkinIdentifier = "_default";
         
         public string CurrentSkin { get; private set; } = DefaultSkinIdentifier;
-        public string PreviousSkin { get; private set; } 
-        
-        public SkinConfig(FileInfo file) : base(file) { }
-        public SkinConfig(Stream stream) : base(stream) { }
+        public string PreviousSkin { get; private set; }
 
-        public override void Parse()
+        public SkinConfig(FileInfo file) : base(file)
+        {
+            Parse();
+        }
+
+        public SkinConfig(Stream stream) : base(stream)
+        {
+            Parse();
+        }
+
+        private void Parse()
         {
             foreach (var setting in Document.Settings)
             {
@@ -40,9 +47,9 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
             using var writer = CreateWriter();
             
             if (!string.IsNullOrEmpty(PreviousSkin))
-                writer.WriteLineAsync(Setting.Create("previous_skin", PreviousSkin).ToFullString());
+                writer.WriteLineAsync(Setting.Create("previous_skin", PreviousSkin).ToString());
             
-            writer.WriteAsync(Setting.Create("current_skin", CurrentSkin).ToFullString());
+            writer.WriteAsync(Setting.Create("current_skin", CurrentSkin).ToString());
         }
 
         public void SetSkin(SkinDefinition definition)

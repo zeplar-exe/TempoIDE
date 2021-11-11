@@ -6,14 +6,15 @@ namespace TempoIDE.Core.SettingsConfig.Directories
     {
         public ExplorerSettings(DirectoryInfo directory) : base(directory)
         {
-        }
-
-        public override void Parse()
-        {
             
         }
 
         public override void Write()
+        {
+            
+        }
+
+        public override void Dispose()
         {
             
         }

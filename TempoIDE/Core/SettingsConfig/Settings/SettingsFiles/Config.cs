@@ -2,51 +2,40 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
-using TempoIDE.Core.Helpers;
-using TempoIDE.Core.Interfaces;
 using TempoIDE.Core.SettingsConfig.Internal.Parser;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
-    public abstract class Config : IDisposable, IParseWriteStream
+    public abstract class Config : IDisposable
     {
-        protected Stream Stream { get; }
-
         private readonly List<ConfigDiagnostic> diagnostics = new();
         
         public IEnumerable<ConfigDiagnostic> Diagnostics => diagnostics.AsReadOnly();
 
-        public string FilePath
-        {
-            get
-            {
-                if (Stream is FileStream fileStream)
-                    return fileStream.Name;
-
-                return string.Empty;
-            }
-        }
-
-        public bool IsInitialized => Stream?.CanRead ?? false;
+        public string FileContents { get; }
+        public string FilePath { get; }
         
-        public SettingsDocument Document => new SettingsParser(Stream).Parse();
+        public SettingsDocument Document => new SettingsParser(FileContents).Parse();
 
         protected Config(FileInfo file)
         {
-            Stream = file.OpenOrCreate(FileMode.Open, FileAccess.ReadWrite, FileShare.Read);
+            FilePath = file.FullName;
+            
+            using var reader = new StreamReader(file.OpenRead());
+            FileContents = reader.ReadToEnd();
         }
         
         protected Config(Stream stream)
         {
             _ = stream ?? throw new ArgumentNullException(nameof(stream));
             
-            Stream = stream;
+            using var reader = new StreamReader(stream);
+            FileContents = reader.ReadToEnd();
         }
-
-        public abstract void Parse();
+        
         public abstract void Write();
 
-        protected StreamWriter CreateWriter() => new(Stream, leaveOpen: true);
+        protected StreamWriter CreateWriter() => new(new FileInfo(FilePath).OpenWrite());
 
         protected void ReportUnexpectedSetting(Setting setting)
         {
@@ -93,9 +82,9 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
             diagnostics.Add(new ConfigDiagnostic(message, severity, context));
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            Stream.Dispose();
+            
         }
     }
 }

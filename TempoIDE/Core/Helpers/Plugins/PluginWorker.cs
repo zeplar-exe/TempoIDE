@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using TempoIDE.Core.SettingsConfig.Directories.Plugins;
 
@@ -5,19 +6,20 @@ namespace TempoIDE.Core.Helpers.Plugins
 {
     public class PluginWorker
     {
-        public readonly PluginDirectory PluginDirectory;
-        
+        public PluginDirectory PluginDirectory { get; }
+
         public bool Enabled { get; private set; }
-        public bool RequiresRestart => PluginDirectory.SettingsOverrides.Overrides.Any();
+        public bool RequiresRestart => PluginDirectory.SettingOverrides.Overrides.Any();
 
         public PluginWorker(PluginDirectory pluginDirectory)
         {
             PluginDirectory = pluginDirectory;
-            PluginDirectory.Parse();
         }
 
         public void Start()
         {
+            OverwriteSettings();
+            
             Enabled = true;
         }
 
@@ -26,15 +28,31 @@ namespace TempoIDE.Core.Helpers.Plugins
             Enabled = false;
         }
 
-        public void Delete()
+        public void OverwriteSettings()
         {
-            PluginDirectory.Directory.Delete(true);
+            foreach (var settingOverride in PluginDirectory.SettingOverrides.Overrides)
+            {
+                if (settingOverride.Mode == PluginSettingsFileMode.None)
+                    return;
+                
+                var path = Path.Join(SettingsHelper.Settings.Directory.FullName, settingOverride.RelativePath);
+                var file = new FileInfo(path).CreateIfMissing();
+
+                switch (settingOverride.Mode)
+                {
+                    case PluginSettingsFileMode.Overwrite:
+                    {
+                        File.WriteAllLines(path, settingOverride.OverridenSettings.Select(s => s.ToString()));
+                        break;
+                    }
+                }
+            }
         }
 
-        private void OnCommandReceived(string command)
+        public void Dispose()
         {
-            if (!Enabled)
-                return;
+            Disable();
+            PluginDirectory.Dispose();
         }
     }
 }

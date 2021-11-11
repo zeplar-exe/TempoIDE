@@ -5,7 +5,8 @@
              xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
              xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
              StartupUri="Windows/MainWindow.xaml"
-             Startup="App_OnStartup">
+             Startup="App_OnStartup"
+             Exit="App_OnExit">
     <Application.Resources>
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
@@ -102,7 +103,7 @@
                         Background="Transparent"
                         Foreground="{DynamicResource TextForegroundColor}"
                         BorderThickness="0"
-                        Click="CloseWindow"/>
+                        Click="CloseActiveWindow"/>
                 </Grid>
             </ControlTemplate>
         </ResourceDictionary>

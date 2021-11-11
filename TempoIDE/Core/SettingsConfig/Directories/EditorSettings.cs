@@ -9,12 +9,12 @@ namespace TempoIDE.Core.SettingsConfig.Directories
             
         }
 
-        public override void Parse()
+        public override void Write()
         {
             
         }
 
-        public override void Write()
+        public override void Dispose()
         {
             
         }

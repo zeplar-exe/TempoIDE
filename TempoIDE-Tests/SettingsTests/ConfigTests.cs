@@ -26,7 +26,6 @@ namespace TempoIDE_Tests.SettingsTests
             settingsDirectory.CreateDirectory(@"explorer");
 
             var directory = new SettingsDirectory(settingsDirectory.Info);
-            directory.Parse();
             
             Assert.True(directory.AppSettings.SkinSettings.SkinConfig.CurrentSkin == "_default");
         }
@@ -36,8 +35,6 @@ namespace TempoIDE_Tests.SettingsTests
         {
             using var testString = "previous_skin=\"Light\" current_skin=\"Dark\"".CreateStream();
             var config = new SkinConfig(testString);
-            
-            config.Parse();
             
             Assert.True(config.CurrentSkin == "Dark");
         }
