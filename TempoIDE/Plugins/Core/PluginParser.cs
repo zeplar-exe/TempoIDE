@@ -1,5 +1,9 @@
+using System.Collections.Generic;
 using System.Linq;
 using Jammo.ParserTools;
+using Jammo.ParserTools.Lexing;
+using Jammo.ParserTools.Tokenization;
+using Jammo.ParserTools.Tools;
 
 namespace TempoIDE.Plugins.Core
 {
@@ -8,18 +12,18 @@ namespace TempoIDE.Plugins.Core
         public static PluginStream Parse(string input)
         {
             var stream = new PluginStream();
-            var tokenizer = new Tokenizer(input);
+            var navigator = new Lexer(input).ToNavigator();
 
-            var previous = new BasicTokenCollection();
+            var previous = new List<LexerToken>();
             var state = new StateMachine<ParserState>(ParserState.Any);
             
-            foreach (var token in tokenizer)
+            foreach (var token in navigator.EnumerateFromIndex())
             {
                 switch (state.Current)
                 {
                     case ParserState.Any:
                     {
-                        switch (token.Text.ToLower())
+                        switch (token.ToString().ToLower())
                         {
                             case "version":
                                 state.MoveTo(ParserState.Version);
@@ -35,15 +39,14 @@ namespace TempoIDE.Plugins.Core
                     {
                         var readStarted = false;
                         
-                        BasicToken versionToken;
-                        while ((versionToken = tokenizer.Next()) != null)
+                        while (navigator.TryPeekNext(out var versionToken))
                         {
                             previous.Add(versionToken);
 
-                            if (versionToken.Type == BasicTokenType.Numerical)
+                            if (versionToken.Is(LexerTokenId.Numeric))
                             {
                                 readStarted = true;
-                                stream.Version += versionToken.Text;
+                                stream.Version += versionToken.ToString();
                             }
                             else if (readStarted)
                             {
@@ -56,12 +59,12 @@ namespace TempoIDE.Plugins.Core
                     }
                     case ParserState.MetaData:
                     {
-                        if (token.Type is BasicTokenType.Whitespace or BasicTokenType.Newline)
+                        if (token.Is(LexerTokenId.Whitespace) || token.Is(LexerTokenId.Newline))
                             break;
                         
-                        if (token.Text != "}")
+                        if (token.Is(LexerTokenId.CloseCurlyBracket))
                         {
-                            if (token.Text == ":")
+                            if (token.Is(LexerTokenId.Colon))
                             {
                                 state.MoveTo(ParserState.MetaDataSetter);
                             }
@@ -75,47 +78,45 @@ namespace TempoIDE.Plugins.Core
                     }
                     case ParserState.MetaDataSetter:
                     {
-                        if (token.Text != "\"")
+                        if (!token.Is(LexerTokenId.Backslash))
                             break;
-
-                        BasicToken metaToken;
-                        var tokens = new BasicTokenCollection();
                         
-                        while ((metaToken = tokenizer.Next()) != null)
+                        var tokens = new List<LexerToken>();
+                        
+                        while (navigator.TryMoveNext(out var metaToken))
                         {
-                            if (metaToken.Text == "\"")
+                            if (metaToken.Is(LexerTokenId.Backslash))
                                 break;
                             
                             tokens.Add(metaToken);
                         }
 
-                        var name = previous.LastOrDefault(t => t.Text == ":");
+                        var name = previous.LastOrDefault(t => t.Is(LexerTokenId.Colon));
                         
                         if (name == null)
                             break;
 
                         var index = previous.IndexOf(name);
-                        
-                        BasicToken nameToken;
-                        var nameTokens = new BasicTokenCollection();
+
+                        var nameTokens = new List<LexerToken>();
                         
                         while (true)
                         {
                             if (--index < 0)
                                 break;
 
-                            nameToken = previous[index];
+                            var nameToken = previous[index];
                             
-                            if (nameToken.Type is BasicTokenType.Whitespace or BasicTokenType.Newline)
+                            if (nameToken.Is(LexerTokenId.Whitespace) || nameToken.Is(LexerTokenId.Newline))
                                 continue;
                             
-                            if (nameToken.Type == BasicTokenType.Punctuation)
+                            if (nameToken.Token.Type == BasicTokenType.Punctuation)
                                 break;
                             
                             nameTokens.Add(nameToken);
                         }
 
-                        stream.Metadata[nameTokens.ToString()] = tokens.ToString();
+                        stream.Metadata[string.Concat(nameTokens.Select(t => t.Token))] = tokens.ToString();
                         
                         state.MoveLast();
                         

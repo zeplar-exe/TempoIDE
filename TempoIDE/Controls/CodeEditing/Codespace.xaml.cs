@@ -1,6 +1,6 @@
 using System.Windows.Controls;
 
-namespace TempoIDE.Controls
+namespace TempoIDE.Controls.CodeEditing
 {
     public partial class Codespace : UserControl
     {

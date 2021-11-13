@@ -1,7 +1,8 @@
+using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.InfoStructs;
 
-namespace TempoIDE.Controls
+namespace TempoIDE.Controls.CodeEditing
 {
     public readonly struct FormattedCharacter : IFormattedVisual
     {
@@ -19,9 +20,9 @@ namespace TempoIDE.Controls
             return Character.ToString();
         }
 
-        public double Draw(DrawingVisual visual)
+        public double Draw(DrawingContext context, Point point)
         {
-            return new FormattedString(this, DrawInfo, DrawInfo.Foreground).Draw(visual);
+            return new FormattedString(this, DrawInfo, DrawInfo.Foreground).Draw(context, point);
         }
     }
 }

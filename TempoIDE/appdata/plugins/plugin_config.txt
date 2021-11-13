@@ -1,3 +1,0 @@
-plugin_def=[
-    path="light_mode"
-]

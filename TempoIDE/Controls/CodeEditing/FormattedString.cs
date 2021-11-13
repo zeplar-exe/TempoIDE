@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Media;
 using TempoControls.Core.InfoStructs;
 
-namespace TempoIDE.Controls
+namespace TempoIDE.Controls.CodeEditing
 {
     public class FormattedString : IFormattedVisual, IEnumerable<FormattedCharacter>
     {
@@ -36,7 +36,7 @@ namespace TempoIDE.Controls
             Characters.AddRange(text.Select(c => new FormattedCharacter(c, DrawInfo)));
         }
         
-        public double Draw(DrawingVisual visual)
+        public double Draw(DrawingContext context, Point point)
         {
             var formatted = new FormattedText(
                 ToString(), CultureInfo.CurrentCulture, 
@@ -53,6 +53,8 @@ namespace TempoIDE.Controls
                 
                 formatted.SetForegroundBrush(character.DrawInfo.Foreground, index, 1);
             }
+            
+            context.DrawText(formatted, point);
 
             return formatted.Height;
         }
