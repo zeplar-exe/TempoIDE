@@ -5,9 +5,9 @@ namespace TempoIDE.Core.Caches
 {
     public static class IconCache
     {
-        public static readonly BitmapImage CsIcon = Resources.CsIcon.ToBitmapImage();
-        public static readonly BitmapImage PngIcon = Resources.PngIcon.ToBitmapImage();
-        public static readonly BitmapImage XmlIcon = Resources.XmlIcon.ToBitmapImage();
+        public static readonly BitmapImage CsIcon = ImageResources.CsIcon.ToBitmapImage();
+        public static readonly BitmapImage PngIcon = ImageResources.PngIcon.ToBitmapImage();
+        public static readonly BitmapImage XmlIcon = ImageResources.XmlIcon.ToBitmapImage();
 
         public static BitmapImage ImageFromExtension(string extension)
         {

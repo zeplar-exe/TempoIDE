@@ -7,7 +7,6 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using TempoIDE.Core.Commands;
-using TempoIDE.Core.Helpers;
 using TempoIDE.Core.UserActions;
 using TempoIDE.Core.UserActions.Standard;
 

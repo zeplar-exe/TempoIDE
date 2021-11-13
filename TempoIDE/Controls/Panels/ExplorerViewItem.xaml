@@ -14,7 +14,7 @@
             </Grid.ColumnDefinitions>
         
             <Image Grid.Column="1"/>
-            <TextBlock Grid.Column="2" Text="{Binding Path=HeaderText}" Foreground="{DynamicResource BaseTextColor}"/>
+            <TextBlock Grid.Column="2" Text="{Binding Path=HeaderText}" Foreground="{DynamicResource TextForegroundColor}"/>
         </Grid>
     </TreeViewItem.Header>
 </TreeViewItem>

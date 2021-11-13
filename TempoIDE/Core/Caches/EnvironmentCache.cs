@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using ByteSizeLib;
-using TempoIDE.Core.DataStructures;
+using TempoIDE.Core.Wrappers;
 
 namespace TempoIDE.Core.Caches
 {

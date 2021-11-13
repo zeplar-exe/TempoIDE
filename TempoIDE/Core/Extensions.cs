@@ -17,6 +17,11 @@ namespace TempoIDE.Core
         {
             return fileInfo.FullName == other.FullName;
         }
+        
+        public static bool EqualsOther(this DirectoryInfo directoryInfo, DirectoryInfo other)
+        {
+            return directoryInfo.FullName == other.FullName;
+        }
     }
     
     public static class Extensions

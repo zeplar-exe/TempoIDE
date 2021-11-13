@@ -1,3 +1,4 @@
+using System.Windows.Media;
 using Jammo.TextAnalysis.DotNet.CSharp;
 using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
@@ -12,9 +13,8 @@ namespace TempoIDE.Core.Inspections.Inspectors
             foreach (var diagnostic in document.Diagnostics)
             {
                 var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
-                var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
-                var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
-            
+                var brush = Brushes.Orange; // TODO: Implement InspectionSeverity from SharpEye
+
                 characters.UpdateUnderlineType(range, UnderlineType.Straight);
                 characters.UpdateUnderline(range, brush);
             }

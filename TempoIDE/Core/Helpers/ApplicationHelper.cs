@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using System.Timers;
 using System.Windows;
 using System.Windows.Threading;
 using CSharp_Logger;
@@ -10,18 +11,35 @@ namespace TempoIDE.Core.Helpers
 {
     public static class ApplicationHelper
     {
+        private static readonly Timer TickTimer = new(3);
+        private static ulong tick;
+
         public static Encoding GlobalEncoding = Encoding.UTF8;
         public static TextDataFormat ClipboardEncoding = TextDataFormat.UnicodeText;
         
         public static Logger Logger;
         
-        private static bool inspectionsEnabled = true;
-        public static bool InspectionsEnabled
+        public delegate void ApplicationTickHandler(ulong tick);
+        public static event ApplicationTickHandler ApplicationTick;
+
+        public static void Start()
         {
-            get => inspectionsEnabled;
-            set { inspectionsEnabled = value; InspectionsEnabledChanged?.Invoke(value); }
+            if (tick > 0)
+                return;
+            
+            TickTimer.Elapsed += delegate { ApplicationTick?.Invoke(++tick); };
+            
+            AwaitMainWindow();
         }
-        
+
+        private static async void AwaitMainWindow()
+        {
+            await AsyncHelper.WaitUntilNotNull(() => MainWindow);
+            
+            MainWindow.Activated += delegate { TickTimer.Start(); };
+            MainWindow.Deactivated += delegate { TickTimer.Stop(); };
+        }
+
         public static MainWindow MainWindow
         {
             get
@@ -44,9 +62,6 @@ namespace TempoIDE.Core.Helpers
 
         public static Dispatcher AppDispatcher => Application.Current.Dispatcher;
 
-        public delegate void EnabledEventHandler(bool enabled);
-        public static event EnabledEventHandler InspectionsEnabledChanged;
-
         public delegate void ErrorCodeEventHandler(ApplicationErrorCode code, string details);
         public static event ErrorCodeEventHandler ErrorCodeEmitted;
         
@@ -62,6 +77,12 @@ namespace TempoIDE.Core.Helpers
             MainWindow.Notify(message, NotificationIcon.Error);
             
             ErrorCodeEmitted?.Invoke(code, details);
+            LogError(message);
+        }
+
+        public static void LogError(string error)
+        {
+            Logger.Error(error);
         }
     }
 }

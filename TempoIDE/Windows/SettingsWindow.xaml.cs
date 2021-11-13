@@ -1,13 +1,15 @@
-using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Helpers;
+using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Windows
 {
     public partial class SettingsWindow : ModifiedWindow
     {
+        public SettingsViewModel ViewModel { get; } = new();
+        
         public SettingsWindow()
         {
             InitializeComponent();
@@ -41,8 +43,8 @@ namespace TempoIDE.Windows
 
         private void Skins_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item = (FileInfo)((ComboBox)sender).SelectedItem;
-            
+            var item = (SkinDefinition)((ComboBox)sender).SelectedItem;
+        
             if (item == null)
                 return;
             

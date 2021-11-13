@@ -4,12 +4,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
-        xmlns:io="clr-namespace:System.IO;assembly=System.IO.FileSystem"
-        xmlns:classes="clr-namespace:TempoIDE.Core.Helpers"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+        xmlns:settingsFiles="clr-namespace:TempoIDE.Core.SettingsConfig.Settings.SettingsFiles"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
         Loaded="SettingsWindow_OnLoaded">
     
     <Grid>
@@ -38,23 +38,17 @@
                 <panels:ExplorerViewItem Header="Appearance/Behavior" IsSelected="True">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate>
-                            <ControlTemplate.Resources>
-                                <ObjectDataProvider
-                                    x:Key="Skins"
-                                    ObjectType="{x:Type classes:SkinHelper}"
-                                    MethodName="GetSkinFiles"/>
-                            </ControlTemplate.Resources>
-                            
                             <Grid>
                                 <subControls:SettingsCategoryControl HeaderText="Theme">
                                     <ComboBox
                                         Background="{StaticResource SecondaryBackgroundColor}"
-                                        ItemsSource="{Binding
-                                            Source={StaticResource Skins}}"
+                                        ItemsSource="{Binding ViewModel.SkinDefinitions,
+                                            RelativeSource={RelativeSource AncestorType={x:Type windows:SettingsWindow}}}"
                                         ItemContainerStyle="{StaticResource TextStyle}"
                                         SelectionChanged="Skins_OnSelectionChanged">
+                                        
                                         <ComboBox.ItemTemplate>
-                                            <DataTemplate DataType="io:FileInfo">
+                                            <DataTemplate DataType="settingsFiles:SkinDefinition">
                                                 <TextBlock Text="{Binding Name}"/>
                                             </DataTemplate>
                                         </ComboBox.ItemTemplate>

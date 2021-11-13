@@ -65,6 +65,7 @@ namespace TempoIDE.Core.Wrappers
         public void Dispose()
         {
             watcher.Dispose();
+            Changed = null;
         }
     }
 }

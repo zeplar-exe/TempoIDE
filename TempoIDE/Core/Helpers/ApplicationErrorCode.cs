@@ -12,9 +12,10 @@ namespace TempoIDE.Core.Helpers
         TI_DIR_NO_ACCESS,
         
         TI_INVALID_SKIN,
+        TI_INVALID_SKIN_NAME,
         TI_INVALID_PLUGIN,
         
         TI_INVALID_FILE,
-        TI_INVALID_DIRECTORY
+        TI_INVALID_DIRECTORY,
     }
 }

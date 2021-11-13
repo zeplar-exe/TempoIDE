@@ -1,91 +1,88 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+using System.Globalization;
 using System.Linq;
 using System.Windows;
-using System.Windows.Markup;
-using TempoIDE.Properties;
+using TempoIDE.Core.SettingsConfig.Converters;
+using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Core.Helpers
 {
     public static class SkinHelper
     {
-        public const string SkinsPath = "data\\skins";
-        
-        public static bool TryLoadSkin(string skin)
+        public static SkinDefinition CurrentSkin
         {
-            var path = IOHelper.GetRelativePath(Path.Join(SkinsPath, skin));
-            
-            if (!File.Exists(path))
+            get
             {
-                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, 
-                    $"Could not find the relative file '{Path.Join(SkinsPath, skin)}'.\n" +
-                    "Is your executable in the correct place?");
+                var skinSettings = SettingsHelper.Settings.AppSettings.SkinSettings;
+                var skinName = skinSettings.SkinConfig.CurrentSkin;
 
-                return false;
-            }
-            
-            try
-            {
-                if (IOHelper.TryReadRelativeFile(Path.Join(SkinsPath, skin), out var stream, out var e))
+                if (skinName == SkinConfig.DefaultSkinIdentifier)
                 {
-                    using (stream)
-                    {
-                        var component = XamlReader.Load(stream);
-                        var dict = Application.Current.Resources.MergedDictionaries;
-
-                        dict.Clear();
-                        dict.Add(component as ResourceDictionary);
-                    }
+                    return GetDefaultSkin();
                 }
-            }
-            catch (Exception e)
-            {
-                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_SKIN, 
-                    $"The skin '{skin}' failed to load because it is not a valid xaml file.");
                 
-                #if DEBUG
-                ApplicationHelper.Logger.Debug(e.Message);
-                #endif
+                return skinSettings.SkinDefinitions.FirstOrDefault(skin => skin.Name == skinName);
+            }
+        }
+        
+        public static bool TryLoadSkin(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                return false;
+
+            var skinSettings = SettingsHelper.Settings.AppSettings.SkinSettings;
+
+            if (name == SkinConfig.DefaultSkinIdentifier)
+            {
+                LoadDefaultSkin();
+                
+                return true;
+            }
+            
+            if (!skinSettings.TryGetSkin(name, out var definition))
+            {
+                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_SKIN_NAME, 
+                    $"Could not find the requested skin '{name}'.\n");
 
                 return false;
             }
 
-            Settings.Default.ApplicationSkin = skin;
-            Settings.Default.Save();
+            var converter = new SkinConverter();
+            var resource = converter.Convert(definition, null, CultureInfo.CurrentCulture);
+
+            var dict = Application.Current.Resources.MergedDictionaries;
+            
+            dict.Clear();
+            dict.Add(resource);
+
+            skinSettings.SkinConfig.SetSkin(definition);
+            skinSettings.SkinConfig.Write();
             
             return true;
         }
 
         public static void LoadDefaultSkin()
         {
-            var component = Application.LoadComponent(
-                new Uri("DefaultSkin.xaml", UriKind.Relative));
+            var settings = SettingsHelper.Settings.AppSettings.SkinSettings;
+            var skin = GetDefaultSkin();
             var dict = Application.Current.Resources.MergedDictionaries;
-                
+            var converter = new SkinConverter();
+
             dict.Clear();
-            dict.Add((ResourceDictionary)component);
+            dict.Add(converter.Convert(skin, null, CultureInfo.CurrentCulture));
+
+            if (settings.SkinConfig.CurrentSkin == SkinConfig.DefaultSkinIdentifier) 
+                return;
+            
+            settings.SkinConfig.SetSkin(skin);
+            settings.SkinConfig.Write();
         }
 
-        public static IEnumerable<FileInfo> GetSkinFiles()
+        public static SkinDefinition GetDefaultSkin()
         {
-            try
-            {
-                var directory = new DirectoryInfo(Path.GetRelativePath(Directory.GetCurrentDirectory(), SkinsPath));
+            var definition = new SkinDefinition(
+                ResourceHelper.GetResourceFile("default_skin.txt"), SkinConfig.DefaultSkinIdentifier);
 
-                if (!directory.Exists)
-                    return Enumerable.Empty<FileInfo>();
-
-                return directory.EnumerateFiles("*.xaml", SearchOption.TopDirectoryOnly);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_DIRECTORY, 
-                    $"Could not find the relative directory '{SkinsPath}'.\n" +
-                    "Is your executable in the correct place?");
-                
-                return Enumerable.Empty<FileInfo>();
-            }
+            return definition;
         }
     }
 }

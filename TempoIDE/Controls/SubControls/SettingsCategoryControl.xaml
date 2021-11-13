@@ -20,7 +20,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         
-        <TextBlock Grid.Column="0" Text="{Binding Path=HeaderText}" Margin="-30, 0, 0, 0"/>
+        <TextBlock Grid.Column="0" Text="{Binding HeaderText}" Margin="-30, 0, 0, 0"/>
         <Separator Grid.Column="2" Background="{DynamicResource SecondaryBorderColor}" HorizontalAlignment="Stretch"/>
     </Grid>
 </ItemsControl>

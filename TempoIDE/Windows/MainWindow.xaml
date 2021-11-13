@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:commands="clr-namespace:TempoIDE.Core.Commands"
         xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:ui="clr-namespace:TempoIDE.Core.Commands.UI"
         xmlns:io="clr-namespace:TempoIDE.Core.Commands.IO"
@@ -11,7 +10,6 @@
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
-        Loaded="MainWindow_OnLoaded"
         Closed="MainWindow_OnClosed">
     
     <Grid>
@@ -36,7 +34,7 @@
                         <Menu
                             Grid.Column="0"
                             Background="Transparent" 
-                            Foreground="{DynamicResource BaseTextColor}">
+                            Foreground="{DynamicResource TextForegroundColor}">
                             
                             <MenuItem Header="File" Background="Transparent">
                                 <MenuItem Header="New solution">
@@ -68,10 +66,8 @@
                                 </MenuItem>
                             </MenuItem>
                             
-                            <MenuItem Header="Edit" Background="Transparent">
-                                
-                            </MenuItem>
-                            
+                            <MenuItem Header="Edit" Background="Transparent" />
+
                             <MenuItem Header="View" Background="Transparent"/>
                             <MenuItem Header="Navigation" Background="Transparent"/>
                             <MenuItem Header="Code" Background="Transparent"/>
