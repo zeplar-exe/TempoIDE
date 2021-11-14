@@ -35,18 +35,6 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>Resources.resx</DependentUpon>
       </Compile>
-      <Compile Update="ColoredTextBox.ControlLogic.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredTextBox.Mouse.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredTextBox.PublicInterface.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredLabel.PublicInterface.cs">
-        <DependentUpon>ColoredLabel.xaml</DependentUpon>
-      </Compile>
     </ItemGroup>
 
     <ItemGroup>

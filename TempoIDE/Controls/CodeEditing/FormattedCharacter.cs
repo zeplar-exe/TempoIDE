@@ -20,9 +20,9 @@ namespace TempoIDE.Controls.CodeEditing
             return Character.ToString();
         }
 
-        public double Draw(DrawingContext context, Point point)
+        public void Draw(DrawingContext context, Point point)
         {
-            return new FormattedString(this, DrawInfo, DrawInfo.Foreground).Draw(context, point);
+            new FormattedString(this, DrawInfo, DrawInfo.Foreground).Draw(context, point);
         }
     }
 }

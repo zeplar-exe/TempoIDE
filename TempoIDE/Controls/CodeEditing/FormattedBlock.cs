@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Jammo.ParserTools;
 
 namespace TempoIDE.Controls.CodeEditing
 {
@@ -11,16 +11,7 @@ namespace TempoIDE.Controls.CodeEditing
         
         public IEnumerable<IFormattedVisual> Visuals => visuals;
 
-        public IndexSpan Span { get; }
-        
-        protected FormattedBlock(IndexSpan span)
-        {
-            Span = span;
-        }
-        
-        public double Draw(DrawingContext context, Point point)
-        {
-            throw new System.NotImplementedException();
-        }
+        public abstract void Draw(DrawingContext context, Point point);
+        public abstract Size CalculateSize();
     }
 }

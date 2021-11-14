@@ -11,12 +11,12 @@ namespace TempoControls.Core.Types
             Value = value;
         }
 
-        public virtual void Execute(ColoredTextBox textBox)
-        {
-            textBox.AppendTextAtCaret(Value.ReplaceFirst(textBox.GetTypingWord(true), ""));
-            
-            textBox.ClearSelection();
-            textBox.AutoComplete.Disable();
-        }
+        // public virtual void Execute(ColoredTextBox textBox)
+        // {
+        //     textBox.AppendTextAtCaret(Value.ReplaceFirst(textBox.GetTypingWord(true), ""));
+        //     
+        //     textBox.ClearSelection();
+        //     textBox.AutoComplete.Disable();
+        // }
     }
 }

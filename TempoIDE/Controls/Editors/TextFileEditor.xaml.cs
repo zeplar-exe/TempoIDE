@@ -3,6 +3,7 @@ using System.IO;
 using System.Threading;
 using System.Timers;
 using System.Windows;
+using TempoIDE.Controls.CodeEditing;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
 using Timer = System.Timers.Timer;
@@ -14,7 +15,7 @@ namespace TempoIDE.Controls.Editors
         private readonly Timer timer = new(500);
         private bool textChangedBeforeUpdate;
 
-        public override bool IsFocused => TextBox.IsFocused;
+        public override bool IsFocused => Codespace.IsFocused;
 
         public TextFileEditor()
         {
@@ -53,7 +54,7 @@ namespace TempoIDE.Controls.Editors
             textChangedBeforeUpdate = false;
         }
 
-        private void TextEditor_OnTextChanged(object sender, RoutedEventArgs e)
+        private void TextEditor_OnTextChanged(Codespace codespace)
         {
             textChangedBeforeUpdate = true;
         }
@@ -69,13 +70,13 @@ namespace TempoIDE.Controls.Editors
 
             UpdateVisual();
 
-            TextBox.IsReadOnly = file == null;
+            Codespace.IsReadonly = file == null;
 
-            TextBox.TextArea.SetScheme(
-                ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
-            
-            TextBox.TextArea.SetCompletionProvider(
-                ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
+            // Codespace.TextArea.SetScheme(
+            //     ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
+            //
+            // Codespace.TextArea.SetCompletionProvider(
+            //     ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
         }
 
         public override void UpdateVisual()
@@ -87,11 +88,11 @@ namespace TempoIDE.Controls.Editors
             
             var file = EnvironmentHelper.Current.Cache.GetFile(BoundFile);
 
-            if (file == null || file.Content == TextBox.TextArea.Text)
+            if (file == null || file.Content == Codespace.Text)
                 return;
 
-            TextBox.Clear();
-            TextBox.AppendTextAtCaret(file.Content);
+            Codespace.Clear();
+            Codespace.Insert(0, file.Content);
             
             textChangedBeforeUpdate = false;
         }
@@ -105,7 +106,7 @@ namespace TempoIDE.Controls.Editors
             
             EnvironmentHelper.Current.DirectoryWatcher.Buffer();
             
-            File.WriteAllText(BoundFile.FullName, string.Concat(TextBox.TextArea.GetLines()),
+            File.WriteAllText(BoundFile.FullName, Codespace.Text,
                 ApplicationHelper.GlobalEncoding);
             
             EnvironmentHelper.Current.DirectoryWatcher.Resume();
@@ -113,7 +114,7 @@ namespace TempoIDE.Controls.Editors
 
         private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox.Focus();
+            Codespace.Focus();
         }
     }
 }

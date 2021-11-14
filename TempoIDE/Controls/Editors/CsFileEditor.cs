@@ -10,8 +10,8 @@ namespace TempoIDE.Controls.Editors
     {
         public CsFileEditor()
         {
-            ApplicationHelper.InspectionsEnabledChanged += _ => TextBox.TextArea.InvalidateTextChanged();
-            TextBox.TextArea.AfterHighlight += Label_OnAfterHighlight;
+            //ApplicationHelper.InspectionsEnabledChanged += _ => Codespace.TextArea.InvalidateTextChanged();
+            //Codespace.TextArea.AfterHighlight += Label_OnAfterHighlight;
         }
         
         private void Label_OnAfterHighlight(SyntaxCharCollection characters)

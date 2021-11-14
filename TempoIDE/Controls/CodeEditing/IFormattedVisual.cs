@@ -5,6 +5,6 @@ namespace TempoIDE.Controls.CodeEditing
 {
     public interface IFormattedVisual
     {
-        public double Draw(DrawingContext context, Point point);
+        public void Draw(DrawingContext context, Point point);
     }
 }
