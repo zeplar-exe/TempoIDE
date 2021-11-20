@@ -6,25 +6,34 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
     {
         public const string DefaultSkinIdentifier = "_default";
         
-        public string CurrentSkin = DefaultSkinIdentifier;
-        public string PreviousSkin; 
-        
-        public SkinConfig(FileInfo file) : base(file) { }
-        public SkinConfig(Stream stream) : base(stream) { }
+        public string CurrentSkin { get; private set; } = DefaultSkinIdentifier;
+        public string PreviousSkin { get; private set; }
 
-        public override void Parse()
+        public SkinConfig(FileInfo file) : base(file)
         {
-            foreach (var setting in EnumerateSettings())
+            Parse();
+        }
+
+        public SkinConfig(Stream stream) : base(stream)
+        {
+            Parse();
+        }
+
+        private void Parse()
+        {
+            foreach (var setting in Document.Settings)
             {
+                if (ReportIfUnexpectedSettingType(setting, out TextSetting text))
+                    break;
+                
                 switch (setting.Key.ToLower())
                 {
                     case "previous_skin":
-                        PreviousSkin = setting.Value.ToString();
+                        PreviousSkin = text.ToString();
                         break;
                     case "current_skin":
-                        CurrentSkin = setting.Value.ToString();
+                        CurrentSkin = text.ToString() ?? DefaultSkinIdentifier;
                         ReportIfEmptySetting(setting);
-                        
                         break;
                     default:
                         ReportUnexpectedSetting(setting);
@@ -35,18 +44,19 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 
         public override void Write()
         {
-            Stream.Seek(0, SeekOrigin.Begin);
-
-            using var writer = new StreamWriter(Stream, leaveOpen: true);
+            using var writer = CreateWriter();
             
             if (!string.IsNullOrEmpty(PreviousSkin))
-                writer.WriteLine($"previous_skin={PreviousSkin}");
+                writer.WriteLineAsync(Setting.Create("previous_skin", PreviousSkin).ToString());
             
-            writer.WriteAsync($"current_skin={CurrentSkin}");
+            writer.WriteAsync(Setting.Create("current_skin", CurrentSkin).ToString());
         }
 
         public void SetSkin(SkinDefinition definition)
         {
+            if (definition.Name == CurrentSkin)
+                return;
+            
             PreviousSkin = CurrentSkin;
             CurrentSkin = definition.Name;
         }

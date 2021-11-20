@@ -1,40 +1,26 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SkinSettings : SettingDirectoryWrapper
     {
-        public readonly SkinConfig SkinConfig;
+        public SkinConfig SkinConfig { get; }
         public IEnumerable<SkinDefinition> SkinDefinitions { get; private set; }
         
         public SkinSettings(DirectoryInfo directory) : base(directory)
         {
             SkinConfig = new SkinConfig(Directory.ToFile("skin.txt").CreateIfMissing());
-            SkinDefinitions = GetSkinDefinitions(Directory);
+            SkinDefinitions = Directory.ToRelativeDirectory("skins")
+                .CreateIfMissing()
+                .EnumerateFiles("*.txt", SearchOption.AllDirectories)
+                .Select(file => new SkinDefinition(file))
+                .ToList();
         }
         
-        private static IEnumerable<SkinDefinition> GetSkinDefinitions(DirectoryInfo appDirectory)
-        {
-            return appDirectory
-                .ToRelativeDirectory("skins").CreateIfMissing()
-                .GetFiles("*.txt", SearchOption.AllDirectories)
-                .Select(f => new SkinDefinition(f));
-        }
-
-        public override void Parse()
-        {
-            foreach (var definition in SkinDefinitions)
-                definition.Dispose();
-            
-            SkinConfig.Parse();
-            SkinDefinitions = GetSkinDefinitions(Directory);
-        }
-
         public override void Write()
         {
             SkinConfig.Write();
@@ -45,6 +31,18 @@ namespace TempoIDE.Core.SettingsConfig
             definition = SkinDefinitions.FirstOrDefault(s => s.Name == name);
 
             return definition != null;
+        }
+        
+        public override void Dispose()
+        {
+            SkinConfig?.Dispose();
+            DisposeDefinitions();
+        }
+
+        private void DisposeDefinitions()
+        {
+            foreach (var def in SkinDefinitions ?? Enumerable.Empty<SkinDefinition>())
+                def.Dispose();
         }
     }
 }

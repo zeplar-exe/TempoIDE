@@ -1,9 +1,7 @@
-using System.Collections.Generic;
 using System.IO;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class AppSettings : SettingDirectoryWrapper
     {
@@ -13,15 +11,15 @@ namespace TempoIDE.Core.SettingsConfig
         {
             SkinSettings = new SkinSettings(directory.ToRelativeDirectory("skins").CreateIfMissing());
         }
-        
-        public override void Parse()
-        {
-            SkinSettings.Parse();
-        }
 
         public override void Write()
         {
             SkinSettings.Write();
+        }
+
+        public override void Dispose()
+        {
+            SkinSettings?.Dispose();
         }
     }
 }

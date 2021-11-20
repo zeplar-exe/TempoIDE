@@ -35,6 +35,12 @@
         <AutoGen>True</AutoGen>
         <DependentUpon>ErrorResources.resx</DependentUpon>
       </Compile>
+      <Compile Update="Controls\Panels\EditorTabModel.cs">
+        <DependentUpon>EditorTabControl.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Windows\SettingsViewModel.cs">
+        <DependentUpon>SettingsWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 
     <ItemGroup>
@@ -55,35 +61,26 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="data\inspection_severity.csv">
+      <None Update="appdata\dictionaries\en-US.dic">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\dictionaries\en-US.dic">
+      <None Update="appdata\output.log">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="data\plugins\nothing.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="data\plugins\test.plugin">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="data\plugins\Test\Test.dll">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="data\output.log">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="DefaultSkin.py">
-        <DependentUpon>App.xaml</DependentUpon>
       </None>
       <EmbeddedResource Update="Properties\ErrorResources.resx">
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-      <None Update="data\app\skins\skins\Dark.txt">
+      <None Update="appdata\settings\app\skins\skins\Dark.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="data\app\skins\skins\Light.txt">
+      <None Update="appdata\settings\app\skins\skins\Light.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appdata\plugins\plugin_config.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="appdata\plugins\light_mode\settings\app\skins\skin.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
@@ -123,6 +120,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="appdata\plugins\light_mode" />
+      <Folder Include="appdata\settings" />
       <Folder Include="Core\Commands\Common" />
       <Folder Include="Core\Inspections\TempoRules" />
       <Folder Include="Windows\SolutionCreation\NetFramework" />

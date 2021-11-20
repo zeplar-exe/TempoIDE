@@ -6,13 +6,11 @@ namespace TempoIDE.Core.SettingsConfig.Settings.Methods
     public class MethodSetting : SettingValue, IInvokable
     {
         private readonly List<MethodOperation> operations = new();
-        public IEnumerable<MethodOperation> Operations => operations;
-
-        public readonly string Name;
+        public IEnumerable<MethodOperation> Operations => operations.AsReadOnly();
     
-        public MethodSetting(string name)
+        public MethodSetting()
         {
-            Name = name;
+            
         }
 
         public InvokeResult Invoke()

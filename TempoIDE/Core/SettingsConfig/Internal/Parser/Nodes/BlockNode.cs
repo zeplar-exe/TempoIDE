@@ -12,7 +12,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes
         
         private readonly List<SettingsNode> nodes = new();
 
-        public override IEnumerable<SettingsNode> Nodes => nodes;
+        public override IEnumerable<SettingsNode> Nodes => nodes.AsReadOnly();
 
         public void AddNode(SettingsNode node) => nodes.Add(node);
         public void RemoveNode(SettingsNode node) => nodes.Remove(node);

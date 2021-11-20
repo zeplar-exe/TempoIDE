@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Abstractions;
 using NUnit.Framework;
 using TempoIDE.Core.SettingsConfig;
+using TempoIDE.Core.SettingsConfig.Directories;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE_Tests.SettingsTests
@@ -18,15 +19,13 @@ namespace TempoIDE_Tests.SettingsTests
 
             var settingsDirectory = root.CreateDirectory("Settings");
             
-            var appDirectory = root.CreateDirectory(@"Settings\app");
+            var appDirectory = settingsDirectory.CreateDirectory(@"app");
             appDirectory.CreateFile("skin.txt");
             
-            root.CreateDirectory(@"Settings\editor");
-            root.CreateDirectory(@"Settings\explorer");
-            
+            settingsDirectory.CreateDirectory(@"editor");
+            settingsDirectory.CreateDirectory(@"explorer");
+
             var directory = new SettingsDirectory(settingsDirectory.Info);
-            
-            directory.Parse();
             
             Assert.True(directory.AppSettings.SkinSettings.SkinConfig.CurrentSkin == "_default");
         }
@@ -36,8 +35,6 @@ namespace TempoIDE_Tests.SettingsTests
         {
             using var testString = "previous_skin=\"Light\" current_skin=\"Dark\"".CreateStream();
             var config = new SkinConfig(testString);
-            
-            config.Parse();
             
             Assert.True(config.CurrentSkin == "Dark");
         }

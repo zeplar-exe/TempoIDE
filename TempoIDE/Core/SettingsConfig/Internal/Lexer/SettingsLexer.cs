@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Jammo.ParserTools;
 
-namespace TempoIDE.Core.SettingsConfig.Internal.Parser
+namespace TempoIDE.Core.SettingsConfig.Internal.Lexer
 {
     public class SettingsLexer
     {
@@ -9,11 +9,11 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         private readonly List<LexerError> errors = new();
         
-        public IEnumerable<LexerError> Errors => errors;
+        public IEnumerable<LexerError> Errors => errors.AsReadOnly();
 
         public SettingsLexer(string text)
         {
-            navigator = new Lexer(text, new LexerOptions
+            navigator = new Jammo.ParserTools.Lexer(text, new LexerOptions
             {
                 IncludeUnderscoreAsAlphabetic = true,
                 IncludePeriodAsNumeric = true
@@ -31,7 +31,7 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                     case LexerTokenId.Alphabetic:
                     case LexerTokenId.AlphaNumeric:
                     {
-                        switch (token.ToString())
+                        switch (token.ToString().ToUpper())
                         {
                             case "IF":
                                 yield return CreateToken(SettingsTokenId.IfKeyword);
@@ -53,6 +53,12 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                                 break;
                             case "XAND":
                                 yield return CreateToken(SettingsTokenId.XandKeyword);
+                                break;
+                            case "TRUE":
+                                yield return CreateToken(SettingsTokenId.BooleanTrue);
+                                break;
+                            case "FALSE":
+                                yield return CreateToken(SettingsTokenId.BooleanFalse);
                                 break;
                             default:
                                 yield return CreateToken(SettingsTokenId.Identifier);
@@ -94,6 +100,12 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                         break;
                     case LexerTokenId.RightParenthesis:
                         yield return CreateToken(SettingsTokenId.CloseParenthesis);
+                        break;
+                    case LexerTokenId.OpenBracket:
+                        yield return CreateToken(SettingsTokenId.OpenBracket);
+                        break;
+                    case LexerTokenId.CloseBracket:
+                        yield return CreateToken(SettingsTokenId.CloseBracket);
                         break;
                     case LexerTokenId.OpenCurlyBracket:
                         yield return CreateToken(SettingsTokenId.OpenCurlyBracket);

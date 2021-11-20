@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Markup;
 using TempoIDE.Core.SettingsConfig.Converters;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
-using TempoIDE.Properties;
 
 namespace TempoIDE.Core.Helpers
 {
@@ -47,15 +42,15 @@ namespace TempoIDE.Core.Helpers
             {
                 ApplicationHelper.EmitErrorCode(ApplicationErrorCode.TI_INVALID_SKIN_NAME, 
                     $"Could not find the requested skin '{name}'.\n");
-                
+
                 return false;
             }
 
             var converter = new SkinConverter();
             var resource = converter.Convert(definition, null, CultureInfo.CurrentCulture);
-            
-            var dict = Application.Current.Resources.MergedDictionaries;
 
+            var dict = Application.Current.Resources.MergedDictionaries;
+            
             dict.Clear();
             dict.Add(resource);
 
@@ -74,6 +69,9 @@ namespace TempoIDE.Core.Helpers
 
             dict.Clear();
             dict.Add(converter.Convert(skin, null, CultureInfo.CurrentCulture));
+
+            if (settings.SkinConfig.CurrentSkin == SkinConfig.DefaultSkinIdentifier) 
+                return;
             
             settings.SkinConfig.SetSkin(skin);
             settings.SkinConfig.Write();
@@ -81,15 +79,10 @@ namespace TempoIDE.Core.Helpers
 
         public static SkinDefinition GetDefaultSkin()
         {
-            var definition = new SkinDefinition(ResourceHelper.GetResourceFile("default_skin.txt"));
-            definition.Parse();
+            var definition = new SkinDefinition(
+                ResourceHelper.GetResourceFile("default_skin.txt"), SkinConfig.DefaultSkinIdentifier);
 
             return definition;
-        }
-
-        public static IEnumerable<SkinDefinition> GetSkinDefinitions()
-        {
-            return SettingsHelper.Settings.AppSettings.SkinSettings.SkinDefinitions;
         }
     }
 }

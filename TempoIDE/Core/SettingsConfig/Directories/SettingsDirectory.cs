@@ -1,13 +1,13 @@
 using System.IO;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class SettingsDirectory : SettingDirectoryWrapper
     {
-        public readonly AppSettings AppSettings;
-        public readonly EditorSettings EditorSettings;
-        public readonly ExplorerSettings ExplorerSettings;
+        public AppSettings AppSettings { get; set; }
+        public EditorSettings EditorSettings { get; set; }
+        public ExplorerSettings ExplorerSettings { get; set; }
 
         public SettingsDirectory(DirectoryInfo root) : base(root)
         {
@@ -16,18 +16,18 @@ namespace TempoIDE.Core.SettingsConfig
             ExplorerSettings = new ExplorerSettings(root.ToRelativeDirectory("explorer").CreateIfMissing());
         }
 
-        public override void Parse()
-        {
-            AppSettings.Parse();
-            EditorSettings.Parse();
-            ExplorerSettings.Parse();
-        }
-
         public override void Write()
         {
             AppSettings.Write();
             EditorSettings.Write();
             ExplorerSettings.Write();
+        }
+
+        public override void Dispose()
+        {
+            AppSettings.Dispose();
+            EditorSettings.Dispose();
+            ExplorerSettings.Dispose();
         }
     }
 }

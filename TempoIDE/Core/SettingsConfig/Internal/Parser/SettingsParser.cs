@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Jammo.ParserTools;
+using TempoIDE.Core.SettingsConfig.Internal.Lexer;
 using TempoIDE.Core.SettingsConfig.Internal.Parser.Nodes;
 using TempoIDE.Core.SettingsConfig.Settings;
 using TempoIDE.Core.SettingsConfig.Settings.Methods;
@@ -14,11 +14,11 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
 
         private readonly List<ParserError> errors = new();
 
-        public IEnumerable<ParserError> Errors => errors;
+        public IEnumerable<ParserError> Errors => errors.AsReadOnly();
 
         public SettingsParser(Stream stream)
         {
-            using var reader = new StreamReader(stream);
+            using var reader = new StreamReader(stream, leaveOpen: true);
 
             navigator = new SettingsLexer(reader.ReadToEnd()).Lex().ToNavigator();
         }
@@ -28,12 +28,12 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             navigator = new SettingsLexer(text).Lex().ToNavigator();
         }
 
-        public IEnumerable<Setting> ParseSettings()
+        public SettingsDocument Parse()
         {
-            return ParseSettingsAndComments().OfType<Setting>();
+            return new SettingsDocument(ParseSettings());
         }
-
-        public IEnumerable<ISetting> ParseSettingsAndComments()
+        
+        public IEnumerable<Setting> ParseSettings()
         {
             errors.Clear();
             
@@ -43,32 +43,13 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
                 {
                     case SettingsTokenId.Identifier:
                     {
-                        if (!navigator.TakeIf(t => t.Is(SettingsTokenId.Equals), out _))
-                        {
-                            ReportError("Expected a '='");
-                            break;
-                        }
-
-                        if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
-                        {
-                            yield return new Setting(token.ToString(), ParseMethod(token), token.Context);
-                            
-                            break;
-                        }
-
-                        if (!navigator.TryMoveNext(out var literalToken) || !literalToken.IsLiteral())
-                        {
-                            ReportError("Expected a literal value.");
-                            break;
-                        }
-
-                        yield return new Setting(token.ToString(), new TextSetting(literalToken.ToString()), token.Context);
+                        if (TryParseSetting(token, out var setting))
+                            yield return setting;
                         
                         break;
                     }
                     case SettingsTokenId.Comment:
-                        yield return new Comment(token.ToString(), token.Context);
-                        break;
+                        continue;
                     default:
                         ReportError("Unexpected token.");
                         break;
@@ -77,10 +58,90 @@ namespace TempoIDE.Core.SettingsConfig.Internal.Parser
             
             yield break;
         }
-        
-        private MethodSetting ParseMethod(SettingsToken name)
+
+        private SettingTree ParseTree()
         {
-            var setting = new MethodSetting(name.ToString());
+            var children = new List<Setting>();
+
+            foreach (var token in navigator.EnumerateFromIndex())
+            {
+                switch (token.Id)
+                {
+                    case SettingsTokenId.Identifier:
+                        if (TryParseSetting(token, out var setting))
+                            children.Add(setting);
+                        break;
+                    case SettingsTokenId.CloseBracket:
+                        return new SettingTree(children);
+                }
+            }
+
+            return new SettingTree(children);
+        }
+
+        private bool TryParseSetting(SettingsToken name, out Setting setting)
+        {
+            setting = default;
+            
+            if (!navigator.TryMoveNext(out var equalsToken) || !equalsToken.Is(SettingsTokenId.Equals))
+            {
+                ReportError("Expected a '='");
+                
+                return false;
+            }
+
+            if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenCurlyBracket), out _))
+            {
+                setting = new Setting(name.ToString(), ParseMethod(), name.Context);
+
+                return true;
+            }
+            
+            if (navigator.TakeIf(t => t.Is(SettingsTokenId.OpenBracket), out _))
+            {
+                setting = new Setting(name.ToString(), ParseTree(), name.Context);
+
+                return true;
+            }
+
+            if (!navigator.TryMoveNext(out var literalToken) || !literalToken.IsLiteral())
+            {
+                ReportError("Expected a literal value.");
+                
+                setting = new Setting(name.ToString(), new UnknownSetting(literalToken.ToString()), name.Context);
+
+                return true;
+            }
+
+            switch (literalToken.Id)
+            {
+                case SettingsTokenId.StringLiteral:
+                    setting = Setting.Create(name.ToString(), literalToken.ToString(), name.Context);
+                    return true;
+                case SettingsTokenId.NumericLiteral:
+                    if (int.TryParse(literalToken.Text, out var iResult))
+                        setting = Setting.Create(name.ToString(), iResult, name.Context);
+                    else if (float.TryParse(literalToken.ToString(), out var fResult))
+                        setting = Setting.Create(name.ToString(), fResult, name.Context);
+                    else if (double.TryParse(literalToken.ToString(), out var dResult))
+                        setting = Setting.Create(name.ToString(), dResult, name.Context);
+                    else
+                        return false;
+                    break;
+                case SettingsTokenId.BooleanTrue or SettingsTokenId.BooleanFalse:
+                    setting = Setting.Create(name.ToString(), bool.Parse(literalToken.ToString().ToLower()));
+                    break;
+                default:
+                    setting = new Setting(name.ToString(), new UnknownSetting(literalToken.ToString()), name.Context);
+                    break;
+            }
+
+            return true;
+        }
+        
+        private MethodSetting ParseMethod()
+        {
+            var setting = new MethodSetting();
             
             foreach (var block in ParseBlock().Nodes)
             {

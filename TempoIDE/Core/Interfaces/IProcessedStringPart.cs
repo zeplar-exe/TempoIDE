@@ -1,8 +1,8 @@
 using Jammo.ParserTools;
 
-namespace TempoIDE.Core.SettingsConfig.Settings
+namespace TempoIDE.Core.Interfaces
 {
-    public interface ISetting
+    public interface IProcessedStringPart
     {
         public StringContext Context { get; }
     }

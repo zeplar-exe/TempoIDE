@@ -1,6 +1,6 @@
 using System.IO;
 
-namespace TempoIDE.Core.SettingsConfig
+namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public class EditorSettings : SettingDirectoryWrapper
     {
@@ -9,12 +9,12 @@ namespace TempoIDE.Core.SettingsConfig
             
         }
 
-        public override void Parse()
+        public override void Write()
         {
             
         }
 
-        public override void Write()
+        public override void Dispose()
         {
             
         }

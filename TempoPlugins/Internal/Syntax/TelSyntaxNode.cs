@@ -10,8 +10,8 @@ namespace TempoPlugins.Internal.Syntax
         private readonly List<TelSyntaxNode> nodes = new();
         private readonly List<ParserError> errors = new();
         
-        public IEnumerable<TelSyntaxNode> Nodes => nodes;
-        public IEnumerable<ParserError> Errors => errors;
+        public IEnumerable<TelSyntaxNode> Nodes => nodes.AsReadOnly();
+        public IEnumerable<ParserError> Errors => errors.AsReadOnly();
 
         public bool HasError => errors.Any();
 

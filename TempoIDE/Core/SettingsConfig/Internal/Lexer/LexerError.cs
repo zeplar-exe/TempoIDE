@@ -1,6 +1,6 @@
 using Jammo.ParserTools;
 
-namespace TempoIDE.Core.SettingsConfig.Internal.Parser
+namespace TempoIDE.Core.SettingsConfig.Internal.Lexer
 {
     public readonly struct LexerError
     {

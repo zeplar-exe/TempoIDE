@@ -23,16 +23,26 @@ namespace TempoIDE_Tests.SettingsTests
             var testString = "thing=12.34";
             var setting = new SettingsParser(testString).ParseSettings().First();
             
-            Assert.True(setting.Key == "thing" && setting.Value.ToString() == "12.34");
+            Assert.True(setting.Key == "thing" && setting.Value.ToString().StartsWith("12.34"));
         }
-        
+
         [Test]
-        public void TestComment()
+        public void TestBooleanSetting()
         {
-            var testString = "thing=123 # This is a comment";
-            var setting = new SettingsParser(testString).ParseSettingsAndComments().ElementAt(1);
+            var testString = "thing=TRUE";
+            var setting = new SettingsParser(testString).ParseSettings().First();
             
-            Assert.True(setting is Comment { Text: " This is a comment" });
+            Assert.True(setting.Value is BooleanSetting { Value: true });
+        }
+
+        [Test]
+        public void TestTreeSetting()
+        {
+            var testString = "thing=[ a=\"abc\" b=\"def\" ]";
+            var setting = new SettingsParser(testString).ParseSettings().First();
+            var value = (SettingTree)setting.Value;
+            
+            Assert.True(value.Settings.ElementAt(1).Value.ToString() == "def");
         }
     }
 }
