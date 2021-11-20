@@ -8,6 +8,7 @@
         xmlns:classes="clr-namespace:TempoIDE.Core.Helpers"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+        xmlns:explorer="clr-namespace:TempoIDE.Controls.Explorer"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Loaded="SettingsWindow_OnLoaded">
@@ -28,14 +29,14 @@
             
             <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
             
-            <panels:ExplorerView
+            <explorer:ExplorerView
                 Grid.Column="0"
                 x:Name="Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
-                <panels:ExplorerViewItem Header="Appearance/Behavior" IsSelected="True">
+                <explorer:TitledExplorerItem HeaderText="Appearance/Behavior" IsSelected="True">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate>
                             <ControlTemplate.Resources>
@@ -63,20 +64,20 @@
                             </Grid>
                         </ControlTemplate>
                     </windows:SettingsWindow.SectionTemplate>
-                </panels:ExplorerViewItem>
+                </explorer:TitledExplorerItem>
                 
-                <panels:ExplorerViewItem Header="Performance">
+                <explorer:TitledExplorerItem HeaderText="Performance">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
-                </panels:ExplorerViewItem>
+                </explorer:TitledExplorerItem>
                 
-                <panels:ExplorerViewItem Header="Keybinds">
+                <explorer:TitledExplorerItem HeaderText="Keybinds">
                     <windows:SettingsWindow.SectionTemplate>
                         <ControlTemplate />
                     </windows:SettingsWindow.SectionTemplate>
-                </panels:ExplorerViewItem>
-            </panels:ExplorerView>
+                </explorer:TitledExplorerItem>
+            </explorer:ExplorerView>
         </Grid>
     </Grid>
 </windows:ModifiedWindow>

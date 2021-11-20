@@ -3,6 +3,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Input;
 using TempoIDE.Controls.Editors;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.CustomEventArgs;
 using TempoIDE.Core.Helpers;
@@ -72,7 +73,7 @@ namespace TempoIDE.Windows
 
         private void ExplorerPanel_OnOpenFileEvent(object sender, OpenExplorerElementArgs e)
         {
-            var path = (e.Element as ExplorerFileSystemItem)?.FilePath;
+            var path = (e.Element as ExplorerFile)?.FilePath;
             
             if (path == null)
                 return;

@@ -7,6 +7,7 @@
         xmlns:windows="clr-namespace:TempoIDE.Windows"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+        xmlns:explorer="clr-namespace:TempoIDE.Controls.Explorer"
         mc:Ignorable="d"
         Style="{StaticResource ModalWindowStyle}"
         Title="CreateSolutionWindow"
@@ -40,35 +41,35 @@
             
             <UserControl Grid.Column="1" Content="{Binding SelectedControl.Content}"/>
             
-            <panels:ExplorerView
+            <explorer:ExplorerView
                 Grid.Column="0"
                 x:Name="Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">
                 
-                <panels:ExplorerViewItem Header="Empty Solution" IsSelected="True">
+                <explorer:TitledExplorerItem HeaderText="Empty Solution" IsSelected="True">
                     <slnCreation:CreateSolutionWindow.CreationControl>
                         <slnCreation:EmptySolution/>
                     </slnCreation:CreateSolutionWindow.CreationControl>
-                </panels:ExplorerViewItem>
+                </explorer:TitledExplorerItem>
                 
-                <panels:ExplorerViewItem Header=".NET Core" IsExpanded="True">
-                    <panels:ExplorerViewItem Header="Class Library" />
+                <explorer:TitledExplorerItem HeaderText=".NET Core" IsExpanded="True">
+                    <explorer:TitledExplorerItem HeaderText="Class Library" />
 
-                    <panels:ExplorerViewItem Header="Console Application">
+                    <explorer:TitledExplorerItem HeaderText="Console Application">
                         <!--<slnCreation:CreateSolutionWindow.CreationControl>
                             <netCore:ConsoleApp/>
                         </slnCreation:CreateSolutionWindow.CreationControl>-->
-                    </panels:ExplorerViewItem>
-                </panels:ExplorerViewItem>
+                    </explorer:TitledExplorerItem>
+                </explorer:TitledExplorerItem>
                 
-                <panels:ExplorerViewItem Header=".NET Framework" IsExpanded="True">
-                    <panels:ExplorerViewItem Header="Class Library" />
+                <explorer:TitledExplorerItem HeaderText=".NET Framework" IsExpanded="True">
+                    <explorer:TitledExplorerItem HeaderText="Class Library" />
 
-                    <panels:ExplorerViewItem Header="Console Application" />
-                </panels:ExplorerViewItem>
-            </panels:ExplorerView>
+                    <explorer:TitledExplorerItem HeaderText="Console Application" />
+                </explorer:TitledExplorerItem>
+            </explorer:ExplorerView>
         </Grid>
     </Grid>
 </windows:ModifiedWindow>

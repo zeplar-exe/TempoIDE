@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Jammo.TextAnalysis;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
@@ -41,7 +42,7 @@ namespace TempoIDE.Core.Environments
         {
             var info = (FileInfo) EnvironmentPath;
 
-            explorer.AppendElement(new ExplorerFileSystemItem(info.FullName));
+            explorer.Add(ExplorerFile.FromFile(info.FullName));
             ApplicationHelper.MainWindow.Editor.Tabs.OpenFile(info);
         }
 

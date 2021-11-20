@@ -1,3 +1,4 @@
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -49,6 +50,27 @@ namespace TempoIDE.Core.Helpers
 
         public delegate void ErrorCodeEventHandler(ApplicationErrorCode code, string details);
         public static event ErrorCodeEventHandler ErrorCodeEmitted;
+        
+        public static bool EmitIfInvalidFile(string path)
+        {
+            if (File.Exists(path)) 
+                return false;
+            
+            EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, $"The file '{Path.GetFileName(path)}' does not exist.");
+            
+            return true;
+        }
+        
+        
+        public static bool EmitIfInvalidDirectory(string path)
+        {
+            if (Directory.Exists(path)) 
+                return false;
+            
+            EmitErrorCode(ApplicationErrorCode.TI_INVALID_FILE, $"The directory '{Path.GetDirectoryName(path)}' does not exist.");
+            
+            return true;
+        }
         
         public static void EmitErrorCode(ApplicationErrorCode code, string details)
         {

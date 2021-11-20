@@ -4,6 +4,7 @@
              xmlns:properties="clr-namespace:TempoIDE.Properties"
              xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
              xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+             xmlns:explorer="clr-namespace:TempoIDE.Controls.Explorer"
              StartupUri="Windows/MainWindow.xaml"
              Startup="App_OnStartup">
     <Application.Resources>
@@ -37,15 +38,15 @@
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type panels:ExplorerViewItem}" BasedOn="{StaticResource TextStyle}">
+            <Style TargetType="{x:Type explorer:ExplorerItem}" BasedOn="{StaticResource TextStyle}">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type panels:ExplorerFileSystemItem}" BasedOn="{StaticResource TextStyle}">
+            <Style TargetType="{x:Type explorer:ExplorerFile}" BasedOn="{StaticResource TextStyle}">
                 <Setter Property="Background" Value="Transparent" />
             </Style>
             
-            <Style TargetType="{x:Type panels:ExplorerView}">
+            <Style TargetType="{x:Type explorer:ExplorerView}">
                 <Setter Property="Background" Value="{DynamicResource SecondaryBackgroundColor}"/>
             </Style>
             
