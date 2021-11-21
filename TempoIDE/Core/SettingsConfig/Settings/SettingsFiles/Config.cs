@@ -9,20 +9,22 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
     public abstract class Config : IDisposable
     {
         private readonly List<ConfigDiagnostic> diagnostics = new();
-        
-        public IEnumerable<ConfigDiagnostic> Diagnostics => diagnostics.AsReadOnly();
+
+        public IEnumerable<ConfigDiagnostic> Diagnostics => diagnostics;
 
         public string FileContents { get; }
         public string FilePath { get; }
         
-        public SettingsDocument Document => new SettingsParser(FileContents).Parse();
+        public SettingsDocument Document { get; }
 
         protected Config(FileInfo file)
         {
             FilePath = file.FullName;
             
             using var reader = new StreamReader(file.OpenRead());
+            
             FileContents = reader.ReadToEnd();
+            Document = new SettingsParser(FileContents).Parse();
         }
         
         protected Config(Stream stream)
@@ -30,7 +32,9 @@ namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
             _ = stream ?? throw new ArgumentNullException(nameof(stream));
             
             using var reader = new StreamReader(stream);
+            
             FileContents = reader.ReadToEnd();
+            Document = new SettingsParser(FileContents).Parse();
         }
         
         public abstract void Write();

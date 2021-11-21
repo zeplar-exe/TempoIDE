@@ -6,7 +6,7 @@ namespace TempoIDE.Core.SettingsConfig.Directories
 {
     public abstract class SettingDirectoryWrapper : IDisposable
     {
-        public readonly DirectoryInfo Directory;
+        public DirectoryInfo Directory { get; }
 
         protected SettingDirectoryWrapper(DirectoryInfo directory)
         {
