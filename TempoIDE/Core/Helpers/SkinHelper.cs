@@ -51,8 +51,7 @@ namespace TempoIDE.Core.Helpers
 
             var dict = Application.Current.Resources.MergedDictionaries;
             
-            dict.Clear();
-            dict.Add(resource);
+            dict[0] = resource;
 
             skinSettings.SkinConfig.SetSkin(definition);
             skinSettings.SkinConfig.Write();
@@ -66,9 +65,8 @@ namespace TempoIDE.Core.Helpers
             var skin = GetDefaultSkin();
             var dict = Application.Current.Resources.MergedDictionaries;
             var converter = new SkinConverter();
-
-            dict.Clear();
-            dict.Add(converter.Convert(skin, null, CultureInfo.CurrentCulture));
+            
+            dict[0] = converter.Convert(skin, null, CultureInfo.CurrentCulture);
 
             if (settings.SkinConfig.CurrentSkin == SkinConfig.DefaultSkinIdentifier) 
                 return;

@@ -9,3 +9,4 @@ separator_color="Black"
 accept_button_color="ForestGreen"
 decline_button_color="DimGray"
 notification_color="DimGray"
+# Why does this exist, you may ask? Well, it's easier to understand and edit than a raw XAML file. You're welcome.

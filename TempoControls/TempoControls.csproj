@@ -9,48 +9,48 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Jammo.TextAnalysis" Version="2.2.0" />
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0" />
+        <PackageReference Include="Jammo.TextAnalysis" Version="2.2.0"/>
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="3.11.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Update="Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <EmbeddedResource Update="Properties\Resources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
+        <EmbeddedResource Update="Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <EmbeddedResource Update="Properties\Resources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Properties\Resources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredTextBox.ControlLogic.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredTextBox.Mouse.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredTextBox.PublicInterface.cs">
-        <DependentUpon>ColoredTextBox.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="ColoredLabel.PublicInterface.cs">
-        <DependentUpon>ColoredLabel.xaml</DependentUpon>
-      </Compile>
+        <Compile Update="Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Resources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="ColoredTextBox.ControlLogic.cs">
+            <DependentUpon>ColoredTextBox.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="ColoredTextBox.Mouse.cs">
+            <DependentUpon>ColoredTextBox.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="ColoredTextBox.PublicInterface.cs">
+            <DependentUpon>ColoredTextBox.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="ColoredLabel.PublicInterface.cs">
+            <DependentUpon>ColoredLabel.xaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\Configs" />
+        <Folder Include="Resources\Configs"/>
     </ItemGroup>
 
 </Project>

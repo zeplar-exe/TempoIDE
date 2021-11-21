@@ -8,136 +8,147 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Update="Properties\Settings.Designer.cs">
-        <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Settings.settings</DependentUpon>
-      </Compile>
-      <Compile Update="Properties\Shortcuts.Designer.cs">
-        <DesignTimeSharedInput>True</DesignTimeSharedInput>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Shortcuts.settings</DependentUpon>
-      </Compile>
-      <Compile Remove="packages\**" />
-      <Compile Update="Properties\ImageResources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>Resources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="UserControls\Panels\ExplorerFileSystemItem.cs">
-        <DependentUpon>ExplorerViewItem.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="UserControls\Panels\EditorControl.FileHandling.cs">
-        <DependentUpon>EditorControl.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Properties\ErrorResources.Designer.cs">
-        <DesignTime>True</DesignTime>
-        <AutoGen>True</AutoGen>
-        <DependentUpon>ErrorResources.resx</DependentUpon>
-      </Compile>
-      <Compile Update="Controls\Panels\EditorTabModel.cs">
-        <DependentUpon>EditorTabControl.xaml</DependentUpon>
-      </Compile>
-      <Compile Update="Windows\SettingsViewModel.cs">
-        <DependentUpon>SettingsWindow.xaml</DependentUpon>
-      </Compile>
+        <Compile Update="Properties\Settings.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Settings.settings</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\Shortcuts.Designer.cs">
+            <DesignTimeSharedInput>True</DesignTimeSharedInput>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Shortcuts.settings</DependentUpon>
+        </Compile>
+        <Compile Remove="packages\**" />
+        <Compile Update="Properties\ImageResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>Resources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="UserControls\Panels\ExplorerFileSystemItem.cs">
+            <DependentUpon>ExplorerViewItem.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="UserControls\Panels\EditorControl.FileHandling.cs">
+            <DependentUpon>EditorControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Properties\ErrorResources.Designer.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>ErrorResources.resx</DependentUpon>
+        </Compile>
+        <Compile Update="Controls\Panels\EditorTabModel.cs">
+            <DependentUpon>EditorTabControl.xaml</DependentUpon>
+        </Compile>
+        <Compile Update="Windows\SettingsViewModel.cs">
+            <DependentUpon>SettingsWindow.xaml</DependentUpon>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="ByteSize" Version="2.0.0" />
-      <PackageReference Include="CSharp-Logger" Version="1.0.1" />
-      <PackageReference Include="CsvHelper" Version="27.1.1" />
-      <PackageReference Include="Jammo.HTTP" Version="1.0.0" />
-      <PackageReference Include="Jammo.ParserTools" Version="1.5.4" />
-      <PackageReference Include="Jammo.TextAnalysis" Version="2.2.0" />
-      <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
-      <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
+        <PackageReference Include="ByteSize" Version="2.0.0" />
+        <PackageReference Include="CSharp-Logger" Version="1.0.1" />
+        <PackageReference Include="CsvHelper" Version="27.1.1" />
+        <PackageReference Include="Jammo.HTTP" Version="1.0.0" />
+        <PackageReference Include="Jammo.ParserTools" Version="1.5.4" />
+        <PackageReference Include="Jammo.TextAnalysis" Version="2.2.0" />
+        <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+        <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <EmbeddedResource Remove="packages\**" />
-      <None Remove="ProgramData\intellisense.cs.xml" />
-      <EmbeddedResource Update="Properties\ImageResources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <None Update="appdata\dictionaries\en-US.dic">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\output.log">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <EmbeddedResource Update="Properties\ErrorResources.resx">
-        <Generator>ResXFileCodeGenerator</Generator>
-        <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
-      </EmbeddedResource>
-      <None Update="appdata\settings\app\skins\skins\Dark.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\settings\app\skins\skins\Light.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\plugins\plugin_config.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="appdata\plugins\light_mode\settings\app\skins\skin.txt">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
+        <EmbeddedResource Remove="packages\**" />
+        <None Remove="ProgramData\intellisense.cs.xml" />
+        <EmbeddedResource Update="Properties\ImageResources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>ImageResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <None Update="appdata\dictionaries\en-US.dic">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appdata\output.log">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <EmbeddedResource Update="Properties\ErrorResources.resx">
+            <Generator>ResXFileCodeGenerator</Generator>
+            <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
+        </EmbeddedResource>
+        <None Update="appdata\settings\app\skins\skins\Dark.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appdata\settings\app\skins\skins\Light.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appdata\plugins\plugin_config.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="appdata\plugins\light_mode\settings\app\skins\skin.txt">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="packages\**" />
+        <None Remove="packages\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <Page Remove="packages\**" />
-    </ItemGroup>
-    
-    <ItemGroup>
-      <Page Remove="Skins\Dark.xaml" />
-      <Page Remove="Skins\Light.xaml" />
-      <None Remove="Resources\Icons\cs-icon.png" />
-      <EmbeddedResource Include="Resources\Icons\cs-icon.png" />
-      <None Remove="Resources\Icons\png-icon.png" />
-      <EmbeddedResource Include="Resources\Icons\png-icon.png" />
-      <None Remove="Resources\Icons\xml-icon.png" />
-      <EmbeddedResource Include="Resources\Icons\xml-icon.png" />
+        <Page Remove="packages\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Properties\Settings.settings">
-        <Generator>SettingsSingleFileGenerator</Generator>
-        <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-      </None>
-      <None Update="Properties\Shortcuts.settings">
-        <Generator>SettingsSingleFileGenerator</Generator>
-        <LastGenOutput>Shortcuts.Designer.cs</LastGenOutput>
-      </None>
+        <Page Remove="Skins\Dark.xaml" />
+        <Page Remove="Skins\Light.xaml" />
+        <None Remove="Resources\Icons\cs-icon.png" />
+        <EmbeddedResource Include="App\default_skin.txt" />
+        <EmbeddedResource Include="Resources\Icons\cs-icon.png" />
+        <None Remove="Resources\Icons\png-icon.png" />
+        <EmbeddedResource Include="Resources\Icons\png-icon.png" />
+        <None Remove="Resources\Icons\xml-icon.png" />
+        <EmbeddedResource Include="Resources\Icons\xml-icon.png" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\TempoControls\TempoControls.csproj" />
+        <None Update="Properties\Settings.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+        </None>
+        <None Update="Properties\Shortcuts.settings">
+            <Generator>SettingsSingleFileGenerator</Generator>
+            <LastGenOutput>Shortcuts.Designer.cs</LastGenOutput>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="appdata\plugins\light_mode" />
-      <Folder Include="appdata\settings" />
-      <Folder Include="Core\Commands\Common" />
-      <Folder Include="Core\Inspections\TempoRules" />
-      <Folder Include="Windows\SolutionCreation\NetFramework" />
+        <ProjectReference Include="..\TempoControls\TempoControls.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Page Remove="Core\Static\DefaultSkin.xaml" />
+        <Folder Include="appdata\plugins\light_mode" />
+        <Folder Include="appdata\settings" />
+        <Folder Include="Core\Commands\Common" />
+        <Folder Include="Core\Inspections\TempoRules" />
+        <Folder Include="Windows\SolutionCreation\NetFramework" />
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="DefaultSkin.xaml">
+        <Page Remove="Core\Static\DefaultSkin.xaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="default_skin.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ApplicationDefinition Remove="App.xaml" />
+      <ApplicationDefinition Include="App\App.xaml">
+        <Generator>MSBuild:Compile</Generator>
+        <XamlRuntime>Wpf</XamlRuntime>
+      </ApplicationDefinition>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="App\DefaultSkin.xaml">
         <Generator>MSBuild:Compile</Generator>
         <DependentUpon>SkinHelper.cs</DependentUpon>
       </Resource>
-      <None Remove="default_skin.txt" />
-      <EmbeddedResource Include="default_skin.txt" />
     </ItemGroup>
 
 </Project>

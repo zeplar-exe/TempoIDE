@@ -12,6 +12,7 @@
         <ResourceDictionary x:Key="Styles">
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="./DefaultSkin.xaml"/>
+                <ResourceDictionary Source="./Styles/TextStyles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <properties:Shortcuts x:Key="Shortcuts"/>
