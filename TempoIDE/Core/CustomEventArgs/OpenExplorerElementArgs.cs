@@ -1,4 +1,5 @@
 using System.Windows;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 
 namespace TempoIDE.Core.CustomEventArgs
@@ -7,11 +8,11 @@ namespace TempoIDE.Core.CustomEventArgs
     
     public class OpenExplorerElementArgs : RoutedEventArgs
     {
-        public OpenExplorerElementArgs(ExplorerViewItem element)
+        public ExplorerItem Element { get; }
+        
+        public OpenExplorerElementArgs(ExplorerItem element)
         {
             Element = element;
         }
-
-        public readonly ExplorerViewItem Element;
     }
 }

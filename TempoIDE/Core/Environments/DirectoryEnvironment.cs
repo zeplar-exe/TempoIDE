@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Jammo.TextAnalysis;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
@@ -46,7 +47,7 @@ namespace TempoIDE.Core.Environments
 
         public override void LoadExplorer(ExplorerView explorer)
         {
-            explorer.AppendDirectory((DirectoryInfo)EnvironmentPath);
+            explorer.Add(ExplorerFile.FromDirectory(EnvironmentPath.FullName));
         }
 
         protected override void DirectoryChanged(object sender, FileSystemEventArgs e)

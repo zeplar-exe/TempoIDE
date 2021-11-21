@@ -6,6 +6,7 @@ using Jammo.TextAnalysis;
 using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.DataStructures;
@@ -135,19 +136,20 @@ namespace TempoIDE.Core.Environments
 
         public override void LoadExplorer(ExplorerView explorer)
         {
-            var topLevel = new ExplorerFileSystemItem(EnvironmentPath.FullName) { IsExpanded = true };
+            var topLevel = ExplorerFile.FromFile(EnvironmentPath.FullName);
+            topLevel.IsExpanded = true;
 
-            explorer.AppendElement(topLevel);
+            explorer.Add(topLevel);
 
             using var solution = new JSolutionFile(EnvironmentPath.FullName);
                     
             foreach (var project in solution.ProjectFiles)
             {
                 var projectFile = new FileInfo(project.FileInfo.FullName);
-                var projectItem = new ExplorerFileSystemItem(projectFile.FullName);
-
-                topLevel.AppendElement(projectItem);
-                projectItem.AppendDirectory(projectFile.Directory, false);
+                var projectItem = ExplorerFile.FromFile(projectFile.FullName);
+                
+                topLevel.Add(projectItem);
+                projectItem.Add(ExplorerFile.FromDirectory(projectFile.DirectoryName));
             }
         }
 

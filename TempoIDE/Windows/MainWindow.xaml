@@ -8,6 +8,7 @@
         xmlns:io="clr-namespace:TempoIDE.Core.Commands.IO"
         xmlns:panels="clr-namespace:TempoIDE.Controls.Panels"
         xmlns:subControls="clr-namespace:TempoIDE.Controls.SubControls"
+        xmlns:explorer="clr-namespace:TempoIDE.Controls.Explorer"
         mc:Ignorable="d"
         Title="Tempo" d:DesignHeight="350" d:DesignWidth="525"
         Closed="MainWindow_OnClosed">
@@ -137,7 +138,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
-                <panels:ExplorerView
+                <explorer:ExplorerView
                     Grid.Column="0"
                     x:Name="Explorer" 
                     GotFocus="Explorer_OnGotFocus" 

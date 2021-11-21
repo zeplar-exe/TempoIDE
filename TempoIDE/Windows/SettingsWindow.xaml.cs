@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using TempoIDE.Controls.Explorer;
 using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
@@ -23,7 +24,7 @@ namespace TempoIDE.Windows
         public static readonly DependencyProperty SectionTemplateProperty = DependencyProperty.RegisterAttached(
             "SectionTemplate",
             typeof(ControlTemplate),
-            typeof(ExplorerViewItem)
+            typeof(ExplorerItem)
         );
         
         public static void SetSectionTemplate(UIElement element, ControlTemplate value)
