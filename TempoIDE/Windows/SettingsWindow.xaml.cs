@@ -1,7 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using TempoIDE.Controls.Explorer;
-using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 

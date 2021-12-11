@@ -1,10 +1,6 @@
 using System.ComponentModel;
 using System.IO;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using System.Windows.Controls;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Properties;
 
 namespace TempoIDE.Controls.Explorer
 {

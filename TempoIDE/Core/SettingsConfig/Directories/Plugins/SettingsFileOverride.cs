@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TempoIDE.Core.SettingsConfig.Settings;
+using SettingsConfig.Settings;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
@@ -52,7 +52,7 @@ namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
         {
             using var writer = CreateWriter();
             
-            writer.WriteLineAsync(new Setting("mode", new TextSetting(Mode.ToString()), default).ToString());
+            writer.WriteLineAsync(new Setting("mode", new TextSetting(Mode.ToString())).ToString());
             
             foreach (var setting in OverridenSettings)
                 writer.WriteLineAsync(setting.ToString());

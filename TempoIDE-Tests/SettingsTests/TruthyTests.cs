@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using TempoIDE.Core.SettingsConfig.Internal.Parser;
+using SettingsConfig.Parser;
 
 namespace TempoIDE_Tests.SettingsTests
 {

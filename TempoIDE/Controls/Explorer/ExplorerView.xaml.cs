@@ -1,17 +1,11 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using TempoIDE.Controls.Panels;
 using TempoIDE.Core;
 using TempoIDE.Core.CustomEventArgs;
-using TempoIDE.Core.DataStructures;
-using TempoIDE.Core.Environments;
-using TempoIDE.Core.Helpers;
 
 namespace TempoIDE.Controls.Explorer
 {

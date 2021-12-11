@@ -7,7 +7,6 @@ using Jammo.TextAnalysis.DotNet.CSharp;
 using Jammo.TextAnalysis.DotNet.MsBuild;
 using Jammo.TextAnalysis.DotNet.MsBuild.Solutions;
 using TempoIDE.Controls.Explorer;
-using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.DataStructures;
 using TempoIDE.Core.Helpers;

@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Jammo.ParserTools;
-using TempoIDE.Core.SettingsConfig.Internal.Parser;
+using SettingsConfig;
+using SettingsConfig.Parser;
+using SettingsConfig.Serialization;
+using SettingsConfig.Settings;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {

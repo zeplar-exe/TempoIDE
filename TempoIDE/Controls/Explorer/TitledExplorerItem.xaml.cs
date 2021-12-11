@@ -1,6 +1,5 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Controls;
 using TempoIDE.Properties;
 
 namespace TempoIDE.Controls.Explorer

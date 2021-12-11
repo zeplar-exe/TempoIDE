@@ -1,6 +1,5 @@
 using System.Windows;
 using TempoIDE.Controls.Explorer;
-using TempoIDE.Controls.Panels;
 
 namespace TempoIDE.Core.CustomEventArgs
 {

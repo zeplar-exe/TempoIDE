@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TempoIDE.Core.SettingsConfig.Settings;
+using SettingsConfig.Settings;
 using TempoIDE.Core.SettingsConfig.Settings.SettingsFiles;
 
 namespace TempoIDE.Core.SettingsConfig.Directories.Plugins

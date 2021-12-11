@@ -1,5 +1,5 @@
 using System.Text;
-using TempoIDE.Core.SettingsConfig.Settings;
+using SettingsConfig.Settings;
 
 namespace TempoIDE.Core.SettingsConfig.Directories.Plugins
 {

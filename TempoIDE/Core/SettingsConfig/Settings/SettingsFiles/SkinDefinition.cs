@@ -2,12 +2,15 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
+using SettingsConfig;
+using SettingsConfig.Serialization;
+using SettingsConfig.Settings;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
     public sealed class SkinDefinition : Config
     {
-        public string Name { get; }
+        public string Name { get; set; }
         
         public Brush PrimaryBackgroundColor;
         public Brush SecondaryBackgroundColor;

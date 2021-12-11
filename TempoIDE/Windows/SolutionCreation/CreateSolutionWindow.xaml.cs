@@ -2,7 +2,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoIDE.Controls.Explorer;
-using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Commands;
 
 namespace TempoIDE.Windows.SolutionCreation

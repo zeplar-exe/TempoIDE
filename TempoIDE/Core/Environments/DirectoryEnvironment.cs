@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Jammo.TextAnalysis;
 using TempoIDE.Controls.Explorer;
-using TempoIDE.Controls.Panels;
 using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Wrappers;

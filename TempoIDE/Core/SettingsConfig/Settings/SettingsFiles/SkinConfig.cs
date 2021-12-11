@@ -1,4 +1,5 @@
 using System.IO;
+using SettingsConfig.Settings;
 
 namespace TempoIDE.Core.SettingsConfig.Settings.SettingsFiles
 {
