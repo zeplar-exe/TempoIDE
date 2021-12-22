@@ -8,3 +8,4 @@ riderModule.iml
 TempoIDE.sln.DotSettings
 TempoIDE.sln.DotSettings.user
 *.py
+appdata/
