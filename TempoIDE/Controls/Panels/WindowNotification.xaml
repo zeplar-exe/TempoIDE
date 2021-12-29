@@ -19,10 +19,10 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             
-            <Image Grid.Column="0" Name="Icon"/>
+            <Image Grid.Column="0" Name="v_Icon"/>
             <Button Grid.Column="2" Style="{StaticResource CloseButtonStyle}" Click="Close_OnClick"/>
         </Grid>
         
-        <TextBlock Grid.Row="2" Name="Details" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+        <TextBlock Grid.Row="2" Name="v_Details" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
     </Grid>
 </Border>

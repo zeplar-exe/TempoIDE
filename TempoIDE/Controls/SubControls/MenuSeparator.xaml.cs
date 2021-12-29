@@ -1,12 +1,11 @@
 using System.Windows.Controls;
 
-namespace TempoIDE.Controls.SubControls
+namespace TempoIDE.Controls.SubControls;
+
+public partial class MenuSeparator : MenuItem
 {
-    public partial class MenuSeparator : MenuItem
+    public MenuSeparator()
     {
-        public MenuSeparator()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

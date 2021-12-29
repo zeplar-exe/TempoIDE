@@ -15,7 +15,7 @@
         
         <StackPanel
             Grid.Row="0"
-            x:Name="TabsPanel"
+            x:Name="v_TabsPanel"
             Orientation="Horizontal"
             Background="{DynamicResource SecondaryBackgroundColor}">
             
@@ -26,6 +26,6 @@
             </StackPanel.Resources>
         </StackPanel>
         
-        <Border Grid.Row="1" Name="ContentDisplay" />
+        <Border Grid.Row="1" Name="v_ContentDisplay" />
     </Grid>
 </UserControl>

@@ -7,43 +7,42 @@ using CsvHelper.Configuration;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections.Inspectors;
 
-namespace TempoIDE.Core.Inspections
+namespace TempoIDE.Core.Inspections;
+
+public static class InspectionSeverityAssociator
 {
-    public static class InspectionSeverityAssociator
+    public static InspectionSeverity FromCode(string code)
     {
-        public static InspectionSeverity FromCode(string code)
+        var config = new CsvConfiguration(CultureInfo.InvariantCulture)
         {
-            var config = new CsvConfiguration(CultureInfo.InvariantCulture)
-            {
-                Comment = '#',
-                AllowComments = true,
-            };
-            using var reader = new StreamReader(AppDataHelper.GetFile("inspection_severity.csv"));
-            using var csv = new CsvReader(reader, config);
+            Comment = '#',
+            AllowComments = true,
+        };
+        using var reader = new StreamReader(AppDataHelper.GetFile("inspection_severity.csv"));
+        using var csv = new CsvReader(reader, config);
 
-            var records = csv.GetRecords<SeverityPair>();
+        var records = csv.GetRecords<SeverityPair>();
             
-            return records.FirstOrDefault(r => r.Code == code)?.Severity ?? InspectionSeverity.None;
-        }
+        return records.FirstOrDefault(r => r.Code == code)?.Severity ?? InspectionSeverity.None;
+    }
 
-        public static Brush BrushFromSeverity(InspectionSeverity severity)
+    public static Brush BrushFromSeverity(InspectionSeverity severity)
+    {
+        return severity switch
         {
-            return severity switch
-            {
-                InspectionSeverity.None => Brushes.Transparent,
-                InspectionSeverity.Hint => Brushes.PaleGreen,
-                InspectionSeverity.Suggestion => Brushes.DodgerBlue,
-                InspectionSeverity.Warning => Brushes.Yellow,
-                InspectionSeverity.Error => Brushes.OrangeRed,
-                InspectionSeverity.Spelling => Brushes.ForestGreen,
-                _ => Brushes.Transparent
-            };
-        }
+            InspectionSeverity.None => Brushes.Transparent,
+            InspectionSeverity.Hint => Brushes.PaleGreen,
+            InspectionSeverity.Suggestion => Brushes.DodgerBlue,
+            InspectionSeverity.Warning => Brushes.Yellow,
+            InspectionSeverity.Error => Brushes.OrangeRed,
+            InspectionSeverity.Spelling => Brushes.ForestGreen,
+            _ => Brushes.Transparent
+        };
+    }
 
-        private class SeverityPair
-        {
-            public string Code { get; set; }
-            public InspectionSeverity Severity { get; set; }
-        }
+    private class SeverityPair
+    {
+        public string Code { get; set; }
+        public InspectionSeverity Severity { get; set; }
     }
 }

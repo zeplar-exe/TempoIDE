@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
         
         <panels:EditorTabControl
-            x:Name="Tabs"
+            x:Name="v_Tabs"
             Grid.Row="1"
             Background="{DynamicResource SecondaryBackgroundColor}"
             SelectedTabColor="CornflowerBlue"

@@ -4,35 +4,34 @@ using TempoControls.Core.Types.Collections;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections;
 
-namespace TempoIDE.Controls.Editors
-{
-    public class CsFileEditor : TextFileEditor
-    {
-        public CsFileEditor()
-        {
-            //ApplicationHelper.InspectionsEnabledChanged += _ => Codespace.TextArea.InvalidateTextChanged();
-            //Codespace.TextArea.AfterHighlight += Label_OnAfterHighlight;
-        }
-        
-        private void Label_OnAfterHighlight(SyntaxCharCollection characters)
-        {
-            Inspect(characters);
-        }
+namespace TempoIDE.Controls.Editors;
 
-        private void Inspect(SyntaxCharCollection characters)
+public class CsFileEditor : TextFileEditor
+{
+    public CsFileEditor()
+    {
+        //ApplicationHelper.InspectionsEnabledChanged += _ => Codespace.TextArea.InvalidateTextChanged();
+        //Codespace.TextArea.AfterHighlight += Label_OnAfterHighlight;
+    }
+        
+    private void Label_OnAfterHighlight(SyntaxCharCollection characters)
+    {
+        Inspect(characters);
+    }
+
+    private void Inspect(SyntaxCharCollection characters)
+    {
+        if (!ApplicationHelper.InspectionsEnabled)
+            return;
+            
+        foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
         {
-            if (!ApplicationHelper.InspectionsEnabled)
-                return;
+            var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
+            var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
+            var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
             
-            foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
-            {
-                var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
-                var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
-                var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
-            
-                characters.UpdateUnderlineType(range, UnderlineType.Straight);
-                characters.UpdateUnderline(range, brush);
-            }
+            characters.UpdateUnderlineType(range, UnderlineType.Straight);
+            characters.UpdateUnderline(range, brush);
         }
     }
 }

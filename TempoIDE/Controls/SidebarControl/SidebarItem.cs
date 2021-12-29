@@ -1,9 +1,8 @@
 using System.Windows.Controls;
 
-namespace TempoIDE.Controls.SidebarControl
+namespace TempoIDE.Controls.SidebarControl;
+
+public abstract class SidebarItem : UserControl
 {
-    public abstract class SidebarItem : UserControl
-    {
         
-    }
 }

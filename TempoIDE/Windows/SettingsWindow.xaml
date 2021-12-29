@@ -26,11 +26,11 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             
-            <UserControl Grid.Column="1" x:Name="ContentDisplay"/>
+            <UserControl Grid.Column="1" x:Name="v_ContentDisplay"/>
             
             <panels:ExplorerView
                 Grid.Column="0"
-                x:Name="Explorer"
+                x:Name="v_Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">

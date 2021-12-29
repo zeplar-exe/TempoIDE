@@ -17,16 +17,16 @@
             <ColumnDefinition Width="20"/>
         </Grid.ColumnDefinitions>
         
-        <Image Grid.Column="0" Name="Icon"/>
+        <Image Grid.Column="0" Name="v_Icon"/>
         
         <TextBlock
-            Grid.Column="2" Name="Header" 
+            Grid.Column="2" Name="v_Header" 
             VerticalAlignment="Center" 
             Foreground="{DynamicResource BaseTextColor}"/>
         
         <Button 
             Grid.Column="4"
-            Name="Close" 
+            Name="v_Close" 
             Background="Transparent" 
             BorderThickness="0"
             Content="X" 

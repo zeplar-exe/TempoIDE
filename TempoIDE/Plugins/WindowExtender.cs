@@ -1,23 +1,22 @@
 using System.Windows;
 using TempoIDE.Windows;
 
-namespace TempoIDE.Plugins
+namespace TempoIDE.Plugins;
+
+public abstract class WindowExtender : IExtender
 {
-    public abstract class WindowExtender : IExtender
-    {
-        private readonly Window window;
+    private readonly Window window;
 
-        protected WindowExtender(Window window)
-        {
-            this.window = window;
-        }
+    protected WindowExtender(Window window)
+    {
+        this.window = window;
     }
+}
 
-    public class MainWindowExtender : WindowExtender
+public class MainWindowExtender : WindowExtender
+{
+    internal MainWindowExtender(MainWindow window) : base(window)
     {
-        internal MainWindowExtender(MainWindow window) : base(window)
-        {
             
-        }
     }
 }

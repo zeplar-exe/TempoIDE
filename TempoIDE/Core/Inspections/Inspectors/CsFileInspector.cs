@@ -3,21 +3,20 @@ using TempoControls.Core.IntTypes;
 using TempoControls.Core.Types;
 using TempoControls.Core.Types.Collections;
 
-namespace TempoIDE.Core.Inspections.Inspectors
+namespace TempoIDE.Core.Inspections.Inspectors;
+
+public class CsFileInspector
 {
-    public class CsFileInspector
+    public void Inspect(SyntaxCharCollection characters, CSharpDocument document)
     {
-        public void Inspect(SyntaxCharCollection characters, CSharpDocument document)
+        foreach (var diagnostic in document.Diagnostics)
         {
-            foreach (var diagnostic in document.Diagnostics)
-            {
-                var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
-                var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
-                var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
+            var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
+            var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
+            var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
             
-                characters.UpdateUnderlineType(range, UnderlineType.Straight);
-                characters.UpdateUnderline(range, brush);
-            }
+            characters.UpdateUnderlineType(range, UnderlineType.Straight);
+            characters.UpdateUnderline(range, brush);
         }
     }
 }

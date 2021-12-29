@@ -24,7 +24,7 @@
         
         <Grid>
             <codeEditing:Codespace
-                x:Name="Codespace"
+                x:Name="v_Codespace"
                 x:FieldModifier="protected"
                 Loaded="TextEditor_OnLoaded"
                 TextChanged="TextEditor_OnTextChanged"/>

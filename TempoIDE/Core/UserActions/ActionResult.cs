@@ -1,19 +1,18 @@
-namespace TempoIDE.Core.UserActions
+namespace TempoIDE.Core.UserActions;
+
+public readonly struct ActionResult
 {
-    public readonly struct ActionResult
+    public readonly bool Success;
+    public readonly string Message;
+
+    public ActionResult(bool success, string message = "")
     {
-        public readonly bool Success;
-        public readonly string Message;
+        Success = success;
+        Message = message;
+    }
 
-        public ActionResult(bool success, string message = "")
-        {
-            Success = success;
-            Message = message;
-        }
-
-        public override string ToString()
-        {
-            return Message;
-        }
+    public override string ToString()
+    {
+        return Message;
     }
 }

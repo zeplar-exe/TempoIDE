@@ -2,38 +2,36 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TempoIDE.Core.Helpers
+namespace TempoIDE.Core.Helpers;
+// Courtesy of https://stackoverflow.com/a/7472334/16324801
+
+internal static class Repeat
 {
-    // Courtesy of https://stackoverflow.com/a/7472334/16324801
-    
-    internal static class Repeat
+    public static Task Interval(
+        TimeSpan pollInterval,
+        Action action,
+        CancellationToken token)
     {
-        public static Task Interval(
-            TimeSpan pollInterval,
-            Action action,
-            CancellationToken token)
-        {
-            return Task.Factory.StartNew(
-                () =>
+        return Task.Factory.StartNew(
+            () =>
+            {
+                while (true)
                 {
-                    while (true)
-                    {
-                        if (token.WaitCancellationRequested(pollInterval))
-                            break;
+                    if (token.WaitCancellationRequested(pollInterval))
+                        break;
 
-                        action();
-                    }
-                }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
-        }
+                    action();
+                }
+            }, token, TaskCreationOptions.LongRunning, TaskScheduler.Default);
     }
+}
 
-    static class CancellationTokenExtensions
+static class CancellationTokenExtensions
+{
+    public static bool WaitCancellationRequested(
+        this CancellationToken token,
+        TimeSpan timeout)
     {
-        public static bool WaitCancellationRequested(
-            this CancellationToken token,
-            TimeSpan timeout)
-        {
-            return token.WaitHandle.WaitOne(timeout);
-        }
+        return token.WaitHandle.WaitOne(timeout);
     }
 }

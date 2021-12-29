@@ -33,8 +33,8 @@
                     </Style>
                 </StackPanel.Resources>
                 
-                <inputFields:StringField x:Name="SlnName" FieldTitle="Solution name"/>
-                <inputFields:StringField x:Name="Location" FieldTitle="Location"/>
+                <inputFields:StringField x:Name="v_SlnName" FieldTitle="Solution name"/>
+                <inputFields:StringField x:Name="v_Location" FieldTitle="Location"/>
             </StackPanel>
         </Grid>
         

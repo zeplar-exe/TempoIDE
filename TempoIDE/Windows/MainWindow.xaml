@@ -125,10 +125,10 @@
                 <Grid Grid.Column="0"/>
                 
                 <Grid Grid.Column="2">
-                    <Button Name="Build"/>
-                    <Button Name="Run"/>
-                    <Button Name="Debug"/>
-                    <Button Name="Stop"/>
+                    <Button Name="v_Build"/>
+                    <Button Name="v_Run"/>
+                    <Button Name="v_Debug"/>
+                    <Button Name="v_Stop"/>
                 </Grid>
             </Grid>
         </Border>
@@ -143,7 +143,7 @@
                 
                 <panels:ExplorerView
                     Grid.Column="0"
-                    x:Name="Explorer" 
+                    x:Name="v_Explorer" 
                     GotFocus="Explorer_OnGotFocus" 
                     OpenItemEvent="ExplorerPanel_OnOpenFileEvent"/>
 
@@ -159,7 +159,7 @@
             
                 <panels:EditorControl 
                     Grid.Column="2"
-                    x:Name="Editor"
+                    x:Name="v_Editor"
                     GotFocus="Editor_OnGotFocus"/>
             </Grid>
             
@@ -170,7 +170,7 @@
                 VerticalAlignment="Bottom"
                 HorizontalAlignment="Right"
                 Grid.ZIndex="123">
-                <panels:WindowNotifier x:Name="Notifier"/>
+                <panels:WindowNotifier x:Name="v_Notifier"/>
             </ScrollViewer>
         </Grid>
     </Grid>

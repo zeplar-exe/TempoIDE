@@ -3,34 +3,33 @@ using System.Windows.Input;
 using TempoIDE.Core.Commands;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Controls.Panels
+namespace TempoIDE.Controls.Panels;
+
+public partial class FileSystemItemContextMenu : ContextMenu
 {
-    public partial class FileSystemItemContextMenu : ContextMenu
+    private readonly ExplorerFileSystemItem fileSystemItem;
+        
+    public FileSystemItemContextMenu(ExplorerFileSystemItem fileSystemItem)
     {
-        private readonly ExplorerFileSystemItem fileSystemItem;
+        this.fileSystemItem = fileSystemItem;
+            
+        InitializeComponent();
+    }
         
-        public FileSystemItemContextMenu(ExplorerFileSystemItem fileSystemItem)
-        {
-            this.fileSystemItem = fileSystemItem;
-            
-            InitializeComponent();
-        }
-        
-        public static readonly RoutedCommandExt CreateTypeFile = new();
-        public static readonly RoutedCommandExt ExcludeFile = new();
+    public static readonly RoutedCommandExt CreateTypeFile = new();
+    public static readonly RoutedCommandExt ExcludeFile = new();
 
-        private void CreateTypeFileExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
+    private void CreateTypeFileExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
             
-        }
+    }
 
-        private void ExcludeFileExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-            EnvironmentHelper.Current.ConfigStream.Exclude(fileSystemItem.FilePath);
-            EnvironmentHelper.Current.ConfigStream.Write();
+    private void ExcludeFileExecuted(object sender, ExecutedRoutedEventArgs e)
+    {
+        EnvironmentHelper.Current.ConfigStream.Exclude(fileSystemItem.FilePath);
+        EnvironmentHelper.Current.ConfigStream.Write();
             
-            EnvironmentHelper.Current.RefreshCache();
-            EnvironmentHelper.RefreshExplorer();
-        }
+        EnvironmentHelper.Current.RefreshCache();
+        EnvironmentHelper.RefreshExplorer();
     }
 }

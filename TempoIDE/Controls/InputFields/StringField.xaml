@@ -21,7 +21,7 @@
     
         <TextBox 
             Grid.Row="1"
-            x:Name="Input"
+            x:Name="v_Input"
             MinHeight="30"
             BorderThickness="0"
             VerticalContentAlignment="Center"

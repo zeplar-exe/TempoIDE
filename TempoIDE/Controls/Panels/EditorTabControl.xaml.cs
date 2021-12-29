@@ -9,279 +9,278 @@ using TempoIDE.Core;
 using TempoIDE.Core.Commands;
 using TempoIDE.Core.UserActions;
 
-namespace TempoIDE.Controls.Panels
+namespace TempoIDE.Controls.Panels;
+
+public partial class EditorTabControl : UserControl
 {
-    public partial class EditorTabControl : UserControl
+    public EditorTabItem SelectedTab { get; private set; }
+    public int SelectedIndex => v_TabsPanel.Children.IndexOf(SelectedTab);
+    public EditorTabItem[] Children => v_TabsPanel.Children.OfType<EditorTabItem>().ToArray();
+
+    public EditorTabControl()
     {
-        public EditorTabItem SelectedTab { get; private set; }
-        public int SelectedIndex => TabsPanel.Children.IndexOf(SelectedTab);
-        public EditorTabItem[] Children => TabsPanel.Children.OfType<EditorTabItem>().ToArray();
-
-        public EditorTabControl()
-        {
-            DataContext = this;
+        DataContext = this;
             
-            InitializeComponent();
-        }
+        InitializeComponent();
+    }
 
-        public Brush SelectedTabColor { get; set; }
-        public Brush HoveredTabColor { get; set; }
-        public Brush UnselectedTabColor { get; set; }
+    public Brush SelectedTabColor { get; set; }
+    public Brush HoveredTabColor { get; set; }
+    public Brush UnselectedTabColor { get; set; }
 
-        public EditorTabItem OpenFile(FileInfo file)
+    public EditorTabItem OpenFile(FileInfo file)
+    {
+        switch (file.Extension)
         {
-            switch (file.Extension)
+            case ".png":
+            case ".jpg":
             {
-                case ".png":
-                case ".jpg":
-                {
-                    return OpenImageFile(file);
-                }
-                default:
-                {
-                    return OpenTextFile(file);
-                }
+                return OpenImageFile(file);
+            }
+            default:
+            {
+                return OpenTextFile(file);
             }
         }
+    }
 
-        public bool TryOpenNext()
-        {
-            if (SelectedTab == null)
-                return false;
-
-            if (SelectedIndex <= TabsPanel.Children.Count)
-                return false;
-
-            OpenEditor(Children[SelectedIndex + 1].Editor);
-
-            return true;
-        }
-
-        public bool TryOpenPrevious()
-        {
-            if (SelectedTab == null)
-                return false;
-            
-            if (SelectedIndex <= 0)
-                return false;
-
-            OpenEditor(Children[SelectedIndex - 1].Editor);
-
-            return true;
-        }
-
-        public EditorTabItem OpenTextFile(FileInfo file)
-        {
-            if (file is not { Exists: true })
-                return null;
-
-            if (TryGetFileEditorTab(file, out var tab))
-            {
-                tab.Select();
-
-                return tab;
-            }
-
-            var newTab = OpenEditor(TextFileEditor.FromFile(file));
-            newTab.Header.Text = file.Name;
-            
-            return newTab;
-        }
-
-        public EditorTabItem OpenImageFile(FileInfo file)
-        {
-            if (TryGetFileEditorTab(file, out var tab))
-            {
-                tab.Select();
-
-                return tab;
-            }
-
-            var newTab = OpenEditor(ImageFileEditor.FromFile(file));
-            newTab.Header.Text = file.Name;
-
-            return newTab;
-        }
-
-        public EditorTabItem OpenEditor(Editor editor)
-        {
-            if (editor == null)
-                return null;
-            
-            foreach (var tab in Children)
-            {
-                if (tab.Editor == editor)
-                {
-                    tab.Select();
-
-                    return tab;
-                }
-            }
-
-            var newTab = CreateEditorTab(editor);
-            OpenTab(newTab);
-
-            return newTab;
-        }
-
-        private bool TryGetFileEditorTab(FileInfo file, out EditorTabItem editorTab)
-        {
-            editorTab = null;
-            
-            foreach (var tab in Children)
-            {
-                if (tab.Editor is not FileEditor fileEditor)
-                    continue;
-                
-                if (fileEditor.BoundFile.EqualsOther(file))
-                {
-                    editorTab = tab;
-
-                    return true;
-                }
-            }
-
+    public bool TryOpenNext()
+    {
+        if (SelectedTab == null)
             return false;
-        }
 
-        private EditorTabItem CreateEditorTab(Editor editor)
+        if (SelectedIndex <= v_TabsPanel.Children.Count)
+            return false;
+
+        OpenEditor(Children[SelectedIndex + 1].Editor);
+
+        return true;
+    }
+
+    public bool TryOpenPrevious()
+    {
+        if (SelectedTab == null)
+            return false;
+            
+        if (SelectedIndex <= 0)
+            return false;
+
+        OpenEditor(Children[SelectedIndex - 1].Editor);
+
+        return true;
+    }
+
+    public EditorTabItem OpenTextFile(FileInfo file)
+    {
+        if (file is not { Exists: true })
+            return null;
+
+        if (TryGetFileEditorTab(file, out var tab))
         {
-            var tab = new EditorTabItem
-            {
-                Editor = editor,
-                Background = UnselectedTabColor
-            };
-
-            tab.Selected += OnTabSelected;
-            tab.MouseMove += OnTabMouseMove;
-            tab.MouseLeave += OnTabMouseLeave;
-            tab.Closed += OnTabClosed;
+            tab.Select();
 
             return tab;
         }
 
-        public void CloseFile(FileInfo file)
+        var newTab = OpenEditor(TextFileEditor.FromFile(file));
+        newTab.v_Header.Text = file.Name;
+            
+        return newTab;
+    }
+
+    public EditorTabItem OpenImageFile(FileInfo file)
+    {
+        if (TryGetFileEditorTab(file, out var tab))
         {
-            foreach (var tab in Children)
+            tab.Select();
+
+            return tab;
+        }
+
+        var newTab = OpenEditor(ImageFileEditor.FromFile(file));
+        newTab.v_Header.Text = file.Name;
+
+        return newTab;
+    }
+
+    public EditorTabItem OpenEditor(Editor editor)
+    {
+        if (editor == null)
+            return null;
+            
+        foreach (var tab in Children)
+        {
+            if (tab.Editor == editor)
             {
-                if (tab.Editor is not FileEditor fileEditor) 
-                    continue;
+                tab.Select();
+
+                return tab;
+            }
+        }
+
+        var newTab = CreateEditorTab(editor);
+        OpenTab(newTab);
+
+        return newTab;
+    }
+
+    private bool TryGetFileEditorTab(FileInfo file, out EditorTabItem editorTab)
+    {
+        editorTab = null;
+            
+        foreach (var tab in Children)
+        {
+            if (tab.Editor is not FileEditor fileEditor)
+                continue;
                 
-                if (fileEditor.BoundFile.EqualsOther(file))
-                {
-                    CloseEditor(fileEditor);
+            if (fileEditor.BoundFile.EqualsOther(file))
+            {
+                editorTab = tab;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private EditorTabItem CreateEditorTab(Editor editor)
+    {
+        var tab = new EditorTabItem
+        {
+            Editor = editor,
+            Background = UnselectedTabColor
+        };
+
+        tab.Selected += OnTabSelected;
+        tab.MouseMove += OnTabMouseMove;
+        tab.MouseLeave += OnTabMouseLeave;
+        tab.Closed += OnTabClosed;
+
+        return tab;
+    }
+
+    public void CloseFile(FileInfo file)
+    {
+        foreach (var tab in Children)
+        {
+            if (tab.Editor is not FileEditor fileEditor) 
+                continue;
+                
+            if (fileEditor.BoundFile.EqualsOther(file))
+            {
+                CloseEditor(fileEditor);
                         
-                    return;
-                }
-            }
-        }
-        
-        public void OpenTab(EditorTabItem tabItem)
-        {
-            foreach (var tab in Children)
-            {
-                if (tab == tabItem)
-                {
-                    tab.Select();
-                    return;
-                }
-            }
-
-            TabsPanel.Children.Add(tabItem);
-            tabItem.Select();
-        }
-
-        public void CloseEditor(Editor editor)
-        {
-            var tab = GetTabOfEditor(editor);
-            
-            if (tab == null)
                 return;
+            }
+        }
+    }
+        
+    public void OpenTab(EditorTabItem tabItem)
+    {
+        foreach (var tab in Children)
+        {
+            if (tab == tabItem)
+            {
+                tab.Select();
+                return;
+            }
+        }
+
+        v_TabsPanel.Children.Add(tabItem);
+        tabItem.Select();
+    }
+
+    public void CloseEditor(Editor editor)
+    {
+        var tab = GetTabOfEditor(editor);
             
+        if (tab == null)
+            return;
+            
+        CloseTab(tab);
+    }
+
+    public void CloseTab(EditorTabItem tabItem)
+    {
+        if (tabItem == null)
+            return;
+            
+        var closingSelected = SelectedTab == tabItem;
+
+        if (tabItem.Editor is FileEditor fileEditor)
+            fileEditor.UpdateFile();
+
+        if (closingSelected)
+        {
+            SelectedTab = null;
+
+            if (!TryOpenNext())
+            {
+                if (!TryOpenPrevious())
+                    v_ContentDisplay.Child = null;
+            }
+        }
+            
+        v_TabsPanel.Children.Remove(tabItem);
+    }
+        
+    public void CloseAll()
+    {
+        foreach (var tab in Children)
             CloseTab(tab);
-        }
+    }
 
-        public void CloseTab(EditorTabItem tabItem)
+    private EditorTabItem GetTabOfEditor(Editor editor)
+    {
+        return Children.FirstOrDefault(tab => tab.Editor == editor);
+    }
+
+    public void Refresh()
+    {
+        foreach (var tab in Children)
         {
-            if (tabItem == null)
+            if (tab.Editor is FileEditor fileEditor)
+            {
+                if (!fileEditor.BoundFile.Exists)
+                    CloseEditor(fileEditor);
+
                 return;
-            
-            var closingSelected = SelectedTab == tabItem;
-
-            if (tabItem.Editor is FileEditor fileEditor)
-                fileEditor.UpdateFile();
-
-            if (closingSelected)
-            {
-                SelectedTab = null;
-
-                if (!TryOpenNext())
-                {
-                    if (!TryOpenPrevious())
-                        ContentDisplay.Child = null;
-                }
-            }
-            
-            TabsPanel.Children.Remove(tabItem);
-        }
-        
-        public void CloseAll()
-        {
-            foreach (var tab in Children)
-                CloseTab(tab);
-        }
-
-        private EditorTabItem GetTabOfEditor(Editor editor)
-        {
-            return Children.FirstOrDefault(tab => tab.Editor == editor);
-        }
-
-        public void Refresh()
-        {
-            foreach (var tab in Children)
-            {
-                if (tab.Editor is FileEditor fileEditor)
-                {
-                    if (!fileEditor.BoundFile.Exists)
-                        CloseEditor(fileEditor);
-
-                    return;
-                }
             }
         }
+    }
 
-        private void OnTabSelected(object sender, EventArgs e)
-        {
-            if (SelectedTab != null)
-                SelectedTab.IsSelected = false;
+    private void OnTabSelected(object sender, EventArgs e)
+    {
+        if (SelectedTab != null)
+            SelectedTab.IsSelected = false;
             
-            SelectedTab = (EditorTabItem)sender;
+        SelectedTab = (EditorTabItem)sender;
             
-            if (ContentDisplay.Child == SelectedTab)
-                return;
+        if (v_ContentDisplay.Child == SelectedTab)
+            return;
             
-            ContentDisplay.Child = SelectedTab.Editor;
-        }
+        v_ContentDisplay.Child = SelectedTab.Editor;
+    }
 
-        private void OnTabMouseMove(object sender, EventArgs e)
-        {
-            var tab = (EditorTabItem)sender;
+    private void OnTabMouseMove(object sender, EventArgs e)
+    {
+        var tab = (EditorTabItem)sender;
             
-            if (!tab.IsSelected) 
-                tab.Background = HoveredTabColor;
-        }
+        if (!tab.IsSelected) 
+            tab.Background = HoveredTabColor;
+    }
 
-        private void OnTabMouseLeave(object sender, EventArgs e)
-        {
-            var tab = (EditorTabItem)sender;
+    private void OnTabMouseLeave(object sender, EventArgs e)
+    {
+        var tab = (EditorTabItem)sender;
             
-            if (!tab.IsSelected) 
-                tab.Background = UnselectedTabColor;
-        }
+        if (!tab.IsSelected) 
+            tab.Background = UnselectedTabColor;
+    }
 
-        private void OnTabClosed(object sender, EventArgs e)
-        {
-            CloseTab((EditorTabItem)sender);
-        }
+    private void OnTabClosed(object sender, EventArgs e)
+    {
+        CloseTab((EditorTabItem)sender);
     }
 }

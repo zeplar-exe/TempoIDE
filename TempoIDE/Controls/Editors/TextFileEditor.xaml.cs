@@ -8,113 +8,110 @@ using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
 using Timer = System.Timers.Timer;
 
-namespace TempoIDE.Controls.Editors
+namespace TempoIDE.Controls.Editors;
+
+public partial class TextFileEditor : FileEditor
 {
-    public partial class TextFileEditor : FileEditor
+    private readonly Timer timer = new(500);
+    private bool textChangedBeforeUpdate;
+
+    public override bool IsFocused => v_Codespace.IsFocused;
+
+    public TextFileEditor()
     {
-        private readonly Timer timer = new(500);
-        private bool textChangedBeforeUpdate;
+        InitializeComponent();
+    }
 
-        public override bool IsFocused => Codespace.IsFocused;
-
-        public TextFileEditor()
+    public static TextFileEditor FromFile(FileInfo file)
+    {
+        var editor = file.Extension.Replace(".", "") switch
         {
-            InitializeComponent();
-        }
-
-        public static TextFileEditor FromFile(FileInfo file)
-        {
-            var editor = file.Extension.Replace(".", "") switch
-            {
-                "cs" => new CsFileEditor(),
-                _ => new TextFileEditor()
-            };
+            "cs" => new CsFileEditor(),
+            _ => new TextFileEditor()
+        };
             
-            editor.Update(file);
+        editor.Update(file);
 
-            return editor;
-        }
+        return editor;
+    }
 
-        private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            timer.Elapsed += delegate { FileWriter(); };
-        }
+    private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
+    {
+        timer.Elapsed += delegate { FileWriter(); };
+    }
         
-        public override void FileWriter()
+    public override void FileWriter()
+    {
+        if (textChangedBeforeUpdate)
         {
-            if (textChangedBeforeUpdate)
-            {
-                UpdateFile();
-            }
-            else
-            {
-                Dispatcher.Invoke(UpdateVisual);
-            }
-
-            textChangedBeforeUpdate = false;
+            UpdateFile();
+        }
+        else
+        {
+            Dispatcher.Invoke(UpdateVisual);
         }
 
-        private void TextEditor_OnTextChanged(Codespace codespace)
-        {
-            textChangedBeforeUpdate = true;
-        }
+        textChangedBeforeUpdate = false;
+    }
 
-        public override void Refresh() => UpdateVisual();
+    private void TextEditor_OnTextChanged(Codespace codespace)
+    {
+        textChangedBeforeUpdate = true;
+    }
 
-        public override void Update(FileInfo file)
-        {
-            if (!file?.Exists ?? false)
-                return;
-            
-            BoundFile = file;
+    public override void Refresh() => UpdateVisual();
 
-            UpdateVisual();
+    public override void Update(FileInfo? file)
+    {
+        if (file is not { Exists: true })
+            return;
 
-            Codespace.IsReadonly = file == null;
+        BoundFile = file;
 
-            // Codespace.TextArea.SetScheme(
-            //     ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
-            //
-            // Codespace.TextArea.SetCompletionProvider(
-            //     ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
-        }
+        UpdateVisual();
 
-        public override void UpdateVisual()
-        {
-            if (BoundFile == null) 
-                return;
+        // Codespace.TextArea.SetScheme(
+        //     ExtensionAssociator.SchemeFromExtension(BoundFile?.Extension));
+        //
+        // Codespace.TextArea.SetCompletionProvider(
+        //     ExtensionAssociator.CompletionProviderFromExtension(BoundFile?.Extension));
+    }
+
+    public override void UpdateVisual()
+    {
+        if (BoundFile == null) 
+            return;
                     
-            BoundFile.Refresh();
+        BoundFile.Refresh();
             
-            var file = EnvironmentHelper.Current.Cache.GetFile(BoundFile);
+        var file = EnvironmentHelper.Current.Cache.GetFile(BoundFile);
 
-            if (file == null || file.Content == Codespace.Text)
-                return;
+        if (file.Content == v_Codespace.Text)
+            return;
 
-            Codespace.Clear();
-            Codespace.Insert(0, file.Content);
+        v_Codespace.Clear();
+        v_Codespace.Insert(0, file.Content);
             
-            textChangedBeforeUpdate = false;
-        }
+        textChangedBeforeUpdate = false;
+    }
 
-        public override void UpdateFile()
-        {
-            if (BoundFile == null)
-                return;
+    public override void UpdateFile()
+    {
+        if (BoundFile == null)
+            return;
 
-            BoundFile.Refresh();
+        BoundFile.Refresh();
             
-            EnvironmentHelper.Current.DirectoryWatcher.Buffer();
+        EnvironmentHelper.Current.DirectoryWatcher.Buffer();
             
-            File.WriteAllText(BoundFile.FullName, Codespace.Text,
-                ApplicationHelper.GlobalEncoding);
+        File.WriteAllText(BoundFile.FullName, v_Codespace.Text,
+            ApplicationHelper.GlobalEncoding);
             
-            EnvironmentHelper.Current.DirectoryWatcher.Resume();
-        }
+        EnvironmentHelper.Current.DirectoryWatcher.Resume();
+    }
 
-        private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)
-        {
-            Codespace.Focus();
-        }
+    private void FileEditor_OnGotFocus(object sender, RoutedEventArgs e)
+    {
+        v_Codespace.Focus();
     }
 }

@@ -1,58 +1,57 @@
 using System.IO;
 
-namespace TempoIDE.Core.Helpers
+namespace TempoIDE.Core.Helpers;
+
+// ReSharper disable once InconsistentNaming
+public static class IOHelper
 {
-    // ReSharper disable once InconsistentNaming
-    public static class IOHelper
+    public static bool TryReadRelativeFile(
+        string path,
+        out FileStream result,
+        out IOException exception)
     {
-        public static bool TryReadRelativeFile(
-            string path,
-            out FileStream result,
-            out IOException exception)
-        {
-            result = null;
-            exception = null;
+        result = null;
+        exception = null;
             
-            try
-            {
-                result = File.OpenRead(GetRelativePath(path));
-            }
-            catch (FileNotFoundException e)
-            {
-                exception = e;
-                
-                return false;
-            }
-            catch (DirectoryNotFoundException e)
-            {
-                exception = e;
-                
-                return false;
-            }
-
-            return true;
-        }
-
-        public static string ReadFullStream(FileStream stream)
+        try
         {
-            using var reader = new StreamReader(stream);
-
-            return reader.ReadToEndAsync().Result;
+            result = File.OpenRead(GetRelativePath(path));
         }
-
-        public static string GetRelativePath(string path)
+        catch (FileNotFoundException e)
         {
-            return Path.Join(Directory.GetCurrentDirectory(), path);
+            exception = e;
+                
+            return false;
         }
+        catch (DirectoryNotFoundException e)
+        {
+            exception = e;
+                
+            return false;
+        }
+
+        return true;
+    }
+
+    public static string ReadFullStream(FileStream stream)
+    {
+        using var reader = new StreamReader(stream);
+
+        return reader.ReadToEndAsync().Result;
+    }
+
+    public static string GetRelativePath(string path)
+    {
+        return Path.Join(Directory.GetCurrentDirectory(), path);
+    }
         
-        public static bool RelativeFileExists(string path)
-        {
-            return new FileInfo(GetRelativePath(path)).Exists;
-        }
+    public static bool RelativeFileExists(string path)
+    {
+        return new FileInfo(GetRelativePath(path)).Exists;
+    }
 
-        public static bool RelativeDirectoryExists(string path)
-        {
-            return new DirectoryInfo(GetRelativePath(path)).Exists;
-        }
+    public static bool RelativeDirectoryExists(string path)
+    {
+        return new DirectoryInfo(GetRelativePath(path)).Exists;
     }
 }

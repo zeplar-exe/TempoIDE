@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 
 namespace TempoControls.Core.IntTypes
@@ -7,7 +8,7 @@ namespace TempoControls.Core.IntTypes
         public readonly int Start;
         public readonly int End;
 
-        public int Size => End - Start;
+        public int Size => Math.Max(Start, End) - Math.Min(Start, End);
 
         public IntRange(int start, int end)
         {

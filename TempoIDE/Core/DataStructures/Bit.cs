@@ -1,32 +1,31 @@
 using System.Collections.Generic;
 
-namespace TempoIDE.Core.DataStructures
+namespace TempoIDE.Core.DataStructures;
+
+public class Bit
 {
-    public class Bit
+    private readonly bool value;
+        
+    public readonly List<Bit> Children = new();
+
+    public Bit(bool value)
     {
-        private readonly bool value;
+        this.value = value;
+    }
         
-        public readonly List<Bit> Children = new();
+    public bool ToBool()
+    {
+        return value;
+    }
 
-        public Bit(bool value)
+    public IEnumerable<Bit> EnumerateTree()
+    {
+        foreach (var child in Children)
         {
-            this.value = value;
-        }
-        
-        public bool ToBool()
-        {
-            return value;
-        }
-
-        public IEnumerable<Bit> EnumerateTree()
-        {
-            foreach (var child in Children)
-            {
-                yield return child;
+            yield return child;
                 
-                foreach (var nested in child.EnumerateTree())
-                    yield return nested;
-            }
+            foreach (var nested in child.EnumerateTree())
+                yield return nested;
         }
     }
 }

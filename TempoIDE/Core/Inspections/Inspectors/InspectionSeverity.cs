@@ -1,13 +1,12 @@
-namespace TempoIDE.Core.Inspections.Inspectors
+namespace TempoIDE.Core.Inspections.Inspectors;
+
+public enum InspectionSeverity
 {
-    public enum InspectionSeverity
-    {
-        None,
-        Hint,
-        Suggestion,
-        Warning,
-        Error,
+    None,
+    Hint,
+    Suggestion,
+    Warning,
+    Error,
         
-        Spelling
-    }
+    Spelling
 }

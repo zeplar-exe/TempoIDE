@@ -9,7 +9,9 @@
              TextInput="Codespace_OnTextInput"
              KeyDown="Codespace_OnKeyDown"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
-             Focusable="True">
+             Focusable="True"
+             IsTabStop="True"
+             PreviewMouseLeftButtonDown="ColoredTextBox_OnPreviewMouseLeftButtonDown">
     
     <Grid>
         <Grid.ColumnDefinitions>
@@ -20,7 +22,7 @@
         
         <StackPanel 
             Grid.Column="0" 
-            x:Name="LineNumberPanel"
+            x:Name="v_LineNumberPanel"
             Background="{DynamicResource TextBoxBackgroundColor}">
             <StackPanel.Style>
                 <Style TargetType="StackPanel">
@@ -42,6 +44,6 @@
             BorderThickness="0, 0, 2, 0"
             Background="{DynamicResource TextBoxBackgroundColor}"/>
         
-        <local:CodeDisplay Grid.Column="2" x:Name="Display"/>
+        <local:CodeDisplay Grid.Column="2" x:Name="v_Display"/>
     </Grid>
 </UserControl>

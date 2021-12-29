@@ -1,20 +1,19 @@
 using Microsoft.Win32;
 using TempoIDE.Core.Helpers;
 
-namespace TempoIDE.Core.Commands.IO
+namespace TempoIDE.Core.Commands.IO;
+
+public class OpenFileCommand : AppCommand
 {
-    public class OpenFileCommand : AppCommand
+    public override bool CanExecute(object parameter) => true;
+
+    public override void Execute(object parameter)
     {
-        public override bool CanExecute(object parameter) => true;
+        var dialog = new OpenFileDialog();
 
-        public override void Execute(object parameter)
+        if (dialog.ShowDialog() == true)
         {
-            var dialog = new OpenFileDialog();
-
-            if (dialog.ShowDialog() == true)
-            {
-                EnvironmentHelper.LoadEnvironment(dialog.FileName);   
-            }
+            EnvironmentHelper.LoadEnvironment(dialog.FileName);   
         }
     }
 }

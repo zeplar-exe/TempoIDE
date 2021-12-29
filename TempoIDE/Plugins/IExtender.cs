@@ -1,7 +1,6 @@
-namespace TempoIDE.Plugins
+namespace TempoIDE.Plugins;
+
+public interface IExtender
 {
-    public interface IExtender
-    {
         
-    }
 }

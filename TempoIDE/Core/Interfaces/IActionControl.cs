@@ -1,9 +1,8 @@
 using TempoIDE.Core.UserActions;
 
-namespace TempoIDE.Core.Interfaces
+namespace TempoIDE.Core.Interfaces;
+
+public interface IActionControl
 {
-    public interface IActionControl
-    {
-        public ActionSession Session { get; }
-    }
+    public ActionSession Session { get; }
 }

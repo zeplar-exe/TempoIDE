@@ -42,7 +42,7 @@
             
             <panels:ExplorerView
                 Grid.Column="0"
-                x:Name="Explorer"
+                x:Name="v_Explorer"
                 Background="{DynamicResource SecondaryBackgroundColor}"
                 BorderThickness="0"
                 SelectedItemChanged="Explorer_OnSelectedItemChanged">

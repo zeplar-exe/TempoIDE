@@ -47,7 +47,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <ListBox Grid.Column="0" Grid.Row="1" Name="VerticalBox">
+        <ListBox Grid.Column="0" Grid.Row="1" Name="v_VerticalBox">
             <ListBox.Style>
                 <Style TargetType="{x:Type ListBox}">
                     <Style.Triggers>
@@ -63,7 +63,7 @@
             </ListBox.Style>
         </ListBox>
         
-        <ListBox Grid.Column="1" Grid.Row="0" Name="HorizontalBox">
+        <ListBox Grid.Column="1" Grid.Row="0" Name="v_HorizontalBox">
             <ListBox.Style>
                 <Style TargetType="{x:Type ListBox}">
                     <Style.Triggers>

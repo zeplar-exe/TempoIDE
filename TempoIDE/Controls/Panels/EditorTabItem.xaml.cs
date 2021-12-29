@@ -6,36 +6,35 @@ using TempoIDE.Controls.Editors;
 using TempoIDE.Core.Commands;
 using TempoIDE.Core.UserActions;
 
-namespace TempoIDE.Controls.Panels
+namespace TempoIDE.Controls.Panels;
+
+public partial class EditorTabItem : UserControl
 {
-    public partial class EditorTabItem : UserControl
+    public Editor Editor;
+
+    public bool IsSelected;
+
+    public event EventHandler Selected;
+    public event EventHandler Closed;
+        
+    public EditorTabItem()
     {
-        public Editor Editor;
-
-        public bool IsSelected;
-
-        public event EventHandler Selected;
-        public event EventHandler Closed;
+        InitializeComponent();
+    }
         
-        public EditorTabItem()
-        {
-            InitializeComponent();
-        }
-        
-        public void Select()
-        {
-            IsSelected = true;
-            Selected?.Invoke(this, EventArgs.Empty);
-        }
+    public void Select()
+    {
+        IsSelected = true;
+        Selected?.Invoke(this, EventArgs.Empty);
+    }
 
-        private void EditorTabItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            Select();
-        }
+    private void EditorTabItem_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+    {
+        Select();
+    }
 
-        private void Close_OnClick(object sender, RoutedEventArgs e)
-        {
-            Closed?.Invoke(this, EventArgs.Empty);
-        }
+    private void Close_OnClick(object sender, RoutedEventArgs e)
+    {
+        Closed?.Invoke(this, EventArgs.Empty);
     }
 }

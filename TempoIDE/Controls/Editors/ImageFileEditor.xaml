@@ -37,7 +37,7 @@
 
             <ToggleButton 
                 Grid.Column="1"
-                Name="DrawButton"
+                Name="v_DrawButton"
                 BorderThickness="0"
                 Checked="DrawButton_OnIsCheckedChanged" 
                 Unchecked="DrawButton_OnIsCheckedChanged"/>
@@ -45,7 +45,7 @@
 
         <InkCanvas 
             Grid.Row="1"
-            Name="Canvas"
+            Name="v_Canvas"
             Background="Transparent" 
             EditingMode="None" 
             Loaded="Canvas_OnLoaded"
@@ -56,9 +56,9 @@
             </InkCanvas.DefaultDrawingAttributes>
             
             <Viewbox>
-                <Image Name="Image"
-                       Width="{Binding ActualWidth, ElementName=Canvas, Mode=OneWay}"
-                       Height="{Binding ActualHeight, ElementName=Canvas, Mode=OneWay}"
+                <Image Name="v_Image"
+                       Width="{Binding ActualWidth, ElementName=v_Canvas, Mode=OneWay}"
+                       Height="{Binding ActualHeight, ElementName=v_Canvas, Mode=OneWay}"
                        Stretch="Uniform"/>
             </Viewbox>
         </InkCanvas>

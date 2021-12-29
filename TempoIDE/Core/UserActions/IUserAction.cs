@@ -1,8 +1,7 @@
-namespace TempoIDE.Core.UserActions
+namespace TempoIDE.Core.UserActions;
+
+public interface IUserAction
 {
-    public interface IUserAction
-    {
-        public ActionResult Undo();
-        public ActionResult Redo();
-    }
+    public ActionResult Undo();
+    public ActionResult Redo();
 }

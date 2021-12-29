@@ -30,7 +30,7 @@
             
         </subControls:TopbarControl>
         
-        <TextBlock Grid.Row="2" Name="TextDisplay" FontSize="17" TextWrapping="Wrap"/>
+        <TextBlock Grid.Row="2" Name="v_TextDisplay" FontSize="17" TextWrapping="Wrap"/>
         
         <StackPanel 
             Grid.Row="4" 
@@ -48,37 +48,37 @@
             </StackPanel.Resources>
             
             <Button 
-                Name="OkButton"
+                Name="v_OkButton"
                 Content="Ok"
                 subWindows:UserDialog.BoundResult="Ok"/>
             
             <Button 
-                Name="CancelButton"
+                Name="v_CancelButton"
                 Content="Cancel"
                 subWindows:UserDialog.BoundResult="Cancel"/>
             
             <Button 
-                Name="SaveButton"
+                Name="v_SaveButton"
                 Content="Save"
                 subWindows:UserDialog.BoundResult="Save"/>
             
             <Button 
-                Name="OpenButton"
+                Name="v_OpenButton"
                 Content="Open"
                 subWindows:UserDialog.BoundResult="Open"/>
             
             <Button 
-                Name="YesButton"
+                Name="v_YesButton"
                 Content="Yes"
                 subWindows:UserDialog.BoundResult="Yes"/>
             
             <Button 
-                Name="NoButton"
+                Name="v_NoButton"
                 Content="No"
                 subWindows:UserDialog.BoundResult="No"/>
             
             <Button 
-                Name="IgnoreButton"
+                Name="v_IgnoreButton"
                 Content="Ignore"
                 subWindows:UserDialog.BoundResult="Ignore"/>
         </StackPanel>

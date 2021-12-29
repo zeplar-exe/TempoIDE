@@ -1,12 +1,11 @@
 using System.Windows.Controls;
 
-namespace TempoIDE.Controls.SubControls
+namespace TempoIDE.Controls.SubControls;
+
+public partial class TopbarControl : UserControl
 {
-    public partial class TopbarControl : UserControl
+    public TopbarControl()
     {
-        public TopbarControl()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

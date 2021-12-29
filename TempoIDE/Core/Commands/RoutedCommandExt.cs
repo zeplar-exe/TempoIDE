@@ -1,29 +1,28 @@
 using System;
 using System.Windows.Input;
 
-namespace TempoIDE.Core.Commands
+namespace TempoIDE.Core.Commands;
+
+public class RoutedCommandExt : RoutedCommand, ICommand
 {
-    public class RoutedCommandExt : RoutedCommand, ICommand
+    private event EventHandler CanExecuteChangedEv;
+
+    public void RaiseCanExecuteChanged()
     {
-        private event EventHandler CanExecuteChangedEv;
+        CanExecuteChangedEv?.Invoke(this, EventArgs.Empty);
+    }
 
-        public void RaiseCanExecuteChanged()
+    public new event EventHandler CanExecuteChanged
+    {
+        add
         {
-            CanExecuteChangedEv?.Invoke(this, EventArgs.Empty);
+            CanExecuteChangedEv += value;
+            base.CanExecuteChanged += value;
         }
-
-        public new event EventHandler CanExecuteChanged
+        remove
         {
-            add
-            {
-                CanExecuteChangedEv += value;
-                base.CanExecuteChanged += value;
-            }
-            remove
-            {
-                CanExecuteChangedEv -= value;
-                base.CanExecuteChanged -= value;
-            }
+            CanExecuteChangedEv -= value;
+            base.CanExecuteChanged -= value;
         }
     }
 }

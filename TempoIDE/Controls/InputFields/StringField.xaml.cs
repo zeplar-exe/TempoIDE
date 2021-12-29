@@ -1,48 +1,47 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace TempoIDE.Controls.InputFields
+namespace TempoIDE.Controls.InputFields;
+
+public partial class StringField : InputField
 {
-    public partial class StringField : InputField
+    public event TextChangedEventHandler TextChanged
     {
-        public event TextChangedEventHandler TextChanged
-        {
-            add => Input.TextChanged += value;
-            remove => Input.TextChanged -= value;
-        }
+        add => v_Input.TextChanged += value;
+        remove => v_Input.TextChanged -= value;
+    }
         
-        public int TextFontSize
-        {
-            get => (int)GetValue(TextFontSizeProperty);
-            set => SetValue(TextFontSizeProperty, value);
-        }
+    public int TextFontSize
+    {
+        get => (int)GetValue(TextFontSizeProperty);
+        set => SetValue(TextFontSizeProperty, value);
+    }
         
-        public static readonly DependencyProperty TextFontSizeProperty =
-            DependencyProperty.Register(
-                "TextFontSize", typeof(int),
-                typeof(StringField),
-                new UIPropertyMetadata(15)
-            );
+    public static readonly DependencyProperty TextFontSizeProperty =
+        DependencyProperty.Register(
+            "TextFontSize", typeof(int),
+            typeof(StringField),
+            new UIPropertyMetadata(15)
+        );
 
-        public Style TextBoxStyle
-        {
-            get => (Style)GetValue(TextBoxStyleProperty);
-            set => SetValue(TextBoxStyleProperty, value);
-        }
+    public Style TextBoxStyle
+    {
+        get => (Style)GetValue(TextBoxStyleProperty);
+        set => SetValue(TextBoxStyleProperty, value);
+    }
 
-        public static readonly DependencyProperty TextBoxStyleProperty =
-            DependencyProperty.Register(
-                "TextBoxStyle", typeof(Style),
-                typeof(StringField),
-                new UIPropertyMetadata((Style)Application.Current.Resources["TextStyle"])
-            );
+    public static readonly DependencyProperty TextBoxStyleProperty =
+        DependencyProperty.Register(
+            "TextBoxStyle", typeof(Style),
+            typeof(StringField),
+            new UIPropertyMetadata((Style)Application.Current.Resources["TextStyle"])
+        );
         
-        public TextBox InputElement => Input;
-        public string Text => InputElement.Text;
+    public TextBox InputElement => v_Input;
+    public string Text => InputElement.Text;
         
-        public StringField()
-        {
-            InitializeComponent();
-        }
+    public StringField()
+    {
+        InitializeComponent();
     }
 }
