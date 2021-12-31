@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:TempoIDE.Controls.CodeEditing"
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300"
-             TextInput="Codespace_OnTextInput"
-             KeyDown="Codespace_OnKeyDown"
              DataContext="{Binding RelativeSource={RelativeSource Self}}"
              Focusable="True"
              IsTabStop="True"
+             TextInput="Codespace_OnTextInput"
+             KeyDown="Codespace_OnKeyDown"
              PreviewMouseLeftButtonDown="ColoredTextBox_OnPreviewMouseLeftButtonDown">
     
     <Grid>

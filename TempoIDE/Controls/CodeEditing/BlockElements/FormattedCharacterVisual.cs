@@ -1,6 +1,5 @@
 using System;
 using System.Windows;
-using TempoControls.Core.IntTypes;
 
 namespace TempoIDE.Controls.CodeEditing.BlockElements;
 

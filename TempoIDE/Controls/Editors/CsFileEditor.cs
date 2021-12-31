@@ -1,6 +1,8 @@
+using System.Linq;
+using System.Windows.Media;
 using TempoControls.Core.IntTypes;
-using TempoControls.Core.Types;
-using TempoControls.Core.Types.Collections;
+using TempoIDE.Controls.CodeEditing.BlockElements;
+using TempoIDE.Controls.CodeEditing.BlockElements.Common;
 using TempoIDE.Core.Helpers;
 using TempoIDE.Core.Inspections;
 
@@ -10,28 +12,44 @@ public class CsFileEditor : TextFileEditor
 {
     public CsFileEditor()
     {
-        //ApplicationHelper.InspectionsEnabledChanged += _ => Codespace.TextArea.InvalidateTextChanged();
-        //Codespace.TextArea.AfterHighlight += Label_OnAfterHighlight;
-    }
-        
-    private void Label_OnAfterHighlight(SyntaxCharCollection characters)
-    {
-        Inspect(characters);
+        ApplicationHelper.InspectionsEnabledChanged += _ => v_Codespace.InvalidateVisualChanged();
+        v_Codespace.ModificationReady += CodespaceOnModificationReady;
+        // TODO: Add OnInspectionReady
     }
 
-    private void Inspect(SyntaxCharCollection characters)
+    private void CodespaceOnModificationReady(object? sender, FormattedDocument document)
+    {
+        Inspect(document);
+    }
+
+    private void Inspect(FormattedDocument document)
     {
         if (!ApplicationHelper.InspectionsEnabled)
             return;
-            
-        foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
+        
+        var range = new IntRange(0, document.TextLength);
+
+        foreach (var character in document.GetCharactersInRange(range))
         {
-            var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
-            var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
-            var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
-            
-            characters.UpdateUnderlineType(range, UnderlineType.Straight);
-            characters.UpdateUnderline(range, brush);
+            var visual = new UnderlineVisual(UnderlineType.Straight, Brushes.Red, 1);
+                
+            var characterVisual = new FormattedCharacterVisual(FormattedVisualPosition.BottomLeft, visual);
+            character.AddVisual(characterVisual);
         }
+            
+        // foreach (var diagnostic in EnvironmentHelper.Current.GetFileDiagnostics(BoundFile))
+        // {
+            // var range = new IntRange(diagnostic.Span.Start, diagnostic.Span.End);
+            // var severity = InspectionSeverityAssociator.FromCode(diagnostic.Info.InspectionCode);
+            // var brush = InspectionSeverityAssociator.BrushFromSeverity(severity);
+
+            // foreach (var character in document.GetCharactersInRange(range))
+            // {
+                // var visual = new UnderlineVisual(UnderlineType.Straight, Brushes.Red, 3);
+                
+                // var characterVisual = new FormattedCharacterVisual(FormattedVisualPosition.BottomLeft, visual);
+                // character.AddVisual(characterVisual);
+            // }
+        // }
     }
 }

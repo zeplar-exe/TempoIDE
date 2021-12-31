@@ -3,8 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using TempoIDE.Controls.Editors;
-using TempoIDE.Core.Commands;
-using TempoIDE.Core.UserActions;
 
 namespace TempoIDE.Controls.Panels;
 

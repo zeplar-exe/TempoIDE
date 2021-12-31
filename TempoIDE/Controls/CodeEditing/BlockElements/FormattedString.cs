@@ -12,7 +12,10 @@ public class FormattedString : IEnumerable<FormattedCharacter>
 {
     private List<FormattedCharacter> Characters { get; } = new();
     public DrawInfo DrawInfo { get; }
+    public int Length => Characters.Count;
 
+    public FormattedCharacter this[int index] => Characters[index];
+    
     public FormattedString(FormattedCharacter character, DrawInfo drawInfo)
     {
         DrawInfo = drawInfo;

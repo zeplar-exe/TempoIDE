@@ -1,7 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
+using Jammo.ParserTools;
 using TempoControls.Core.IntTypes;
 
 namespace TempoIDE.Controls.CodeEditing.BlockElements;
@@ -10,8 +13,9 @@ public class FormattedDocument
 {
     private readonly List<FormattedString> b_lines;
     private readonly List<Drawing> b_overlayDrawings;
-
+    
     public IEnumerable<FormattedString> Lines => b_lines;
+    public int TextLength => Lines.Sum(l => l.Length);
     
     public bool LineWrapping { get; set; }
 
@@ -37,6 +41,13 @@ public class FormattedDocument
     {
         b_lines.Clear();
         b_lines.AddRange(lines);
+    }
+    
+    public IEnumerable<FormattedCharacter> GetCharactersInRange(IntRange range)
+    {
+        range = range.Arrange();
+        
+        return Lines.SelectMany(c => c).Skip(range.Start).Take(1 + range.Size);
     }
     
     public void Draw(DrawingContext context)

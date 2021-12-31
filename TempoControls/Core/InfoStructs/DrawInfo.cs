@@ -7,15 +7,13 @@ namespace TempoControls.Core.InfoStructs
         public int FontSize { get; }
         public Typeface Typeface { get; }
         public double Dpi { get; }
-        public double LineHeight { get; }
         public Brush Foreground { get; }
 
-        public DrawInfo(int fontSize, Typeface typeface, double dpi, double lineHeight, Brush foreground)
+        public DrawInfo(int fontSize, Typeface typeface, double dpi, Brush foreground)
         {
             FontSize = fontSize;
             Typeface = typeface;
             Dpi = dpi;
-            LineHeight = lineHeight;
             Foreground = foreground;
         }
     }

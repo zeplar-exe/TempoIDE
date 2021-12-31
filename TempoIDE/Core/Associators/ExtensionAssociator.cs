@@ -7,9 +7,9 @@ namespace TempoIDE.Core.Associators;
 
 public static class ExtensionAssociator
 {
-    public static AnalysisCompilation AnalysisCompilationFromFile(FileInfo file)
+    public static AnalysisCompilation AnalysisCompilationFromFile(FileInfo? file)
     {
-        switch (file.Extension)
+        switch (file?.Extension)
         {
             case ".cs":
             {

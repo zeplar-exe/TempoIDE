@@ -1,10 +1,8 @@
 using System;
 using System.IO;
-using System.Threading;
-using System.Timers;
+using System.Text.RegularExpressions;
 using System.Windows;
 using TempoIDE.Controls.CodeEditing;
-using TempoIDE.Core.Associators;
 using TempoIDE.Core.Helpers;
 using Timer = System.Timers.Timer;
 
@@ -12,7 +10,7 @@ namespace TempoIDE.Controls.Editors;
 
 public partial class TextFileEditor : FileEditor
 {
-    private readonly Timer timer = new(500);
+    private readonly Timer updateTimer = new(500);
     private bool textChangedBeforeUpdate;
 
     public override bool IsFocused => v_Codespace.IsFocused;
@@ -37,7 +35,7 @@ public partial class TextFileEditor : FileEditor
 
     private void TextEditor_OnLoaded(object sender, RoutedEventArgs e)
     {
-        timer.Elapsed += delegate { FileWriter(); };
+        updateTimer.Elapsed += delegate { FileWriter(); };
     }
         
     public override void FileWriter()
@@ -54,7 +52,7 @@ public partial class TextFileEditor : FileEditor
         textChangedBeforeUpdate = false;
     }
 
-    private void TextEditor_OnTextChanged(Codespace codespace)
+    private void TextEditor_OnTextChanged(object? sender, string _)
     {
         textChangedBeforeUpdate = true;
     }
@@ -90,12 +88,17 @@ public partial class TextFileEditor : FileEditor
             return;
 
         v_Codespace.Clear();
-        v_Codespace.Insert(0, file.Content);
+
+        foreach (var line in Regex.Split(file.Content, @"\r\n?|\n"))
+        {
+            v_Codespace.Insert(0, line);
+            v_Codespace.Insert(0, v_Codespace.LineBreak);
+        }
             
         textChangedBeforeUpdate = false;
     }
 
-    public override void UpdateFile()
+    public override async void UpdateFile()
     {
         if (BoundFile == null)
             return;
@@ -104,7 +107,7 @@ public partial class TextFileEditor : FileEditor
             
         EnvironmentHelper.Current.DirectoryWatcher.Buffer();
             
-        File.WriteAllText(BoundFile.FullName, v_Codespace.Text,
+        await File.WriteAllLinesAsync(BoundFile.FullName, v_Codespace.Text.Split(v_Codespace.LineBreak),
             ApplicationHelper.GlobalEncoding);
             
         EnvironmentHelper.Current.DirectoryWatcher.Resume();

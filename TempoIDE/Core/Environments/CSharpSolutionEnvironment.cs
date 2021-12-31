@@ -98,8 +98,8 @@ public class CSharpSolutionEnvironment : DevelopmentEnvironment
         return ExtensionAssociator.AnalysisCompilationFromFile(file);
     }
 
-    public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null)
-    {
+    public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo? file = null)
+    { // TODO: Aight, we seriously need to move away from Jammo.TextAnalysis
         if (file == null)
             return Enumerable.Empty<Diagnostic>();
 

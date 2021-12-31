@@ -1,11 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using Jammo.ParserTools;
 using TempoControls.Core.InfoStructs;
 using TempoControls.Core.IntTypes;
 using TempoIDE.Controls.CodeEditing.BlockElements;
@@ -19,12 +20,12 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
         
     public string Text => TextBuilder.ToString();
 
-    public DrawInfo DrawInfo { get; private set; } = new(14, new Typeface("Arial"), 96, 15, Brushes.White);
+    public DrawInfo DrawInfo { get; private set; } = new(14, new Typeface("Arial"), 96, Brushes.White);
     public TextCaret Caret { get; }
     public IntRange SelectionRange { get; private set; }
     public bool IsReadOnly { get; set; }
         
-    private char b_lineBreak;
+    private char b_lineBreak = '\n';
 
     public char LineBreak
     {
@@ -54,10 +55,11 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
     }
         
     public bool IsReadonly { get; set; }
+    
+    public event EventHandler<string>? TextChanged;
+    public event EventHandler<FormattedDocument>? ModificationReady;
+    public event EventHandler? VisualChanged;
 
-    public delegate void TextChangedHandler(Codespace codespace);
-    public event TextChangedHandler? TextChanged;
-        
     public event PropertyChangedEventHandler? PropertyChanged;
         
     public Codespace()
@@ -77,16 +79,13 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
             SelectionRange = new IntRange(index, index);
         }
         
-        InvalidateTextChanged();
+        InvalidateVisualChanged();
     }
     
     public void UpdateDisplay()
     {
         // TODO: Replace default color with SkinHelper.CurrentSkin.TextForegroundColor after merge
-        v_Display.Document.UpdateLines(new[]
-        {
-            new FormattedString(Text, DrawInfo)
-        });
+        v_Display.Document.UpdateLines(Text.Split(LineBreak).Select(l => new FormattedString(l, DrawInfo)));
         // TODO: When SharpEye is ready, every namespace that has metrics is its own block, ad infinitum until you reach fields/methods
     }
 
@@ -94,7 +93,7 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
     {
         SelectionRange = range;
 
-        InvalidateTextChanged();
+        InvalidateVisualChanged();
     }
 
     public void Insert(int index, char text)
@@ -139,10 +138,17 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
         InvalidateTextChanged();
     }
 
-    public void InvalidateTextChanged()
+    private void InvalidateTextChanged()
     {
         UpdateDisplay();
-        TextChanged?.Invoke(this);
+        TextChanged?.Invoke(this, Text);
+        InvalidateVisualChanged();
+    }
+
+    public void InvalidateVisualChanged()
+    {
+        VisualChanged?.Invoke(this,EventArgs.Empty);
+        ModificationReady?.Invoke(this, v_Display.Document);
         v_Display.InvalidateVisual();
     }
 
@@ -157,12 +163,35 @@ public partial class Codespace : UserControl, INotifyPropertyChanged
         {
             case Key.Enter:
                 Insert(Caret.Index, LineBreak);
+                
+                e.Handled = true;
                 break;
             case Key.Back:
-                Caret.MoveColumn(-1);
-                DeleteAt(SelectionRange);
+                if (SelectionRange.Size > 0)
+                {
+                    ReplaceSelection("");
+                    Caret.MoveIndex(SelectionRange.Start - 1);
+                }
+                else if (SelectionRange.Start > 0)
+                {
+                    Caret.MoveColumn(-1);
+                    DeleteAt(SelectionRange);
+                }
+                
+                e.Handled = true;
                 break;
             case Key.Delete:
+                if (SelectionRange.Size > 0)
+                {
+                    ReplaceSelection("");
+                    Caret.MoveIndex(SelectionRange.Start);
+                }
+                else if (SelectionRange.End < TextBuilder.Length)
+                {
+                    DeleteAt(SelectionRange.Start);
+                }
+
+                e.Handled = true;
                 break;
         }
     }

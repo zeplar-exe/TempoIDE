@@ -17,7 +17,7 @@ public abstract class DevelopmentEnvironment
         
     private const string ConfigDirectoryName = ".TempoConfig";
 
-    private TempoConfigStream configStream;
+    private TempoConfigStream? configStream;
     public TempoConfigStream ConfigStream
     {
         get
@@ -56,8 +56,8 @@ public abstract class DevelopmentEnvironment
         DirectoryWatcher.Changed += DirectoryChanged;
     }
         
-    public abstract AnalysisCompilation GetRelevantCompilation(FileInfo file = null);
-    public abstract IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null);
+    public abstract AnalysisCompilation GetRelevantCompilation(FileInfo? file = null);
+    public abstract IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo? file = null);
 
     public abstract void CacheFiles();
     public abstract void RefreshCache();

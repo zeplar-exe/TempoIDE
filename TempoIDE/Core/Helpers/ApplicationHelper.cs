@@ -10,10 +10,10 @@ namespace TempoIDE.Core.Helpers;
 
 public static class ApplicationHelper
 {
-    public static Encoding GlobalEncoding = Encoding.UTF8;
-    public static TextDataFormat ClipboardEncoding = TextDataFormat.UnicodeText;
+    public static Encoding GlobalEncoding { get; } = Encoding.UTF8;
+    public static TextDataFormat ClipboardEncoding { get; } = TextDataFormat.UnicodeText;
         
-    public static Logger Logger;
+    public static Logger Logger { get; }
         
     private static bool inspectionsEnabled = true;
     public static bool InspectionsEnabled
@@ -22,11 +22,11 @@ public static class ApplicationHelper
         set { inspectionsEnabled = value; InspectionsEnabledChanged?.Invoke(value); }
     }
         
-    public static MainWindow MainWindow
+    public static MainWindow? MainWindow
     {
         get
         {
-            MainWindow window = null;
+            MainWindow? window = null;
 
             AppDispatcher.Invoke(delegate
             {
@@ -37,7 +37,7 @@ public static class ApplicationHelper
         }
     }
 
-    public static Window ActiveWindow => Application.Current
+    public static Window? ActiveWindow => Application.Current
         .Windows
         .OfType<Window>()
         .SingleOrDefault(x => x.IsActive);
@@ -45,10 +45,16 @@ public static class ApplicationHelper
     public static Dispatcher AppDispatcher => Application.Current.Dispatcher;
 
     public delegate void EnabledEventHandler(bool enabled);
-    public static event EnabledEventHandler InspectionsEnabledChanged;
+    public static event EnabledEventHandler? InspectionsEnabledChanged;
 
     public delegate void ErrorCodeEventHandler(ApplicationErrorCode code, string details);
-    public static event ErrorCodeEventHandler ErrorCodeEmitted;
+    public static event ErrorCodeEventHandler? ErrorCodeEmitted;
+
+    static ApplicationHelper()
+    {
+        Logger = new Logger();
+        Logger.SetConfiguration(IOHelper.GetRelativePath("data\\logs.log"), LogFilterFactory.AllTrue());
+    }
         
     public static void EmitErrorCode(ApplicationErrorCode code, string details)
     {
@@ -59,7 +65,7 @@ public static class ApplicationHelper
             "---------------\n" +
             $"{details}";
 
-        MainWindow.Notify(message, NotificationIcon.Error);
+        MainWindow?.Notify(message, NotificationIcon.Error);
             
         ErrorCodeEmitted?.Invoke(code, details);
     }

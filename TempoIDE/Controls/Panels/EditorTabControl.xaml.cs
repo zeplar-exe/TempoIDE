@@ -2,12 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using TempoIDE.Controls.Editors;
 using TempoIDE.Core;
-using TempoIDE.Core.Commands;
-using TempoIDE.Core.UserActions;
 
 namespace TempoIDE.Controls.Panels;
 
