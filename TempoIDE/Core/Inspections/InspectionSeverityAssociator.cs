@@ -44,5 +44,11 @@ public static class InspectionSeverityAssociator
     {
         public string Code { get; set; }
         public InspectionSeverity Severity { get; set; }
+        
+        public SeverityPair(string code, InspectionSeverity severity)
+        {
+            Code = code;
+            Severity = severity;
+        }
     }
 }

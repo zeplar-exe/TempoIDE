@@ -10,7 +10,7 @@ public partial class ProgressDialog : Window
     public readonly Queue<ProgressTask> Tasks = new();
     private double ProgressIncrement => 100d / Tasks.Count;
 
-    public event EventHandler Completed;
+    public event EventHandler? Completed;
 
     public ProgressDialog()
     {
@@ -19,7 +19,6 @@ public partial class ProgressDialog : Window
         
     private async void ProgressDialog_OnActivated(object sender, EventArgs e)
     {
-        Console.WriteLine("Activated");
         foreach (var task in Tasks)
         {
             v_Header.Text = task.Header;

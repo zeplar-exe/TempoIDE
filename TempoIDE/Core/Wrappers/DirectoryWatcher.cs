@@ -10,7 +10,7 @@ public class DirectoryWatcher : IDisposable
     private readonly Queue<(object sender, FileSystemEventArgs args)> eventBuffer = new();
     private readonly FileSystemWatcher watcher;
         
-    public event FileSystemEventHandler Changed;
+    public event FileSystemEventHandler? Changed;
 
     public DirectoryWatcher(DirectoryInfo directory, string filter = "*")
     {

@@ -6,7 +6,7 @@ namespace TempoIDE.Controls.Panels;
 
 public partial class WindowNotification
 {
-    public event EventHandler Closed;
+    public event EventHandler? Closed;
         
     public WindowNotification(string message, NotificationIcon icon)
     {

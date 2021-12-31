@@ -35,7 +35,7 @@ public partial class MainWindow
     {
         var window = ApplicationHelper.ActiveWindow;
             
-        if (window.WindowState.HasFlag(WindowState.Minimized))
+        if (window?.WindowState.HasFlag(WindowState.Minimized) == true)
             SystemCommands.MaximizeWindow(window);
         else
             SystemCommands.MinimizeWindow(ApplicationHelper.ActiveWindow);
@@ -45,7 +45,7 @@ public partial class MainWindow
     {
         var window = ApplicationHelper.ActiveWindow;
             
-        if (window.WindowState.HasFlag(WindowState.Maximized))
+        if (window?.WindowState.HasFlag(WindowState.Maximized) == true)
             SystemCommands.MinimizeWindow(window);
         else
             SystemCommands.MaximizeWindow(ApplicationHelper.ActiveWindow);

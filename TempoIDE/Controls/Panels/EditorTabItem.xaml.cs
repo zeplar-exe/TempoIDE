@@ -8,12 +8,12 @@ namespace TempoIDE.Controls.Panels;
 
 public partial class EditorTabItem : UserControl
 {
-    public Editor Editor;
+    public Editor? Editor;
 
     public bool IsSelected;
 
-    public event EventHandler Selected;
-    public event EventHandler Closed;
+    public event EventHandler? Selected;
+    public event EventHandler? Closed;
         
     public EditorTabItem()
     {

@@ -29,9 +29,9 @@ public partial class SettingsWindow : ModifiedWindow
         element.SetValue(SectionTemplateProperty, value);
     }
         
-    public static ControlTemplate GetSectionTemplate(UIElement element)
+    public static ControlTemplate? GetSectionTemplate(UIElement? element)
     {
-        return (ControlTemplate)element?.GetValue(SectionTemplateProperty);
+        return (ControlTemplate?)element?.GetValue(SectionTemplateProperty);
     }
 
     private void Explorer_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

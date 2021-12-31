@@ -13,7 +13,7 @@ public partial class CreateSolutionWindow : ModifiedWindow
         InitializeComponent();
     }
 
-    public UserControl SelectedControl
+    public UserControl? SelectedControl
     {
         get => (UserControl)GetValue(SelectedControlProperty);
         set => SetValue(SelectedControlProperty, value);
@@ -35,9 +35,9 @@ public partial class CreateSolutionWindow : ModifiedWindow
     {
         element.SetValue(CreationControlProperty, value);
     }
-    public static UserControl GetCreationControl(UIElement element)
+    public static UserControl? GetCreationControl(UIElement? element)
     {
-        return (UserControl)element?.GetValue(CreationControlProperty);
+        return (UserControl?)element?.GetValue(CreationControlProperty);
     }
 
     private void Explorer_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
@@ -50,7 +50,7 @@ public partial class CreateSolutionWindow : ModifiedWindow
 
     private void ExecuteCreateCommand(object sender, ExecutedRoutedEventArgs e)
     {
-        ((SolutionCreationPanel)SelectedControl).Create();
+        (SelectedControl as SolutionCreationPanel)?.Create();
             
         Close();
     }

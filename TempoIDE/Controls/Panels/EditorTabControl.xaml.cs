@@ -10,7 +10,7 @@ namespace TempoIDE.Controls.Panels;
 
 public partial class EditorTabControl : UserControl
 {
-    public EditorTabItem SelectedTab { get; private set; }
+    public EditorTabItem? SelectedTab { get; private set; }
     public int SelectedIndex => v_TabsPanel.Children.IndexOf(SelectedTab);
     public EditorTabItem[] Children => v_TabsPanel.Children.OfType<EditorTabItem>().ToArray();
 
@@ -21,11 +21,11 @@ public partial class EditorTabControl : UserControl
         InitializeComponent();
     }
 
-    public Brush SelectedTabColor { get; set; }
-    public Brush HoveredTabColor { get; set; }
-    public Brush UnselectedTabColor { get; set; }
+    public Brush? SelectedTabColor { get; set; }
+    public Brush? HoveredTabColor { get; set; }
+    public Brush? UnselectedTabColor { get; set; }
 
-    public EditorTabItem OpenFile(FileInfo file)
+    public EditorTabItem? OpenFile(FileInfo file)
     {
         switch (file.Extension)
         {
@@ -67,40 +67,44 @@ public partial class EditorTabControl : UserControl
         return true;
     }
 
-    public EditorTabItem OpenTextFile(FileInfo file)
+    public EditorTabItem? OpenTextFile(FileInfo file)
     {
         if (file is not { Exists: true })
             return null;
 
         if (TryGetFileEditorTab(file, out var tab))
         {
-            tab.Select();
+            tab!.Select();
 
             return tab;
         }
 
         var newTab = OpenEditor(TextFileEditor.FromFile(file));
-        newTab.v_Header.Text = file.Name;
+        
+        if (newTab != null)
+            newTab.v_Header.Text = file.Name;
             
         return newTab;
     }
 
-    public EditorTabItem OpenImageFile(FileInfo file)
+    public EditorTabItem? OpenImageFile(FileInfo file)
     {
         if (TryGetFileEditorTab(file, out var tab))
         {
-            tab.Select();
+            tab!.Select();
 
             return tab;
         }
 
         var newTab = OpenEditor(ImageFileEditor.FromFile(file));
-        newTab.v_Header.Text = file.Name;
+        
+        if (newTab != null)
+            newTab.v_Header.Text = file.Name;
 
         return newTab;
     }
 
-    public EditorTabItem OpenEditor(Editor editor)
+    public EditorTabItem? OpenEditor(Editor? editor)
     {
         if (editor == null)
             return null;
@@ -121,7 +125,7 @@ public partial class EditorTabControl : UserControl
         return newTab;
     }
 
-    private bool TryGetFileEditorTab(FileInfo file, out EditorTabItem editorTab)
+    private bool TryGetFileEditorTab(FileInfo file, out EditorTabItem? editorTab)
     {
         editorTab = null;
             
@@ -130,7 +134,7 @@ public partial class EditorTabControl : UserControl
             if (tab.Editor is not FileEditor fileEditor)
                 continue;
                 
-            if (fileEditor.BoundFile.EqualsOther(file))
+            if (fileEditor.BoundFile?.EqualsOther(file) == true)
             {
                 editorTab = tab;
 
@@ -164,7 +168,7 @@ public partial class EditorTabControl : UserControl
             if (tab.Editor is not FileEditor fileEditor) 
                 continue;
                 
-            if (fileEditor.BoundFile.EqualsOther(file))
+            if (fileEditor.BoundFile?.EqualsOther(file) == true)
             {
                 CloseEditor(fileEditor);
                         
@@ -198,7 +202,7 @@ public partial class EditorTabControl : UserControl
         CloseTab(tab);
     }
 
-    public void CloseTab(EditorTabItem tabItem)
+    public void CloseTab(EditorTabItem? tabItem)
     {
         if (tabItem == null)
             return;
@@ -228,7 +232,7 @@ public partial class EditorTabControl : UserControl
             CloseTab(tab);
     }
 
-    private EditorTabItem GetTabOfEditor(Editor editor)
+    private EditorTabItem? GetTabOfEditor(Editor editor)
     {
         return Children.FirstOrDefault(tab => tab.Editor == editor);
     }
@@ -239,7 +243,7 @@ public partial class EditorTabControl : UserControl
         {
             if (tab.Editor is FileEditor fileEditor)
             {
-                if (!fileEditor.BoundFile.Exists)
+                if (fileEditor.BoundFile?.Exists == false)
                     CloseEditor(fileEditor);
 
                 return;

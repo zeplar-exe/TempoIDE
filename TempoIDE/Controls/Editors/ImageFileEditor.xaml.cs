@@ -102,6 +102,9 @@ public partial class ImageFileEditor : FileEditor
 
     public override void UpdateFile()
     {
+        if (BoundFile == null)
+            return;
+        
         if (!Saved)
             return;
             

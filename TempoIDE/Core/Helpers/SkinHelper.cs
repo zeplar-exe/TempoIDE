@@ -29,6 +29,9 @@ public static class SkinHelper
         {
             if (IOHelper.TryReadRelativeFile(Path.Join(SkinsPath, skin), out var stream, out var e))
             {
+                if (stream == null)
+                    return false;
+                
                 using (stream)
                 {
                     var component = XamlReader.Load(stream);

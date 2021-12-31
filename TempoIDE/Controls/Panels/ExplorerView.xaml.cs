@@ -23,7 +23,7 @@ public partial class ExplorerView : TreeView
         ".txt", ".cs", ".xml", ".xaml"
     };
         
-    public event OpenFileEventHandler OpenItemEvent;
+    public event OpenFileEventHandler? OpenItemEvent;
 
     public ExplorerView()
     {
@@ -93,7 +93,7 @@ public partial class ExplorerView : TreeView
         if (e.ClickCount != 2)
             return;
 
-        var clicked = (UIElement)e.OriginalSource;
+        var clicked = (UIElement?)e.OriginalSource;
             
         if (clicked is null)
             return;
@@ -105,7 +105,7 @@ public partial class ExplorerView : TreeView
 
     private void ExplorerView_OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
     {
-        var clicked = (UIElement)e.OriginalSource;
+        var clicked = (UIElement?)e.OriginalSource;
             
         if (clicked is null)
             return;

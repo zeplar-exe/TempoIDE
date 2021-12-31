@@ -38,7 +38,7 @@ public class CSharpSolutionEnvironment : DevelopmentEnvironment
     {
         var file = new FileInfo(path);
             
-        return new DirectoryWatcher(file.Directory);
+        return new DirectoryWatcher(file.Directory!);
     }
 
     public static CSharpSolutionEnvironment CreateEmpty(string directory, string name)
@@ -78,7 +78,7 @@ public class CSharpSolutionEnvironment : DevelopmentEnvironment
         return new CSharpSolutionEnvironment(file);
     }
 
-    public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
+    public override AnalysisCompilation? GetRelevantCompilation(FileInfo? file = null)
     {
         if (file == null)
             return null;

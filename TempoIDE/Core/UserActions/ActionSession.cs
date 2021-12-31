@@ -4,41 +4,44 @@ namespace TempoIDE.Core.UserActions;
 
 public class ActionSession
 {
-    private LinkedListNode<IUserAction> currentActionNode;
-    private IUserAction CurrentAction => currentActionNode?.Value;
+    private LinkedListNode<IUserAction>? CurrentActionNode { get; set; }
+    private IUserAction? CurrentAction => CurrentActionNode?.Value;
         
-    public readonly object Id;
-    public readonly LinkedList<IUserAction> Actions = new();
+    public object Id { get; }
+    public LinkedList<IUserAction> Actions { get; } = new();
 
     public ActionSession(object id)
     {
         Id = id;
-        currentActionNode = Actions.AddFirst(new SessionCreatedAction());
+        CurrentActionNode = Actions.AddFirst(new SessionCreatedAction());
     }
 
     public void AddAction(IUserAction action)
     {
-        currentActionNode = Actions.AddAfter(currentActionNode, action);
+        if (CurrentActionNode == null)
+            return;
+        
+        CurrentActionNode = Actions.AddAfter(CurrentActionNode, action);
     }
 
     public ActionResult Undo()
     {
-        if (CurrentAction is SessionCreatedAction)
+        if (CurrentAction is SessionCreatedAction or null)
             return new ActionResult(false, "Nothing to undo.");
 
         var result = CurrentAction.Undo();
-        currentActionNode = currentActionNode.Previous;
+        CurrentActionNode = CurrentActionNode?.Previous;
 
         return result;
     }
 
     public ActionResult Redo()
     {
-        if (currentActionNode.Next == null)
+        if (CurrentActionNode?.Next == null)
             return new ActionResult(false, "Nothing to redo.");
 
-        var result = currentActionNode.Next.Value.Redo();
-        currentActionNode = currentActionNode.Next;
+        var result = CurrentActionNode.Next.Value.Redo();
+        CurrentActionNode = CurrentActionNode.Next;
 
         return result;
     }

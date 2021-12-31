@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using Jammo.ParserTools;
 using TempoControls.Core.IntTypes;
 
 namespace TempoIDE.Controls.CodeEditing.BlockElements;

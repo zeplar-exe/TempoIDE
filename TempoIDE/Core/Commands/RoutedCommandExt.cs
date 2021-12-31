@@ -5,7 +5,7 @@ namespace TempoIDE.Core.Commands;
 
 public class RoutedCommandExt : RoutedCommand, ICommand
 {
-    private event EventHandler CanExecuteChangedEv;
+    private event EventHandler? CanExecuteChangedEv;
 
     public void RaiseCanExecuteChanged()
     {

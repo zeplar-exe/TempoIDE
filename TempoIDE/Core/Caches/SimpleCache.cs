@@ -2,11 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 
 namespace TempoIDE.Core.Caches;
 
-public class SimpleCache<TK, TV> : IEnumerable<KeyValuePair<TK, CacheItem<TV>>>
+public class SimpleCache<TK, TV> : IEnumerable<KeyValuePair<TK, CacheItem<TV>>> where TK : notnull
 {
     private readonly Dictionary<TK, CacheItem<TV>> items = new();
     private readonly CacheOptions options;
@@ -27,7 +26,7 @@ public class SimpleCache<TK, TV> : IEnumerable<KeyValuePair<TK, CacheItem<TV>>>
         }
     }
 
-    public SimpleCache(CacheOptions options = null)
+    public SimpleCache(CacheOptions? options = null)
     {
         this.options = options ?? new CacheOptions();
     }
@@ -100,42 +99,6 @@ public class SimpleCache<TK, TV> : IEnumerable<KeyValuePair<TK, CacheItem<TV>>>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
-    }
-}
-
-public class CacheItem<T>
-{
-    private CacheItemOptions options;
-    internal readonly Timer Timer;
-
-    public event EventHandler DeletionRequested;
-
-    public readonly T Item;
-    public ulong Size => options?.Size ?? 0;
-
-    public CacheItem(T item, CacheItemOptions options = null)
-    {
-        Item = item;
-
-        options ??= new CacheItemOptions();
-        this.options = options;
-
-        if (options.NonAccessDeletionTime != TimeSpan.Zero)
-        {
-            Timer = new Timer(options.NonAccessDeletionTime.TotalMilliseconds);
-            Timer.Elapsed += delegate { DeletionRequested?.Invoke(this, EventArgs.Empty); };
-
-            Timer.Start();
-        }
-    }
-
-    public void Renew()
-    {
-        if (Timer == null)
-            return;
-            
-        Timer.Stop();
-        Timer.Start();
     }
 }
 

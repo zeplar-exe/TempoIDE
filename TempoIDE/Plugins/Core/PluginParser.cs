@@ -116,7 +116,7 @@ public static class PluginParser
                         nameTokens.Add(nameToken);
                     }
 
-                    stream.Metadata[string.Concat(nameTokens.Select(t => t.Token))] = tokens.ToString();
+                    stream.Metadata[string.Concat(nameTokens.Select(t => t.Token))] = string.Concat(tokens.ToString);
                         
                     state.MoveLast();
                         

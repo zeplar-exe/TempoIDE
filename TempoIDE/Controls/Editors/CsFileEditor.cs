@@ -1,10 +1,8 @@
-using System.Linq;
 using System.Windows.Media;
 using TempoControls.Core.IntTypes;
 using TempoIDE.Controls.CodeEditing.BlockElements;
 using TempoIDE.Controls.CodeEditing.BlockElements.Common;
 using TempoIDE.Core.Helpers;
-using TempoIDE.Core.Inspections;
 
 namespace TempoIDE.Controls.Editors;
 

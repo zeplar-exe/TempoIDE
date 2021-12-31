@@ -15,7 +15,7 @@ public static class ActionHelper
         if (result.Success)
             return;
             
-        ApplicationHelper.MainWindow.Notify($"Action failed to execute\n{result.Message}", NotificationIcon.Error);
+        ApplicationHelper.MainWindow?.Notify($"Action failed to execute\n{result.Message}", NotificationIcon.Error);
     }
 
     public static bool LogAction(object id, IUserAction action)
@@ -42,7 +42,7 @@ public static class ActionHelper
         return GetSession(id)?.Redo();
     }
         
-    public static ActionSession GetSession(object id) => Sessions.FirstOrDefault(s => s.Id == id);
+    public static ActionSession? GetSession(object id) => Sessions.FirstOrDefault(s => s.Id == id);
 
     public static ActionSession GetOrCreateSession(object id)
     {

@@ -42,7 +42,7 @@ public class FileEnvironment : DevelopmentEnvironment
         var info = (FileInfo) EnvironmentPath;
 
         explorer.AppendElement(new ExplorerFileSystemItem(info.FullName));
-        ApplicationHelper.MainWindow.v_Editor.v_Tabs.OpenFile(info);
+        ApplicationHelper.MainWindow?.v_Editor.v_Tabs.OpenFile(info);
     }
 
     protected override void DirectoryChanged(object sender, FileSystemEventArgs e)

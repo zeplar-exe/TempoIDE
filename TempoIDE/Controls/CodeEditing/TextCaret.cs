@@ -7,7 +7,7 @@ public class TextCaret
 {
     private string LineBreak { get; set; } = Environment.NewLine;
     private string TextContext { get; set; }
-    private string[] Lines { get; set; }
+    private string[]? Lines { get; set; }
 
     private int b_index;
 

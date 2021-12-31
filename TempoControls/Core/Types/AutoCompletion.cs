@@ -1,5 +1,3 @@
-using TempoControls.Core.Static;
-
 namespace TempoControls.Core.Types
 {
     public class AutoCompletion

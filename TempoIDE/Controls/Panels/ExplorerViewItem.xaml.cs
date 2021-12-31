@@ -7,7 +7,7 @@ namespace TempoIDE.Controls.Panels;
 
 public partial class ExplorerViewItem : TreeViewItem
 {
-    public string HeaderText { get; set; }
+    public string? HeaderText { get; set; }
         
     public ExplorerViewItem()
     {

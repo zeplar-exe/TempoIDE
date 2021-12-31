@@ -1,8 +1,6 @@
-using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
-using TempoIDE.Controls.CodeEditing;
 using TempoIDE.Core.Helpers;
 using Timer = System.Timers.Timer;
 

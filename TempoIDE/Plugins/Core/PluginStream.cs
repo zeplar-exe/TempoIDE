@@ -8,15 +8,15 @@ namespace TempoIDE.Plugins.Core;
 
 public class PluginStream : IParserStream
 {
-    private FileStream stream;
+    private FileStream? Stream { get; set; }
 
-    public bool IsInitialized => stream == null;
-    public string FilePath => stream.Name;
+    public bool IsInitialized => Stream == null;
+    public string FilePath => Stream?.Name ?? "";
         
     public string Version = "";
     public readonly Dictionary<string, string> Metadata = new(StringComparer.InvariantCulture);
 
-    public string PluginName
+    public string? PluginName
     {
         get
         {
@@ -26,7 +26,7 @@ public class PluginStream : IParserStream
         }
     }
 
-    public bool TryGetDirectoryPath(out string result)
+    public bool TryGetDirectoryPath(out string? result)
     {
         result = null;
             
@@ -50,14 +50,17 @@ public class PluginStream : IParserStream
         return true;
     }
 
-    public PluginStream(FileStream stream = null)
+    public PluginStream(FileStream? stream = null)
     {
-        this.stream = stream;
+        Stream = stream;
     }
 
     public void Parse()
     {
-        using var reader = new StreamReader(stream);
+        if (Stream == null)
+            return;
+        
+        using var reader = new StreamReader(Stream);
         using var newStream = PluginParser.Parse(reader.ReadToEndAsync().Result);
 
         Version = newStream.Version;
@@ -69,14 +72,14 @@ public class PluginStream : IParserStream
 
     public void Write()
     {
-        if (stream == null)
+        if (Stream == null)
         {
             var working = Directory.GetCurrentDirectory();
 
             Console.WriteLine("The current stream is null, a new file will be created in the working directory.\n" +
                               $"Current working directory: {working}");
                 
-            stream = File.Create(Path.Join(Directory.GetCurrentDirectory(), "Jammo_SolutionStream.sln"));
+            Stream = File.Create(Path.Join(Directory.GetCurrentDirectory(), "Jammo_SolutionStream.sln"));
         }
             
         var builder = new StringBuilder();
@@ -99,7 +102,7 @@ public class PluginStream : IParserStream
 
     public void Dispose()
     {
-        stream?.Dispose();
+        Stream?.Dispose();
     }
 
     public override string ToString()

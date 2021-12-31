@@ -6,7 +6,7 @@ namespace TempoIDE.Core.Helpers;
 
 public static class EnvironmentHelper
 {
-    public static DevelopmentEnvironment Current;
+    public static DevelopmentEnvironment? Current;
 
     public static void LoadEnvironment(string path)
     {
@@ -25,7 +25,7 @@ public static class EnvironmentHelper
         
     public static void LoadEnvironment(DevelopmentEnvironment environment)
     {
-        ApplicationHelper.MainWindow.v_Editor.v_Tabs.CloseAll();
+        ApplicationHelper.MainWindow?.v_Editor.v_Tabs.CloseAll();
             
         var progressDialog = new ProgressDialog
         {
@@ -51,26 +51,30 @@ public static class EnvironmentHelper
         if (e.ChangeType != WatcherChangeTypes.Changed)
         {
             ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer);
-            ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.v_Editor.v_Tabs.Refresh);
+            
+            if (ApplicationHelper.MainWindow != null)
+                ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.v_Editor.v_Tabs.Refresh);
         }
     }
         
     public static void CloseEnvironment()
     {
-        Current.Close();
+        Current?.Close();
 
-        ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.v_Editor.v_Tabs.CloseAll);
+        if (ApplicationHelper.MainWindow != null)
+            ApplicationHelper.AppDispatcher.Invoke(ApplicationHelper.MainWindow.v_Editor.v_Tabs.CloseAll);
         ApplicationHelper.AppDispatcher.Invoke(RefreshExplorer);
     }
         
     public static void RefreshExplorer()
     {
-        ApplicationHelper.MainWindow.v_Explorer.Clear();
+        ApplicationHelper.MainWindow?.v_Explorer.Clear();
             
-        Current.LoadExplorer(ApplicationHelper.MainWindow.v_Explorer);
+        if (ApplicationHelper.MainWindow != null) 
+            Current?.LoadExplorer(ApplicationHelper.MainWindow.v_Explorer);
     }
 
-    private static DevelopmentEnvironment EnvFromPath(string path)
+    private static DevelopmentEnvironment? EnvFromPath(string path)
     {
         if (File.Exists(path))
         {

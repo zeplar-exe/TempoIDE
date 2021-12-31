@@ -5,7 +5,7 @@ namespace TempoIDE.Controls.Panels;
 
 public partial class EditorControl : Grid
 {
-    public Editor SelectedEditor => v_Tabs.SelectedTab?.Editor;
+    public Editor? SelectedEditor => v_Tabs.SelectedTab?.Editor;
         
     public EditorControl()
     {

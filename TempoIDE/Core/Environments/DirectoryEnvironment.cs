@@ -17,12 +17,12 @@ public class DirectoryEnvironment : DevelopmentEnvironment
             
     }
 
-    public override AnalysisCompilation GetRelevantCompilation(FileInfo file = null)
+    public override AnalysisCompilation GetRelevantCompilation(FileInfo? file = null)
     {
         return ExtensionAssociator.AnalysisCompilationFromFile(file);
     }
 
-    public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo file = null)
+    public override IEnumerable<Diagnostic> GetFileDiagnostics(FileInfo? file = null)
     {
         return Enumerable.Empty<Diagnostic>(); // TODO
     }

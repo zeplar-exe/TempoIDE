@@ -7,8 +7,8 @@ public static class IOHelper
 {
     public static bool TryReadRelativeFile(
         string path,
-        out FileStream result,
-        out IOException exception)
+        out FileStream? result,
+        out IOException? exception)
     {
         result = null;
         exception = null;
