@@ -1,3 +1,4 @@
+## This project is discontinued
 # TempoIDE
 
 The only feasible way you'd get here is if you came from discord, so thanks I guess.
